@@ -109,7 +109,7 @@ export const CONTENT = {
 			{
 				id: 'papers',
 				title: 'Papers (論文)',
-				date: '2026 / 6 / 20 (Sat)',
+				date: '2026 / xx / xx (Sat)',
 				extendedDate: '',
 				format: 'ACM SIGCHI Two-Column / DIS Pictorial',
 				links: [
@@ -199,6 +199,21 @@ export const CONTENT = {
 	committeeSection: {
 		title: 'ORGANIZATION',
 		subtitle: 'COMMITTEE MEMBERS',
+		chairTitles: {
+			'general chairs': '會議主席 GENERAL CHAIRS',
+			'program chairs': '議程主席 PROGRAM CHAIRS',
+			'paper chairs': '論文主席 PAPER CHAIRS',
+			'poster chairs': '海報主席 POSTER CHAIRS',
+			'demo chairs': '展示主席 DEMO CHAIRS',
+			'publication chairs': '出版主席 PUBLICATION CHAIRS',
+			'sponsor chairs': '贊助主席 SPONSOR CHAIRS',
+			'publicity chairs': '宣傳主席 PUBLICITY CHAIRS',
+			'panel chairs': '論壇主席 PANEL CHAIRS',
+			'design competition chairs': '設計競賽主席 DESIGN COMPETITION CHAIR',
+			'best paper award committee': '最佳論文獎委員 BEST PAPER AWARD COMMITTEE',
+			'web chairs': '網路主席 WEB CHAIRS',
+			'student volunteer chairs': '學生志願者主席 STUDENT VOLUNTEER CHAIRS',
+		},
 	},
 	keynoteSection: {
 		title: 'KEYNOTE_SPEAKERS',
