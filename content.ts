@@ -11,7 +11,6 @@ export const CONFIG = {
 
 		// 2. Organization & Keynotes DB (Formerly Members)
 		// Use 'Role' column to distinguish: "Keynote", "General Chair", "Program Chair", etc.
-		// peopleDatabaseId: '08ad1424796b4781842847a9ce181ff8',
 		peopleDatabaseId: '2e7ceff5447080aebbbbf20d0ee07a0b',
 
 		// 3. Program / Sessions DB
@@ -55,8 +54,8 @@ export const TOPICS_NOTION_PAGE_ID = CONFIG.notion.topicsDatabaseId;
 
 export const CONTENT = {
 	meta: {
-		title: 'TaiCHI 2026 | 霹靂未來 Pili Future',
-		description: 'The 12th Annual Conference of TaiCHI. Theme: Pili Future (霹靂未來).',
+		title: 'TAICHI 2026 | 霹靂未來 Pili Future',
+		description: 'The 12th Annual Conference of TAICHI. Theme: Pili Future (霹靂未來).',
 		url: 'https://taichi2026.taiwanchi.org',
 	},
 	nav: {
@@ -77,7 +76,7 @@ export const CONTENT = {
 		titleLine1: 'TAICHI 2026',
 		titleLine2: '霹靂未來',
 		titleLine3: 'PILI FUTURE',
-		subtitle: 'The 12th Annual Conference of TaiCHI',
+		subtitle: 'The 12th Annual Conference of TAICHI',
 		date: 'Date: 2026 / 10 / XX (TBD)',
 		location: 'Location: Taipei, Taiwan (TBD)',
 		coordinates: 'TAICHI 2026 \n PILI FUTURE',
@@ -85,7 +84,7 @@ export const CONTENT = {
 	},
 	theme: {
 		title: 'THEME: PILI FUTURE \n 霹靂未來',
-		p1: "TaiCHI 2026's theme 'Pili Future' (霹靂未來) fuses the vibrant energy of traditional Taiwanese puppetry (Pili) with the cutting-edge advancements of Human-Computer Interaction.",
+		p1: "TAICHI 2026's theme 'Pili Future' (霹靂未來) fuses the vibrant energy of traditional Taiwanese puppetry (Pili) with the cutting-edge advancements of Human-Computer Interaction.",
 		p2: 'We invite researchers, designers, and artists to explore how future technologies can perform, interact, and tell stories in ways that resonate with local culture while pushing global boundaries.',
 	},
 	cfpSection: {
@@ -150,7 +149,7 @@ export const CONTENT = {
 		socialsTitle: 'FOLLOW US',
 		locationsTitle: 'CONTACT',
 		locationsList: ['taichi2026@taiwanchi.org', 'Taipei, Taiwan'],
-		copyright: '© 2026 TaiCHI Association',
+		copyright: '© 2026 TAICHI Association',
 		credits: 'DESIGNED BASED ON FTL TEMPLATE',
 	},
 	// Legacy sections for compatibility
