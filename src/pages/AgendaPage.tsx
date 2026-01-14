@@ -40,55 +40,67 @@ const AgendaPage: React.FC = () => {
 									<div key={day} className='mb-16'>
 										<h3 className='font-pixel text-4xl text-lab-orange mb-8 text-center md:text-left'>{day}</h3>
 										<div className='space-y-3'>
-											{sessionsByDay[day].map((sess) => {
-												const hasTopics = sess.topics && sess.topics.length > 0;
+											{sessionsByDay[day]
+												.sort((a, b) => {
+													// Convert time string "HH:MM" to comparable number
+													const timeToMinutes = (time: string) => {
+														const [hours, minutes] = time.split(':').map(Number);
+														return hours * 60 + minutes;
+													};
+													return timeToMinutes(a.startTime) - timeToMinutes(b.startTime);
+												})
+												.map((sess) => {
+													const hasTopics = sess.topics && sess.topics.length > 0;
 
-												return (
-													<details
-														key={sess.id}
-														className='group border-2 border-gray-200 bg-white hover:border-lab-orange transition-colors rounded-lg shadow-sm'
-													>
-														<summary className='cursor-pointer p-4 flex items-center gap-4 list-none'>
-															<span className='font-mono text-sm flex-shrink-0 text-gray-500'>
-																{sess.startTime} - {sess.endTime}
-															</span>
-															<div className='flex-1'>
-																<span className='font-bold text-lg'>{sess.title}</span>
-																{sess.chairs && sess.chairs.length > 0 && (
-																	<div className='text-sm text-gray-500 mt-1'>
-																		Chairs: {sess.chairs.map((c) => c.name).join(', ')}
-																	</div>
-																)}
-															</div>
-															{hasTopics && (
-																<ChevronDown
-																	className='group-open:rotate-180 transition-transform flex-shrink-0 text-gray-400'
-																	size={20}
-																/>
-															)}
-														</summary>
-														{hasTopics && (
-															<div className='px-4 pb-4 pt-2 border-t border-gray-100 bg-gray-50'>
-																<div className='space-y-4'>
-																	{sess.topics!.map((topic) => (
-																		<div key={topic.id} className='border-l-2 border-lab-orange pl-4'>
-																			<div className='font-mono text-xs text-gray-500 mb-1'>
-																				{topic.startTime} - {topic.endTime}
-																			</div>
-																			<h4 className='font-bold text-base mb-1'>{topic.topic}</h4>
-																			{topic.chairs && topic.chairs.length > 0 && (
-																				<p className='text-sm text-gray-500'>
-																					{topic.chairs.map((c) => c.name).join(', ')}
-																				</p>
-																			)}
+													return (
+														<details
+															key={sess.id}
+															className='group border-2 border-gray-200 bg-white hover:border-lab-orange transition-colors rounded-lg shadow-sm'
+														>
+															<summary className='cursor-pointer p-4 flex items-center gap-4 list-none'>
+																<span className='font-mono text-sm flex-shrink-0 text-gray-500'>
+																	{sess.startTime} - {sess.endTime}
+																</span>
+																<div className='flex-1'>
+																	<span className='font-bold text-lg'>{sess.title}</span>
+																	{sess.chairs && sess.chairs.length > 0 && (
+																		<div className='text-sm text-gray-500 mt-1'>
+																			Chairs: {sess.chairs.map((c) => c.name).join(', ')}
 																		</div>
-																	))}
+																	)}
 																</div>
-															</div>
-														)}
-													</details>
-												);
-											})}
+																{hasTopics && (
+																	<ChevronDown
+																		className='group-open:rotate-180 transition-transform flex-shrink-0 text-gray-400'
+																		size={20}
+																	/>
+																)}
+															</summary>
+															{hasTopics && (
+																<div className='px-4 pb-4 pt-2 border-t border-gray-100 bg-gray-50'>
+																	<div className='space-y-4'>
+																		{sess.topics!.map((topic) => (
+																			<div
+																				key={topic.id}
+																				className='border-l-2 border-lab-orange pl-4'
+																			>
+																				<div className='font-mono text-xs text-gray-500 mb-1'>
+																					{topic.startTime} - {topic.endTime}
+																				</div>
+																				<h4 className='font-bold text-base mb-1'>{topic.topic}</h4>
+																				{topic.chairs && topic.chairs.length > 0 && (
+																					<p className='text-sm text-gray-500'>
+																						{topic.chairs.map((c) => c.name).join(', ')}
+																					</p>
+																				)}
+																			</div>
+																		))}
+																	</div>
+																</div>
+															)}
+														</details>
+													);
+												})}
 										</div>
 									</div>
 								));
