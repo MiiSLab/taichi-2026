@@ -1,7 +1,8 @@
-import { ChevronDown, ExternalLink, FileText, Link as LinkIcon, MapPin, Menu, RefreshCw, X } from 'lucide-react';
+import { ChevronDown, ExternalLink, Facebook, FileText, Link as LinkIcon, MapPin, Menu, RefreshCw, X } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import NewsDetail from './components/NewsDetail';
 import PixelTransition from './components/PixelTransition';
+import Sponsors from './components/Sponsors';
 import VoxelCube from './components/VoxelCube';
 import { CONFIG, CONTENT, NEWS as STATIC_NEWS, PEOPLE as STATIC_PEOPLE, SESSIONS as STATIC_SESSIONS } from './content';
 import { fetchNewsFromNotion, fetchPeopleFromNotion, fetchSessionsFromNotion } from './services/notionService';
@@ -284,7 +285,7 @@ const App: React.FC = () => {
 				</div>
 			</section>
 
-			{/* PROGRAM / AGENDA */}
+			{/* AGENDA */}
 			<section ref={programRef} className='py-24 px-6 md:px-20 bg-lab-dark text-white'>
 				<div className='max-w-6xl mx-auto'>
 					<h2 className='font-pixel text-5xl text-white mb-16 text-center'>{CONTENT.programSection.title}</h2>
@@ -514,6 +515,8 @@ const App: React.FC = () => {
 				</div>
 			</section>
 
+			<Sponsors />
+
 			{/* FOOTER */}
 			<footer className='bg-lab-dark text-white py-12 px-6 border-t border-gray-800'>
 				<div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-8 font-mono text-xs'>
@@ -524,6 +527,21 @@ const App: React.FC = () => {
 					<div className='text-right'>
 						<p className='text-gray-400 mb-2'>{CONTENT.footer.credits}</p>
 						<p>{CONTENT.contact.email}</p>
+						{CONTENT.footer.facebook && (
+							<div className='flex items-center justify-end gap-3 mt-4'>
+								<span className='text-gray-500 font-pixel text-[10px] uppercase tracking-wider'>
+									{CONTENT.footer.socialsTitle}
+								</span>
+								<a
+									href={CONTENT.footer.facebook}
+									target='_blank'
+									rel='noopener noreferrer'
+									className='hover:text-lab-orange transition-colors'
+								>
+									<Facebook size={20} />
+								</a>
+							</div>
+						)}
 					</div>
 				</div>
 			</footer>

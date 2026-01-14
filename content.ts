@@ -63,7 +63,7 @@ export const CONTENT = {
 		home: 'HOME',
 		news: 'NEWS',
 		theme: 'THEME',
-		program: 'PROGRAM',
+		program: 'AGENDA',
 		keynotes: 'KEYNOTES',
 		organization: 'ORGANIZATION',
 		cfp: 'CALL FOR PAPERS',
@@ -127,7 +127,7 @@ export const CONTENT = {
 		subtitle: 'INVITED TALKS',
 	},
 	programSection: {
-		title: 'PROGRAM_AGENDA',
+		title: 'AGENDA',
 		subtitle: 'CONFERENCE SCHEDULE',
 		viewDetail: 'SESSION // ',
 		backToIndex: 'BACK TO AGENDA', // Needed for ProjectDetail fallback
@@ -135,8 +135,8 @@ export const CONTENT = {
 	},
 	venueSection: {
 		title: 'VENUE_&_TRAVEL',
-		address: "No. 1, Section 4, Roosevelt Rd, Da'an District, Taipei City, 10617 (National Taiwan University)",
-		transport: 'MRT: Gongguan Station (Exit 2) \n Bus: NTU Stop',
+		address: 'xxx',
+		transport: 'MRT: Gongguan Station (Exit 2) \n Bus: xxx Stop',
 		mapLink: 'https://www.google.com/maps',
 	},
 	registrationSection: {
@@ -144,13 +144,32 @@ export const CONTENT = {
 		info: 'Registration will open in mid-2026.',
 		button: 'REGISTER_NOW (Coming Soon)',
 	},
+	sponsorsSection: {
+		organizerTitle: 'ORGANIZERS',
+		sponsorTitle: 'SPONSORS',
+		organizers: [
+			{ name: 'TAICHI', logo: '/logos/taichi.webp', size: 'large' }, // Main Organizer
+		],
+		coOrganizers: [
+			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
+			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
+			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
+			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
+		],
+		sponsors: [
+			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
+			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
+			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
+		],
+	},
 	footer: {
 		title: 'TAICHI 2026 \n 霹靂未來',
 		socialsTitle: 'FOLLOW US',
+		facebook: 'https://www.facebook.com/taiwanchi',
 		locationsTitle: 'CONTACT',
 		locationsList: ['taichi2026@taiwanchi.org', 'Taipei, Taiwan'],
-		copyright: '© 2026 TAICHI Association',
-		credits: 'DESIGNED BASED ON FTL TEMPLATE',
+		copyright: 'COPYRIGHT © 2026 TAICHI',
+		credits: '',
 	},
 	// Legacy sections for compatibility
 	projectsSection: {

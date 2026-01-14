@@ -1,4 +1,6 @@
-declare interface TrackItem {
+/// <reference types="vite/client" />
+
+interface TrackItem {
 	id: string;
 	title: string;
 	description: string;
