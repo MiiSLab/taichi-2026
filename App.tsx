@@ -1,26 +1,4 @@
-import {
-	ArrowRight,
-	Boxes,
-	Calendar,
-	CheckCircle,
-	ChevronDown,
-	ChevronUp,
-	Clock,
-	Cpu,
-	ExternalLink,
-	FileText,
-	Globe,
-	Link as LinkIcon,
-	Mail,
-	MapPin,
-	Menu,
-	Mic,
-	RefreshCw,
-	Share2,
-	Sparkles,
-	User,
-	X,
-} from 'lucide-react';
+import { ChevronDown, ExternalLink, FileText, Link as LinkIcon, MapPin, Menu, RefreshCw, X } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import NewsDetail from './components/NewsDetail';
 import PixelTransition from './components/PixelTransition';
@@ -54,7 +32,6 @@ const App: React.FC = () => {
 	const [dataSource, setDataSource] = useState<'static' | 'notion'>('static');
 	const [lastSynced, setLastSynced] = useState<string>('');
 
-	const [copiedId, setCopiedId] = useState<string | null>(null);
 	const [isScrolled, setIsScrolled] = useState(false);
 
 	useEffect(() => {
@@ -284,18 +261,22 @@ const App: React.FC = () => {
 							>
 								<div className='relative aspect-[3/2] overflow-hidden bg-gray-100'>
 									<img
-										src={item.mainImage}
+										src={item.image}
 										alt={item.title}
 										className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
 									/>
-									<span className='absolute top-0 left-0 bg-lab-orange text-white font-mono text-xs px-2 py-1'>
-										{item.topic}
-									</span>
+									{item.subtitle && (
+										<span className='absolute bottom-0 left-0 bg-lab-dark/80 text-white font-mono text-xs px-2 py-1 w-full truncate'>
+											{item.subtitle}
+										</span>
+									)}
 								</div>
 								<div className='p-6'>
-									<div className='font-mono text-xs text-gray-500 mb-2'>{item.date}</div>
+									{(item.createdTime || item.date) && (
+										<div className='font-mono text-xs text-gray-500 mb-2'>{item.createdTime || item.date}</div>
+									)}
 									<h3 className='font-pixel text-2xl leading-none mb-4 group-hover:text-lab-orange'>{item.title}</h3>
-									<p className='font-sans text-sm text-gray-600 line-clamp-2'>{item.brief}</p>
+									<p className='font-sans text-sm text-gray-600 line-clamp-2'>{item.content}</p>
 								</div>
 							</div>
 						))}

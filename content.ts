@@ -7,7 +7,7 @@
 export const CONFIG = {
 	notion: {
 		// 1. News & Important Dates DB
-		newsDatabaseId: '2b6a7f1b413c80b4b4a8c3f01dbef122',
+		newsDatabaseId: '2e8ceff5447080c7914bfdbcb9758808',
 
 		// 2. Organization & Keynotes DB (Formerly Members)
 		// Use 'Role' column to distinguish: "Keynote", "General Chair", "Program Chair", etc.

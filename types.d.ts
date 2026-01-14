@@ -45,18 +45,13 @@ declare interface Speaker {
 declare interface NewsItem {
 	id: string;
 	title: string;
-	topic: string;
-	mainImage: string;
-	brief: string;
-	briefCh?: string;
+	subtitle: string;
+	content: string;
 	date: string;
-	place: string;
-	registrationLink?: string;
-	speakers: Speaker[];
-	slogan?: string;
-	recapGallery?: string[];
-	recapDescription?: string;
-	recapDescriptionCh?: string;
+	createdTime: string; // From Created column
+	place: string; // From Location
+	image: string; // From Headphoto
+	link: string; // From Link
 }
 
 declare interface PublicationItem {

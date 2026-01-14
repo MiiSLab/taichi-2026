@@ -251,60 +251,52 @@ export const fetchNewsFromNotion = async (): Promise<NewsItem[]> => {
 
 	try {
 		const url = `${NOTION_BASE_URL}${NEWS_NOTION_PAGE_ID}?t=${new Date().getTime()}`;
+		console.log(`[Debug] News URL:`, { url: url });
 		const response = await fetch(url);
 		if (!response.ok) throw new Error('Network response was not ok');
 		const data = await response.json();
+		console.log(`[Debug] News Data:`, { data: data });
 
 		if (Array.isArray(data) && data.length > 0) {
 			const news = data.map((row: any) => {
-				const title = String(getProp(row, 'Name') || getProp(row, 'Title') || 'Untitled Event');
-				const topic = String(getProp(row, 'Topic') || 'Event');
-				const brief = String(getProp(row, 'Brief') || '');
-				const briefCh = String(getProp(row, 'Brief_ch') || getProp(row, 'Brief CH') || '');
-				const date = String(getProp(row, 'Date') || '');
-				const place = String(getProp(row, 'Place') || getProp(row, 'Location') || '');
-				const registrationLink = String(getProp(row, 'Registration Link') || '');
-				const slogan = String(getProp(row, 'Slogan') || '');
-				const rawMain = getProp(row, 'MainImage') || getProp(row, 'Image');
-				const mainImage =
-					extractImageUrl(rawMain) ||
+				// Map using the keys provided by user (Capitalized based on sample)
+				// Fallback to getProp for safety if keys vary slightly
+				const id = row.id || row.Id || Math.random().toString(36).substr(2, 9);
+				const title = String(row.Title || getProp(row, 'Title') || row.Name || 'Untitled Event');
+				const subtitle = String(row.Subtitle || getProp(row, 'Subtitle') || '');
+				const content = String(row.Content || getProp(row, 'Content') || '');
+				const date = String(row.Date || getProp(row, 'Date') || '');
+				const createdTime = String(row.Created || getProp(row, 'Created') || '');
+				const place = String(row.Location || getProp(row, 'Location') || '');
+				const link = String(row.Link || getProp(row, 'Link') || '');
+
+				const rawHead = row.Headphoto || getProp(row, 'Headphoto');
+				const image =
+					extractImageUrl(rawHead) ||
 					'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop';
 
-				const speakers: Speaker[] = [];
-				for (let i = 1; i <= 5; i++) {
-					const suffix = i === 1 ? '' : ` ${i}`;
-					const name = getProp(row, `Lecture by${suffix}`) || getProp(row, `Speaker${suffix}`);
-					if (name) {
-						const rawHead = getProp(row, `Headphoto${suffix}`) || getProp(row, `Speaker Photo${suffix}`);
-						speakers.push({
-							name,
-							headPhoto:
-								extractImageUrl(rawHead) ||
-								'https://images.unsplash.com/photo-1560250097-0b93528c311a?q=80&w=1000&auto=format&fit=crop',
-							bio: getProp(row, `Bio${suffix}`),
-						});
-					}
-				}
-
 				return {
-					id: row.id || Math.random().toString(36).substr(2, 9),
+					id,
 					title,
-					topic,
-					mainImage,
-					brief,
-					briefCh,
+					subtitle,
+					content,
 					date,
+					createdTime,
 					place,
-					registrationLink,
-					speakers,
-					slogan,
+					image,
+					link,
 				};
 			});
 
-			return news.sort((a: NewsItem, b: NewsItem) => new Date(b.date).getTime() - new Date(a.date).getTime());
+			return news.sort((a: NewsItem, b: NewsItem) => {
+				const timeA = new Date(a.createdTime || a.date).getTime();
+				const timeB = new Date(b.createdTime || b.date).getTime();
+				return timeB - timeA;
+			});
 		}
 		return STATIC_NEWS;
 	} catch (error) {
+		console.error('Error fetching news:', error);
 		return STATIC_NEWS;
 	}
 };

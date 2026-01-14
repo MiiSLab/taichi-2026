@@ -17,6 +17,10 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ item, onClose }) => {
 		};
 	}, []);
 
+	const hasDate = item.date && item.date.trim().length > 0;
+	const hasPlace = item.place && item.place.trim().length > 0;
+	const hasLink = item.link && item.link.trim().length > 0;
+
 	return (
 		<>
 			<div className='fixed inset-0 z-[60] bg-lab-white/95 backdrop-blur-sm overflow-y-auto flex items-center justify-center p-4 animate-in fade-in duration-200'>
@@ -31,132 +35,58 @@ const NewsDetail: React.FC<NewsDetailProps> = ({ item, onClose }) => {
 
 					<div className='overflow-y-auto p-6 md:p-10'>
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-8'>
-							{/* Left Column: Image & Speaker */}
+							{/* Left Column: Image */}
 							<div className='space-y-6'>
 								<div className='relative aspect-video w-full overflow-hidden border border-black bg-gray-100'>
-									<img src={item.mainImage} alt={item.title} className='w-full h-full object-cover' />
-									<div className='absolute top-0 left-0 bg-lab-orange text-white px-3 py-1 font-mono text-xs font-bold'>
-										{item.topic}
-									</div>
+									<img src={item.image} alt={item.title} className='w-full h-full object-cover' />
 								</div>
-
-								{/* Speakers List */}
-								{item.speakers && item.speakers.length > 0 && (
-									<div className='space-y-4'>
-										{item.speakers.map((speaker, idx) => (
-											<div key={idx} className='bg-gray-50 border border-gray-200 p-4 flex gap-4 items-start'>
-												<div className='w-16 h-16 border border-gray-300 overflow-hidden flex-shrink-0'>
-													<img
-														src={speaker.headPhoto}
-														alt={speaker.name}
-														className='w-full h-full object-cover'
-													/>
-												</div>
-												<div>
-													<h4 className='font-pixel text-xl text-lab-orange'>{speaker.name}</h4>
-													{speaker.bio && (
-														<p className='font-sans text-sm text-gray-600 leading-snug'>{speaker.bio}</p>
-													)}
-												</div>
-											</div>
-										))}
-									</div>
-								)}
 							</div>
 
 							{/* Right Column: Details */}
 							<div className='flex flex-col h-full'>
 								<div className='mb-6'>
-									<div className='font-mono text-sm text-gray-500 mb-2'>{item.date}</div>
-									<h2 className='font-pixel text-4xl md:text-5xl text-lab-dark leading-tight mb-6'>{item.title}</h2>
+									{hasDate && <div className='font-mono text-sm text-gray-500 mb-2'>{item.date}</div>}
+									<h2 className='font-pixel text-4xl md:text-5xl text-lab-dark leading-tight mb-2'>{item.title}</h2>
+									{item.subtitle && (
+										<h3 className='font-mono text-xl text-gray-600 mb-6 whitespace-pre-line'>{item.subtitle}</h3>
+									)}
 
-									<div className='space-y-3 font-mono text-sm border-t border-b border-gray-200 py-4 mb-6'>
-										<div className='flex items-center gap-3'>
-											<Calendar size={16} className='text-lab-orange' />
-											<span>{item.date}</span>
+									{(hasDate || hasPlace) && (
+										<div className='space-y-3 font-mono text-sm border-t border-b border-gray-200 py-4 mb-6'>
+											{hasDate && (
+												<div className='flex items-center gap-3'>
+													<Calendar size={16} className='text-lab-orange' />
+													<span>{item.date}</span>
+												</div>
+											)}
+											{hasPlace && (
+												<div className='flex items-center gap-3'>
+													<MapPin size={16} className='text-lab-orange' />
+													<span>{item.place}</span>
+												</div>
+											)}
 										</div>
-										{item.place && (
-											<div className='flex items-center gap-3'>
-												<MapPin size={16} className='text-lab-orange' />
-												<span>{item.place}</span>
-											</div>
-										)}
-										{item.speakers.length > 0 && (
-											<div className='flex items-center gap-3'>
-												<User size={16} className='text-lab-orange flex-shrink-0' />
-												<span>
-													{item.speakers[0].name}
-													{item.speakers.length > 1 && (
-														<span className='italic text-gray-500'> (+ {item.speakers.length - 1} others)</span>
-													)}
-												</span>
-											</div>
-										)}
-									</div>
+									)}
 
-									<p className='font-sans text-lg leading-relaxed text-gray-800 mb-4'>{item.brief}</p>
-
-									{item.briefCh && <p className='font-sans text-lg leading-relaxed text-gray-800 mb-8'>{item.briefCh}</p>}
+									<p className='font-sans text-lg leading-relaxed text-gray-800 mb-4 whitespace-pre-line'>
+										{item.content}
+									</p>
 								</div>
 
 								<div>
-									{item.registrationLink ? (
+									{hasLink && (
 										<a
-											href={item.registrationLink}
+											href={item.link}
 											target='_blank'
 											rel='noopener noreferrer'
 											className='block w-full bg-lab-orange text-white font-pixel text-xl text-center py-3 hover:bg-lab-dark transition-colors flex items-center justify-center gap-2'
 										>
-											REGISTER_NOW <ExternalLink size={20} />
+											MORE INFO <ExternalLink size={20} />
 										</a>
-									) : (
-										<div className='w-full bg-gray-200 text-gray-500 font-pixel text-xl text-center py-3 cursor-not-allowed'>
-											REGISTRATION_CLOSED
-										</div>
 									)}
 								</div>
 							</div>
 						</div>
-
-						{/* EVENT RECAP SECTION */}
-						{item.recapGallery && item.recapGallery.length > 0 && (
-							<div className='mt-16 pt-10 border-t-2 border-black border-dashed'>
-								<div className='flex items-center gap-4 mb-8'>
-									<div className='font-pixel text-3xl text-lab-orange'>EVENT_RECAP</div>
-									<div className='h-0.5 bg-lab-orange flex-1 opacity-20'></div>
-								</div>
-
-								{item.recapDescription && (
-									<p className='font-sans text-lg text-gray-700 leading-relaxed mb-4 max-w-3xl'>
-										{item.recapDescription}
-									</p>
-								)}
-								{item.recapDescriptionCh && (
-									<p className='font-sans text-lg text-gray-700 leading-relaxed mb-8 max-w-3xl'>
-										{item.recapDescriptionCh}
-									</p>
-								)}
-
-								<div className='grid grid-cols-2 md:grid-cols-4 gap-4'>
-									{item.recapGallery.map((img, idx) => (
-										<div
-											key={idx}
-											className='group relative aspect-square bg-gray-100 overflow-hidden cursor-zoom-in border border-transparent hover:border-lab-orange'
-											onClick={() => setSelectedImage(img)}
-										>
-											<img
-												src={img}
-												alt={`Recap ${idx}`}
-												className='w-full h-full object-cover transition-transform duration-500 group-hover:scale-110'
-											/>
-											<div className='absolute inset-0 bg-lab-orange/20 opacity-0 group-hover:opacity-100 transition-opacity flex items-center justify-center'>
-												<ZoomIn className='text-white drop-shadow-md' size={32} />
-											</div>
-										</div>
-									))}
-								</div>
-							</div>
-						)}
 					</div>
 				</div>
 			</div>
