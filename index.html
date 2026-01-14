@@ -101,9 +101,11 @@
 			// Restore the intended path after redirect from 404.html
 			(function () {
 				var redirect = sessionStorage.getItem('redirect');
-				if (redirect) {
+				if (redirect && redirect !== '/') {
 					sessionStorage.removeItem('redirect');
-					history.replaceState(null, null, redirect);
+					// Don't use history.replaceState here, let React Router handle it
+					// Just keep the redirect in a global variable for React Router to pick up
+					window.__INITIAL_REDIRECT__ = redirect;
 				}
 			})();
 		</script>
