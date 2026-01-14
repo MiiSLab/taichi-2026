@@ -8,9 +8,13 @@
 			// When a page is loaded directly (not through client-side routing),
 			// this script captures the intended path and redirects to index.html
 			// with the path stored in sessionStorage
-			sessionStorage.setItem('redirect', location.pathname + location.search + location.hash);
+			var fullPath = location.pathname + location.search + location.hash;
+			// Remove the base path /taichi-2026/ to get the actual route
+			var basePath = '/taichi-2026/';
+			var route = fullPath.replace(basePath, '/');
+			sessionStorage.setItem('redirect', route);
 		</script>
-		<meta http-equiv="refresh" content="0;URL='/'"></meta>
+		<meta http-equiv="refresh" content="0;URL='/taichi-2026/'"></meta>
 	</head>
 	<body></body>
 </html>

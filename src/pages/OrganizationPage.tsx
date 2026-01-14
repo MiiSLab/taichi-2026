@@ -56,9 +56,13 @@ const OrganizationPage: React.FC = () => {
 												normalizedType += 's';
 											}
 
-											// Cast to any to avoid strict index type issues with the config object
-											const titleMap = CONTENT.committeeSection.chairTitles as Record<string, string>;
-											const displayTitle = titleMap[normalizedType] || chairType.toUpperCase();
+											// Get title from map with separate zh and en fields
+											const titleMap = CONTENT.committeeSection.chairTitles as Record<
+												string,
+												{ zh: string; en: string }
+											>;
+											const titleData = titleMap[normalizedType];
+											const displayTitle = titleData ? `${titleData.zh} ${titleData.en}` : chairType.toUpperCase();
 
 											return (
 												<div key={chairType}>
