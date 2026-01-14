@@ -7,7 +7,10 @@ export default defineConfig({
 		port: 3000,
 		host: '0.0.0.0',
 	},
-	base: '/taichi-2026/',
+	// Use environment variable to set base path
+	// For custom domain: BASE_PATH=/ npm run build
+	// For GitHub Pages subdirectory: BASE_PATH=/taichi-2026/ npm run build (default)
+	base: process.env.BASE_PATH || '/taichi-2026/',
 	plugins: [react()],
 	resolve: {
 		alias: {
