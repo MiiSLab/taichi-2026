@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { CONTENT } from '../content';
 import { useData } from '../context/DataContext';
 import NewsDetail from './NewsDetail';
+import Skeleton from './Skeleton';
 
 interface NewsSectionProps {
 	limit?: number;
@@ -33,38 +34,39 @@ const NewsSection: React.FC<NewsSectionProps> = ({ limit, hideHeader, unwrap }) 
 				</div>
 			)}
 
-			<div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-12'>
-				{isSyncing && news.length === 0 && (
-					<div className='col-span-full text-center p-12 opacity-50 font-pixel'>LOADING_DATA...</div>
-				)}
-				{visibleNews.map((item) => (
-					<div
-						key={item.id}
-						className='group bg-white border border-gray-200 hover:border-lab-orange transition-all cursor-pointer hover:shadow-lg'
-						onClick={() => handleOpenNews(item)}
-					>
-						<div className='relative aspect-[3/2] overflow-hidden bg-gray-100'>
-							<img
-								src={item.image}
-								alt={item.title}
-								className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
-							/>
-							{item.subtitle && (
-								<span className='absolute bottom-0 left-0 bg-lab-dark/80 text-white font-mono text-xs px-2 py-1 w-full truncate'>
-									{item.subtitle}
-								</span>
-							)}
+			{isSyncing && news.length === 0 ? (
+				<Skeleton variant='news' count={limit || 3} />
+			) : (
+				<div className='grid grid-cols-1 md:grid-cols-3 gap-8 mb-12'>
+					{visibleNews.map((item) => (
+						<div
+							key={item.id}
+							className='group bg-white border border-gray-200 hover:border-lab-orange transition-all cursor-pointer hover:shadow-lg'
+							onClick={() => handleOpenNews(item)}
+						>
+							<div className='relative aspect-[3/2] overflow-hidden bg-gray-100'>
+								<img
+									src={item.image}
+									alt={item.title}
+									className='w-full h-full object-cover transition-transform duration-700 group-hover:scale-110'
+								/>
+								{item.subtitle && (
+									<span className='absolute bottom-0 left-0 bg-lab-dark/80 text-white font-mono text-xs px-2 py-1 w-full truncate'>
+										{item.subtitle}
+									</span>
+								)}
+							</div>
+							<div className='p-6'>
+								{(item.createdTime || item.date) && (
+									<div className='font-mono text-xs text-gray-500 mb-2'>{item.createdTime || item.date}</div>
+								)}
+								<h3 className='font-pixel text-2xl leading-none mb-4 group-hover:text-lab-orange'>{item.title}</h3>
+								<p className='font-sans text-sm text-gray-600 line-clamp-2'>{item.content}</p>
+							</div>
 						</div>
-						<div className='p-6'>
-							{(item.createdTime || item.date) && (
-								<div className='font-mono text-xs text-gray-500 mb-2'>{item.createdTime || item.date}</div>
-							)}
-							<h3 className='font-pixel text-2xl leading-none mb-4 group-hover:text-lab-orange'>{item.title}</h3>
-							<p className='font-sans text-sm text-gray-600 line-clamp-2'>{item.content}</p>
-						</div>
-					</div>
-				))}
-			</div>
+					))}
+				</div>
+			)}
 
 			{selectedNews && <NewsDetail item={selectedNews} onClose={() => setSelectedNews(null)} />}
 		</div>
