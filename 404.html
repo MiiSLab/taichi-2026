@@ -5,16 +5,29 @@
 		<title>TAICHI 2026 | 霹靂未來</title>
 		<script>
 			// GitHub Pages SPA redirect hack
-			// When a page is loaded directly (not through client-side routing),
-			// this script captures the intended path and redirects to index.html
-			// with the path stored in sessionStorage
-			var fullPath = location.pathname + location.search + location.hash;
-			// Remove the base path /taichi-2026/ to get the actual route
-			var basePath = '/taichi-2026/';
-			var route = fullPath.replace(basePath, '/');
-			sessionStorage.setItem('redirect', route);
-			// Redirect to the base URL
-			window.location.href = basePath;
+			// Automatically detect base path for both custom domain and subdirectory deployments
+			(function () {
+				var path = window.location.pathname;
+				var hash = window.location.hash;
+				var search = window.location.search;
+
+				// Auto-detect base path
+				// If we're on a custom domain (e.g., taichi2026.taiwanchi.org), basePath is '/'
+				// If we're on GitHub Pages subdirectory (e.g., miislab.github.io/taichi-2026/), basePath is '/taichi-2026/'
+				var basePath = '/';
+				if (path.indexOf('/taichi-2026/') === 0) {
+					basePath = '/taichi-2026/';
+				}
+
+				// Get the route relative to basePath
+				var route = path.replace(basePath, '/') + search + hash;
+
+				// Store it for index.html to pick up
+				sessionStorage.setItem('redirect', route);
+
+				// Redirect to the base URL
+				window.location.href = basePath;
+			})();
 		</script>
 	</head>
 	<body></body>
