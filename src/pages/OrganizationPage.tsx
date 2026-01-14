@@ -10,9 +10,9 @@ const OrganizationPage: React.FC = () => {
 	const committeeMembers = people.filter((p) => !(p.chairType ? String(p.chairType).toLowerCase() : '').includes('keynote'));
 
 	return (
-		<div className='pt-32 pb-24 bg-lab-white min-h-screen'>
+		<div className='pt-32 bg-lab-white min-h-screen'>
 			{/* ORGANIZATION (COMMITTEE) */}
-			<section className='px-6 md:px-20'>
+			<section className='px-6 md:px-20 pb-24'>
 				<div className='max-w-7xl mx-auto'>
 					{/* Header */}
 					<div className='flex flex-col items-center justify-center mb-16'>

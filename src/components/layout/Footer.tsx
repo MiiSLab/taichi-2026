@@ -7,7 +7,7 @@ const Footer: React.FC = () => {
 		<footer className='bg-lab-dark text-white py-12 px-6 border-t border-gray-800'>
 			<div className='max-w-7xl mx-auto flex flex-col md:flex-row justify-between gap-8 font-mono text-xs'>
 				<div>
-					<pre className='font-pixel text-2xl leading-none mb-4'>{CONTENT.footer.title}</pre>
+					<div className='font-pixel text-2xl leading-tight mb-4 whitespace-pre-line text-left'>{CONTENT.footer.title}</div>
 					<p className='text-gray-500'>{CONTENT.footer.copyright}</p>
 				</div>
 				<div className='text-right'>
