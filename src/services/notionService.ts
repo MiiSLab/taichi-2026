@@ -13,9 +13,8 @@ import {
 // 請在前端專案的 .env 檔案中設定：
 // VITE_NOTION_PROXY_URL=https://your-worker-proxy.xxx.workers.dev/v1/databases/
 // 或
-// VITE_NOTION_API_KEY=secret_...
+// 將 API Key 改為設定在代理伺服器（Cloudflare Worker）的環境變數中，以保護金鑰不外洩。
 const NOTION_PROXY_URL = import.meta.env.VITE_NOTION_PROXY_URL || 'https://api.notion.com/v1/databases/';
-const NOTION_API_KEY = import.meta.env.VITE_NOTION_API_KEY || '';
 
 const queryNotionDatabase = async (databaseId: string) => {
 	// 防呆：如果是前端環境直接呼叫 api.notion.com 會遇到 CORS 問題，必須透過代理
@@ -26,9 +25,8 @@ const queryNotionDatabase = async (databaseId: string) => {
 		'Notion-Version': '2022-06-28',
 	};
 
-	if (NOTION_API_KEY) {
-		headers['Authorization'] = `Bearer ${NOTION_API_KEY}`;
-	}
+	// 注意：為了安全性，Authorization (API Key) 應該由代理伺服器（Proxy）加上
+	// 前端不應該直接發送包含 API Key 的請求，否則金鑰會外洩在公開的網頁 JavaScript 中。
 
 	const response = await fetch(url, {
 		method: 'POST',

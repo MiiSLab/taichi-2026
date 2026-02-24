@@ -27,7 +27,6 @@ jobs:
             - name: Build
               env:
                   VITE_NOTION_PROXY_URL: ${{ secrets.VITE_NOTION_PROXY_URL }}
-                  VITE_NOTION_API_KEY: ${{ secrets.VITE_NOTION_API_KEY }}
               run: npm run build
 
             - name: Deploy
