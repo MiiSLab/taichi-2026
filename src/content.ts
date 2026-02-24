@@ -23,7 +23,7 @@ export const CONFIG = {
 		// Chair Type Display Order
 		chairTypeOrder: [
 			'General Chairs',
-			'Steering Committee',
+			'Steering Committees',
 			'Paper Chairs',
 			'Poster Chairs',
 			'Demo Chairs',
@@ -204,7 +204,7 @@ export const CONTENT = {
 		subtitle: 'COMMITTEE MEMBERS',
 		chairTitles: {
 			'general chairs': { zh: '會議主席', en: 'GENERAL CHAIRS' },
-			'steering committee': { zh: '指導委員', en: 'STEERING COMMITTEE' },
+			'steering committees': { zh: '指導委員', en: 'STEERING COMMITTEES' },
 			'program chairs': { zh: '議程主席', en: 'PROGRAM CHAIRS' },
 			'paper chairs': { zh: '論文主席', en: 'PAPER CHAIRS' },
 			'poster chairs': { zh: '海報主席', en: 'POSTER CHAIRS' },

@@ -81,6 +81,9 @@ const OrganizationPage: React.FC = () => {
 																	/>
 																</div>
 																<h4 className='font-bold text-lg mb-1'>{member.name}</h4>
+																{member.notes && (
+																	<p className='text-sm font-medium text-gray-700 mb-1'>{member.notes}</p>
+																)}
 																<p className='text-xs text-gray-500'>
 																	{[member.institution, member.department].filter(Boolean).join(' ')}
 																</p>
