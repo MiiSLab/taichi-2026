@@ -57,8 +57,8 @@ export const TOPICS_NOTION_PAGE_ID = CONFIG.notion.topicsDatabaseId;
 
 export const CONTENT = {
 	meta: {
-		title: 'TAICHI 2026 | 霹靂未來 Pili Future',
-		description: 'The 12th Annual Conference of TAICHI. Theme: Pili Future (霹靂未來).',
+		title: 'TAICHI 2026 | Big Bang Future',
+		description: 'The 12th Annual Conference of TAICHI. Theme: Big Bang Future.',
 		url: 'https://taichi2026.taiwanchi.org',
 	},
 	nav: {
@@ -77,18 +77,18 @@ export const CONTENT = {
 	},
 	hero: {
 		titleLine1: 'TAICHI 2026',
-		titleLine2: 'Big Bang! Futures!',
-		titleLine3: 'Big Bang! Futures!',
+		titleLine2: 'BIG BANG! FUTURES!',
+		titleLine3: 'BIG BANG! FUTURES!',
 		subtitle: 'The 12th Annual Conference of TAICHI',
-		date: 'Date: 2026 / XX / XX (TBD)',
-		location: 'Location: Taipei, Taiwan (TBD)',
-		coordinates: 'TAICHI 2026 \n PILI FUTURE',
+		date: 'Date: 2026 / 08 / 04 - 06',
+		location: 'Location: Taipei, Taiwan',
+		coordinates: 'TAICHI 2026 \n BIG BANG FUTURES',
 		segment: 'HCI\nTAIWAN',
 	},
 	theme: {
-		title: 'THEME: PILI FUTURE \n 霹靂未來',
-		p1: "TAICHI 2026's theme 'Pili Future' (霹靂未來) fuses the vibrant energy of traditional Taiwanese puppetry (Pili) with the cutting-edge advancements of Human-Computer Interaction.",
-		p2: 'We invite researchers, designers, and artists to explore how future technologies can perform, interact, and tell stories in ways that resonate with local culture while pushing global boundaries.',
+		title: 'TAICHI’26’s Main Theme -- Big Bang! Futures！',
+		p1: '未來將不再以低語傳遞，而是以爆炸式發生。本次大會主題 Big Bang! Futures，源自宇宙霹靂般的起始瞬間——爆炸、火花與生命的誕生，也象徵想法快速擴散、改變世界的一刻',
+		p2: '我們將這個瞬間帶進城市，化為一個可以逛、可以玩、可以一起參與的未來現場，透過互動裝置、實驗作品與夜市般的體驗空間，邀請民眾親身感受並討論科技如何影響未來生活與彼此之間的關係，讓多重未來在連鎖爆發中持續 Big Bang!',
 	},
 	cfpSection: {
 		title: 'CALL_FOR_PAPERS',
@@ -342,7 +342,7 @@ export const CONTENT = {
 		],
 	},
 	footer: {
-		title: 'TAICHI 2026 \n 霹靂未來',
+		title: 'TAICHI 2026 \n Big Bang Future',
 		socialsTitle: 'FOLLOW US',
 		facebook: 'https://www.facebook.com/taiwanchi',
 		locationsTitle: 'CONTACT',

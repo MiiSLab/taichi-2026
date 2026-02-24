@@ -19,11 +19,14 @@ const HomePage: React.FC = () => {
 						<br />
 						{CONTENT.hero.titleLine2}
 					</h1>
-					<p className='text-lab-white/80 text-xl font-mono tracking-wide mt-4 border-l-2 border-white/50 pl-4'>
-						{CONTENT.hero.subtitle}
-						<br />
-						{CONTENT.hero.date} | {CONTENT.hero.location}
-					</p>
+					<div className='text-white text-xl md:text-2xl font-mono tracking-wide mt-8 border-l-4 border-white/50 pl-6 text-left inline-block max-w-full'>
+						<div className='mb-2'>{CONTENT.hero.subtitle}</div>
+						<div className='text-3xl md:text-5xl font-bold text-white tracking-normal mt-3 leading-tight drop-shadow-md'>
+							<span className='block xl:inline'>{CONTENT.hero.date}</span>
+							<br />
+							<span className='block xl:inline mt-2 xl:mt-0'>{CONTENT.hero.location}</span>
+						</div>
+					</div>
 				</div>
 			</section>
 
