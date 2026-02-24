@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 	<head>
 		<meta charset="utf-8" />
@@ -15,8 +15,8 @@
 				// If we're on a custom domain (e.g., taichi2026.taiwanchi.org), basePath is '/'
 				// If we're on GitHub Pages subdirectory (e.g., miislab.github.io/taichi-2026/), basePath is '/taichi-2026/'
 				var basePath = '/';
-				if (path.indexOf('/taichi-2026/') === 0) {
-					basePath = '/taichi-2026/';
+				if (path.indexOf('/') === 0) {
+					basePath = '/';
 				}
 
 				// Get the route relative to basePath
