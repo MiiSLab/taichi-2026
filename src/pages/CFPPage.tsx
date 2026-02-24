@@ -2,6 +2,60 @@ import { Download, ExternalLink, FileText } from 'lucide-react';
 import React from 'react';
 import { CONTENT } from '../content';
 
+const parseText = (text: string) => {
+	const regex = /\*\*([^*]+)\*\*|\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s)]+)/g;
+	const parts = [];
+	let lastIndex = 0;
+	let match;
+	let count = 0;
+	while ((match = regex.exec(text)) !== null) {
+		if (match.index > lastIndex) {
+			parts.push(<span key={`text-${count}`}>{text.slice(lastIndex, match.index)}</span>);
+			count++;
+		}
+		if (match[1]) {
+			// **text** match
+			parts.push(
+				<strong key={`bold-${count}`} className='font-bold text-lab-orange px-1'>
+					{match[1]}
+				</strong>,
+			);
+		} else if (match[4]) {
+			// raw url match
+			parts.push(
+				<a
+					key={`url-${count}`}
+					href={match[4]}
+					className='text-blue-600 hover:text-blue-800 underline break-all'
+					target='_blank'
+					rel='noreferrer'
+				>
+					{match[4]}
+				</a>,
+			);
+		} else {
+			// [label](url) match
+			parts.push(
+				<a
+					key={`link-${count}`}
+					href={match[3]}
+					className='text-blue-600 hover:text-blue-800 underline break-all'
+					target='_blank'
+					rel='noreferrer'
+				>
+					{match[2]}
+				</a>,
+			);
+		}
+		count++;
+		lastIndex = regex.lastIndex;
+	}
+	if (lastIndex < text.length) {
+		parts.push(<span key={`text-${count}`}>{text.slice(lastIndex)}</span>);
+	}
+	return parts;
+};
+
 const CFPPage: React.FC = () => {
 	return (
 		<section className='pt-32 pb-24 px-6 md:px-20 bg-lab-white min-h-screen'>
@@ -55,28 +109,62 @@ const CFPPage: React.FC = () => {
 												Format: {cat.format}
 											</p>
 
-											{cat.links && (
-												<div className='flex gap-2 mb-4 flex-wrap'>
-													{cat.links.map((link, lIdx) => (
-														<a
-															key={lIdx}
-															href={link.url}
-															target='_blank'
-															rel='noopener noreferrer'
-															className='px-3 py-1 border border-gray-300 rounded text-xs hover:bg-lab-orange hover:text-white hover:border-lab-orange transition-colors flex items-center gap-1'
-														>
-															<Download size={12} />
-															{link.label}
-														</a>
-													))}
+											<div className='flex flex-col space-y-4 text-gray-700 leading-relaxed text-sm md:text-base'>
+												{cat.description.map((desc, i) => {
+													if (
+														desc.trim() === '備註' ||
+														desc.trim() === 'Full Paper' ||
+														desc.trim() === 'Pictorial'
+													) {
+														return (
+															<h5
+																key={i}
+																className='font-bold text-lg mt-6 text-lab-dark bg-gray-100 inline-block px-3 py-1 rounded w-max'
+															>
+																{desc}
+															</h5>
+														);
+													}
+													if (desc.trim().startsWith('●')) {
+														const textToParse = desc.substring(1);
+														return (
+															<div key={i} className='pl-4 flex items-start gap-2'>
+																<span className='text-lab-dark font-bold mt-0.5'>•</span>
+																<div className='break-all md:break-words w-full'>
+																	{parseText(textToParse)}
+																</div>
+															</div>
+														);
+													}
+													return (
+														<p key={i} className='indent-[2em]'>
+															{parseText(desc)}
+														</p>
+													);
+												})}
+											</div>
+
+											{cat.links && cat.links.length > 0 && (
+												<div className='mt-8 pt-6 border-t border-gray-100'>
+													<h5 className='text-sm font-bold text-gray-500 mb-3 uppercase tracking-wider'>
+														Download Templates
+													</h5>
+													<div className='flex gap-2 flex-wrap'>
+														{cat.links.map((link, lIdx) => (
+															<a
+																key={lIdx}
+																href={link.url}
+																target='_blank'
+																rel='noopener noreferrer'
+																className='px-3 py-1 border border-gray-300 rounded text-xs hover:bg-lab-orange hover:text-white hover:border-lab-orange transition-colors flex items-center gap-1'
+															>
+																<Download size={12} />
+																{link.label}
+															</a>
+														))}
+													</div>
 												</div>
 											)}
-
-											<ul className='list-disc pl-5 space-y-3 text-gray-700 leading-relaxed'>
-												{cat.description.map((desc, i) => (
-													<li key={i}>{desc}</li>
-												))}
-											</ul>
 										</div>
 									</div>
 
@@ -111,7 +199,15 @@ const CFPPage: React.FC = () => {
 								className='p-6 border-l-4 border-lab-orange bg-gray-50 hover:bg-white hover:shadow-md transition-all'
 							>
 								<h4 className='font-bold text-lg mb-2 text-lab-dark'>{topic.en}</h4>
-								<p className='text-gray-600 font-medium'>{topic.ch}</p>
+								<p className='text-gray-600 font-medium mb-3'>{topic.ch}</p>
+
+								{'details' in topic && topic.details && Array.isArray(topic.details) && (
+									<ul className='list-disc pl-5 mt-2 space-y-1 text-sm text-gray-700'>
+										{topic.details.map((detail, dIdx) => (
+											<li key={dIdx}>{detail}</li>
+										))}
+									</ul>
+								)}
 							</div>
 						))}
 					</div>
