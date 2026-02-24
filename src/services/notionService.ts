@@ -9,22 +9,90 @@ import {
 	TOPICS_NOTION_PAGE_ID,
 } from '../content';
 
-const NOTION_BASE_URL = 'https://notion-api.splitbee.io/v1/table/';
+// 如果要使用官方 API，建議透過一個代理伺服器（Proxy Worker）來避免 CORS 問題和隱藏 API Key
+// 請在前端專案的 .env 檔案中設定：
+// VITE_NOTION_PROXY_URL=https://your-worker-proxy.xxx.workers.dev/v1/databases/
+// 或
+// VITE_NOTION_API_KEY=secret_...
+const NOTION_PROXY_URL = import.meta.env.VITE_NOTION_PROXY_URL || 'https://api.notion.com/v1/databases/';
+const NOTION_API_KEY = import.meta.env.VITE_NOTION_API_KEY || '';
 
-const getProp = (obj: any, key: string) => {
-	if (!obj) return undefined;
-	if (obj[key] !== undefined) return obj[key];
+const queryNotionDatabase = async (databaseId: string) => {
+	// 防呆：如果是前端環境直接呼叫 api.notion.com 會遇到 CORS 問題，必須透過代理
+	const url = `${NOTION_PROXY_URL}${databaseId}/query`;
 
-	const lowerKey = key.toLowerCase();
-	const keys = Object.keys(obj);
-	const foundKey = keys.find((k) => k.toLowerCase() === lowerKey);
-	if (foundKey && obj[foundKey] !== undefined) return obj[foundKey];
+	const headers: Record<string, string> = {
+		'Content-Type': 'application/json',
+		'Notion-Version': '2022-06-28',
+	};
 
-	const cleanKey = lowerKey.replace(/\s/g, '');
-	const foundKeyNoSpace = keys.find((k) => k.toLowerCase().replace(/\s/g, '') === cleanKey);
-	if (foundKeyNoSpace && obj[foundKeyNoSpace] !== undefined) return obj[foundKeyNoSpace];
+	if (NOTION_API_KEY) {
+		headers['Authorization'] = `Bearer ${NOTION_API_KEY}`;
+	}
 
-	return undefined;
+	const response = await fetch(url, {
+		method: 'POST',
+		headers,
+		body: JSON.stringify({
+			// 可加入 filter 或 sorts
+		}),
+	});
+
+	if (!response.ok) {
+		const text = await response.text();
+		throw new Error(`Notion API request failed: ${response.status} ${text}`);
+	}
+
+	const data = await response.json();
+	return data.results || [];
+};
+
+// 官方 Notion API 的 properties 解析
+const getProp = (properties: any, key: string) => {
+	if (!properties) return undefined;
+
+	let prop = properties[key];
+
+	// Fuzzy match 如果找不到精確字眼
+	if (!prop) {
+		const lowerKey = key.toLowerCase();
+		const keys = Object.keys(properties);
+		const foundKey = keys.find(
+			(k) => k.toLowerCase() === lowerKey || k.toLowerCase().replace(/\s/g, '') === lowerKey.replace(/\s/g, ''),
+		);
+		if (foundKey) prop = properties[foundKey];
+	}
+
+	if (!prop) return undefined;
+
+	switch (prop.type) {
+		case 'title':
+			return prop.title?.map((t: any) => t.plain_text).join('') || '';
+		case 'rich_text':
+			return prop.rich_text?.map((t: any) => t.plain_text).join('') || '';
+		case 'select':
+			return prop.select?.name || '';
+		case 'multi_select':
+			return prop.multi_select?.map((s: any) => s.name) || [];
+		case 'date':
+			return prop.date?.start || '';
+		case 'url':
+			return prop.url || '';
+		case 'email':
+			return prop.email || '';
+		case 'phone_number':
+			return prop.phone_number || '';
+		case 'number':
+			return prop.number !== null ? prop.number : undefined;
+		case 'checkbox':
+			return prop.checkbox ?? false;
+		case 'files':
+			return prop.files?.map((f: any) => f.file?.url || f.external?.url).filter(Boolean) || [];
+		case 'relation':
+			return prop.relation?.map((r: any) => r.id) || [];
+		default:
+			return undefined;
+	}
 };
 
 const convertGoogleDriveImageUrl = (url: string): string => {
@@ -39,8 +107,13 @@ const convertGoogleDriveImageUrl = (url: string): string => {
 const extractImageUrl = (rawImage: any): string => {
 	if (!rawImage) return '';
 	let url = '';
-	if (Array.isArray(rawImage) && rawImage.length > 0) url = rawImage[0].url;
-	else if (typeof rawImage === 'string') url = rawImage;
+
+	if (Array.isArray(rawImage) && rawImage.length > 0) {
+		// 官方 API 的 files 解析會回傳字串陣列
+		url = typeof rawImage[0] === 'string' ? rawImage[0] : rawImage[0].url;
+	} else if (typeof rawImage === 'string') {
+		url = rawImage;
+	}
 
 	if (url && (url.includes('drive.google.com') || url.includes('googleusercontent.com'))) {
 		return convertGoogleDriveImageUrl(url);
@@ -48,44 +121,32 @@ const extractImageUrl = (rawImage: any): string => {
 	return url;
 };
 
-const extractImageGallery = (rawGallery: any): string[] => {
-	if (!rawGallery) return [];
-	let urls: string[] = [];
-	if (Array.isArray(rawGallery)) urls = rawGallery.map((file: any) => file.url).filter(Boolean);
-	return urls.map((url) => {
-		if (url.includes('drive.google.com')) return convertGoogleDriveImageUrl(url);
-		return url;
-	});
-};
-
 // Fetch People (Committee & Keynotes)
 export const fetchPeopleFromNotion = async (): Promise<PersonItem[]> => {
 	if (!MEMBERS_NOTION_PAGE_ID) return STATIC_PEOPLE;
 
 	try {
-		const url = `${NOTION_BASE_URL}${MEMBERS_NOTION_PAGE_ID}?t=${new Date().getTime()}`;
-		console.log(`[Debug] People URL:`, { url: url });
-		const response = await fetch(url);
-		if (!response.ok) throw new Error('Network response was not ok');
-		const data = await response.json();
-		console.log(`[Debug] People Data:`, { data: data, json: JSON.stringify(data) });
+		console.log(`[Debug] Fetching People from Official Notion API...`);
+		const results = await queryNotionDatabase(MEMBERS_NOTION_PAGE_ID);
+		console.log(`[Debug] People Data Fetched:`, results.length);
 
-		if (Array.isArray(data) && data.length > 0) {
-			const people = data.map((row: any) => {
-				const name = String(getProp(row, 'name') || getProp(row, 'Name') || 'Unknown');
-				const chairType = String(getProp(row, 'Chair Type') || getProp(row, 'Role') || 'Committee Member');
-				const email = String(getProp(row, 'Email') || '');
-				const website = String(getProp(row, 'Website') || getProp(row, 'Link') || '');
-				const rawImage = getProp(row, 'Image') || getProp(row, 'Photo') || getProp(row, 'Headshot');
+		if (results.length > 0) {
+			const people = results.map((row: any) => {
+				const props = row.properties;
+				const name = String(getProp(props, 'name') || getProp(props, 'Name') || 'Unknown');
+				const chairType = String(getProp(props, 'Chair Type') || getProp(props, 'Role') || 'Committee Member');
+				const email = String(getProp(props, 'Email') || '');
+				const website = String(getProp(props, 'Website') || getProp(props, 'Link') || '');
+				const rawImage = getProp(props, 'Image') || getProp(props, 'Photo') || getProp(props, 'Headshot');
 				const imageUrl = extractImageUrl(rawImage);
-				// Extract all fields from Notion
-				const institution = String(getProp(row, 'Institution') || '');
-				const department = String(getProp(row, 'Department') || '');
-				const country = String(getProp(row, 'Country') || '');
-				const notes = String(getProp(row, 'Notes') || '');
+
+				const institution = String(getProp(props, 'Institution') || '');
+				const department = String(getProp(props, 'Department') || '');
+				const country = String(getProp(props, 'Country') || '');
+				const notes = String(getProp(props, 'Notes') || '');
 
 				return {
-					id: row.id || Math.random().toString(36).substr(2, 9),
+					id: row.id,
 					name,
 					chairType,
 					email: email || undefined,
@@ -97,7 +158,6 @@ export const fetchPeopleFromNotion = async (): Promise<PersonItem[]> => {
 					notes: notes || undefined,
 				};
 			});
-
 			return people;
 		}
 		return STATIC_PEOPLE;
@@ -116,14 +176,11 @@ export const fetchSessionsFromNotion = async (): Promise<SessionItem[]> => {
 		const people = await fetchPeopleFromNotion();
 		const peopleMap = new Map(people.map((p) => [p.id, p]));
 
-		const sessionsUrl = `${NOTION_BASE_URL}${SESSIONS_NOTION_PAGE_ID}?t=${new Date().getTime()}`;
-		console.log(`[Debug] Sessions URL:`, { url: sessionsUrl });
-		const sessionsResponse = await fetch(sessionsUrl);
-		if (!sessionsResponse.ok) throw new Error('Network response was not ok');
-		const sessionsData = await sessionsResponse.json();
-		console.log(`[Debug] Sessions Data:`, { data: sessionsData, json: JSON.stringify(sessionsData) });
+		console.log(`[Debug] Fetching Sessions from Official Notion API...`);
+		const sessionsData = await queryNotionDatabase(SESSIONS_NOTION_PAGE_ID);
+		console.log(`[Debug] Sessions Data Fetched:`, sessionsData.length);
 
-		if (!Array.isArray(sessionsData) || sessionsData.length === 0) {
+		if (sessionsData.length === 0) {
 			return STATIC_SESSIONS;
 		}
 
@@ -131,13 +188,8 @@ export const fetchSessionsFromNotion = async (): Promise<SessionItem[]> => {
 		let topicsData: any[] = [];
 		if (TOPICS_NOTION_PAGE_ID) {
 			try {
-				const topicsUrl = `${NOTION_BASE_URL}${TOPICS_NOTION_PAGE_ID}?t=${new Date().getTime()}`;
-				console.log(`[Debug] Topics URL:`, { url: topicsUrl });
-				const topicsResponse = await fetch(topicsUrl);
-				if (topicsResponse.ok) {
-					topicsData = await topicsResponse.json();
-					console.log(`[Debug] Topics Data:`, { data: topicsData, json: JSON.stringify(topicsData) });
-				}
+				console.log(`[Debug] Fetching Topics...`);
+				topicsData = await queryNotionDatabase(TOPICS_NOTION_PAGE_ID);
 			} catch (err) {
 				console.warn('Failed to fetch Topics', err);
 			}
@@ -145,47 +197,44 @@ export const fetchSessionsFromNotion = async (): Promise<SessionItem[]> => {
 
 		// Group topics by session ID
 		const topicsBySession = new Map<string, Topic[]>();
-		if (Array.isArray(topicsData)) {
-			console.log(`[Debug] Processing ${topicsData.length} topics...`);
+		if (topicsData.length > 0) {
 			topicsData.forEach((topicRow: any) => {
-				const sessionIds = getProp(topicRow, 'Session');
-				console.log(`[Debug] Topic "${getProp(topicRow, 'Topic')}" Session IDs:`, sessionIds);
+				const props = topicRow.properties;
+				const sessionIds = getProp(props, 'Session'); // This relates to a Session Relation
 
 				if (Array.isArray(sessionIds) && sessionIds.length > 0) {
-					const sessionId = sessionIds[0]; // Take first session
+					const sessionId = sessionIds[0]; // Take first session's ID
 
 					const topic: Topic = {
-						id: topicRow.id || Math.random().toString(36).substr(2, 9),
-						topic: String(getProp(topicRow, 'Topic') || ''),
-						startTime: String(getProp(topicRow, 'Start Time') || ''),
-						endTime: String(getProp(topicRow, 'End Time') || ''),
+						id: topicRow.id,
+						topic: String(getProp(props, 'Topic') || ''),
+						startTime: String(getProp(props, 'Start Time') || ''),
+						endTime: String(getProp(props, 'End Time') || ''),
 						sessionId,
 					};
 
-					// Resolve chair IDs to PersonItem objects
-					const chairIds = getProp(topicRow, 'Chairs');
+					// Resolve chair relation IDs to PersonItem objects
+					const chairIds = getProp(props, 'Chairs');
 					if (Array.isArray(chairIds) && chairIds.length > 0) {
-						topic.chairs = chairIds.map((id) => peopleMap.get(id)).filter(Boolean) as PersonItem[];
+						topic.chairs = chairIds.map((id: string) => peopleMap.get(id)).filter(Boolean) as PersonItem[];
 					}
 
 					if (!topicsBySession.has(sessionId)) {
 						topicsBySession.set(sessionId, []);
 					}
 					topicsBySession.get(sessionId)!.push(topic);
-				} else {
-					console.warn(`[Debug] Topic "${getProp(topicRow, 'Topic')}" has no valid Session relation.`);
 				}
 			});
-			console.log(`[Debug] Topics grouped by session:`, Object.fromEntries(topicsBySession));
 		}
 
 		// Build sessions
 		const sessions = sessionsData.map((row: any): SessionItem => {
-			const id = row.id || Math.random().toString(36).substr(2, 9);
-			const title = String(getProp(row, 'Title') || 'Session');
-			const day = String(getProp(row, 'Day') || 'Day 1');
-			const startTime = String(getProp(row, 'Start Time') || '');
-			const endTime = String(getProp(row, 'End Time') || '');
+			const props = row.properties;
+			const id = row.id;
+			const title = String(getProp(props, 'Title') || 'Session');
+			const day = String(getProp(props, 'Day') || 'Day 1');
+			const startTime = String(getProp(props, 'Start Time') || '');
+			const endTime = String(getProp(props, 'End Time') || '');
 
 			const session: SessionItem = {
 				id,
@@ -195,10 +244,10 @@ export const fetchSessionsFromNotion = async (): Promise<SessionItem[]> => {
 				endTime,
 			};
 
-			// Resolve chair IDs to PersonItem objects
-			const chairIds = getProp(row, 'Chairs');
+			// Resolve chair relation IDs
+			const chairIds = getProp(props, 'Chairs');
 			if (Array.isArray(chairIds) && chairIds.length > 0) {
-				session.chairs = chairIds.map((id) => peopleMap.get(id)).filter(Boolean) as PersonItem[];
+				session.chairs = chairIds.map((cid: string) => peopleMap.get(cid)).filter(Boolean) as PersonItem[];
 			}
 
 			// Attach topics for this session
@@ -222,23 +271,22 @@ export const fetchSessionsFromNotion = async (): Promise<SessionItem[]> => {
 };
 
 export const fetchPublicationsFromNotion = async (): Promise<PublicationItem[]> => {
-	// Keeping this for compatibility or future use, though might not be used in main nav
 	if (!TOPICS_NOTION_PAGE_ID) return STATIC_PUBLICATIONS;
 	try {
-		const url = `${NOTION_BASE_URL}${TOPICS_NOTION_PAGE_ID}?t=${new Date().getTime()}`;
-		const response = await fetch(url);
-		if (!response.ok) throw new Error('Network response was not ok');
-		const data = await response.json();
-		if (Array.isArray(data) && data.length > 0) {
-			return data.map((row: any) => ({
-				id: row.id || Math.random().toString(36).substr(2, 9),
-				title: getProp(row, 'Title') || 'Untitled',
-				authors: getProp(row, 'Authors') || '',
-				year: getProp(row, 'Year') || '',
-				publication: getProp(row, 'Publication') || '',
-				doi: getProp(row, 'DOI') || '',
-				category: getProp(row, 'Category') || 'Paper',
-			}));
+		const results = await queryNotionDatabase(TOPICS_NOTION_PAGE_ID);
+		if (results.length > 0) {
+			return results.map((row: any) => {
+				const props = row.properties;
+				return {
+					id: row.id,
+					title: String(getProp(props, 'Title') || 'Untitled'),
+					authors: String(getProp(props, 'Authors') || ''),
+					year: String(getProp(props, 'Year') || ''),
+					publication: String(getProp(props, 'Publication') || ''),
+					doi: String(getProp(props, 'DOI') || ''),
+					category: String(getProp(props, 'Category') || 'Paper'),
+				};
+			});
 		}
 		return STATIC_PUBLICATIONS;
 	} catch (error) {
@@ -250,27 +298,23 @@ export const fetchNewsFromNotion = async (): Promise<NewsItem[]> => {
 	if (!NEWS_NOTION_PAGE_ID) return STATIC_NEWS;
 
 	try {
-		const url = `${NOTION_BASE_URL}${NEWS_NOTION_PAGE_ID}?t=${new Date().getTime()}`;
-		console.log(`[Debug] News URL:`, { url: url });
-		const response = await fetch(url);
-		if (!response.ok) throw new Error('Network response was not ok');
-		const data = await response.json();
-		console.log(`[Debug] News Data:`, { data: data });
+		console.log(`[Debug] Fetching News from Official Notion API...`);
+		const results = await queryNotionDatabase(NEWS_NOTION_PAGE_ID);
 
-		if (Array.isArray(data) && data.length > 0) {
-			const news = data.map((row: any) => {
-				// Map using the keys provided by user (Capitalized based on sample)
-				// Fallback to getProp for safety if keys vary slightly
-				const id = row.id || row.Id || Math.random().toString(36).substr(2, 9);
-				const title = String(row.Title || getProp(row, 'Title') || row.Name || 'Untitled Event');
-				const subtitle = String(row.Subtitle || getProp(row, 'Subtitle') || '');
-				const content = String(row.Content || getProp(row, 'Content') || '');
-				const date = String(row.Date || getProp(row, 'Date') || '');
-				const createdTime = String(row.Created || getProp(row, 'Created') || '');
-				const place = String(row.Location || getProp(row, 'Location') || '');
-				const link = String(row.Link || getProp(row, 'Link') || '');
+		if (results.length > 0) {
+			const news = results.map((row: any) => {
+				const props = row.properties;
 
-				const rawHead = row.Headphoto || getProp(row, 'Headphoto');
+				const id = row.id;
+				const title = String(getProp(props, 'Title') || getProp(props, 'Name') || 'Untitled Event');
+				const subtitle = String(getProp(props, 'Subtitle') || '');
+				const content = String(getProp(props, 'Content') || '');
+				const date = String(getProp(props, 'Date') || '');
+				const createdTime = String(getProp(props, 'Created') || '');
+				const place = String(getProp(props, 'Location') || '');
+				const link = String(getProp(props, 'Link') || '');
+
+				const rawHead = getProp(props, 'Headphoto') || getProp(props, 'Image') || getProp(props, 'Photo');
 				const image =
 					extractImageUrl(rawHead) ||
 					'https://images.unsplash.com/photo-1517048676732-d65bc937f952?q=80&w=2070&auto=format&fit=crop';
@@ -288,7 +332,7 @@ export const fetchNewsFromNotion = async (): Promise<NewsItem[]> => {
 				};
 			});
 
-			return news.sort((a: NewsItem, b: NewsItem) => {
+			return news.sort((a, b) => {
 				const timeA = new Date(a.createdTime || a.date).getTime();
 				const timeB = new Date(b.createdTime || b.date).getTime();
 				return timeB - timeA;
