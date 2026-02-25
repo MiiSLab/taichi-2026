@@ -37,6 +37,7 @@ export const CONFIG = {
 			'Family Chairs',
 			'Sponsor Chairs',
 			'Web Chairs',
+			'Visual Chairs',
 			'Registration Chairs',
 			'Student Volunteer Chairs',
 		],
@@ -93,7 +94,7 @@ export const CONTENT = {
 		p2: '我們將這個瞬間帶進城市，化為一個可以逛、可以玩、可以一起參與的未來現場，透過互動裝置、實驗作品與夜市般的體驗空間，邀請民眾親身感受並討論科技如何影響未來生活與彼此之間的關係，讓多重未來在連鎖爆發中持續 Big Bang!',
 	},
 	cfpSection: {
-		title: 'CALL_FOR_PAPERS',
+		title: 'CALL FOR PAPERS',
 		subtitle: 'SUBMISSION INFO',
 		topicsTitle: 'Conference Topics / 研討會主題',
 		submissionLink: 'https://easychair.org/conferences/?conf=taichi2026',
@@ -313,7 +314,7 @@ export const CONTENT = {
 					},
 					{
 						label: '場地需求申請表',
-						url: 'https://www.dropbox.com/s/4nwwza7sudz36jq/TAICHI2023%20%20Demo%20Requirements.docx?dl=0',
+						url: 'https://taichi2026.taiwanchi.org/static/TAICHI2026  Demo Requirements.docx',
 					},
 				],
 				description: [
@@ -325,7 +326,7 @@ export const CONTENT = {
 					'● 內容必須包含摘要、研究動機、目的、方法、目前成果、以及未來研究規劃。',
 					'● 論文標題需以「 Demo: 」為開頭。若該論文同時為 Poster，論文標題開頭請為: 「 Poster & Demo: 」。',
 					'● 鼓勵上傳影片以便衡量系統的互動性以及完整程度。上傳影片前請先以 [HandBrake](https://handbrake.fr/) 進行壓縮，並輸出成 H.264 之.mp4 檔案。',
-					'● 需繳交一份「[場地需求申請表](https://www.dropbox.com/s/4nwwza7sudz36jq/TAICHI2023%20%20Demo%20Requirements.docx?dl=0)」，展示主席將依此協助當天的布展安排。',
+					'● 需繳交一份「[場地需求申請表](https://taichi2026.taiwanchi.org/static/TAICHI2026  Demo Requirements.docx)」，展示主席將依此協助當天的布展安排。',
 					'● 所有系統展示將列入系統展示論文獎審查，得獎者由會議參與者匿名投票選出。',
 					'備註',
 					// '稿件被接受後，作者可選擇將摘要或全文收錄於非正式出版的 TAICHI 線上論文集',
@@ -365,6 +366,7 @@ export const CONTENT = {
 			'design competition chairs': { zh: '設計競賽主席', en: 'DESIGN COMPETITION CHAIR' },
 			'best paper award committee': { zh: '最佳論文獎委員', en: 'BEST PAPER AWARD COMMITTEE' },
 			'web chairs': { zh: '網路主席', en: 'WEB CHAIRS' },
+			'visual chairs': { zh: '視覺主席', en: 'VISUAL CHAIRS' },
 			'registration chairs': { zh: '註冊主席', en: 'REGISTRATION CHAIRS' },
 			'student volunteer chairs': { zh: '學生志願者主席', en: 'STUDENT VOLUNTEER CHAIRS' },
 		},
@@ -382,9 +384,26 @@ export const CONTENT = {
 	},
 	venueSection: {
 		title: 'VENUE',
-		address: 'xxx',
-		transport: 'MRT: xxx (Exit 2) \n Bus: xxx Stop',
-		mapLink: 'https://www.google.com/maps',
+		venues: [
+			{
+				day: 'Day 1',
+				name: '三創生活園區',
+				address: '100013臺北市中正區市民大道三段2號',
+				details: 'TBD', // Reserved for later (floor, classroom, position)
+				mapLink: 'https://maps.app.goo.gl/yYLTdcVH5rSMevEF8', // Placeholder
+				embedSrc:
+					'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.6633085538724!2d121.52874377537685!3d25.04549777780891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97b582d5a73%3A0x9b1e56ab48807d62!2z5LiJ5Ym155Sf5rS75ZyS5Y2A!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw',
+			},
+			{
+				day: 'Day 2',
+				name: '國立臺北科技大學',
+				address: '10608臺北市大安區忠孝東路三段1號',
+				details: 'TBD', // Reserved for later (floor, classroom, position)
+				mapLink: 'https://maps.app.goo.gl/p97U3oZnXoUvrXmo7', // Placeholder
+				embedSrc:
+					'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.6783181717664!2d121.53284755506823!3d25.043802836933057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97d255598df%3A0x47ea748e8f3f53aa!2z5ZyL56uL6Ie65YyX56eR5oqA5aSn5a24!5e0!3m2!1szh-TW!2stw!4v1772020528494!5m2!1szh-TW!2stw',
+			},
+		],
 	},
 	registrationSection: {
 		title: 'REGISTRATION',
@@ -396,61 +415,49 @@ export const CONTENT = {
 		sponsorTitle: 'SPONSORS',
 		organizers: [
 			{
-				name: 'TAICHI',
+				name: '台灣人機互動學會',
 				logo: '/logos/taichi.webp',
 				size: 'large',
-				className: 'px-8 py-5 rounded-3xl shadow-md',
+				className: 'px-8 py-5 rounded-3xl shadow-2xl',
 			}, // Main Organizer
+			{
+				name: '國科會晶創人文計畫',
+				logo: '/logos/NSTC_.png',
+				size: 'large',
+				className: 'px-8 py-5 rounded-3xl shadow-2xl',
+			},
 		],
 		coOrganizers: [
 			{
 				name: '國立臺灣科技大學',
-				logo: '/logos/ntust_logo.png',
+				logo: '/logos/NTUST.png',
 				size: 'medium',
-				className: 'px-6 py-4 rounded-2xl shadow-sm',
+				className: 'px-6 py-4 rounded-2xl shadow-xl',
 			},
 			{
 				name: '國立臺北科技大學',
-				logo: '/logos/ntut_logo.png',
+				logo: '/logos/NTUT.png',
 				size: 'medium',
-				className: 'px-6 py-4 rounded-2xl shadow-sm',
-			},
-			{
-				name: 'xxx',
-				logo: '/logos/xxx.png',
-				size: 'medium',
-				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
-			},
-			{
-				name: 'xxx',
-				logo: '/logos/xxx.png',
-				size: 'medium',
-				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
+				className: 'px-6 py-4 rounded-2xl shadow-xl',
 			},
 		],
 		sponsors: [
 			{
-				name: 'xxx',
-				logo: '/logos/xxx.png',
-				size: 'medium',
-				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
+				name: '美國在台協會',
+				logo: '/logos/AIT.png',
+				size: 'large',
+				className: 'px-6 py-4 rounded-2xl shadow-xl',
 			},
 			{
-				name: 'xxx',
-				logo: '/logos/xxx.png',
-				size: 'medium',
-				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
-			},
-			{
-				name: 'xxx',
-				logo: '/logos/xxx.png',
-				size: 'medium',
-				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
+				name: '美國創新中心',
+				logo: '/logos/AIC.png',
+				size: 'large',
+				className: 'px-6 py-4 rounded-2xl shadow-xl',
 			},
 		],
 	},
 	footer: {
-		title: 'TAICHI 2026 \n Big Bang Future',
+		title: 'TAICHI 2026 \n BIG BANG! FUTURE!',
 		socialsTitle: 'FOLLOW US',
 		facebook: 'https://www.facebook.com/taiwanchi',
 		locationsTitle: 'CONTACT',

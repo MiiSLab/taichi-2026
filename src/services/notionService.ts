@@ -142,6 +142,8 @@ export const fetchPeopleFromNotion = async (): Promise<PersonItem[]> => {
 				const department = String(getProp(props, 'Department') || '');
 				const country = String(getProp(props, 'Country') || '');
 				const notes = String(getProp(props, 'Notes') || '');
+				const orderVal = getProp(props, 'Order') ?? getProp(props, 'order');
+				const order = typeof orderVal === 'number' ? orderVal : undefined;
 
 				return {
 					id: row.id,
@@ -154,6 +156,7 @@ export const fetchPeopleFromNotion = async (): Promise<PersonItem[]> => {
 					department: department || undefined,
 					country: country || undefined,
 					notes: notes || undefined,
+					order,
 				};
 			});
 			return people;

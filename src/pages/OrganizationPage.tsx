@@ -38,6 +38,16 @@ const OrganizationPage: React.FC = () => {
 									groupedMembers[chairType].push(member);
 								});
 
+								// Sort members within each group by order property
+								Object.keys(groupedMembers).forEach((chairType) => {
+									groupedMembers[chairType].sort((a, b) => {
+										// If order is not filled (undefined), treat it as a very large number to make it maximum
+										const orderA = typeof a.order === 'number' ? a.order : 999999;
+										const orderB = typeof b.order === 'number' ? b.order : 999999;
+										return orderA - orderB;
+									});
+								});
+
 								const sortedChairTypes = Object.keys(groupedMembers).sort((a, b) => {
 									const indexA = CONFIG.notion.chairTypeOrder.findIndex((type) => type.toLowerCase() === a.toLowerCase());
 									const indexB = CONFIG.notion.chairTypeOrder.findIndex((type) => type.toLowerCase() === b.toLowerCase());

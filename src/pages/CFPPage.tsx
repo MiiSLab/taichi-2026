@@ -64,14 +64,14 @@ const CFPPage: React.FC = () => {
 					<h2 className='text-5xl md:text-7xl font-pixel text-lab-dark mb-4 text-center'>{CONTENT.cfpSection.title}</h2>
 					<p className='font-mono text-xl md:text-2xl text-lab-orange text-center mb-8'>{CONTENT.cfpSection.subtitle}</p>
 					{CONTENT.cfpSection.submissionLink && (
-						<a
-							href={CONTENT.cfpSection.submissionLink}
-							target='_blank'
+						<span
+							// href={CONTENT.cfpSection.submissionLink}
+							// target='_blank'
 							rel='noopener noreferrer'
 							className='flex items-center gap-2 bg-lab-dark text-white px-8 py-4 font-pixel text-xl rounded-lg hover:bg-lab-orange transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1'
 						>
-							SUBMIT NOW <ExternalLink size={20} />
-						</a>
+							SUBMIT NOW (Coming Soon) <ExternalLink size={20} />
+						</span>
 					)}
 				</div>
 

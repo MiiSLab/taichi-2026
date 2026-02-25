@@ -36,6 +36,7 @@ declare interface PersonItem {
 	department?: string;
 	country?: string;
 	notes?: string;
+	order?: number;
 }
 
 declare interface Speaker {
