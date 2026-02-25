@@ -124,9 +124,9 @@ export const fetchPeopleFromNotion = async (): Promise<PersonItem[]> => {
 	if (!MEMBERS_NOTION_PAGE_ID) return STATIC_PEOPLE;
 
 	try {
-		console.log(`[Debug] Fetching People from Official Notion API...`);
+		// console.log(`[Debug] Fetching People from Official Notion API...`);
 		const results = await queryNotionDatabase(MEMBERS_NOTION_PAGE_ID);
-		console.log(`[Debug] People Data Fetched:`, results.length);
+		// console.log(`[Debug] People Data Fetched:`, results.length);
 
 		if (results.length > 0) {
 			const people = results.map((row: any) => {
@@ -177,9 +177,9 @@ export const fetchSessionsFromNotion = async (): Promise<SessionItem[]> => {
 		const people = await fetchPeopleFromNotion();
 		const peopleMap = new Map(people.map((p) => [p.id, p]));
 
-		console.log(`[Debug] Fetching Sessions from Official Notion API...`);
+		// console.log(`[Debug] Fetching Sessions from Official Notion API...`);
 		const sessionsData = await queryNotionDatabase(SESSIONS_NOTION_PAGE_ID);
-		console.log(`[Debug] Sessions Data Fetched:`, sessionsData.length);
+		// console.log(`[Debug] Sessions Data Fetched:`, sessionsData.length);
 
 		if (sessionsData.length === 0) {
 			return STATIC_SESSIONS;
@@ -189,7 +189,7 @@ export const fetchSessionsFromNotion = async (): Promise<SessionItem[]> => {
 		let topicsData: any[] = [];
 		if (TOPICS_NOTION_PAGE_ID) {
 			try {
-				console.log(`[Debug] Fetching Topics...`);
+				// console.log(`[Debug] Fetching Topics...`);
 				topicsData = await queryNotionDatabase(TOPICS_NOTION_PAGE_ID);
 			} catch (err) {
 				console.warn('Failed to fetch Topics', err);
@@ -299,7 +299,7 @@ export const fetchNewsFromNotion = async (): Promise<NewsItem[]> => {
 	if (!NEWS_NOTION_PAGE_ID) return STATIC_NEWS;
 
 	try {
-		console.log(`[Debug] Fetching News from Official Notion API...`);
+		// console.log(`[Debug] Fetching News from Official Notion API...`);
 		const results = await queryNotionDatabase(NEWS_NOTION_PAGE_ID);
 
 		if (results.length > 0) {
