@@ -114,7 +114,8 @@ const CFPPage: React.FC = () => {
 													if (
 														desc.trim() === '備註' ||
 														desc.trim() === 'Full Paper' ||
-														desc.trim() === 'Pictorial'
+														desc.trim() === 'Pictorial' ||
+														desc.trim() === 'Poster'
 													) {
 														return (
 															<h5

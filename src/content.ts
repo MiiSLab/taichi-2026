@@ -248,7 +248,7 @@ export const CONTENT = {
 					'備註',
 					'所有投稿論文皆採**雙向匿名 (Double-blind)** 審查，請上傳匿名的 PDF 檔案，如果作者沒有匿名，將直接退稿。論文 PDF 檔案含附件須**小於 20MB**，請作者用 Acrobat 的最佳化功能，縮減檔案的大小同時確保內容可以清楚地呈現在螢幕上。',
 					'在稿件投稿時，作者可選擇是否願意將受錄取的論文收錄於正式出版 TAICHI 2026 Proceedings；作者亦可選擇將受錄取的論文摘要或全文收錄於非正式出版的 TAICHI 線上論文集。',
-					'論文投稿相關問題請洽 paper2026@taiwanchi.org',
+					'論文投稿相關問題請洽 [taiwanchi26+paper@gmail.com](mailto:taiwanchi26+paper@gmail.com)',
 				],
 				specs: ['Notification: 2026 / 7 / 21 (Tue)', 'Camera-ready: 2026 / 7 / 27 (Mon)'],
 			},
@@ -259,18 +259,19 @@ export const CONTENT = {
 				extendedDate: '',
 				format: 'ACM SIGCHI Two-Column',
 				description: [
+					'海報提供作者與研討會參與者直接互動討論正在進行或已在其他研討會發表的研究。受錄取的海報可在研討會海報時段呈現。',
 					'TAICHI 海報論文頁數**以四頁為原則**（不含參考文獻），中文版本字體請使用標楷體，字級則與英文論文相同，均須依循 ACM SIGCHI 格式規範，請參考範本文件中的內容說明。',
-					'所有投稿論文皆採**雙向匿名 (Double-blind)** 審查，請上傳匿名的 PDF 檔案，如果作者沒有匿名，將直接退稿。論文 PDF 檔案含附件須**小於 20MB**，請作者用 Acrobat 的最佳化功能，縮減檔案的大小同時確保內容可以清楚地呈現在螢幕上。',
 					'備註',
+					'所有投稿論文皆採**雙向匿名 (Double-blind)** 審查，請上傳匿名的 PDF 檔案，如果作者沒有匿名，將直接退稿。論文 PDF 檔案含附件須**小於 20MB**，請作者用 Acrobat 的最佳化功能，縮減檔案的大小同時確保內容可以清楚地呈現在螢幕上。',
 					'在稿件投稿時，作者可選擇是否願意將受錄取的論文收錄於正式出版 TAICHI 2026 Proceedings；作者亦可選擇將受錄取的論文摘要或全文收錄於非正式出版的 TAICHI 線上論文集。',
-					'論文投稿相關問題請洽 paper2026@taiwanchi.org',
+					'論文投稿相關問題請洽 [taiwanchi26+poster@gmail.com](mailto:taiwanchi26+poster@gmail.com)',
 				],
 				specs: ['Notification: 2026 / 7 / 21 (Tue)', 'Camera-ready: 2026 / 7 / 27 (Mon)'],
 			},
 		],
 	},
 	newsSection: {
-		title: 'NEWS_&_DATES',
+		title: 'NEWS',
 		subtitle: 'LATEST ANNOUNCEMENTS',
 		loadMore: 'LOAD_MORE',
 		showLess: 'SHOW_LESS',
@@ -313,7 +314,7 @@ export const CONTENT = {
 		viewProject: 'SESSION // ', // Needed for ProjectDetail fallback
 	},
 	venueSection: {
-		title: 'VENUE_&_TRAVEL',
+		title: 'VENUE',
 		address: 'xxx',
 		transport: 'MRT: xxx (Exit 2) \n Bus: xxx Stop',
 		mapLink: 'https://www.google.com/maps',
@@ -327,18 +328,58 @@ export const CONTENT = {
 		organizerTitle: 'ORGANIZERS',
 		sponsorTitle: 'SPONSORS',
 		organizers: [
-			{ name: 'TAICHI', logo: '/logos/taichi.webp', size: 'large' }, // Main Organizer
+			{
+				name: 'TAICHI',
+				logo: '/logos/taichi.webp',
+				size: 'large',
+				className: 'px-8 py-5 rounded-3xl shadow-md',
+			}, // Main Organizer
 		],
 		coOrganizers: [
-			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
-			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
-			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
-			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
+			{
+				name: '國立臺灣科技大學',
+				logo: '/logos/ntust_logo.png',
+				size: 'medium',
+				className: 'px-6 py-4 rounded-2xl shadow-sm',
+			},
+			{
+				name: '國立臺北科技大學',
+				logo: '/logos/ntut_logo.png',
+				size: 'medium',
+				className: 'px-6 py-4 rounded-2xl shadow-sm',
+			},
+			{
+				name: 'xxx',
+				logo: '/logos/xxx.png',
+				size: 'medium',
+				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
+			},
+			{
+				name: 'xxx',
+				logo: '/logos/xxx.png',
+				size: 'medium',
+				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
+			},
 		],
 		sponsors: [
-			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
-			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
-			{ name: 'xxx', logo: '/logos/xxx.png', size: 'medium' },
+			{
+				name: 'xxx',
+				logo: '/logos/xxx.png',
+				size: 'medium',
+				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
+			},
+			{
+				name: 'xxx',
+				logo: '/logos/xxx.png',
+				size: 'medium',
+				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
+			},
+			{
+				name: 'xxx',
+				logo: '/logos/xxx.png',
+				size: 'medium',
+				className: 'bg-white/80 px-6 py-4 rounded-2xl shadow-sm',
+			},
 		],
 	},
 	footer: {

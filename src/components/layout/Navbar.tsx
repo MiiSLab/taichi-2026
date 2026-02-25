@@ -38,12 +38,15 @@ const Navbar: React.FC = () => {
 					<Link to='/news' onClick={handleNav} className='hover:underline'>
 						{CONTENT.nav.news}
 					</Link>
-					<Link to='/agenda' onClick={handleNav} className='hover:underline'>
-						{CONTENT.nav.program}
-					</Link>
-					<Link to='/agenda#keynotes' onClick={handleNav} className='hover:underline'>
-						{CONTENT.nav.keynotes}
-					</Link>
+
+					{/* <Link to='/agenda' onClick={handleNav} className='hover:underline'> */}
+					<span onClick={() => {}} className='opacity-50 cursor-default'>
+						{CONTENT.nav.program}(TBD)
+					</span>
+					{/* <Link to='/agenda#keynotes' onClick={handleNav} className='hover:underline'> */}
+					{/* <span onClick={() => {}} className='opacity-50 cursor-default'>
+						{CONTENT.nav.keynotes}(TBD)
+					</span> */}
 					<Link to='/cfp' onClick={handleNav} className='hover:underline'>
 						{CONTENT.nav.cfp}
 					</Link>

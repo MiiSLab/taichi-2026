@@ -33,7 +33,7 @@ const Sponsors: React.FC = () => {
 	);
 
 	// Actual Image Renderer that shows Placeholder if error
-	const ImageOrPlaceholder = ({ item }: { item: { name: string; logo: string; size: string } }) => {
+	const ImageOrPlaceholder = ({ item }: { item: { name: string; logo: string; size: string; className?: string } }) => {
 		const [imgError, setImgError] = React.useState(false);
 
 		// Helper to construct correct path with Base URL
@@ -53,12 +53,16 @@ const Sponsors: React.FC = () => {
 		}
 
 		return (
-			<img
-				src={imgSrc}
-				alt={item.name}
-				onError={() => setImgError(true)}
-				className={`object-contain transition-transform duration-300 hover:scale-105 ${item.size === 'large' ? 'h-32' : 'h-20'}`}
-			/>
+			<div
+				className={`transition-transform duration-300 hover:scale-105 flex items-center justify-center bg-white/10 rounded-3xl hover:bg-white/50 transition-all duration-300 [&>img]:mix-blend-multiply  ${item.className || ''}`}
+			>
+				<img
+					src={imgSrc}
+					alt={item.name}
+					onError={() => setImgError(true)}
+					className={`object-contain ${item.size === 'large' ? 'h-32' : 'h-20'}`}
+				/>
+			</div>
 		);
 	};
 
