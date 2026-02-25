@@ -1,5 +1,7 @@
 // Types are now globally declared in types.d.ts
 
+import { link } from 'fs';
+
 // ==========================================
 // CONFIGURATION (Notion IDs & Global Settings)
 // ==========================================
@@ -246,9 +248,9 @@ export const CONTENT = {
 					'● [Pictorials Powerpoint Template](https://dis.acm.org/2025/wp-content/uploads/2024/11/DIS2021-Pictorials-PowerPoint-template-Folder.zip)',
 					'TAICHI Pictorial 論文頁數**以8~12頁為原則但不超過12頁**（不含參考文獻），中文版本字體請使用標楷體，字級則與英文論文相同，均須依循ACM SIGCHI格式規範，請參考範本文件中的內容說明。',
 					'備註',
-					'所有投稿論文皆採**雙向匿名 (Double-blind)** 審查，請上傳匿名的 PDF 檔案，如果作者沒有匿名，將直接退稿。論文 PDF 檔案含附件須**小於 20MB**，請作者用 Acrobat 的最佳化功能，縮減檔案的大小同時確保內容可以清楚地呈現在螢幕上。',
-					'在稿件投稿時，作者可選擇是否願意將受錄取的論文收錄於正式出版 TAICHI 2026 Proceedings；作者亦可選擇將受錄取的論文摘要或全文收錄於非正式出版的 TAICHI 線上論文集。',
-					'論文投稿相關問題請洽 [taiwanchi26+paper@gmail.com](mailto:taiwanchi26+paper@gmail.com)',
+					'● 所有投稿論文皆採**雙向匿名 (Double-blind)** 審查，請上傳匿名的 PDF 檔案，如果作者沒有匿名，將直接退稿。論文 PDF 檔案含附件須**小於 20MB**，請作者用 Acrobat 的最佳化功能，縮減檔案的大小同時確保內容可以清楚地呈現在螢幕上。',
+					'● 在稿件投稿時，作者可選擇是否願意將受錄取的論文收錄於正式出版 TAICHI 2026 Proceedings；作者亦可選擇將受錄取的論文摘要或全文收錄於非正式出版的 TAICHI 線上論文集。',
+					'● 論文投稿相關問題請洽 [taiwanchi26+paper@gmail.com](mailto:taiwanchi26+paper@gmail.com)',
 				],
 				specs: ['Notification: 2026 / 7 / 21 (Tue)', 'Camera-ready: 2026 / 7 / 27 (Mon)'],
 			},
@@ -258,13 +260,78 @@ export const CONTENT = {
 				date: '2026 / 6 / 18 (Thu)',
 				extendedDate: '',
 				format: 'ACM SIGCHI Two-Column',
+				links: [
+					{
+						label: 'Latex',
+						url: 'https://portalparts.acm.org/hippo/latex_templates/acmart-primary.zip',
+					},
+					{
+						label: 'Overleaf',
+						url: 'https://www.overleaf.com/latex/templates/acm-conference-proceedings-primary-article-template/wbvnghjbzwpc',
+					},
+					{
+						label: 'Word',
+						url: 'https://uist.acm.org/2023/assets/files/word-two-column-submission-sample.docx',
+					},
+				],
 				description: [
 					'海報提供作者與研討會參與者直接互動討論正在進行或已在其他研討會發表的研究。受錄取的海報可在研討會海報時段呈現。',
-					'TAICHI 海報論文頁數**以四頁為原則**（不含參考文獻），中文版本字體請使用標楷體，字級則與英文論文相同，均須依循 ACM SIGCHI 格式規範，請參考範本文件中的內容說明。',
+					'投稿格式',
+					'● 投稿需依循 ACM SIGCHI Publication Format (雙欄) 之格式撰寫。檔案必須為 PDF 檔。標準格式請至 ACM SIGCHI 官方網站下載 [CHI Publication Formats](https://chi2022.acm.org/for-authors/presenting/papers/chi-publication-formats/)。',
+					'● 投稿格式範本如下：[Latex](https://portalparts.acm.org/hippo/latex_templates/acmart-primary.zip), [Overleaf](https://www.overleaf.com/latex/templates/acm-conference-proceedings-primary-article-template/wbvnghjbzwpc), [Word](https://uist.acm.org/2023/assets/files/word-two-column-submission-sample.docx)',
+					'● TAICHI 海報論文頁數**以四頁為原則**（不含參考文獻）',
+					'● 中文版本字體請使用標楷體，字級則與英文論文相同，均須依循 ACM SIGCHI 格式規範，請參考範本文件中的內容說明。',
+					'● 論文內容必須包含摘要、研究動機、⽬的、⽅法、⽬前成果、以及未來研究規劃。',
+					'● 論文標題需以「 Poster: 」為開頭。',
+					'● 海報稿件只需上傳論文，海報檔案將於確定被接受後上傳。',
+					'● 所有海報將列入海報論文獎審查，得獎者由會議參與者匿名投票選出。',
 					'備註',
-					'所有投稿論文皆採**雙向匿名 (Double-blind)** 審查，請上傳匿名的 PDF 檔案，如果作者沒有匿名，將直接退稿。論文 PDF 檔案含附件須**小於 20MB**，請作者用 Acrobat 的最佳化功能，縮減檔案的大小同時確保內容可以清楚地呈現在螢幕上。',
-					'在稿件投稿時，作者可選擇是否願意將受錄取的論文收錄於正式出版 TAICHI 2026 Proceedings；作者亦可選擇將受錄取的論文摘要或全文收錄於非正式出版的 TAICHI 線上論文集。',
-					'論文投稿相關問題請洽 [taiwanchi26+poster@gmail.com](mailto:taiwanchi26+poster@gmail.com)',
+					'● 所有投稿論文皆採**雙向匿名 (Double-blind)** 審查，請上傳匿名的 PDF 檔案，如果作者沒有匿名，將直接退稿。論文 PDF 檔案含附件須**小於 20MB**，請作者用 Acrobat 的最佳化功能，縮減檔案的大小同時確保內容可以清楚地呈現在螢幕上。',
+					'● 在稿件投稿時，作者可選擇是否願意將受錄取的論文收錄於正式出版 TAICHI 2026 Proceedings；作者亦可選擇將受錄取的論文摘要或全文收錄於非正式出版的 TAICHI 線上論文集。',
+					'● 論文投稿相關問題請洽 [taiwanchi26+poster@gmail.com](mailto:taiwanchi26+poster@gmail.com)',
+				],
+				specs: ['Notification: 2026 / 7 / 21 (Tue)', 'Camera-ready: 2026 / 7 / 27 (Mon)'],
+			},
+			{
+				id: 'demos',
+				title: 'Interactivity and Demo 互動展示論文',
+				date: '2026 / 6 / 18 (Thu)',
+				extendedDate: '',
+				format: 'ACM SIGCHI Extended Abstract',
+				links: [
+					{
+						label: 'Latex',
+						url: 'https://portalparts.acm.org/hippo/latex_templates/acmart-primary.zip',
+					},
+					{
+						label: 'Overleaf',
+						url: 'https://www.overleaf.com/latex/templates/acm-conference-proceedings-primary-article-template/wbvnghjbzwpc',
+					},
+					{
+						label: 'Word',
+						url: 'https://uist.acm.org/2023/assets/files/word-two-column-submission-sample.docx',
+					},
+					{
+						label: '場地需求申請表',
+						url: 'https://www.dropbox.com/s/4nwwza7sudz36jq/TAICHI2023%20%20Demo%20Requirements.docx?dl=0',
+					},
+				],
+				description: [
+					'展示直接於研討會上展現互動概念、手法、裝置或是系統的實作成果。受錄取的展示可在展示時段於研討會場中擺設攤位呈現。',
+					'投稿格式',
+					'● 投稿需依循 ACM SIGCHI Extended Abstract 之格式撰寫。檔案必須為 PDF 檔，不需匿名。標準格式請至 ACM SIGCHI 官方網站下載 [CHI Publication Formats](https://chi2022.acm.org/for-authors/presenting/papers/chi-publication-formats/)。',
+					'● 投稿格式範本如下：[Latex](https://portalparts.acm.org/hippo/latex_templates/acmart-primary.zip), [Overleaf](https://www.overleaf.com/latex/templates/acm-conference-proceedings-primary-article-template/wbvnghjbzwpc), [Word](https://uist.acm.org/2023/assets/files/word-two-column-submission-sample.docx)',
+					'● 稿件總頁數**上限為三頁**（不含參考文獻），格式採**雙欄排版**。內容可使用中英文撰寫，中文部分請使用標楷體字型。',
+					'● 內容必須包含摘要、研究動機、目的、方法、目前成果、以及未來研究規劃。',
+					'● 論文標題需以「 Demo: 」為開頭。若該論文同時為 Poster，論文標題開頭請為: 「 Poster & Demo: 」。',
+					'● 鼓勵上傳影片以便衡量系統的互動性以及完整程度。上傳影片前請先以 [HandBrake](https://handbrake.fr/) 進行壓縮，並輸出成 H.264 之.mp4 檔案。',
+					'● 需繳交一份「[場地需求申請表](https://www.dropbox.com/s/4nwwza7sudz36jq/TAICHI2023%20%20Demo%20Requirements.docx?dl=0)」，展示主席將依此協助當天的布展安排。',
+					'● 所有系統展示將列入系統展示論文獎審查，得獎者由會議參與者匿名投票選出。',
+					'備註',
+					// '稿件被接受後，作者可選擇將摘要或全文收錄於非正式出版的 TAICHI 線上論文集',
+					'● 在稿件投稿時，作者可選擇是否願意將受錄取的論文收錄於正式出版 TAICHI 2026 Proceedings；作者亦可選擇將受錄取的論文摘要或全文收錄於非正式出版的 TAICHI 線上論文集。',
+					'● 屆時請於會議展示時段前完成攤位佈置。',
+					'● 展示投稿相關問題請洽 [taiwanchi26+demo@gmail.com](mailto:taiwanchi26+demo@gmail.com)',
 				],
 				specs: ['Notification: 2026 / 7 / 21 (Tue)', 'Camera-ready: 2026 / 7 / 27 (Mon)'],
 			},

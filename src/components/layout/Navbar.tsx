@@ -82,12 +82,13 @@ const Navbar: React.FC = () => {
 					<Link to='/news' onClick={handleNav}>
 						{CONTENT.nav.news}
 					</Link>
-					<Link to='/agenda' onClick={handleNav}>
-						{CONTENT.nav.program}
-					</Link>
-					<Link to='/agenda#keynotes' onClick={handleNav}>
+					{/* <Link to='/agenda' onClick={handleNav}> */}
+					<span onClick={handleNav} className='opacity-50 cursor-default'>
+						{CONTENT.nav.program}(TBD)
+					</span>
+					{/* <Link to='/agenda#keynotes' onClick={handleNav}>
 						{CONTENT.nav.keynotes}
-					</Link>
+					</Link> */}
 					<Link to='/cfp' onClick={handleNav}>
 						{CONTENT.nav.cfp}
 					</Link>

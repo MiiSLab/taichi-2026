@@ -3,7 +3,7 @@ import React from 'react';
 import { CONTENT } from '../content';
 
 const parseText = (text: string) => {
-	const regex = /\*\*([^*]+)\*\*|\[([^\]]+)\]\((https?:\/\/[^\s)]+)\)|(https?:\/\/[^\s)]+)/g;
+	const regex = /\*\*([^*]+)\*\*|\[([^\]]+)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)|((?:https?:\/\/|mailto:)[^\s)]+)/g;
 	const parts = [];
 	let lastIndex = 0;
 	let match;
@@ -115,7 +115,8 @@ const CFPPage: React.FC = () => {
 														desc.trim() === '備註' ||
 														desc.trim() === 'Full Paper' ||
 														desc.trim() === 'Pictorial' ||
-														desc.trim() === 'Poster'
+														desc.trim() === 'Poster' ||
+														desc.trim() === '投稿格式'
 													) {
 														return (
 															<h5
@@ -138,6 +139,7 @@ const CFPPage: React.FC = () => {
 														);
 													}
 													return (
+														// <p key={i} className='indent-[2em]'>
 														<p key={i} className='indent-[2em]'>
 															{parseText(desc)}
 														</p>
