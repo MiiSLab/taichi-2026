@@ -314,7 +314,7 @@ export const CONTENT = {
 					},
 					{
 						label: '場地需求申請表',
-						url: 'https://taichi2026.taiwanchi.org/static/TAICHI2026  Demo Requirements.docx',
+						url: 'https://taichi2026.taiwanchi.org/static/TAICHI2026_Demo_Requirements.docx',
 					},
 				],
 				description: [
@@ -326,7 +326,7 @@ export const CONTENT = {
 					'● 內容必須包含摘要、研究動機、目的、方法、目前成果、以及未來研究規劃。',
 					'● 論文標題需以「 Demo: 」為開頭。若該論文同時為 Poster，論文標題開頭請為: 「 Poster & Demo: 」。',
 					'● 鼓勵上傳影片以便衡量系統的互動性以及完整程度。上傳影片前請先以 [HandBrake](https://handbrake.fr/) 進行壓縮，並輸出成 H.264 之.mp4 檔案。',
-					'● 需繳交一份「[場地需求申請表](https://taichi2026.taiwanchi.org/static/TAICHI2026  Demo Requirements.docx)」，展示主席將依此協助當天的布展安排。',
+					'● 需繳交一份「[場地需求申請表](https://taichi2026.taiwanchi.org/static/TAICHI2026_Demo_Requirements.docx)」，展示主席將依此協助當天的布展安排。',
 					'● 所有系統展示將列入系統展示論文獎審查，得獎者由會議參與者匿名投票選出。',
 					'備註',
 					// '稿件被接受後，作者可選擇將摘要或全文收錄於非正式出版的 TAICHI 線上論文集',
