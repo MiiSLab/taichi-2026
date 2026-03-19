@@ -21,34 +21,34 @@ const DefaultsIcon = ({ className }: { className?: string }) => (
 
 const VenuePage: React.FC = () => {
 	return (
-		<section className='pt-32 pb-24 px-6 md:px-20 bg-gray-50 min-h-screen'>
+		<section className='py-24 px-6 md:px-20 bg-transparent'>
 			<div className='max-w-6xl mx-auto'>
 				<div className='flex flex-col items-center justify-center mb-16'>
-					<h2 className='text-5xl md:text-7xl font-pixel text-lab-dark mb-4 text-center'>{CONTENT.venueSection.title}</h2>
+					<h2 className='text-5xl md:text-7xl font-pixel text-lab-lime drop-shadow-md mb-4 text-center'>{CONTENT.venueSection.title}</h2>
 				</div>
 
 				<div className='flex flex-col gap-12 mb-24'>
 					{CONTENT.venueSection.venues.map((venue, idx) => (
 						<div
 							key={idx}
-							className='flex flex-col md:flex-row gap-12 items-center bg-white p-8 md:p-12 rounded-3xl shadow-sm border border-gray-200'
+							className='flex flex-col md:flex-row gap-12 items-center w-full max-w-5xl mx-auto py-8'
 						>
 							<div className='flex-1 w-full'>
 								<div className='flex items-center gap-4 mb-6'>
-									<span className='px-4 py-1 bg-lab-orange text-white font-mono text-lg rounded-full shadow-md font-bold'>
+									<span className='px-4 py-1.5 bg-lab-pink text-white font-mono text-sm md:text-base rounded-full shadow-md font-bold uppercase tracking-wider'>
 										{venue.day}
 									</span>
-									<h3 className='font-pixel text-3xl text-lab-dark'>{venue.name}</h3>
+									<h3 className='font-pixel text-3xl md:text-4xl text-white tracking-widest'>{venue.name}</h3>
 								</div>
 
-								<div className='space-y-4 font-mono text-gray-700'>
+								<div className='space-y-4 font-mono text-white/90'>
 									<div className='flex items-start gap-4'>
-										<MapPin className='text-lab-orange flex-shrink-0 mt-1' />
-										<p className='text-lg'>{venue.address}</p>
+										<MapPin className='text-lab-lime flex-shrink-0 mt-1' />
+										<p className='text-lg break-all'>{venue.address}</p>
 									</div>
 									<div className='flex items-start gap-4'>
-										<DefaultsIcon className='text-lab-orange flex-shrink-0 mt-1' />
-										<p className='whitespace-pre-line text-gray-500'>
+										<DefaultsIcon className='text-lab-lime flex-shrink-0 mt-1' />
+										<p className='whitespace-pre-line text-white/60'>
 											{/* Placeholder for detailed venue info (Floor, Classroom, Position) */}
 											{venue.details}
 										</p>
@@ -60,7 +60,7 @@ const VenuePage: React.FC = () => {
 										href={venue.mapLink}
 										target='_blank'
 										rel='noopener noreferrer'
-										className='inline-flex items-center gap-2 mt-8 bg-lab-dark text-white px-6 py-3 font-pixel hover:bg-lab-orange transition-colors rounded-lg shadow-md hover:-translate-y-1 transform'
+										className='inline-flex items-center gap-2 mt-8 bg-lab-lime text-lab-black px-6 py-3 font-mono font-bold hover:bg-white transition-colors rounded-lg shadow-md hover:-translate-y-1 transform uppercase'
 									>
 										OPEN MAP <ExternalLink size={16} />
 									</a>
@@ -68,7 +68,7 @@ const VenuePage: React.FC = () => {
 							</div>
 
 							{venue.embedSrc && (
-								<div className='flex-1 w-full h-64 md:h-80 bg-gray-300 rounded-2xl overflow-hidden relative shadow-lg filter grayscale hover:grayscale-0 transition-all'>
+								<div className='flex-1 w-full h-64 md:h-80 bg-gray-300 rounded-xl overflow-hidden relative shadow-[0_0_15px_rgba(255,255,255,0.1)] filter grayscale-[50%] hover:grayscale-0 transition-all border border-white/20'>
 									<iframe
 										width='100%'
 										height='100%'
@@ -83,10 +83,10 @@ const VenuePage: React.FC = () => {
 					))}
 				</div>
 
-				<div className='bg-lab-orange text-white text-center rounded-3xl p-12 shadow-xl'>
+				<div className='bg-lab-pink text-white text-center rounded-3xl p-12 shadow-2xl'>
 					<h2 className='font-pixel text-5xl mb-8'>{CONTENT.registrationSection.title}</h2>
 					<p className='font-mono text-xl opacity-80 mb-12'>{CONTENT.registrationSection.info}</p>
-					<button className='bg-white text-lab-orange font-pixel text-2xl px-12 py-4 rounded hover:scale-105 transition-transform'>
+					<button className='bg-white text-lab-pink font-pixel text-2xl px-12 py-4 rounded-full hover:scale-105 transition-transform shadow-lg'>
 						{CONTENT.registrationSection.button}
 					</button>
 				</div>

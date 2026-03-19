@@ -10,13 +10,13 @@ const OrganizationPage: React.FC = () => {
 	const committeeMembers = people.filter((p) => !(p.chairType ? String(p.chairType).toLowerCase() : '').includes('keynote'));
 
 	return (
-		<div className='pt-32 bg-lab-white min-h-screen'>
+		<div className='py-24 bg-transparent'>
 			{/* ORGANIZATION (COMMITTEE) */}
 			<section className='px-6 md:px-20 pb-24'>
 				<div className='max-w-7xl mx-auto'>
 					{/* Header */}
 					<div className='flex flex-col items-center justify-center mb-16'>
-						<h2 className='text-5xl md:text-7xl font-pixel text-lab-dark mb-4 text-center'>{CONTENT.committeeSection.title}</h2>
+						<h2 className='text-5xl md:text-7xl font-pixel text-lab-lime drop-shadow-md mb-4 text-center'>{CONTENT.committeeSection.title}</h2>
 					</div>
 
 					{isSyncing && people.length === 0 ? (

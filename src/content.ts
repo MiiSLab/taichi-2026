@@ -67,7 +67,7 @@ export const CONTENT = {
 	nav: {
 		logo: 'TAICHI 2026',
 		home: 'HOME',
-		news: 'NEWS',
+		// news: 'NEWS',
 		theme: 'THEME',
 		program: 'AGENDA',
 		keynotes: 'KEYNOTES',

@@ -68,15 +68,15 @@ const Sponsors: React.FC = () => {
 	};
 
 	return (
-		<section className='py-24 px-6 md:px-20 bg-gray-50 text-lab-dark border-t border-gray-200'>
+		<section className='py-24 px-6 md:px-20 bg-transparent border-t border-white/10'>
 			<div className='max-w-7xl mx-auto space-y-24'>
 				{/* ORGANIZERS SECTION */}
 				<div>
-					<h2 className='font-pixel text-5xl mb-12 text-lab-dark'>{organizerTitle}</h2>
-					<div className='bg-white rounded-3xl p-8 md:p-16 border border-gray-200 shadow-sm'>
+					<h2 className='font-pixel text-4xl md:text-5xl mb-12 text-lab-lime uppercase drop-shadow-md'>{organizerTitle}</h2>
+					<div className='bg-white rounded-xl p-8 md:p-12 shadow-2xl'>
 						{/* Host */}
-						<div className='mb-16 border-b border-gray-200 pb-16 last:border-0 last:pb-0'>
-							<h3 className='font-pixel text-2xl text-lab-orange mb-10 tracking-widest uppercase'>Main Organizers</h3>
+						<div className='mb-12 border-b border-gray-200 pb-12 last:border-0 last:pb-0'>
+							<h3 className='font-pixel text-2xl text-lab-pink mb-8 tracking-widest uppercase'>Main Organizers</h3>
 							<div className='flex flex-wrap gap-x-16 gap-y-8 items-center'>
 								{organizers.map((item, idx) => (
 									<ImageOrPlaceholder key={idx} item={item} />
@@ -86,7 +86,7 @@ const Sponsors: React.FC = () => {
 
 						{/* Co-Host */}
 						<div>
-							<h3 className='font-pixel text-2xl text-gray-700 mb-10 tracking-widest uppercase'>Co-Organizers</h3>
+							<h3 className='font-pixel text-2xl text-lab-black mb-8 tracking-widest uppercase'>Co-Organizers</h3>
 							<div className='flex flex-wrap gap-x-16 gap-y-8 items-center'>
 								{coOrganizers.map((item, idx) => (
 									<ImageOrPlaceholder key={idx} item={item} />
@@ -98,8 +98,8 @@ const Sponsors: React.FC = () => {
 
 				{/* SPONSORS SECTION */}
 				<div>
-					<h2 className='font-pixel text-5xl mb-12 text-lab-dark'>{sponsorTitle}</h2>
-					<div className='bg-white rounded-3xl p-8 md:p-16 border border-gray-200 shadow-sm'>
+					<h2 className='font-pixel text-4xl md:text-5xl mb-12 text-lab-lime uppercase drop-shadow-md'>{sponsorTitle}</h2>
+					<div className='bg-white rounded-xl p-8 md:p-12 shadow-2xl'>
 						<div className='flex flex-wrap gap-x-16 gap-y-8 items-center'>
 							{sponsors.map((item, idx) => (
 								<ImageOrPlaceholder key={idx} item={item} />

@@ -25,7 +25,7 @@ const Layout: React.FC = () => {
 	}, [pathname, hash]);
 
 	return (
-		<div className='min-h-screen bg-lab-white text-lab-dark font-sans selection:bg-lab-orange selection:text-white overflow-x-hidden'>
+		<div className='min-h-screen bg-lab-black text-white font-sans selection:bg-lab-pink selection:text-white overflow-x-hidden'>
 			<Navbar />
 			<main>
 				<Outlet />

@@ -1,5 +1,6 @@
 import { Download, ExternalLink, FileText } from 'lucide-react';
 import React from 'react';
+import CountdownTimer from '../components/CountdownTimer';
 import { CONTENT } from '../content';
 
 const parseText = (text: string) => {
@@ -26,7 +27,7 @@ const parseText = (text: string) => {
 				<a
 					key={`url-${count}`}
 					href={match[4]}
-					className='text-blue-600 hover:text-blue-800 underline break-all'
+					className='text-blue-700 font-bold hover:text-blue-900 underline break-all'
 					target='_blank'
 					rel='noreferrer'
 				>
@@ -39,7 +40,7 @@ const parseText = (text: string) => {
 				<a
 					key={`link-${count}`}
 					href={match[3]}
-					className='text-blue-600 hover:text-blue-800 underline break-all'
+					className='text-blue-700 font-bold hover:text-blue-900 underline break-all'
 					target='_blank'
 					rel='noreferrer'
 				>
@@ -58,58 +59,87 @@ const parseText = (text: string) => {
 
 const CFPPage: React.FC = () => {
 	return (
-		<section className='pt-32 pb-24 px-6 md:px-20 bg-lab-white min-h-screen'>
-			<div className='max-w-6xl mx-auto'>
-				<div className='flex flex-col items-center justify-center mb-16'>
-					<h2 className='text-5xl md:text-7xl font-pixel text-lab-dark mb-4 text-center'>{CONTENT.cfpSection.title}</h2>
-					<p className='font-mono text-xl md:text-2xl text-lab-orange text-center mb-8'>{CONTENT.cfpSection.subtitle}</p>
+		<section className="bg-[url('/images/cfp_bg.png')] bg-cover bg-center bg-fixed w-full h-[100dvh] overflow-y-scroll snap-y snap-mandatory relative text-white">
+			{/* Top Hero Section */}
+			<div className='w-full min-h-[100dvh] snap-start flex flex-col items-center justify-center px-6 md:px-20 py-24'>
+				<div className='flex flex-col items-center max-w-4xl'>
+					<div className='transform scale-75 md:scale-100 mt-[-5rem] mb-12'>
+						<CountdownTimer />
+					</div>
+					<h2 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight'>
+						CALL FOR PAPERS
+					</h2>
+					<p className='font-pixel text-xl md:text-2xl text-lab-pink text-center mb-12 tracking-widest'>
+						{CONTENT.cfpSection.subtitle}
+					</p>
+
 					{CONTENT.cfpSection.submissionLink && (
-						<span
-							// href={CONTENT.cfpSection.submissionLink}
-							// target='_blank'
-							rel='noopener noreferrer'
-							className='flex items-center gap-2 bg-lab-dark text-white px-8 py-4 font-pixel text-xl rounded-lg hover:bg-lab-orange transition-colors shadow-lg hover:shadow-xl transform hover:-translate-y-1'
-						>
-							SUBMIT NOW (Coming Soon) <ExternalLink size={20} />
-						</span>
+						<button className='bg-lab-pink text-white font-bold py-4 px-16 rounded-full hover:bg-white hover:text-lab-pink transition-colors text-xl tracking-wider shadow-[0_0_20px_rgba(255,0,102,0.6)]'>
+							SUBMIT NOW
+						</button>
 					)}
 				</div>
+			</div>
 
-				{/* Categories */}
-				<div className='space-y-16 mb-24'>
-					{CONTENT.cfpSection.categories.map((cat) => (
-						<div
-							key={cat.id}
-							className='bg-white border border-gray-200 shadow-sm p-8 md:p-12 rounded-3xl relative overflow-hidden group'
-						>
-							<div className='absolute top-0 right-0 p-4 opacity-5 group-hover:opacity-10 transition-opacity'>
-								<FileText size={200} />
+			{/* Categories */}
+			<div className='w-full'>
+				{CONTENT.cfpSection.categories.map((cat) => (
+					<div
+						key={cat.id}
+						className='w-full min-h-[100dvh] snap-start flex items-center justify-center px-4 md:px-20 py-16 relative'
+					>
+						<div className='w-full max-w-5xl bg-lab-lime text-lab-black border-4 border-lab-black shadow-2xl p-8 md:p-14 relative'>
+							{/* Corner Screws/Dots */}
+							<div
+								className='absolute top-3 left-3 w-5 h-5 bg-gray-800 rounded-full shadow-inner z-10'
+								style={{ background: 'radial-gradient(circle at 30% 30%, #666, #111)' }}
+							>
+								<div className='w-full h-full border border-black/50 rounded-full flex items-center justify-center'>
+									<div className='w-4 h-[2px] bg-black/60 rotate-45'></div>
+								</div>
+							</div>
+							<div
+								className='absolute top-3 right-3 w-5 h-5 bg-gray-800 rounded-full shadow-inner z-10'
+								style={{ background: 'radial-gradient(circle at 30% 30%, #666, #111)' }}
+							>
+								<div className='w-full h-full border border-black/50 rounded-full flex items-center justify-center'>
+									<div className='w-4 h-[2px] bg-black/60 rotate-45'></div>
+								</div>
+							</div>
+							<div
+								className='absolute bottom-3 left-3 w-5 h-5 bg-gray-800 rounded-full shadow-inner z-10'
+								style={{ background: 'radial-gradient(circle at 30% 30%, #666, #111)' }}
+							>
+								<div className='w-full h-full border border-black/50 rounded-full flex items-center justify-center'>
+									<div className='w-4 h-[2px] bg-black/60 rotate-45'></div>
+								</div>
+							</div>
+							<div
+								className='absolute bottom-3 right-3 w-5 h-5 bg-gray-800 rounded-full shadow-inner z-10'
+								style={{ background: 'radial-gradient(circle at 30% 30%, #666, #111)' }}
+							>
+								<div className='w-full h-full border border-black/50 rounded-full flex items-center justify-center'>
+									<div className='w-4 h-[2px] bg-black/60 rotate-45'></div>
+								</div>
 							</div>
 
-							<div className='relative z-10'>
-								<div className='flex flex-col md:flex-row justify-between items-start md:items-center mb-8 border-b border-gray-100 pb-6 gap-4'>
-									<h3 className='font-pixel text-4xl text-lab-dark'>{cat.title}</h3>
-									<div className='px-6 py-3 bg-lab-orange text-white rounded-full font-mono text-sm shadow-lg transform rotate-0 md:-rotate-2 group-hover:rotate-0 transition-transform'>
-										Deadline: {cat.date}
+							<div className='relative z-10 max-h-[80vh] overflow-y-auto pr-4 custom-scrollbar'>
+								<div className='mb-6 pb-4 border-b-2 border-lab-black/20'>
+									<div className='flex gap-4 items-center mb-2'>
+										<h3 className='font-mono font-bold text-3xl md:text-4xl text-lab-black'>{cat.title}</h3>
 									</div>
-									{cat.extendedDate && (
-										<div className='absolute top-24 right-8 md:right-12 px-4 py-2 bg-red-500 text-white rounded-lg font-bold shadow-xl animate-bounce transform rotate-3'>
-											EXTENDED: {cat.extendedDate}
+									<div className='flex flex-col gap-1 text-sm font-mono mt-2'>
+										<div className='flex gap-2'>
+											<FileText size={16} /> <strong>Description & Format</strong>
 										</div>
-									)}
+										<p className='opacity-80 ml-6'>Format: {cat.format}</p>
+									</div>
 								</div>
 
-								<div className='grid md:grid-cols-3 gap-12'>
-									<div className='md:col-span-2 space-y-6'>
+								<div className='grid grid-cols-1'>
+									<div className='space-y-6'>
 										<div>
-											<h4 className='font-bold text-gray-900 mb-2 flex items-center gap-2'>
-												<FileText size={18} /> Description & Format
-											</h4>
-											<p className='font-mono text-sm text-gray-500 mb-2 bg-gray-50 inline-block px-2 py-1 rounded'>
-												Format: {cat.format}
-											</p>
-
-											<div className='flex flex-col space-y-4 text-gray-700 leading-relaxed text-sm md:text-base'>
+											<div className='flex flex-col space-y-4 text-lab-black leading-relaxed text-sm md:text-base'>
 												{cat.description.map((desc, i) => {
 													if (
 														desc.trim() === '備註' ||
@@ -119,10 +149,7 @@ const CFPPage: React.FC = () => {
 														desc.trim() === '投稿格式'
 													) {
 														return (
-															<h5
-																key={i}
-																className='font-bold text-lg mt-6 text-lab-dark bg-gray-100 inline-block px-3 py-1 rounded w-max'
-															>
+															<h5 key={i} className='font-bold text-xl mt-6 text-lab-black font-mono w-max'>
 																{desc}
 															</h5>
 														);
@@ -131,16 +158,15 @@ const CFPPage: React.FC = () => {
 														const textToParse = desc.substring(1);
 														return (
 															<div key={i} className='pl-4 flex items-start gap-2'>
-																<span className='text-lab-dark font-bold mt-0.5'>•</span>
-																<div className='break-all md:break-words w-full'>
+																<span className='text-lab-black font-bold mt-0.5'>•</span>
+																<div className='break-all md:break-words w-full font-medium'>
 																	{parseText(textToParse)}
 																</div>
 															</div>
 														);
 													}
 													return (
-														// <p key={i} className='indent-[2em]'>
-														<p key={i} className='indent-[2em]'>
+														<p key={i} className='indent-[2em] font-medium'>
 															{parseText(desc)}
 														</p>
 													);
@@ -148,20 +174,20 @@ const CFPPage: React.FC = () => {
 											</div>
 
 											{cat.links && cat.links.length > 0 && (
-												<div className='mt-8 pt-6 border-t border-gray-100'>
-													<h5 className='text-sm font-bold text-gray-500 mb-3 uppercase tracking-wider'>
-														Download Templates
+												<div className='mt-8 pt-6 border-t-2 border-lab-black/20'>
+													<h5 className='text-sm font-bold text-lab-black mb-3 uppercase tracking-wider font-mono'>
+														Download Templates:
 													</h5>
-													<div className='flex gap-2 flex-wrap'>
+													<div className='flex gap-3 flex-wrap'>
 														{cat.links.map((link, lIdx) => (
 															<a
 																key={lIdx}
 																href={link.url}
 																target='_blank'
 																rel='noopener noreferrer'
-																className='px-3 py-1 border border-gray-300 rounded text-xs hover:bg-lab-orange hover:text-white hover:border-lab-orange transition-colors flex items-center gap-1'
+																className='px-3 py-1.5 border-2 border-lab-black text-lab-black rounded-lg text-xs font-bold hover:bg-lab-black hover:text-lab-lime transition-colors flex items-center gap-1 font-mono'
 															>
-																<Download size={12} />
+																<Download size={14} />
 																{link.label}
 															</a>
 														))}
@@ -170,53 +196,49 @@ const CFPPage: React.FC = () => {
 											)}
 										</div>
 									</div>
-
-									{cat.specs && (
-										<div className='bg-gray-50 p-6 rounded-2xl border border-gray-100'>
-											<h4 className='font-bold text-gray-900 mb-4 flex items-center gap-2'>
-												<ExternalLink size={18} /> Specifications
-											</h4>
-											<ul className='space-y-3 text-sm text-gray-600'>
-												{cat.specs.map((spec, i) => (
-													<li key={i} className='flex gap-2'>
-														<span className='text-lab-orange'>•</span>
-														<span>{spec}</span>
-													</li>
-												))}
-											</ul>
-										</div>
-									)}
 								</div>
 							</div>
+						</div>
+					</div>
+				))}
+			</div>
+
+			{/* Topics */}
+			<div className='w-full min-h-[100dvh] snap-start flex flex-col items-center justify-center px-4 md:px-20 py-24'>
+				<h3 className='font-mono font-bold text-3xl md:text-5xl text-white mb-16 text-center tracking-widest leading-tight'>
+					{CONTENT.cfpSection.topicsTitle}
+				</h3>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl w-full'>
+					{CONTENT.cfpSection.topics.map((topic, idx) => (
+						<div
+							key={idx}
+							className='p-8 bg-[#D9D9D9] text-lab-black transition-transform hover:-translate-y-1 relative'
+							style={{
+								clipPath: 'polygon(0 0, 100% 0, 100% calc(100% - 30px), calc(100% - 30px) 100%, 30px 100%, 0 calc(100% - 30px))',
+							}}
+						>
+							<h4 className='font-bold font-mono text-xl mb-2'>{topic.en}</h4>
+							<p className='text-lab-black font-medium mb-4'>{topic.ch}</p>
+
+							{'details' in topic && topic.details && Array.isArray(topic.details) && (
+								<ul className='list-disc pl-5 mt-2 space-y-2 text-sm md:text-base font-medium text-lab-black/90'>
+									{topic.details.map((detail, dIdx) => (
+										<li key={dIdx}>{detail}</li>
+									))}
+								</ul>
+							)}
 						</div>
 					))}
 				</div>
 
-				{/* Topics */}
-				<div className='mb-24 mt-24'>
-					<h3 className='font-pixel text-3xl text-lab-orange mb-10 text-center'>{CONTENT.cfpSection.topicsTitle}</h3>
-					<div className='grid grid-cols-1 md:grid-cols-2 gap-6'>
-						{CONTENT.cfpSection.topics.map((topic, idx) => (
-							<div
-								key={idx}
-								className='p-6 border-l-4 border-lab-orange bg-gray-50 hover:bg-white hover:shadow-md transition-all'
-							>
-								<h4 className='font-bold text-lg mb-2 text-lab-dark'>{topic.en}</h4>
-								<p className='text-gray-600 font-medium mb-3'>{topic.ch}</p>
-
-								{'details' in topic && topic.details && Array.isArray(topic.details) && (
-									<ul className='list-disc pl-5 mt-2 space-y-1 text-sm text-gray-700'>
-										{topic.details.map((detail, dIdx) => (
-											<li key={dIdx}>{detail}</li>
-										))}
-									</ul>
-								)}
-							</div>
-						))}
+				<div className='w-full max-w-5xl mt-24 mb-12'>
+					<div className='bg-lab-pink text-white font-mono font-bold text-center py-4 px-6 rounded-md tracking-wider text-sm md:text-base uppercase shadow-xl mx-auto'>
+						NOTE: 所有投稿論文皆採用 ACM SIGCHI 格式規範，截稿時間為台灣時間 (GMT+8) 23:59。
 					</div>
 				</div>
 			</div>
 		</section>
 	);
 };
+
 export default CFPPage;
