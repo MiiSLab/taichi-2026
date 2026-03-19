@@ -11,80 +11,101 @@ const HomePage: React.FC = () => {
 		<>
 			{/* HERO SECTION */}
 			<section className='relative w-full min-h-screen bg-lab-lime flex flex-col justify-center items-center px-4 overflow-hidden text-center pt-16'>
-				<div className='z-10 flex flex-col items-center max-w-5xl w-full'>
+				<div className='z-10 flex flex-col items-center max-w-7xl w-full'>
 					<img
 						src='/images/home_bg.png'
 						alt='Big Bang Futures'
-						className='w-[90%] md:w-[70%] max-w-3xl mb-8 object-contain drop-shadow-xl'
+						className='w-[90%] md:w-[85%] max-w-5xl mb-8 object-contain drop-shadow-xl'
 					/>
 
-					<div className='flex justify-center gap-12 mt-8 text-lab-black font-bold text-sm md:text-base'>
-						<div className='flex flex-col items-center gap-2'>
-							<div className='w-4 h-4 bg-lab-pink rounded-full shadow-[0_0_10px_rgba(255,0,102,0.6)]'></div>
-							<div className='font-mono text-center'>
-								AUG
-								<br />
-								4/Tue
-							</div>
-							<div className='text-xs font-mono uppercase mt-2 opacity-80'>VENUE 1</div>
+					<div className='relative mt-16 md:mt-24 max-w-[876px] w-full mx-auto pb-12 px-8'>
+						{/* TIMELINE GRAPHIC (Line + Dots) */}
+						<div className='relative w-full h-4 flex items-center mb-6'>
+							{/* The Line */}
+							<div className='absolute left-0 right-0 h-[2px] bg-[#F7616C] z-0'></div>
+							
+							{/* The Dots */}
+							<div className='absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'></div>
+							<div className='absolute left-[31.7%] top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'></div>
+							<div className='absolute left-[66.6%] top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'></div>
+							<div className='absolute left-[100%] top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'></div>
 						</div>
-						<div className='flex flex-col items-center gap-2'>
-							<div className='w-4 h-4 bg-lab-pink rounded-full shadow-[0_0_10px_rgba(255,0,102,0.6)]'></div>
-							<div className='font-mono text-center'>
-								AUG
-								<br />
-								5/Wed
+
+						{/* TEXT COLUMNS */}
+						<div className='relative w-full text-black font-mono h-24'>
+							<div className='absolute left-0 top-0 -translate-x-1/2 flex flex-col items-center w-32'>
+								<div className='text-xl md:text-2xl font-bold'>8/3</div>
+								<div className='text-sm md:text-lg'>APMAR</div>
 							</div>
-							<div className='text-xs font-mono uppercase text-center mt-2 opacity-80'>
-								VENUE 1<br />
-								VENUE 2
+							
+							<div className='absolute left-[31.7%] top-0 -translate-x-1/2 flex flex-col items-center w-32'>
+								<div className='text-xl md:text-2xl font-bold'>8/4</div>
+								<div className='text-sm md:text-lg'>APMAR</div>
 							</div>
-						</div>
-						<div className='flex flex-col items-center gap-2'>
-							<div className='w-4 h-4 bg-lab-pink rounded-full shadow-[0_0_10px_rgba(255,0,102,0.6)]'></div>
-							<div className='font-mono text-center'>
-								AUG
-								<br />
-								6/Thu
+							
+							<div className='absolute left-[66.6%] top-0 -translate-x-1/2 flex flex-col items-center w-48'>
+								<div className='text-xl md:text-2xl font-bold'>8/5</div>
+								<div className='text-sm md:text-lg text-center leading-tight mt-1'>
+									TAICHI BIG BANG
+									<br />
+									互動夜市
+								</div>
 							</div>
-							<div className='text-xs font-mono uppercase mt-2 opacity-80'>VENUE 2</div>
+							
+							<div className='absolute left-[100%] top-0 -translate-x-1/2 flex flex-col items-center w-40'>
+								<div className='text-xl md:text-2xl font-bold'>8/6</div>
+								<div className='text-sm md:text-lg text-center'>TAICHI ISAT</div>
+							</div>
 						</div>
 					</div>
 				</div>
 			</section>
 
-			<div className='bg-starry w-full min-h-screen flex flex-col'>
-				{/* COUNTDOWN & SUBTITLE */}
-				<section className='py-20 flex flex-col items-center text-center px-4'>
-					<div className='text-lab-pink font-pixel tracking-widest mb-4 uppercase text-sm md:text-base'>
-						TILL THE SUBMISSION DEADLINE
-					</div>
+			<div className='bg-black w-full min-h-screen flex flex-col'>
+				{/* THEME (Intro) AND COUNTDOWN */}
+				<section
+					id='theme'
+					className="bg-[url('/images/cfp_bg.png')] bg-cover bg-center bg-fixed w-full min-h-[100dvh] flex flex-col items-center justify-center py-20 px-6 md:px-20 relative"
+				>
+					{/* Dark overlay for text readability */}
+					<div className='absolute inset-0 bg-black/40 z-0'></div>
 
-					<CountdownTimer />
+					<div className='relative z-10 flex flex-col items-center w-full max-w-6xl'>
+						<div className='text-[#FF004D] font-mono font-bold tracking-widest mb-6 md:mb-8 uppercase text-lg md:text-xl'>
+							TIL THE SUBMITION DEADLINE
+						</div>
 
-					<button className='bg-lab-pink text-white font-bold py-3 px-12 rounded-full hover:bg-white hover:text-lab-pink transition-colors text-lg tracking-wider border-2 border-transparent hover:border-lab-pink'>
-						SUBMIT NOW
-					</button>
+						<div className='mb-12 transform scale-75 md:scale-100'>
+							<CountdownTimer />
+						</div>
 
-					<div className='mt-20 text-white font-mono text-2xl md:text-3xl tracking-widest max-w-3xl px-6 uppercase opacity-90'>
-						TAICHI 2026's Main Theme — Big Bang! Futures!
-					</div>
-				</section>
+						<button className='bg-[#FF004D] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF004D] transition-colors text-lg md:text-xl tracking-wider mb-20 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
+							SUBMIT NOW!
+						</button>
 
-				{/* THEME (Intro) */}
-				<section id='theme' className='py-12 px-6 md:px-20'>
-					<div className='max-w-4xl mx-auto bg-white text-black rounded-xl p-8 md:p-12 shadow-2xl'>
-						<h2 className='text-4xl md:text-5xl font-pixel text-lab-lime bg-lab-black inline-block px-6 py-3 rounded-lg mb-8 uppercase whitespace-pre-line shadow-md'>
-							{CONTENT.theme.title}
-						</h2>
-						<div className='grid md:grid-cols-2 gap-8 text-lg leading-relaxed font-medium'>
-							<p>{CONTENT.theme.p1}</p>
-							<p>{CONTENT.theme.p2}</p>
+						<div className='w-full flex flex-col gap-10 font-mono text-white/90 leading-loose text-sm md:text-base'>
+							<h2 className='text-3xl md:text-5xl text-center mb-8 md:mb-12 tracking-widest font-normal drop-shadow-lg text-white'>
+								TAICHI'26's Main Theme -- Big Bang! Futures!
+							</h2>
+
+							<div className='flex flex-col gap-12 max-w-5xl mx-auto'>
+								<p className='text-justify tracking-wide md:leading-[2.5]'>
+									未來將不再以低語傳遞，而是以爆炸式發生。本次大會主題 Big Bang! Futures,
+									源自宇宙霹靂般的起始瞬間——爆炸、火花與生命的誕生，也象徵想法快速擴散、改變世界的一刻。我們將這個瞬間帶進城市，化為一個可以逛、可以玩、可以一起參與的未來現場，透過互動裝置、實驗作品與夜市般的體驗空間，邀請民眾親身感受並討論科技如何影響未來生活與彼此之間的關係，讓多重未來在連鎖爆發中持續
+									Big Bang!
+								</p>
+
+								<p className='text-justify tracking-wide md:leading-[2.5]'>
+									The future doesn't whisper; it bangs! The theme Big Bang! Futures is inspired by the universe’s first
+									spark—when explosion, energy, and life began. We bring this moment into the city as a future you can
+									walk through, play with, and experience together. Through interactive works, experimental pieces, and a
+									night-market atmosphere, the public is invited to explore how technology shapes future ways of living
+									and relating—letting us BANG into multiple futures again and again!
+								</p>
+							</div>
 						</div>
 					</div>
 				</section>
-
-				{/* Theme Intro Note: Ensure next section handles any padding appropriately */}
 
 				{/* VENUE Section */}
 				<section id='venue'>
@@ -92,9 +113,9 @@ const HomePage: React.FC = () => {
 				</section>
 
 				{/* ORGANIZATION Section */}
-				<section id='organization'>
+				{/* <section id='organization'>
 					<OrganizationPage />
-				</section>
+				</section> */}
 			</div>
 		</>
 	);
