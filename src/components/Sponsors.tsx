@@ -4,43 +4,13 @@ import { CONTENT } from '../content';
 const Sponsors: React.FC = () => {
 	const { organizers, coOrganizers, sponsors, organizerTitle, sponsorTitle } = CONTENT.sponsorsSection;
 
-	const LogoPlaceholder = ({ name, size }: { name: string; size?: string }) => (
-		<div
-			className={`
-            bg-gray-100 border border-gray-200 flex items-center justify-center text-center p-2 rounded-md transition-all hover:bg-white hover:border-lab-orange
-            ${size === 'large' ? 'h-32 w-64 text-2xl' : 'h-24 w-48 text-xl'}
-        `}
-		>
-			<span className='font-pixel text-gray-400'>{name}</span>
-		</div>
-	);
-
-	const LogoItem = ({ item }: { item: { name: string; logo: string; size: string } }) => (
-		<div className='flex items-center justify-start group'>
-			{/* Use img tag here, but fall back gracefully if not found. For now, using placeholder logic */}
-			<img
-				src={item.logo}
-				alt={item.name}
-				onError={(e) => {
-					e.currentTarget.style.display = 'none';
-					e.currentTarget.parentElement?.classList.add('fallback-mode');
-				}}
-				className='h-auto max-h-24 w-auto object-contain hidden'
-			/>
-			{/* For now, purely Placeholder until user uploads images */}
-			<LogoPlaceholder name={item.name} size={item.size} />
-		</div>
-	);
-
-	// Actual Image Renderer that shows Placeholder if error
-	const ImageOrPlaceholder = ({ item }: { item: { name: string; logo: string; size: string; className?: string } }) => {
+	// Actual Image Renderer that robustly handles fallbacks
+	const ImageBlock = ({ item }: { item: { name: string; logo: string; size: string } }) => {
 		const [imgError, setImgError] = React.useState(false);
 
-		// Helper to construct correct path with Base URL
 		const getSafePath = (path: string) => {
 			if (!path) return '';
 			if (path.startsWith('http')) return path; // External link
-			// Prevent double slash if BASE_URL ends with / and path starts with /
 			const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL.slice(0, -1) : import.meta.env.BASE_URL;
 			const cleanPath = path.startsWith('/') ? path : `/${path}`;
 			return `${base}${cleanPath}`;
@@ -49,47 +19,60 @@ const Sponsors: React.FC = () => {
 		const imgSrc = getSafePath(item.logo);
 
 		if (imgError || !item.logo) {
-			return <LogoPlaceholder name={item.name} size={item.size} />;
+			// Placeholder
+			return (
+				<div className='bg-[#F5F5F5] border border-gray-200 flex items-center justify-center text-center p-4 rounded-xl transition-all h-24 w-48'>
+					<span className='font-mono text-xs text-gray-500 font-bold'>{item.name}</span>
+				</div>
+			);
 		}
 
 		return (
 			<div
-				className={`transition-transform duration-300 hover:scale-105 flex items-center justify-center bg-transparent rounded-3xl hover:bg-black/5 transition-all duration-300 [&>img]:mix-blend-multiply  ${item.className || ''}`}
+				className='bg-[#F7F7F7] rounded-xl px-6 py-4 flex items-center justify-center transition-transform duration-300 hover:-translate-y-1 shadow-sm'
 				title={item.name}
 			>
 				<img
 					src={imgSrc}
 					alt={item.name}
 					onError={() => setImgError(true)}
-					className={`object-contain ${item.size === 'large' ? 'h-32' : 'h-20'}`}
+					className='object-contain h-16 md:h-16 xl:h-20 mix-blend-darken'
 				/>
 			</div>
 		);
 	};
 
 	return (
-		<section className='py-24 px-6 md:px-20 bg-transparent border-t border-white/10'>
-			<div className='max-w-7xl mx-auto space-y-24'>
+		<section className='py-20 px-10 md:px-16 bg-black min-h-screen'>
+			<div className='max-w-4xl mx-auto flex flex-col items-center'>
 				{/* ORGANIZERS SECTION */}
-				<div>
-					<h2 className='font-pixel text-4xl md:text-5xl mb-12 text-lab-lime uppercase drop-shadow-md'>{organizerTitle}</h2>
-					<div className='bg-white rounded-xl p-8 md:p-12 shadow-2xl'>
-						{/* Host */}
-						<div className='mb-12 border-b border-gray-200 pb-12 last:border-0 last:pb-0'>
-							<h3 className='font-pixel text-2xl text-lab-pink mb-8 tracking-widest uppercase'>Main Organizers</h3>
-							<div className='flex flex-wrap gap-x-16 gap-y-8 items-center'>
+				<div className='w-full mb-24'>
+					{/* Title */}
+					<h2 className='font-mono md:font-pixel text-4xl md:text-5xl font-bold mb-12 text-lab-lime uppercase tracking-[0.2em] text-center'>
+						{organizerTitle}
+					</h2>
+
+					<div className='flex flex-col gap-8 w-full'>
+						{/* Main Organizers Card */}
+						<div className='bg-white rounded-[20px] p-6 md:p-8 w-full shadow-2xl'>
+							<h3 className='font-mono text-xs md:text-sm font-bold tracking-widest uppercase mb-6 text-black'>
+								Main Organizers
+							</h3>
+							<div className='flex flex-wrap gap-4'>
 								{organizers.map((item, idx) => (
-									<ImageOrPlaceholder key={idx} item={item} />
+									<ImageBlock key={idx} item={item} />
 								))}
 							</div>
 						</div>
 
-						{/* Co-Host */}
-						<div>
-							<h3 className='font-pixel text-2xl text-lab-black mb-8 tracking-widest uppercase'>Co-Organizers</h3>
-							<div className='flex flex-wrap gap-x-16 gap-y-8 items-center'>
+						{/* Co-Organizers Card */}
+						<div className='bg-white rounded-[20px] p-6 md:p-8 w-full shadow-2xl'>
+							<h3 className='font-mono text-xs md:text-sm font-bold tracking-widest uppercase mb-6 text-black'>
+								Co-Organizers
+							</h3>
+							<div className='flex flex-wrap gap-4'>
 								{coOrganizers.map((item, idx) => (
-									<ImageOrPlaceholder key={idx} item={item} />
+									<ImageBlock key={idx} item={item} />
 								))}
 							</div>
 						</div>
@@ -97,12 +80,17 @@ const Sponsors: React.FC = () => {
 				</div>
 
 				{/* SPONSORS SECTION */}
-				<div>
-					<h2 className='font-pixel text-4xl md:text-5xl mb-12 text-lab-lime uppercase drop-shadow-md'>{sponsorTitle}</h2>
-					<div className='bg-white rounded-xl p-8 md:p-12 shadow-2xl'>
-						<div className='flex flex-wrap gap-x-16 gap-y-8 items-center'>
+				<div className='w-full'>
+					{/* Title */}
+					<h2 className='font-mono md:font-pixel text-4xl md:text-5xl font-bold mb-12 text-lab-lime uppercase tracking-[0.2em] text-center'>
+						{sponsorTitle}
+					</h2>
+
+					{/* Sponsors Card */}
+					<div className='bg-white rounded-[20px] p-6 md:p-8 w-full shadow-2xl'>
+						<div className='flex flex-wrap gap-4'>
 							{sponsors.map((item, idx) => (
-								<ImageOrPlaceholder key={idx} item={item} />
+								<ImageBlock key={idx} item={item} />
 							))}
 						</div>
 					</div>

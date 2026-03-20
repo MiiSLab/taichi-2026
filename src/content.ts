@@ -431,13 +431,13 @@ export const CONTENT = {
 			{
 				name: '國立臺灣科技大學',
 				logo: '/logos/NTUST.png',
-				size: 'medium',
+				size: 'small',
 				className: 'px-6 py-4 rounded-2xl shadow-xl',
 			},
 			{
 				name: '國立臺北科技大學',
 				logo: '/logos/NTUT.png',
-				size: 'medium',
+				size: 'S',
 				className: 'px-6 py-4 rounded-2xl shadow-xl',
 			},
 		],

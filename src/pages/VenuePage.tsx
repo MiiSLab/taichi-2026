@@ -18,20 +18,22 @@ const VenuePage: React.FC = () => {
 							<div className='flex flex-col flex-1'>
 								{/* Pill Badge */}
 								<div className='mb-10'>
-									<div className='inline-flex items-center px-6 py-2 bg-[#FF004D] text-white font-mono text-lg md:text-xl font-bold tracking-widest rounded-full whitespace-nowrap shadow-lg shadow-[#FF004D]/30'>
+									<div className='inline-flex items-center px-6 md:px-12 py-2 bg-[#FF004D] text-white font-mono text-lg md:text-xl font-bold tracking-widest rounded-full whitespace-nowrap shadow-lg shadow-[#FF004D]/30'>
 										{idx === 0 ? '8/5' : '8/6'} &nbsp; [{venue.day.toUpperCase()}]
 									</div>
 								</div>
 
 								{/* Titles */}
 								<div className='flex flex-col gap-8 flex-1 justify-center mb-8'>
-									<h3 className='font-mono font-bold text-xl text-white tracking-widest leading-snug break-all md:break-normal'>
+									<h3 className='font-mono font-bold text-xl md:text-3xl text-white tracking-widest leading-snug break-all md:break-normal'>
 										{idx === 0 ? 'TAICHI BIG BANG 互動夜市' : 'TAICHI ISAT'}
 									</h3>
 
 									<div className='flex flex-col gap-4 font-mono mt-2 md:mt-4'>
-										<p className='text-xl md:text-2xl text-white font-bold tracking-wider'>{venue.name}</p>
-										<p className='text-white/80 text-sm md:text-[15px] max-w-sm tracking-wide leading-relaxed'>
+										<p className='text-white text-sm md:text-base max-w-sm tracking-wide leading-relaxed'>
+											{venue.name}
+										</p>
+										<p className='text-white text-sm md:text-base max-w-sm tracking-wide leading-relaxed'>
 											{venue.address}
 										</p>
 									</div>
