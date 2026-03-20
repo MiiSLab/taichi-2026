@@ -71,15 +71,15 @@ const HomePage: React.FC = () => {
 					<WarpBackground />
 
 					<div className='relative z-10 flex flex-col items-center w-full max-w-6xl'>
-						<div className='text-[#FF004D] font-mono font-bold tracking-widest mb-6 md:mb-8 uppercase text-lg md:text-xl'>
+						<div className='text-[#FF0033] font-mono font-bold tracking-widest mb-6 md:mb-8 uppercase text-lg md:text-xl'>
 							TIL THE SUBMITION DEADLINE
 						</div>
 
-						<div className='mb-12 transform scale-75 md:scale-100'>
+						<div className='mb-6 transform scale-75 md:scale-100'>
 							<CountdownTimer />
 						</div>
 
-						<button className='bg-[#FF004D] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF004D] transition-colors text-lg md:text-xl tracking-wider mb-20 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
+						<button className='bg-[#FF0033] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF0033] transition-colors text-lg md:text-xl tracking-wider mb-10 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
 							SUBMIT NOW!
 						</button>
 

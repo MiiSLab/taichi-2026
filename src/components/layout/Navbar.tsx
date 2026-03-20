@@ -22,12 +22,12 @@ const Navbar: React.FC = () => {
 
 	return (
 		<>
-			<nav className='fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 px-6 py-4 flex items-center justify-between transition-all duration-300 bg-white text-lab-black shadow-lg rounded-full'>
+			<nav className='fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 px-4 py-2 flex items-center justify-between transition-all duration-300 bg-white text-lab-black shadow-lg rounded-full'>
 				{/* Left Logo */}
 				<div className='flex-1 flex justify-start'>
 					<Link
 						to='/'
-						className='text-2xl font-pixel tracking-widest uppercase cursor-pointer hover:opacity-80'
+						className='text-2xl font-pixel tracking-widest uppercase cursor-pointer hover:opacity-80 px-4'
 						onClick={handleNav}
 					>
 						{CONTENT.nav.logo}

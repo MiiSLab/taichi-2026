@@ -61,9 +61,9 @@ const parseText = (text: string) => {
 
 const CFPPage: React.FC = () => {
 	return (
-		<section className='bg-black w-full h-[100dvh] overflow-y-auto snap-y snap-proximity relative text-white scroll-smooth'>
+		<section className='bg-black w-full relative text-white'>
 			{/* Top Hero Section */}
-			<div className='bg-black w-full min-h-[100dvh] snap-start flex flex-col items-center justify-center px-6 md:px-20 py-24 relative overflow-hidden'>
+			<div className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center px-6 md:px-20 py-24 relative overflow-hidden'>
 				<WarpBackground />
 
 				<div className='flex flex-col items-center max-w-4xl relative z-10'>
@@ -73,7 +73,10 @@ const CFPPage: React.FC = () => {
 					<h2 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]'>
 						CALL FOR PAPERS
 					</h2>
-					<p className='font-pixel text-xl md:text-2xl text-lab-pink text-center mb-12 tracking-widest drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'>
+					<p
+						className='font-pixel text-3xl text-lab-pink text-center mb-12 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'
+						style={{ letterSpacing: '0.3em' }}
+					>
 						{CONTENT.cfpSection.subtitle}
 					</p>
 
@@ -95,9 +98,9 @@ const CFPPage: React.FC = () => {
 					return (
 						<div
 							key={cat.id}
-							className='w-full min-h-[100dvh] snap-start flex flex-col items-center px-4 md:px-20 py-24 relative bg-black'
+							className='w-full min-h-[100dvh] flex flex-col items-center px-4 md:px-20 py-24 relative bg-black'
 						>
-							<div className='w-full max-w-5xl bg-lab-lime text-lab-black rounded-lg shadow-2xl pt-4 pb-12 px-12 md:px-24 relative flex-shrink-0 mb-16'>
+							<div className='max-w-6xl bg-lab-lime text-lab-black rounded-lg shadow-2xl pt-4 pb-12 px-12 md:px-24 relative flex-shrink-0 mb-16'>
 								{/* Corner Screws/Dots */}
 								<div className='absolute top-2 left-2 w-6 h-6 bg-[#525252] rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] z-10 flex items-center justify-center'>
 									<div className='w-5 h-[2px] bg-black/90 rotate-45 absolute'></div>
@@ -172,37 +175,36 @@ const CFPPage: React.FC = () => {
 				</h3>
 
 				<div className='grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 max-w-7xl w-full relative z-10'>
-					{/* Decorative green dots as requested in Figma */}
-					<div className='hidden md:block absolute left-[-4rem] top-[8%] w-[50px] h-[50px] bg-[#A8F020] rounded-full z-0'></div>
-					<div className='hidden md:block absolute left-[45%] top-[25%] w-[50px] h-[50px] bg-[#A8F020] rounded-full z-0'></div>
+					{/* Left decorative dot */}
+					<div className='hidden md:block absolute left-[-3rem] top-[13%] w-[36px] h-[36px] bg-[#A8F020] rounded-full z-20'></div>
 
 					{[
-						{ en: 'Usability and User Experience', cut: 'BR', hasDot: true },
-						{ en: 'Interaction Techniques and Devices', cut: 'BL' },
-						{ en: 'Understanding Users and Human Behavior', cut: 'TR' },
-						{ en: 'Design Methods and Processes', cut: 'TL' },
-						{ en: 'Mobile and Ubiquitous Computing', cut: 'BR' },
-						{ en: 'Virtual, Augmented, Mixed, and Extended Reality (VR, AR, MR, XR)', cut: 'BL', tall: true },
-						{ en: 'Human-AI Interaction', cut: 'TL' },
-						{ en: 'DECORATION', cut: 'NONE' },
-						{ en: 'More-than-Human Design', cut: 'TR' },
-						{ en: 'Ethics, Accessibility, and Inclusive Design', cut: 'TL' },
-						{ en: 'Specific Application Areas', cut: 'NONE' },
-						{ en: 'Social Computing and Collaboration', cut: 'NONE' },
+						{ en: 'Usability and User Experience', cut: 'BR', row: 0 },
+						{ en: 'Interaction Techniques and Devices', cut: 'BL', row: 0 },
+						{ en: 'Understanding Users and Human Behavior', cut: 'TR', row: 1 },
+						{ en: 'Design Methods and Processes', cut: 'TL', row: 1 },
+						{ en: 'Mobile and Ubiquitous Computing', cut: 'BR', row: 2 },
+						{ en: 'Virtual, Augmented, Mixed, and Extended Reality (VR, AR, MR, XR)', cut: 'BL', row: 2, tall: true },
+						{ en: 'Human-AI Interaction', cut: 'TR', row: 3 },
+						{ en: 'DECORATION', cut: 'NONE', row: 3 },
+						{ en: 'More-than-Human Design', cut: 'TL', row: 4 },
+						{ en: 'Ethics, Accessibility, and Inclusive Design', cut: 'BR', row: 4 },
+						{ en: 'Specific Application Areas', cut: 'NONE', row: 5 },
+						{ en: 'Social Computing and Collaboration', cut: 'NONE', row: 5 },
 					].map((slot, idx) => {
 						if (slot.en === 'DECORATION') {
 							return (
-								<div key='deco' className='flex items-center justify-center py-4 z-0 relative'>
-									{/* The Union of green ellipses from Figma */}
+								<div key='deco' className='hidden md:flex items-center justify-center relative'>
+									{/* Green pinwheel decoration from Figma */}
 									<div
-										className='grid grid-cols-2 gap-1 w-[124px] h-[124px] transform -rotate-12 absolute'
-										style={{ left: '10%' }}
+										className='grid grid-cols-2 gap-2 w-[110px] h-[110px] transform rotate-12 absolute'
+										style={{ left: '15%' }}
 									>
-										<div className='w-full h-full bg-[#A8F020] rounded-[30px] flex items-center justify-center'>
-											<div className='w-[50px] h-[50px] bg-black rounded-full'></div>
+										<div className='w-full h-full bg-[#A8F020] rounded-[24px] flex items-center justify-center'>
+											<div className='w-[44px] h-[44px] bg-black rounded-full'></div>
 										</div>
-										<div className='w-full h-full bg-[#A8F020] rounded-[30px] flex items-center justify-center'>
-											<div className='w-[50px] h-[50px] bg-black rounded-full'></div>
+										<div className='w-full h-full bg-[#A8F020] rounded-[24px] flex items-center justify-center'>
+											<div className='w-[44px] h-[44px] bg-black rounded-full'></div>
 										</div>
 									</div>
 								</div>
@@ -213,47 +215,38 @@ const CFPPage: React.FC = () => {
 						if (!topic) return <div key={idx} className='hidden' />;
 
 						return (
-							<div key={idx} className={`relative h-full ${slot.tall ? 'row-span-2' : ''}`}>
-								<div
-									className={`bg-[#D9D9D9] text-black relative flex flex-col h-full font-roboto rounded-2xl shadow-2xl transition-transform duration-300 hover:-translate-y-1`}
-									style={{
-										padding: slot.cut === 'TL' || slot.cut === 'TR' ? '80px 48px 48px 48px' : slot.cut === 'BL' || slot.cut === 'BR' ? '48px 48px 80px 48px' : '48px 48px',
-										clipPath:
-											slot.cut === 'TL' ? 'polygon(48px 0, 100% 0, 100% 100%, 0 100%, 0 48px)' :
-											slot.cut === 'TR' ? 'polygon(0 0, calc(100% - 48px) 0, 100% 48px, 100% 100%, 0 100%)' :
-											slot.cut === 'BL' ? 'polygon(0 0, 100% 0, 100% 100%, 48px 100%, 0 calc(100% - 48px))' :
-											slot.cut === 'BR' ? 'polygon(0 0, 100% 0, 100% calc(100% - 48px), calc(100% - 48px) 100%, 0 100%)' : 'none'
-									}}
-								>
+							<div
+								key={idx}
+								className={`rounded-2xl bg-[#D9D9D9] text-black flex flex-col font-roboto shadow-2xl transition-transform duration-300 hover:-translate-y-1 p-10 ${slot.tall ? 'row-span-2' : ''}`}
+							>
+								<h4 className='font-bold text-base md:text-lg leading-snug mb-1 tracking-tight'>{topic.en}</h4>
+								<p className='font-bold text-sm md:text-base leading-snug mb-4 opacity-70'>{topic.ch}</p>
 
-								<div className='relative z-10 flex flex-col flex-1'>
-									<h4 className='font-bold text-base md:text-lg leading-snug mb-2 tracking-tight'>{topic.en}</h4>
-									<p className='font-bold text-sm md:text-base leading-snug mb-4'>{topic.ch}</p>
-
-									{'details' in topic && topic.details && Array.isArray(topic.details) && (
-										<ul className='space-y-2 text-xs md:text-sm font-medium text-black/90 tracking-tight'>
-											{topic.details.map((detail, dIdx) => (
-												<li key={dIdx} className='flex gap-3 items-start'>
-													<span className='mt-[4px] text-black font-black text-xs'>•</span>
-													<span className='leading-normal'>{detail}</span>
-												</li>
-											))}
-										</ul>
-									)}
-								</div>
-								</div>
-								{/* Center Green Dot rendered on the hasDot item (Top-Left card) */}
-								{'hasDot' in slot && slot.hasDot && (
-									<div className='hidden md:block absolute w-[48px] h-[48px] bg-lab-lime rounded-full z-20 pointer-events-none' style={{ right: '-48px', bottom: '-48px' }}></div>
+								{'details' in topic && topic.details && Array.isArray(topic.details) && (
+									<ul className='space-y-2 text-xs md:text-sm font-medium text-black/80 tracking-tight'>
+										{topic.details.map((detail, dIdx) => (
+											<li key={dIdx} className='flex gap-2 items-start'>
+												<span className='mt-[3px] text-black font-black text-xs flex-shrink-0'>•</span>
+												<span className='leading-normal'>{detail}</span>
+											</li>
+										))}
+									</ul>
 								)}
 							</div>
 						);
 					})}
+
+					{/* Green dot centered at the BR/BL junction of row 0 and TR/TL of row 1  */}
+					{/* Positioned between row 1 bottom-right and row 2 top-left in the grid gap */}
+					<div
+						className='hidden md:block absolute w-[40px] h-[40px] bg-[#A8F020] rounded-full z-20 pointer-events-none'
+						style={{ left: 'calc(50% - 20px)', top: 'calc(25% - 20px)' }}
+					></div>
 				</div>
 
 				<div className='w-full max-w-5xl mt-32 mb-12 relative z-10'>
 					<div className='bg-lab-pink text-white font-roboto font-bold text-center py-4 px-6 rounded-md tracking-wider text-sm md:text-base uppercase shadow-xl mx-auto'>
-						NOTE: 所有投稿論文皆採用 ACM SIGCHI 格式規範，截稿時間為台灣時間 (GMT+8) 23:59。
+						NOTE: 所有投稿必須遵循 ACM SIGCHI 格式規範，並透過大會指定的 CMT 系統進行上傳。
 					</div>
 				</div>
 			</div>

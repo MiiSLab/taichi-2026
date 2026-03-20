@@ -36,25 +36,26 @@ const CountdownTimer: React.FC = () => {
 	}, [targetDate]);
 
 	return (
-		<div className='flex items-center justify-center gap-2 md:gap-4 text-lab-pink font-pixel text-6xl md:text-8xl lg:text-9xl tracking-widest drop-shadow-[0_0_20px_rgba(255,0,102,0.8)] mb-8'>
+		<div className='flex items-center justify-center gap-2 md:gap-4 text-lab-pink font-reddit text-6xl md:text-8xl lg:text-9xl tracking-widest drop-shadow-[0_0_20px_rgba(255,0,102,0.8)]'>
 			<div className='flex flex-col items-center'>
 				<span>{timeLeft.days}</span>
-				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>Days</span>
+				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>
+					Days
+				</span>
 			</div>
 			<span className='mb-8 md:mb-12'>:</span>
 			<div className='flex flex-col items-center'>
 				<span>{timeLeft.hours}</span>
-				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>Hours</span>
+				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>
+					Hours
+				</span>
 			</div>
 			<span className='mb-8 md:mb-12'>:</span>
 			<div className='flex flex-col items-center'>
 				<span>{timeLeft.minutes}</span>
-				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>Mins</span>
-			</div>
-			<span className='mb-8 md:mb-12'>:</span>
-			<div className='flex flex-col items-center'>
-				<span>{timeLeft.seconds}</span>
-				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>Secs</span>
+				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>
+					Mins
+				</span>
 			</div>
 		</div>
 	);

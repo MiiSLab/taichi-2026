@@ -36,7 +36,7 @@ const Sponsors: React.FC = () => {
 					src={imgSrc}
 					alt={item.name}
 					onError={() => setImgError(true)}
-					className='object-contain h-16 md:h-16 xl:h-20 mix-blend-darken'
+					className='object-contain h-16 md:h-16 mix-blend-darken'
 				/>
 			</div>
 		);
