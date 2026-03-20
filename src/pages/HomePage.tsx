@@ -88,7 +88,7 @@ const HomePage: React.FC = () => {
 								TAICHI'26's Main Theme -- Big Bang! Futures!
 							</h2>
 
-							<div className='flex flex-col gap-12 max-w-5xl mx-auto'>
+							<div className='flex flex-col gap-12 max-w-7xl mx-auto'>
 								<p className='text-justify tracking-wide '>
 									未來將不再以低語傳遞，而是以爆炸式發生。本次大會主題 Big Bang! Futures,
 									源自宇宙霹靂般的起始瞬間——爆炸、火花與生命的誕生，也象徵想法快速擴散、改變世界的一刻。我們將這個瞬間帶進城市，化為一個可以逛、可以玩、可以一起參與的未來現場，透過互動裝置、實驗作品與夜市般的體驗空間，邀請民眾親身感受並討論科技如何影響未來生活與彼此之間的關係，讓多重未來在連鎖爆發中持續
