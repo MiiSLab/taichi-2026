@@ -58,7 +58,7 @@ const Navbar: React.FC = () => {
 					<Link
 						to='/venue'
 						onClick={handleNav}
-						className='hidden xl:block px-6 py-2 font-bold rounded-full transition-colors bg-lab-black text-white hover:bg-lab-pink whitespace-nowrap'
+						className='hidden xl:block px-6 py-2 font-pixel font-bold rounded-full transition-colors bg-lab-black text-white hover:bg-lab-pink whitespace-nowrap'
 					>
 						{CONTENT.nav.registration}
 					</Link>
