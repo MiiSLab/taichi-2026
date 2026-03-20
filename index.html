@@ -90,23 +90,6 @@
 				background-color: #050505;
 				color: white;
 			}
-			/* Pre-render nav shape before Tailwind CDN loads to prevent FOUC */
-			nav[class*='fixed'] {
-				position: fixed;
-				top: 1rem;
-				left: 50%;
-				transform: translateX(-50%);
-				width: 95%;
-				max-width: 80rem;
-				background-color: #ffffff;
-				border-radius: 9999px;
-				box-shadow: 0 10px 25px rgba(0,0,0,0.15);
-				display: flex;
-				align-items: center;
-				justify-content: space-between;
-				padding: 0.5rem 1rem;
-				z-index: 50;
-			}
 			.pixel-text {
 				image-rendering: pixelated;
 			}
@@ -151,6 +134,41 @@
 		</script>
 	</head>
 	<body>
+		<!-- Font loading overlay: hides FOUC until web fonts are ready -->
+		<div id="font-loader" style="
+			position: fixed;
+			inset: 0;
+			background: #050505;
+			z-index: 9999;
+			display: flex;
+			align-items: center;
+			justify-content: center;
+			transition: opacity 0.4s ease;
+		">
+			<div style="
+				font-family: monospace;
+				color: #a8f020;
+				font-size: 1.5rem;
+				letter-spacing: 0.3em;
+				animation: pulse 1s ease-in-out infinite alternate;
+			">TAICHI'26</div>
+		</div>
+		<style>
+			@keyframes pulse {
+				from { opacity: 0.4; }
+				to   { opacity: 1; }
+			}
+		</style>
+		<script>
+			document.fonts.ready.then(function () {
+				var loader = document.getElementById('font-loader');
+				if (loader) {
+					loader.style.opacity = '0';
+					setTimeout(function () { loader.style.display = 'none'; }, 420);
+				}
+			});
+		</script>
+
 		<div id="root"></div>
 		<script type="module" src="/src/index.tsx"></script>
 	</body>

@@ -22,7 +22,7 @@ const Navbar: React.FC = () => {
 
 	return (
 		<>
-			<nav className='fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 px-4 py-2 flex items-center justify-between transition-all duration-300 bg-white text-lab-black shadow-lg rounded-full'>
+			<nav className='fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 px-1 flex items-center justify-between transition-all duration-300 bg-white text-lab-black shadow-lg rounded-full' style={{ borderRadius: '9999px' }}>
 				{/* Left Logo */}
 				<div className='flex-1 flex justify-start'>
 					<Link
