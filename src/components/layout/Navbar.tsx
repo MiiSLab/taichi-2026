@@ -22,7 +22,10 @@ const Navbar: React.FC = () => {
 
 	return (
 		<>
-			<nav className='fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 px-2 py-1 flex items-center justify-between transition-all duration-300 bg-white text-lab-black shadow-lg rounded-full' style={{ borderRadius: '9999px' }}>
+			<nav
+				className='fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 px-2 py-1 flex items-center justify-between transition-all duration-300 bg-white text-lab-black shadow-lg rounded-full'
+				style={{ borderRadius: '9999px' }}
+			>
 				{/* Left Logo */}
 				<div className='flex-1 flex justify-start'>
 					<Link
@@ -42,12 +45,29 @@ const Navbar: React.FC = () => {
 					<Link to='/venue' onClick={handleNav} className='hover:underline'>
 						{CONTENT.nav.venue}
 					</Link>
-					<Link to='/cfp' onClick={handleNav} className='hover:underline'>
-						{CONTENT.nav.cfp}
-					</Link>
-					{/* <Link to='/organization' onClick={handleNav} className='hover:underline'>
-						{CONTENT.nav.organization}
-					</Link> */}
+
+					{/* CFP with hover dropdown */}
+					<div className='relative group'>
+						<Link to='/cfp' onClick={handleNav} className='hover:underline'>
+							{CONTENT.nav.cfp}
+						</Link>
+						{/* Dropdown */}
+						<div className='absolute top-full left-1/2 -translate-x-1/2 pt-3 hidden group-hover:block z-50 min-w-[180px]'>
+							<div className='bg-white rounded-xl shadow-xl border border-black/10 overflow-hidden font-pixel text-sm'>
+								{CONTENT.nav.cfpSubmenu.map((item) => (
+									<Link
+										key={item.hash}
+										to={`/cfp${item.hash}`}
+										onClick={handleNav}
+										className='block px-5 py-3 hover:bg-lab-lime hover:text-black transition-colors whitespace-nowrap text-lab-black border-b border-black/5 last:border-0'
+									>
+										{item.label}
+									</Link>
+								))}
+							</div>
+						</div>
+					</div>
+
 					<span onClick={() => {}} className='opacity-50 cursor-default'>
 						COMPETITION (TBD)
 					</span>
@@ -62,35 +82,33 @@ const Navbar: React.FC = () => {
 					>
 						{CONTENT.nav.registration}
 					</Link>
-					<button className='xl:hidden ml-4' onClick={() => setIsMenuOpen(!isMenuOpen)}>
+					<button className='xl:hidden ml-4 p-2' onClick={() => setIsMenuOpen(!isMenuOpen)}>
 						{isMenuOpen ? <X size={32} /> : <Menu size={32} />}
 					</button>
 				</div>
 			</nav>
 
+			{/* Mobile full-screen menu — z-[48] sits above lime overlay (z-40) but below nav (z-50) */}
 			{isMenuOpen && (
-				<div className='fixed inset-0 bg-lab-pink z-40 flex flex-col items-center justify-center gap-8 text-white font-pixel text-3xl'>
+				<div className='fixed inset-0 bg-lab-pink z-[48] flex flex-col items-center justify-center gap-8 text-white font-pixel text-3xl'>
 					<Link to='/' onClick={handleNav}>
 						{CONTENT.nav.home}
 					</Link>
-					{/* <Link to='/news' onClick={handleNav}>
-						{CONTENT.nav.news}
-					</Link> */}
 					<Link to='/venue' onClick={handleNav}>
 						{CONTENT.nav.venue}
 					</Link>
 					<Link to='/cfp' onClick={handleNav}>
 						{CONTENT.nav.cfp}
 					</Link>
-					{/* <span onClick={handleNav} className='opacity-50 cursor-default'>
-						{CONTENT.nav.program}(TBD)
-					</span> */}
-					{/* <Link to='/organization' onClick={handleNav}>
-						{CONTENT.nav.organization}
-					</Link> */}
-					<span onClick={handleNav} className='opacity-50 cursor-default'>
-						{'COMPETITION'}(TBD)
-					</span>
+					{/* CFP sub-items on mobile */}
+					<div className='flex flex-col items-center gap-4 text-xl opacity-80'>
+						{CONTENT.nav.cfpSubmenu.map((item) => (
+							<Link key={item.hash} to={`/cfp${item.hash}`} onClick={handleNav} className='hover:opacity-100'>
+								{item.label}
+							</Link>
+						))}
+					</div>
+					<span className='opacity-50 cursor-default text-2xl'>COMPETITION (TBD)</span>
 				</div>
 			)}
 		</>

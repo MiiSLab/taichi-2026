@@ -77,6 +77,12 @@ export const CONTENT = {
 		registration: 'REGISTRATION',
 		notion: 'DB ADMIN',
 		notionUrl: 'https://www.notion.so/',
+		cfpSubmenu: [
+			{ label: 'Important Dates', hash: '#important-dates' },
+			{ label: 'Full Paper & Pictorial ', hash: '#papers' },
+			{ label: 'Poster', hash: '#posters' },
+			{ label: 'Interactivity and Demo', hash: '#demos' },
+		],
 	},
 	hero: {
 		titleLine1: 'TAICHI 2026',

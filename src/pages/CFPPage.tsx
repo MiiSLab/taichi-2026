@@ -61,7 +61,7 @@ const parseText = (text: string) => {
 
 const CFPPage: React.FC = () => {
 	return (
-		<section className='bg-black w-full relative text-white'>
+		<section className='bg-black w-full relative text-white' id='important-dates'>
 			{/* Top Hero Section */}
 			<div className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center px-6 md:px-20 py-24 relative overflow-hidden'>
 				<WarpBackground />
@@ -97,10 +97,13 @@ const CFPPage: React.FC = () => {
 
 					return (
 						<div
-							key={cat.id}
+							key={`block-${cat.id}`}
 							className='w-full min-h-[100dvh] flex flex-col items-center px-4 md:px-20 py-24 relative bg-black'
 						>
-							<div className='max-w-6xl bg-lab-lime text-lab-black rounded-lg shadow-2xl pt-4 pb-12 px-12 md:px-24 relative flex-shrink-0 mb-16'>
+							<div
+								id={cat.id}
+								className='max-w-6xl bg-lab-lime text-lab-black rounded-lg shadow-2xl pt-4 pb-12 px-12 md:px-24 relative flex-shrink-0 mb-16'
+							>
 								{/* Corner Screws/Dots */}
 								<div className='absolute top-2 left-2 w-6 h-6 bg-[#525252] rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] z-10 flex items-center justify-center'>
 									<div className='w-5 h-[2px] bg-black/90 rotate-45 absolute'></div>

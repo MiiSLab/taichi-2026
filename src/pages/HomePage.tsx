@@ -1,6 +1,7 @@
 import React from 'react';
 import CountdownTimer from '../components/CountdownTimer';
 import PixelTransition from '../components/PixelTransition';
+import ScrollCollapseSection from '../components/ScrollCollapseSection';
 import Sponsors from '../components/Sponsors';
 import WarpBackground from '../components/WarpBackground';
 import { CONTENT } from '../content';
@@ -10,57 +11,8 @@ import VenuePage from './VenuePage';
 const HomePage: React.FC = () => {
 	return (
 		<>
-			{/* HERO SECTION */}
-			<section className='relative w-full min-h-screen bg-lab-lime flex flex-col justify-center items-center px-4 overflow-hidden text-center pt-16'>
-				<div className='z-10 flex flex-col items-center max-w-7xl w-full'>
-					<img
-						src='/images/home_bg.png'
-						alt='Big Bang Futures'
-						className='w-[90%] md:w-[85%] max-w-5xl mb-8 object-contain drop-shadow-xl'
-					/>
-
-					<div className='relative mt-16 md:mt-24 max-w-[876px] w-full mx-auto pb-12 px-8'>
-						{/* TIMELINE GRAPHIC (Line + Dots) */}
-						<div className='relative w-full h-4 flex items-center mb-6'>
-							{/* The Line */}
-							<div className='absolute left-0 right-0 h-[2px] bg-[#F7616C] z-0'></div>
-
-							{/* The Dots */}
-							<div className='absolute left-0 top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'></div>
-							<div className='absolute left-[31.7%] top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'></div>
-							<div className='absolute left-[66.6%] top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'></div>
-							<div className='absolute left-[100%] top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'></div>
-						</div>
-
-						{/* TEXT COLUMNS */}
-						<div className='relative w-full text-black font-mono h-24'>
-							<div className='absolute left-0 top-0 -translate-x-1/2 flex flex-col items-center w-32'>
-								<div className='text-xl md:text-2xl font-bold'>8/3</div>
-								<div className='text-sm md:text-lg'>APMAR</div>
-							</div>
-
-							<div className='absolute left-[31.7%] top-0 -translate-x-1/2 flex flex-col items-center w-32'>
-								<div className='text-xl md:text-2xl font-bold'>8/4</div>
-								<div className='text-sm md:text-lg'>APMAR</div>
-							</div>
-
-							<div className='absolute left-[66.6%] top-0 -translate-x-1/2 flex flex-col items-center w-48'>
-								<div className='text-xl md:text-2xl font-bold'>8/5</div>
-								<div className='text-sm md:text-lg text-center leading-tight mt-1'>
-									TAICHI BIG BANG
-									<br />
-									互動夜市
-								</div>
-							</div>
-
-							<div className='absolute left-[100%] top-0 -translate-x-1/2 flex flex-col items-center w-40'>
-								<div className='text-xl md:text-2xl font-bold'>8/6</div>
-								<div className='text-sm md:text-lg text-center'>TAICHI ISAT</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</section>
+			{/* HERO — scroll-collapse animation leading to CFP */}
+			<ScrollCollapseSection />
 
 			<div className='bg-black w-full min-h-screen flex flex-col'>
 				{/* THEME (Intro) AND COUNTDOWN */}
