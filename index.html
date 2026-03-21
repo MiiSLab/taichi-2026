@@ -41,12 +41,7 @@
 			href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' fill='%23#FE5945'/%3E%3Cpath d='M6 6h20v4h-8v16h-4v-16h-8z' fill='black'/%3E%3C/svg%3E"
 		/>
 		<script src="https://cdn.tailwindcss.com"></script>
-		<link rel="preconnect" href="https://fonts.googleapis.com" />
-		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-		<link
-			href="https://fonts.googleapis.com/css2?family=DotGothic16&family=Reddit+Mono:wght@200..900&family=Roboto+Mono:ital,wght@0,100..700;1,100..700&family=Inter:wght@300;400;600&family=VT323&display=swap"
-			rel="stylesheet"
-		/>
+
 		<script>
 			tailwind.config = {
 				theme: {
@@ -84,6 +79,43 @@
 			};
 		</script>
 		<style>
+			/* ── Self-hosted fonts (public/fonts/) ─────────────────────── */
+			@font-face {
+				font-family: 'VT323';
+				src: url('/fonts/vt323-v18-latin-regular.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: block;
+			}
+			@font-face {
+				font-family: 'DotGothic16';
+				src: url('/fonts/dotgothic16-v21-latin-regular.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: block;
+			}
+			@font-face {
+				font-family: 'Reddit Mono';
+				src: url('/fonts/reddit-mono-v5-latin-regular.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: block;
+			}
+			@font-face {
+				font-family: 'Roboto Mono';
+				src: url('/fonts/roboto-mono-v31-latin-regular.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: block;
+			}
+			@font-face {
+				font-family: 'Inter';
+				src: url('/fonts/inter-v20-latin-regular.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: block;
+			}
+
 			body {
 				margin: 0;
 				overflow-x: hidden;
