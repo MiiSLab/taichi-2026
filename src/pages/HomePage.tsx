@@ -15,11 +15,14 @@ const HomePage: React.FC = () => {
 	// 從什麼時候開始 (0~1) 讓底下的內容浮出來。0.5 代表當向下捲動動畫跑到一半 (50%) 時開始浮現。
 	const CONTENT_APPEAR_THRESHOLD = 0.5;
 
-	// 重新推算底層內容的專屬動畫比例 (會從 Threshold 的百分比開始，重新從 0 算到 1)
-	const contentProgress = Math.max(
-		0,
-		(transitionProgress - CONTENT_APPEAR_THRESHOLD) / (1 - CONTENT_APPEAR_THRESHOLD)
-	);
+	// 重新推算底層內容的專屬動畫比例 (先算出 0~1 的線性進度)
+	const rawContentProgress = Math.max(0, (transitionProgress - CONTENT_APPEAR_THRESHOLD) / (1 - CONTENT_APPEAR_THRESHOLD));
+
+	// ⭐ 新增：底部文字「浮出與淡入」的專屬 Ease-In / Ease-Out 曲線設定！
+	// 數字越大，文字浮出來的時候就會「極快地先出現大半，然後花時間慢慢到位 (Ease-Out 煞車感)」。
+	// 這樣就不會死板板的等速出現了！你可以把這裡設定成 3 或 4 感受一下。
+	const FADE_EASE_RATE = 4;
+	const contentProgress = 1 - Math.pow(1 - rawContentProgress, FADE_EASE_RATE);
 
 	// 可以自由決定淡入的曲線 (現在是直接沿用原本的線性變數)
 	const themeFade = contentProgress;

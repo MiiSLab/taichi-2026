@@ -4,10 +4,21 @@ import CountdownTimer from '../components/CountdownTimer';
 import WarpBackground from '../components/WarpBackground';
 import { CONTENT } from '../content';
 
-const isHeading = (text: string) => ['Full Paper', 'Pictorial', 'Poster', '投稿格式', '備註'].includes(text.trim());
+const isHeading = (text: string) =>
+	[
+		'論文（Full Paper）',
+		'圖像式論文（Pictorial）',
+		'Poster',
+		'投稿格式',
+		'備註',
+		'Paper Chairs',
+		'Poster Chairs',
+		'Demo Chairs',
+	].includes(text.trim());
 
 const parseText = (text: string) => {
-	const regex = /\*\*([^*]+)\*\*|\[([^\]]+)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)|((?:https?:\/\/|mailto:)[^\s)]+)/g;
+	// 改用 (.*?) 取代 ([^\]]+)，支援在連結文字裡面出現「[」與「]」
+	const regex = /\*\*([^*]+)\*\*|\[(.*?)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)|((?:https?:\/\/|mailto:)[^\s)]+)/g;
 	const parts = [];
 	let lastIndex = 0;
 	let match;
@@ -19,7 +30,7 @@ const parseText = (text: string) => {
 		}
 		if (match[1]) {
 			parts.push(
-				<strong key={`bold-${count}`} className='font-extrabold px-1'>
+				<strong key={`bold-${count}`} className='font-extrabold px-1 text-[#FF0033]'>
 					{match[1]}
 				</strong>,
 			);
@@ -102,7 +113,7 @@ const CFPPage: React.FC = () => {
 						>
 							<div
 								id={cat.id}
-								className='max-w-6xl bg-lab-lime text-lab-black rounded-lg shadow-2xl pt-4 pb-12 px-12 md:px-24 relative flex-shrink-0 mb-16'
+								className='max-w-6xl bg-lab-lime text-lab-black rounded-lg shadow-2xl pt-4 pb-12 px-12 md:px-24 relative flex-shrink-0 mb-4'
 							>
 								{/* Corner Screws/Dots */}
 								<div className='absolute top-2 left-2 w-6 h-6 bg-[#525252] rounded-full shadow-[inset_0_2px_4px_rgba(0,0,0,0.6)] z-10 flex items-center justify-center'>
@@ -143,15 +154,30 @@ const CFPPage: React.FC = () => {
 								{bottomDesc.map((desc, i) => {
 									if (isHeading(desc)) {
 										return (
-											<h4 key={i} className='font-bold text-2xl md:text-3xl mt-12 mb-2 text-lab-lime font-roboto'>
+											<h4 key={i} className='pt-5 font-bold text-xl md:text-2xl mt-12 mb-2 text-lab-lime font-roboto'>
 												{desc}
 											</h4>
 										);
 									}
 									if (desc.trim().startsWith('●')) {
-										const textToParse = desc.substring(1);
+										// 處理第二層縮排 (雙圈圈)
+										if (desc.trim().startsWith('● ●')) {
+											// 第一個圈圈以外的文字，去掉第二個圈圈
+											const textToParse = desc.substring(desc.indexOf('●', desc.indexOf('●') + 1) + 1).trim();
+											return (
+												<div key={i} className='pl-8 md:pl-12 flex items-start gap-4'>
+													<span className='text-white font-bold mt-0.5 opacity-60 text-sm'>◦</span>
+													<div className='break-all md:break-words w-full font-roboto text-white/80'>
+														{parseText(textToParse)}
+													</div>
+												</div>
+											);
+										}
+
+										// 一般層級縮排 (單圈圈)
+										const textToParse = desc.substring(1).trim();
 										return (
-											<div key={i} className='pl-6 flex items-start gap-4'>
+											<div key={i} className='pl-2 md:pl-6 flex items-start gap-4'>
 												<span className='text-white font-bold mt-0.5 opacity-80'>•</span>
 												<div className='break-all md:break-words w-full font-roboto text-white/90'>
 													{parseText(textToParse)}
