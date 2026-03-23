@@ -4,11 +4,15 @@ import Sponsors from '../components/Sponsors';
 import { CONFIG, CONTENT } from '../content';
 import { useData } from '../context/DataContext';
 
-const OrganizationPage: React.FC = () => {
+interface OrganizationPageProps {
+	hidePeople?: boolean;
+}
+
+const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false }) => {
 	const { people, isSyncing } = useData();
 
 	const committeeMembers = people.filter((p) => !(p.chairType ? String(p.chairType).toLowerCase() : '').includes('keynote'));
-	const SHOW_PEOPLE = false;
+	const SHOW_PEOPLE = !hidePeople;
 	return (
 		<div className='py-24 bg-transparent'>
 			{/* ORGANIZATION (COMMITTEE) */}
@@ -83,36 +87,71 @@ const OrganizationPage: React.FC = () => {
 												>;
 												const titleData = titleMap[normalizedType];
 												const displayTitle = titleData
-													? `${titleData.zh} ${titleData.en}`
+													? `${titleData.zh}  /  ${titleData.en}`
 													: chairType.toUpperCase();
 
 												return (
-													<div key={chairType}>
-														<h3 className='font-pixel text-3xl text-lab-orange mb-8 uppercase'>
+													<div key={chairType} className='mb-20'>
+														<h3 className='font-pixel text-2xl md:text-3xl text-white mb-10 tracking-widest uppercase'>
 															{displayTitle}
 														</h3>
-														<div className='grid grid-cols-2 md:grid-cols-4 gap-6'>
+														<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-16'>
 															{groupedMembers[chairType].map((member) => (
 																<div
 																	key={member.id}
-																	className='group border border-gray-200 p-4 hover:border-lab-orange transition-colors text-center'
+																	className='group relative w-full max-w-[290px] mx-auto aspect-[100/90]'
 																>
-																	<div className='w-24 h-24 mx-auto rounded-full overflow-hidden bg-gray-100 mb-4'>
-																		<img
-																			src={member.image}
-																			className='w-full h-full object-cover'
-																			alt={member.name}
+																	<svg
+																		viewBox='0 0 100 90'
+																		className='absolute inset-0 w-full h-full drop-shadow-md transition-all duration-300'
+																	>
+																		{/* Outer red border */}
+																		<polygon
+																			points='50,16 90,75 10,75'
+																			fill='#F7616C'
+																			stroke='#F7616C'
+																			strokeWidth='20'
+																			strokeLinejoin='round'
 																		/>
+																		{/* Inner gray fill */}
+																		<polygon
+																			points='50,16 90,75 10,75'
+																			fill='#D9D9D9'
+																			stroke='#D9D9D9'
+																			strokeWidth='16'
+																			strokeLinejoin='round'
+																		/>
+																		{/* Top hole */}
+																		<circle cx='50' cy='16' r='3.5' fill='#000' />
+																	</svg>
+
+																	{/* Content Wrapper */}
+																	<div className='absolute inset-0 z-10 flex flex-col items-center pt-[22%] px-[6%] pb-[7%]'>
+																		<div className='w-[28%] aspect-square rounded-full overflow-hidden bg-[#111] shadow-inner shrink-0 relative'>
+																			{member.image && (
+																				<img
+																					src={member.image}
+																					alt={member.name}
+																					className='absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[120%]'
+																				/>
+																			)}
+																		</div>
+																		<div className='text-center w-full flex-1 flex flex-col justify-start text-black mt-3 md:mt-4'>
+																			<h4 className='font-bold text-sm md:text-base mb-1 tracking-wider'>
+																				{member.name}
+																			</h4>
+																			{member.notes && (
+																				<p className='text-xs md:text-sm font-semibold opacity-90 mb-1'>
+																					{member.notes}
+																				</p>
+																			)}
+																			<p className='text-xs opacity-75 leading-tight tracking-wide px-1 md:px-2'>
+																				{[member.institution, member.department]
+																					.filter(Boolean)
+																					.join(' ')}
+																			</p>
+																		</div>
 																	</div>
-																	<h4 className='font-bold text-lg mb-1'>{member.name}</h4>
-																	{member.notes && (
-																		<p className='text-sm font-medium text-gray-700 mb-1'>
-																			{member.notes}
-																		</p>
-																	)}
-																	<p className='text-xs text-gray-500'>
-																		{[member.institution, member.department].filter(Boolean).join(' ')}
-																	</p>
 																</div>
 															))}
 														</div>
