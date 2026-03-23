@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
 					{/* THEME (Intro) AND COUNTDOWN */}
 					<section
 						id='theme'
-						className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center py-20 px-6 md:px-20 relative overflow-hidden'
+						className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-start md:justify-center pt-32 md:pt-20 pb-20 px-6 md:px-20 relative overflow-x-hidden overflow-y-auto'
 						style={
 							collapseActive
 								? {
@@ -74,15 +74,21 @@ const HomePage: React.FC = () => {
 						<WarpBackground />
 
 						<div
-							className='relative z-10 flex flex-col items-center w-full max-w-6xl'
+							className='relative z-10 flex flex-col items-center w-full max-w-8xl'
 							style={collapseActive ? { transform: `translateY(${themeTranslateY}vh)` } : undefined}
 						>
-							<div className='text-[#FF0033] font-mono font-bold tracking-widest mb-6 md:mb-8 uppercase text-lg md:text-xl'>
-								TIL THE SUBMITION DEADLINE
-							</div>
-
-							<div className='mb-6 transform scale-75 md:scale-100'>
-								<CountdownTimer />
+							<div className='w-full mb-10'>
+								<div className='flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-6'>
+									<div className='text-white font-roboto font-bold text-center'>
+										<div className='text-2xl md:text-3xl text-lab-lime mb-2 tracking-wider font-mono'>
+											TIL THE SUBMISSION DEADLINE
+										</div>
+										<div className='text-base md:text-lg text-gray-200 font-bold'>2026/6/18(四) 23:59(台灣時區)</div>
+									</div>
+									<div className='transform scale-90 md:scale-100 mt-2'>
+										<CountdownTimer targetDateStr='2026-06-18T23:59:00+08:00' />
+									</div>
+								</div>
 							</div>
 
 							<button className='bg-[#FF0033] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF0033] transition-colors text-lg md:text-xl tracking-wider mb-10 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>

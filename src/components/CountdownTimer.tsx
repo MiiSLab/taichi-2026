@@ -1,7 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
-const CountdownTimer: React.FC = () => {
-	const targetDate = new Date('2026-08-04T00:00:00+08:00').getTime();
+interface Props {
+	targetDateStr?: string;
+	small?: boolean;
+}
+
+const CountdownTimer: React.FC<Props> = ({ targetDateStr = '2026-08-04T00:00:00+08:00', small = false }) => {
+	const targetDate = new Date(targetDateStr).getTime();
 	const [timeLeft, setTimeLeft] = useState<{ days: string; hours: string; minutes: string; seconds: string }>({
 		days: '00',
 		hours: '00',
@@ -33,28 +38,42 @@ const CountdownTimer: React.FC = () => {
 		}, 1000);
 
 		return () => clearInterval(interval);
-	}, [targetDate]);
+	}, [targetDateStr, targetDate]);
+
+	const containerScale = small
+		? 'text-4xl md:text-5xl lg:text-5xl drop-shadow-[0_0_10px_rgba(255,0,102,0.6)]'
+		: 'text-6xl md:text-8xl lg:text-9xl drop-shadow-[0_0_20px_rgba(255,0,102,0.8)]';
+
+	const labelScale = small ? 'text-[10px] md:text-xs' : 'text-sm md:text-lg';
+	const colonMargin = small ? 'mb-4 md:mb-6' : 'mb-8 md:mb-12';
 
 	return (
-		<div className='flex items-center justify-center gap-2 md:gap-4 text-lab-pink font-reddit text-6xl md:text-8xl lg:text-9xl tracking-widest drop-shadow-[0_0_20px_rgba(255,0,102,0.8)]'>
+		<div className={`flex items-center justify-center gap-2 md:gap-4 text-lab-pink font-reddit tracking-widest ${containerScale}`}>
 			<div className='flex flex-col items-center'>
 				<span>{timeLeft.days}</span>
-				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>
+				<span className={`tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none ${labelScale}`}>
 					Days
 				</span>
 			</div>
-			<span className='mb-8 md:mb-12'>:</span>
+			<span className={colonMargin}>:</span>
 			<div className='flex flex-col items-center'>
 				<span>{timeLeft.hours}</span>
-				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>
+				<span className={`tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none ${labelScale}`}>
 					Hours
 				</span>
 			</div>
-			<span className='mb-8 md:mb-12'>:</span>
+			<span className={colonMargin}>:</span>
 			<div className='flex flex-col items-center'>
 				<span>{timeLeft.minutes}</span>
-				<span className='text-sm md:text-lg tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none'>
+				<span className={`tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none ${labelScale}`}>
 					Mins
+				</span>
+			</div>
+			<span className={colonMargin}>:</span>
+			<div className='flex flex-col items-center'>
+				<span>{timeLeft.seconds}</span>
+				<span className={`tracking-normal font-sans font-bold text-white mt-1 uppercase drop-shadow-none ${labelScale}`}>
+					Secs
 				</span>
 			</div>
 		</div>

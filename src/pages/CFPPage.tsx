@@ -17,8 +17,8 @@ const isHeading = (text: string) =>
 	].includes(text.trim());
 
 const parseText = (text: string) => {
-	// 改用 (.*?) 取代 ([^\]]+)，支援在連結文字裡面出現「[」與「]」
-	const regex = /\*\*([^*]+)\*\*|\[(.*?)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)|((?:https?:\/\/|mailto:)[^\s)]+)/g;
+	// 支援 **紅色粗體** (match[1])、支援 __單純粗體__ (match[2])
+	const regex = /\*\*([^*]+)\*\*|__([^_]+)__|\[(.*?)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)|((?:https?:\/\/|mailto:)[^\s)]+)/g;
 	const parts = [];
 	let lastIndex = 0;
 	let match;
@@ -29,33 +29,43 @@ const parseText = (text: string) => {
 			count++;
 		}
 		if (match[1]) {
+			// **文字** -> 紅色粗體
 			parts.push(
-				<strong key={`bold-${count}`} className='font-extrabold px-1 text-[#FF0033]'>
+				<strong key={`bold-red-${count}`} className='font-extrabold px-1 text-[#FF0033]'>
 					{match[1]}
 				</strong>,
 			);
-		} else if (match[4]) {
+		} else if (match[2]) {
+			// __文字__ -> 單純粗體
+			parts.push(
+				<strong key={`bold-only-${count}`} className='font-extrabold px-1 text-white'>
+					{match[2]}
+				</strong>,
+			);
+		} else if (match[5]) {
+			// 原始網址 (沒有 [] 包裝的網址)
 			parts.push(
 				<a
 					key={`url-${count}`}
+					href={match[5]}
+					className='text-[#3399FF] font-roboto hover:underline break-all'
+					target='_blank'
+					rel='noreferrer'
+				>
+					{match[5]}
+				</a>,
+			);
+		} else {
+			// [中括號標題](小括號網址)
+			parts.push(
+				<a
+					key={`link-${count}`}
 					href={match[4]}
 					className='text-[#3399FF] font-roboto hover:underline break-all'
 					target='_blank'
 					rel='noreferrer'
 				>
-					{match[4]}
-				</a>,
-			);
-		} else {
-			parts.push(
-				<a
-					key={`link-${count}`}
-					href={match[3]}
-					className='text-[#3399FF] font-roboto hover:underline break-all'
-					target='_blank'
-					rel='noreferrer'
-				>
-					{match[2]}
+					{match[3]}
 				</a>,
 			);
 		}
@@ -74,22 +84,51 @@ const CFPPage: React.FC = () => {
 	return (
 		<section className='bg-black w-full relative text-white' id='important-dates'>
 			{/* Top Hero Section */}
-			<div className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center px-6 md:px-20 py-24 relative overflow-hidden'>
+			<div className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center px-6 md:px-20 py-32 relative overflow-hidden'>
 				<WarpBackground />
 
-				<div className='flex flex-col items-center max-w-4xl relative z-10'>
-					<div className='transform scale-75 md:scale-100 mt-[-5rem] mb-12'>
-						<CountdownTimer />
-					</div>
+				<div className='flex flex-col items-center max-w-7xl relative z-10 w-full mt-8 md:mt-0'>
 					<h2 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]'>
 						CALL FOR PAPERS
 					</h2>
 					<p
-						className='font-pixel text-3xl text-lab-pink text-center mb-12 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'
+						className='font-pixel text-2xl md:text-3xl text-lab-pink text-center mb-16 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'
 						style={{ letterSpacing: '0.3em' }}
 					>
 						{CONTENT.cfpSection.subtitle}
 					</p>
+
+					<div className='flex flex-col gap-10 md:gap-6 w-full mb-16'>
+						<div className='flex flex-col lg:flex-row items-center justify-between w-full max-w-5xl mx-auto gap-2 lg:gap-8 bg-white/5 border border-white/10 rounded-2xl px-6 py-4'>
+							<div className='text-white font-roboto font-bold text-center lg:text-left'>
+								<div className='text-xl md:text-2xl text-lab-lime mb-1 tracking-wider'>Deadline 截稿日</div>
+								<div className='text-sm md:text-base text-gray-300 font-normal'>2026/6/18(四) 23:59(台灣時區)</div>
+							</div>
+							<div>
+								<CountdownTimer targetDateStr='2026-06-18T23:59:00+08:00' small />
+							</div>
+						</div>
+
+						<div className='flex flex-col lg:flex-row items-center justify-between w-full max-w-5xl mx-auto gap-2 lg:gap-8 bg-white/5 border border-white/10 rounded-2xl px-6 py-4'>
+							<div className='text-white font-roboto font-bold text-center lg:text-left'>
+								<div className='text-xl md:text-2xl text-lab-lime mb-1 tracking-wider'>Notification 結果通知</div>
+								<div className='text-sm md:text-base text-gray-300 font-normal'>2026/7/21(二) 23:59(台灣時區)</div>
+							</div>
+							<div>
+								<CountdownTimer targetDateStr='2026-07-21T23:59:00+08:00' small />
+							</div>
+						</div>
+
+						<div className='flex flex-col lg:flex-row items-center justify-between w-full max-w-5xl mx-auto gap-2 lg:gap-8 bg-white/5 border border-white/10 rounded-2xl px-6 py-4'>
+							<div className='text-white font-roboto font-bold text-center lg:text-left'>
+								<div className='text-xl md:text-2xl text-lab-lime mb-1 tracking-wider'>Camera-Ready 完稿日</div>
+								<div className='text-sm md:text-base text-gray-300 font-normal'>2026/7/27(一) 23:59(台灣時區)</div>
+							</div>
+							<div>
+								<CountdownTimer targetDateStr='2026-07-27T23:59:00+08:00' small />
+							</div>
+						</div>
+					</div>
 
 					{CONTENT.cfpSection.submissionLink && (
 						<button className='bg-lab-pink text-white font-bold py-4 px-16 rounded-full hover:bg-white hover:text-lab-pink transition-colors text-xl tracking-wider shadow-[0_0_20px_rgba(255,0,102,0.6)]'>
@@ -199,11 +238,11 @@ const CFPPage: React.FC = () => {
 
 			{/* Topics Section */}
 			<div className='w-full min-h-[100dvh] flex flex-col items-center justify-center px-4 md:px-20 py-24 bg-black overflow-hidden'>
-				<h3 className='font-roboto font-bold text-3xl md:text-5xl text-white mb-16 text-center tracking-widest leading-tight z-10 relative'>
+				<h3 className='font-roboto font-bold text-xl md:text-3xl text-white mb-16 text-center tracking-widest leading-tight z-10 relative'>
 					{CONTENT.cfpSection.topicsTitle}
 				</h3>
 
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 max-w-7xl w-full relative z-10'>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 max-w-4xl w-full relative z-10'>
 					{/* Left decorative dot */}
 					<div className='hidden md:block absolute left-[-3rem] top-[13%] w-[36px] h-[36px] bg-[#A8F020] rounded-full z-20'></div>
 
