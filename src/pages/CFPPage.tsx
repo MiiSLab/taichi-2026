@@ -242,7 +242,7 @@ const CFPPage: React.FC = () => {
 					{CONTENT.cfpSection.topicsTitle}
 				</h3>
 
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 max-w-xl md:max-w-5xl w-full relative z-10 grid-flow-row-dense'>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-x-2 gap-y-8 md:gap-x-8 max-w-xl md:max-w-5xl w-full relative z-10 grid-flow-row-dense'>
 					{/* Left decorative dot removed */}
 
 					{[
@@ -263,14 +263,27 @@ const CFPPage: React.FC = () => {
 						if (!topic) return <div key={idx} className='hidden' />;
 
 						let bgUrl = '';
+						let paddingClasses = 'py-8 md:py-12';
+
 						if (slot.tall) {
 							bgUrl = 'url(/images/tall_bottom_left.svg)';
+							paddingClasses = 'pt-8 md:pt-12 pb-[140px] md:pb-[240px]';
 						} else {
-							if (slot.cut === 'BR') bgUrl = 'url(/images/bottom_right.svg)';
-							else if (slot.cut === 'BC') bgUrl = 'url(/images/bottom_center.svg)';
-							else if (slot.cut === 'TC') bgUrl = 'url(/images/top_center.svg)';
-							else if (slot.cut === 'TL') bgUrl = 'url(/images/top_left.svg)';
-							else bgUrl = 'none';
+							if (slot.cut === 'BR') {
+								bgUrl = 'url(/images/bottom_right.svg)';
+								paddingClasses = 'pt-8 md:pt-12 pb-[140px] md:pb-[180px]';
+							} else if (slot.cut === 'BC') {
+								bgUrl = 'url(/images/bottom_center.svg)';
+								paddingClasses = 'pt-8 md:pt-12 pb-[80px] md:pb-[120px]';
+							} else if (slot.cut === 'TC') {
+								bgUrl = 'url(/images/top_center.svg)';
+								paddingClasses = 'pt-[100px] md:pt-[120px] pb-8 md:pb-12';
+							} else if (slot.cut === 'TL') {
+								bgUrl = 'url(/images/top_left.svg)';
+								paddingClasses = 'pt-[120px] md:pt-[160px] pb-8 md:pb-12';
+							} else {
+								bgUrl = 'none';
+							}
 						}
 
 						return (
@@ -279,13 +292,7 @@ const CFPPage: React.FC = () => {
 								className={`relative group transition-transform duration-300 hover:-translate-y-1 ${slot.tall ? 'row-span-2' : ''}`}
 							>
 								<div
-									className={`h-full text-black flex flex-col font-roboto px-4 md:px-8 ${
-										['TC', 'TL'].includes(slot.cut)
-											? 'pt-[100px] md:pt-[140px] pb-8 md:pb-12'
-											: ['BC', 'BR', 'BL'].includes(slot.cut) || slot.tall
-												? 'pt-8 md:pt-12 pb-[80px] md:pb-[100px]'
-												: 'py-8 md:py-12'
-									} relative ${bgUrl === 'none' ? 'bg-[#D9D9D9] rounded-2xl shadow-xl' : ''}`}
+									className={`h-full text-black flex flex-col font-roboto px-6 md:px-10 ${paddingClasses} relative ${bgUrl === 'none' ? 'bg-[#D9D9D9] rounded-2xl shadow-xl' : ''}`}
 									style={
 										bgUrl !== 'none'
 											? {
