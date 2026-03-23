@@ -95,7 +95,7 @@ const Navbar: React.FC = () => {
 				{/* Right Registration & Menu Toggle */}
 				<div className='flex-1 flex justify-end items-center'>
 					<Link
-						to='/'
+						to='#'
 						onClick={handleNav}
 						className='text-xl opacity-90 hover:opacity-60 hidden xl:block px-6 py-1.5 font-pixel font-bold rounded-full transition-colors bg-lab-black text-white hover:bg-lab-pink whitespace-nowrap'
 					>
