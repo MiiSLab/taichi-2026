@@ -99,58 +99,60 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 															{groupedMembers[chairType].map((member) => (
 																<div
 																	key={member.id}
-																	className='group relative w-full max-w-[290px] mx-auto aspect-[100/90]'
+																	className='group relative w-full max-w-[341px] mx-auto aspect-[341/272]'
 																>
-																	<svg
-																		viewBox='0 0 100 90'
+																	<img
+																		src='/images/organization_photo_frame.svg'
+																		alt='frame'
 																		className='absolute inset-0 w-full h-full drop-shadow-md transition-all duration-300'
-																	>
-																		{/* Outer red border */}
-																		<polygon
-																			points='50,16 90,75 10,75'
-																			fill='#F7616C'
-																			stroke='#F7616C'
-																			strokeWidth='20'
-																			strokeLinejoin='round'
-																		/>
-																		{/* Inner gray fill */}
-																		<polygon
-																			points='50,16 90,75 10,75'
-																			fill='#D9D9D9'
-																			stroke='#D9D9D9'
-																			strokeWidth='16'
-																			strokeLinejoin='round'
-																		/>
-																		{/* Top hole */}
-																		<circle cx='50' cy='16' r='3.5' fill='#000' />
-																	</svg>
+																	/>
 
 																	{/* Content Wrapper */}
-																	<div className='absolute inset-0 z-10 flex flex-col items-center pt-[22%] px-[6%] pb-[7%]'>
-																		<div className='w-[28%] aspect-square rounded-full overflow-hidden bg-[#111] shadow-inner shrink-0 relative'>
-																			{member.image && (
-																				<img
-																					src={member.image}
-																					alt={member.name}
-																					className='absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[120%]'
-																				/>
-																			)}
-																		</div>
-																		<div className='text-center w-full flex-1 flex flex-col justify-start text-black mt-3 md:mt-4'>
-																			<h4 className='font-bold text-sm md:text-base mb-1 tracking-wider'>
+																	{/* Custom calculated placement based on organization_photo_frame.svg viewBox="0 0 341 272" and cx="171.484" cy="115.474" r="57.4739" */}
+
+																	{/* Photo perfectly covering the black circle */}
+																	<div
+																		className='absolute z-10 rounded-full overflow-hidden bg-[#111] shadow-inner shrink-0'
+																		style={{
+																			width: '33.71%', // (57.4739 * 2) / 341
+																			aspectRatio: '1 / 1',
+																			left: '33.43%', // (171.484 - 57.4739) / 341
+																			top: '21.32%', // (115.474 - 57.4739) / 272
+																		}}
+																	>
+																		{member.image && (
+																			<img
+																				src={member.image}
+																				alt={member.name}
+																				className='absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[120%]'
+																			/>
+																		)}
+																	</div>
+
+																	{/* Text Container placed in the lower wide area */}
+																	<div
+																		className='absolute z-10 text-center flex flex-col justify-start text-black w-[80%]'
+																		style={{
+																			left: '10%',
+																			top: '66%',
+																			height: '30%',
+																		}}
+																	>
+																		<div className='flex flex-col items-stretch w-max max-w-full mx-auto'>
+																			<h4 className='font-bold text-[0.95rem] md:text-[1.1rem] leading-tight mb-[2px] text-justify [text-align-last:justify]'>
 																				{member.name}
 																			</h4>
 																			{member.notes && (
-																				<p className='text-xs md:text-sm font-semibold opacity-90 mb-1'>
+																				<p className='text-[0.75rem] md:text-[0.85rem] font-semibold opacity-90 mb-1 leading-tight text-justify [text-align-last:justify]'>
 																					{member.notes}
 																				</p>
 																			)}
-																			<p className='text-xs opacity-75 leading-tight tracking-wide px-1 md:px-2'>
-																				{[member.institution, member.department]
-																					.filter(Boolean)
-																					.join(' ')}
-																			</p>
 																		</div>
+																		<p className='text-[0.7rem] md:text-[0.75rem] opacity-75 leading-tight tracking-wide px-1 md:px-2'>
+																			{[member.institution, member.department]
+																				.filter(Boolean)
+																				.join(' ')}
+																		</p>
 																	</div>
 																</div>
 															))}
