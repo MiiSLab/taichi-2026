@@ -132,7 +132,7 @@ const CFPPage: React.FC = () => {
 
 					{CONTENT.cfpSection.submissionLink && (
 						<button className='bg-lab-pink text-white font-bold py-4 px-16 rounded-full hover:bg-white hover:text-lab-pink transition-colors text-xl tracking-wider shadow-[0_0_20px_rgba(255,0,102,0.6)]'>
-							SUBMIT NOW
+							進入投稿系統
 						</button>
 					)}
 				</div>
@@ -268,24 +268,29 @@ const CFPPage: React.FC = () => {
 
 						if (slot.tall) {
 							// 手機版沒有佔兩格高，用一般比例的 bottom_center，平板以上佔兩格才用真的 tall_bottom_left
-							bgClasses = 'bg-[url(/images/bottom_center.svg)] md:bg-[url(/images/tall_bottom_left.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
+							bgClasses =
+								'bg-[url(/images/bottom_center.svg)] md:bg-[url(/images/tall_bottom_left.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
 							paddingClasses = 'pt-8 md:pt-12 pb-[80px] md:pb-[240px]';
 							hasBg = true;
 						} else {
 							if (slot.cut === 'BR') {
-								bgClasses = 'bg-[url(/images/bottom_right.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
+								bgClasses =
+									'bg-[url(/images/bottom_right.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
 								paddingClasses = 'pt-8 md:pt-12 pb-[140px] md:pb-[180px]';
 								hasBg = true;
 							} else if (slot.cut === 'BC' || slot.cut === 'BL') {
-								bgClasses = 'bg-[url(/images/bottom_center.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
+								bgClasses =
+									'bg-[url(/images/bottom_center.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
 								paddingClasses = 'pt-8 md:pt-12 pb-[80px] md:pb-[120px]';
 								hasBg = true;
 							} else if (slot.cut === 'TC' || slot.cut === 'TR') {
-								bgClasses = 'bg-[url(/images/top_center.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
+								bgClasses =
+									'bg-[url(/images/top_center.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
 								paddingClasses = 'pt-[100px] md:pt-[120px] pb-8 md:pb-12';
 								hasBg = true;
 							} else if (slot.cut === 'TL') {
-								bgClasses = 'bg-[url(/images/top_left.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
+								bgClasses =
+									'bg-[url(/images/top_left.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
 								paddingClasses = 'pt-[120px] md:pt-[160px] pb-8 md:pb-12';
 								hasBg = true;
 							}

@@ -15,56 +15,63 @@ const VenuePage: React.FC = () => {
 				<div className='flex flex-col gap-24 md:gap-32 mb-24'>
 					{CONTENT.venueSection.venues.map((venue, idx) => (
 						<div key={idx} className='grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 w-full max-w-5xl mx-auto'>
-					{/* Left: text content */}
-					<div className='flex flex-col'>
-						{/* Pill Badge */}
-						<div className='mb-10'>
-							<div className='inline-flex items-center px-6 md:px-12 py-2 bg-[#FF0033] text-white font-mono text-lg md:text-xl font-bold tracking-widest rounded-full whitespace-nowrap shadow-lg shadow-[#FF0033]/30'>
-								{idx === 0 ? '8/5' : '8/6'} &nbsp; [{venue.day.toUpperCase()}]
+							{/* Left: text content */}
+							<div className='flex flex-col'>
+								{/* Pill Badge */}
+								<div className='mb-10'>
+									<div className='inline-flex items-center px-6 md:px-12 py-2 bg-[#FF0033] text-white font-mono text-lg md:text-xl font-bold tracking-widest rounded-full whitespace-nowrap shadow-lg shadow-[#FF0033]/30'>
+										{venue.day.toUpperCase()}&nbsp;[{idx === 0 ? '8/5 (四)' : '8/6 (五)'}]
+									</div>
+								</div>
+
+								{/* Titles */}
+								<div className='flex flex-col gap-8 flex-1 justify-center mb-8'>
+									<h3 className='font-mono font-bold text-xl md:text-3xl text-white tracking-widest leading-snug break-all md:break-normal'>
+										{idx === 0 ? 'TAICHI BIG BANG 互動夜市' : 'TAICHI ISAT'}
+									</h3>
+
+									<div className='flex flex-col gap-4 font-mono mt-2 md:mt-4'>
+										<p className='text-white text-sm md:text-base max-w-sm tracking-wide leading-relaxed'>
+											{venue.name}
+										</p>
+										<p className='text-white text-sm md:text-base max-w-sm tracking-wide leading-relaxed'>
+											{venue.address}
+										</p>
+									</div>
+								</div>
+
+								{/* Open Map Button (mobile only) */}
+								{venue.mapLink && venue.mapLink !== '#' && (
+									<a
+										href={venue.mapLink}
+										target='_blank'
+										rel='noopener noreferrer'
+										className='inline-flex md:hidden items-center justify-center gap-2 mt-4 bg-lab-lime text-black px-6 py-3 font-mono font-bold hover:bg-white transition-colors rounded-lg shadow-md uppercase self-start w-full sm:w-auto'
+									>
+										OPEN MAP <ExternalLink size={16} />
+									</a>
+								)}
 							</div>
+
+							{/* Right: Map — fills the entire grid cell */}
+							{venue.embedSrc && (
+								<div className='relative min-h-[300px] rounded-[24px] overflow-hidden shadow-2xl'>
+									<iframe
+										style={{
+											position: 'absolute',
+											inset: 0,
+											width: '100%',
+											height: '100%',
+											border: 'none',
+											opacity: 0.9,
+										}}
+										src={venue.embedSrc}
+										title={`Map ${venue.name}`}
+										scrolling='no'
+									></iframe>
+								</div>
+							)}
 						</div>
-
-						{/* Titles */}
-						<div className='flex flex-col gap-8 flex-1 justify-center mb-8'>
-							<h3 className='font-mono font-bold text-xl md:text-3xl text-white tracking-widest leading-snug break-all md:break-normal'>
-								{idx === 0 ? 'TAICHI BIG BANG 互動夜市' : 'TAICHI ISAT'}
-							</h3>
-
-							<div className='flex flex-col gap-4 font-mono mt-2 md:mt-4'>
-								<p className='text-white text-sm md:text-base max-w-sm tracking-wide leading-relaxed'>
-									{venue.name}
-								</p>
-								<p className='text-white text-sm md:text-base max-w-sm tracking-wide leading-relaxed'>
-									{venue.address}
-								</p>
-							</div>
-						</div>
-
-						{/* Open Map Button (mobile only) */}
-						{venue.mapLink && venue.mapLink !== '#' && (
-							<a
-								href={venue.mapLink}
-								target='_blank'
-								rel='noopener noreferrer'
-								className='inline-flex md:hidden items-center justify-center gap-2 mt-4 bg-lab-lime text-black px-6 py-3 font-mono font-bold hover:bg-white transition-colors rounded-lg shadow-md uppercase self-start w-full sm:w-auto'
-							>
-								OPEN MAP <ExternalLink size={16} />
-							</a>
-						)}
-					</div>
-
-					{/* Right: Map — fills the entire grid cell */}
-					{venue.embedSrc && (
-						<div className='relative min-h-[300px] rounded-[24px] overflow-hidden shadow-2xl'>
-							<iframe
-								style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', border: 'none', opacity: 0.9 }}
-								src={venue.embedSrc}
-								title={`Map ${venue.name}`}
-								scrolling='no'
-							></iframe>
-						</div>
-					)}
-				</div>
 					))}
 				</div>
 

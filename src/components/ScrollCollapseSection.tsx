@@ -178,92 +178,25 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 						className='flex flex-col items-center max-w-7xl w-full text-center px-4 pt-16'
 						style={{ opacity: Math.min((circleSize - 10) / 30, 1) }}
 					>
-						<div className='w-[90%] md:w-[85%] max-w-5xl mb-8 flex flex-col items-center relative'>
+						<div className='w-full md:w-[95%] max-w-7xl mb-4 flex flex-col items-center relative'>
 							{/* 上排文字：手機版靠左並向左偏移，桌機版置中 */}
-							<div className='w-full text-left md:text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-lg md:text-xl -translate-x-4 md:translate-x-0 md:-mb-6 z-10'>
-								//12th ANNUAL CONFERENCE//
+							<div className='w-full text-left md:text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-base sm:text-xl md:text-2xl -translate-x-4 md:translate-x-0 md:-mb-8 z-10'>
+								//12th Annual Conference of TAICHI//
 							</div>
-							
+
 							<img
 								src='/images/big_bang.svg'
 								alt='Big Bang Futures'
 								className='w-full object-contain drop-shadow-xl relative z-0'
 							/>
-							
+
 							{/* 下排文字：手機版靠右並向右偏移，桌機版置中 */}
-							<div className='w-full text-right md:text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-lg md:text-xl translate-x-4 md:translate-x-0 md:-mt-8 z-10'>
+							<div className='w-full text-right md:text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-base sm:text-xl md:text-2xl translate-x-4 md:translate-x-0 md:-mt-10 z-10'>
 								DATE:8/3~8/6 TAIPEI,TAIWAN
 							</div>
 						</div>
 
-						{/* Timeline */}
-						{/* Timeline */}
-						<div className='w-full mt-12 md:mt-8 pb-12 text-roboto text-black font-mono max-w-[876px] mx-auto'>
-							{/* --- MOBILE VERTICAL TIMELINE --- */}
-							<div className='md:hidden flex flex-col px-4 max-w-[400px] w-full mx-auto md:ml-0 overflow-visible'>
-								{[
-									{ pct: 0, date: '8/3', label: 'APMAR' },
-									{ pct: 31.7, date: '8/4', label: 'APMAR' },
-									{ pct: 66.6, date: '8/5', label: 'TAICHI, 晶創人文,\n APMAR, ISAT' },
-									{ pct: 100, date: '8/6', label: 'TAICHI ISAT' },
-								].map(({ date, label }, idx, arr) => (
-									<div key={date} className='flex gap-5 relative min-h-[4rem] text-left'>
-										{/* Line & Dot */}
-										<div className='flex flex-col items-center relative mt-1.5'>
-											<div className='w-[14px] h-[14px] bg-[#F7616C] rounded-full z-10 shrink-0 shadow-md' />
-											{idx !== arr.length - 1 && (
-												<div className='absolute top-3.5 h-full w-[2px] bg-[#F7616C]/60 z-0' />
-											)}
-										</div>
-										{/* Text */}
-										<div className='flex flex-row pb-10 flex-1 min-w-0 gap-4 sm:gap-6 pt-[2px] font-mono'>
-											<div className='text-[15px] sm:text-[16px] font-bold tracking-wider text-[#111] leading-snug w-14 shrink-0'>
-												{date}
-											</div>
-											<div
-												className='text-[13px] sm:text-[14px] leading-[1.6] text-[#222] font-bold tracking-tight'
-												style={{ whiteSpace: 'pre-line', wordBreak: 'break-word' }}
-											>
-												{label}
-											</div>
-										</div>
-									</div>
-								))}
-							</div>
 
-							{/* --- DESKTOP HORIZONTAL TIMELINE --- */}
-							<div className='hidden md:block relative w-full px-8'>
-								<div className='relative w-full h-4 flex items-center mb-6'>
-									<div className='absolute left-0 right-0 h-[2px] bg-[#F7616C] z-0' />
-									{[0, 31.7, 66.6, 100].map((pct) => (
-										<div
-											key={pct}
-											className='absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'
-											style={{ left: `${pct}%` }}
-										/>
-									))}
-								</div>
-								<div className='relative w-full h-24'>
-									{[
-										{ pct: 0, date: '8/3', label: 'APMAR' },
-										{ pct: 31.7, date: '8/4', label: 'APMAR' },
-										{ pct: 66.6, date: '8/5', label: 'TAICHI, 晶創人文,\nAPMAR, ISAT' },
-										{ pct: 100, date: '8/6', label: 'TAICHI ISAT' },
-									].map(({ pct, date, label }) => (
-										<div
-											key={pct}
-											className='absolute top-0 -translate-x-1/2 flex flex-col items-center w-44'
-											style={{ left: `${pct}%` }}
-										>
-											<div className='text-2xl font-bold'>{date}</div>
-											<div className='text-lg text-left leading-tight mt-1' style={{ whiteSpace: 'pre-line' }}>
-												{label}
-											</div>
-										</div>
-									))}
-								</div>
-							</div>
-						</div>
 					</div>
 				</div>
 			)}

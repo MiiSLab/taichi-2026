@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { Link } from 'react-router-dom';
 import CountdownTimer from '../components/CountdownTimer';
 import ScrollCollapseSection from '../components/ScrollCollapseSection';
 import Sponsors from '../components/Sponsors';
@@ -90,23 +91,30 @@ const HomePage: React.FC = () => {
 									</div>
 								</div>
 							</div>
-
-							<button className='bg-[#FF0033] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF0033] transition-colors text-lg md:text-xl tracking-wider mb-10 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
-								SUBMIT NOW!
-							</button>
+							<Link to='/cfp'>
+								<button className='bg-[#FF0033] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF0033] transition-colors text-lg md:text-xl tracking-wider mb-10 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
+									SUBMIT NOW!
+								</button>
+							</Link>
 
 							<div className='w-full flex flex-col gap-10 font-mono text-white/90 leading-loose text-sm md:text-base'>
-								<h2 className='text-xl md:text-3xl text-center mb-8 md:mb-12 tracking-widest font-normal drop-shadow-lg text-white'>
-									TAICHI'26's Main Theme -- Big Bang! Futures!
+								<h2 className='text-2xl md:text-4xl text-center mb-2 md:mb-4 tracking-widest font-normal drop-shadow-lg text-white'>
+									TAICHI2026主題：Big Bang! Futures!
 								</h2>
 
+								<div className='flex flex-col max-w-7xl mx-auto mb-8 md:mb-12'>
+									<p className='text-center tracking-wide text-xl md:text-2xl leading-relaxed'>
+										未來將不再以低語傳遞，而是以爆炸式發生。
+										<br />
+										The future doesn't whisper; it bangs!
+									</p>
+								</div>
 								<div className='flex flex-col gap-12 max-w-7xl mx-auto'>
 									<p className='text-justify tracking-wide '>
-										未來將不再以低語傳遞，而是以爆炸式發生。本次大會主題 Big Bang! Futures,
+										本次大會主題「Big Bang! Futures」
 										源自宇宙霹靂般的起始瞬間——爆炸、火花與生命的誕生，也象徵想法快速擴散、改變世界的一刻。我們將這個瞬間帶進城市，化為一個可以逛、可以玩、可以一起參與的未來現場，透過互動裝置、實驗作品與夜市般的體驗空間，邀請民眾親身感受並討論科技如何影響未來生活與彼此之間的關係，讓多重未來在連鎖爆發中持續
-										Big Bang!
+										Big Bang！
 									</p>
-
 									<p className='text-justify tracking-wide '>
 										The future doesn't whisper; it bangs! The theme Big Bang! Futures is inspired by the universe’s
 										first spark—when explosion, energy, and life began. We bring this moment into the city as a future
@@ -121,9 +129,9 @@ const HomePage: React.FC = () => {
 				</div>
 
 				{/* VENUE Section */}
-				<section id='venue'>
+				{/* <section id='venue'>
 					<VenuePage />
-				</section>
+				</section> */}
 
 				{/* ORGANIZATION Section */}
 				<section id='organization'>

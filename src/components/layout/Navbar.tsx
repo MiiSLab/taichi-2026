@@ -23,22 +23,18 @@ const Navbar: React.FC = () => {
 	return (
 		<>
 			<nav
-				className='fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 px-2 py-1 flex items-center justify-between transition-all duration-300 bg-white text-lab-black shadow-lg rounded-full'
+				className='fixed top-4 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl z-50 px-2 py-1.5 flex items-center justify-between transition-all duration-300 bg-white text-lab-black shadow-lg rounded-full'
 				style={{ borderRadius: '9999px' }}
 			>
 				{/* Left Logo */}
 				<div className='flex-1 flex justify-start'>
-					<Link
-						to='/'
-						className='text-2xl font-pixel tracking-widest uppercase cursor-pointer hover:opacity-80 px-4'
-						onClick={handleNav}
-					>
+					<Link to='/' className='text-xl font-pixel  uppercase cursor-pointer hover:opacity-80 px-4' onClick={handleNav}>
 						{CONTENT.nav.logo}
 					</Link>
 				</div>
 
 				{/* Center Links */}
-				<div className='hidden xl:flex flex-1 justify-center gap-6 font-pixel text-lg items-center whitespace-nowrap'>
+				<div className='hidden xl:flex flex-1 justify-center gap-6 font-pixel text-xl items-center whitespace-nowrap'>
 					<Link
 						to='/'
 						onClick={handleNav}
@@ -99,11 +95,11 @@ const Navbar: React.FC = () => {
 				{/* Right Registration & Menu Toggle */}
 				<div className='flex-1 flex justify-end items-center'>
 					<Link
-						to='/venue'
+						to='/'
 						onClick={handleNav}
-						className='hidden xl:block px-6 py-2 font-pixel font-bold rounded-full transition-colors bg-lab-black text-white hover:bg-lab-pink whitespace-nowrap'
+						className='text-xl opacity-90 hover:opacity-60 hidden xl:block px-6 py-1.5 font-pixel font-bold rounded-full transition-colors bg-lab-black text-white hover:bg-lab-pink whitespace-nowrap'
 					>
-						{CONTENT.nav.registration}
+						{CONTENT.nav.registration}(TBD)
 					</Link>
 					<button className='xl:hidden ml-4 p-2' onClick={() => setIsMenuOpen(!isMenuOpen)}>
 						{isMenuOpen ? <X size={32} /> : <Menu size={32} />}
@@ -135,7 +131,7 @@ const Navbar: React.FC = () => {
 					>
 						{CONTENT.nav.cfp}
 					</Link>
-					
+
 					{/* CFP sub-items on mobile - Subtle List Approach */}
 					<div className='flex flex-col items-center gap-4 text-xl opacity-75 mt-[-0.5rem] mb-4'>
 						{CONTENT.nav.cfpSubmenu.map((item) => (
