@@ -5,10 +5,13 @@ import ScrollCollapseSection from '../components/ScrollCollapseSection';
 import Sponsors from '../components/Sponsors';
 import WarpBackground from '../components/WarpBackground';
 import { CONTENT } from '../content';
+import { useSEO } from '../hooks/useSEO';
 import OrganizationPage from './OrganizationPage';
 import VenuePage from './VenuePage';
 
 const HomePage: React.FC = () => {
+	useSEO('首頁', 'TAICHI 2026 台灣人機互動研討會。主題：Big Bang! Futures! 探索未來人機互動。');
+
 	// 這裡接收從 ScrollCollapseSection 傳來的純粹動畫進度 (0 到 1)
 	const [transitionProgress, setTransitionProgress] = useState(0);
 	const [collapseActive, setCollapseActive] = useState(false);
@@ -98,9 +101,9 @@ const HomePage: React.FC = () => {
 							</Link>
 
 							<div className='w-full flex flex-col gap-10 font-mono text-white/90 leading-loose text-sm md:text-base'>
-								<h2 className='text-xl md:text-3xl text-center mb-2 md:mb-4 tracking-widest font-normal drop-shadow-lg text-white'>
+								<h1 className='text-xl md:text-3xl text-center mb-2 md:mb-4 tracking-widest font-normal drop-shadow-lg text-white'>
 									TAICHI2026主題：Big Bang! Futures!
-								</h2>
+								</h1>
 
 								<div className='flex flex-col max-w-7xl mx-auto mb-4'>
 									<p className='text-center tracking-wide text-lg md:text-xl leading-relaxed'>

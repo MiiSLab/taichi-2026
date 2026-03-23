@@ -4,12 +4,15 @@ import Skeleton from '../components/Skeleton';
 import Sponsors from '../components/Sponsors';
 import { CONFIG, CONTENT } from '../content';
 import { useData } from '../context/DataContext';
+import { useSEO } from '../hooks/useSEO';
 
 interface OrganizationPageProps {
 	hidePeople?: boolean;
 }
 
 const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false }) => {
+	useSEO('組織委員會', 'TAICHI 2026 研討會籌備委員與大會主席名單。團隊介紹與聯絡資訊。');
+
 	const { people, isSyncing } = useData();
 
 	const committeeMembers = people.filter((p) => !(p.chairType ? String(p.chairType).toLowerCase() : '').includes('keynote'));
@@ -20,9 +23,9 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 			{SHOW_PEOPLE && (
 				<div className='w-full pt-32 pb-16 px-6 md:px-20 relative overflow-hidden'>
 					<div className='flex flex-col items-center max-w-7xl mx-auto relative z-10 w-full'>
-						<h2 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] uppercase'>
+						<h1 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] uppercase'>
 							{CONTENT.committeeSection.title}
-						</h2>
+						</h1>
 					</div>
 				</div>
 			)}

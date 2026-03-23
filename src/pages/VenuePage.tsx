@@ -1,16 +1,18 @@
 import { ExternalLink } from 'lucide-react';
 import React from 'react';
 import { CONTENT } from '../content';
+import { useSEO } from '../hooks/useSEO';
 
 const VenuePage: React.FC = () => {
+	useSEO('場地資訊VENUE', 'TAICHI 2026 會議地點資訊。DAY 1: 三創生活園區, DAY 2: 國立臺北科技大學。');
 	return (
 		<section className='bg-black min-h-screen text-white w-full'>
 			{/* Top Hero-like Title Section without 100dvh to prevent vertical centering */}
 			<div className='w-full pt-32 pb-16 px-6 md:px-20 relative overflow-hidden'>
 				<div className='flex flex-col items-center max-w-7xl mx-auto relative z-10 w-full'>
-					<h2 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] uppercase'>
+					<h1 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] uppercase'>
 						{CONTENT.venueSection.title}
-					</h2>
+					</h1>
 				</div>
 			</div>
 

@@ -3,6 +3,7 @@ import React from 'react';
 import CountdownTimer from '../components/CountdownTimer';
 import WarpBackground from '../components/WarpBackground';
 import { CONTENT } from '../content';
+import { useSEO } from '../hooks/useSEO';
 
 const isHeading = (text: string) =>
 	[
@@ -81,6 +82,8 @@ const parseText = (text: string) => {
 // CutoutMask removed. Using CSS clip-path instead.
 
 const CFPPage: React.FC = () => {
+	useSEO('徵稿資訊', 'TAICHI 2026 論文徵稿資訊：長篇論文、圖像式論文、海報、互動展示等投稿規定與重要時程。');
+
 	return (
 		<section className='bg-black w-full relative text-white' id='important-dates'>
 			{/* Top Hero Section */}
@@ -88,9 +91,9 @@ const CFPPage: React.FC = () => {
 				<WarpBackground />
 
 				<div className='flex flex-col items-center max-w-7xl relative z-10 w-full'>
-					<h2 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]'>
+					<h1 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]'>
 						CALL FOR PAPERS
-					</h2>
+					</h1>
 					<p
 						className='font-pixel text-2xl md:text-3xl text-lab-pink text-center mb-16 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'
 						style={{ letterSpacing: '0.3em' }}
