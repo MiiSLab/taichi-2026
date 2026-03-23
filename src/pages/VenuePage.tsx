@@ -23,7 +23,7 @@ const VenuePage: React.FC = () => {
 								{/* Pill Badge */}
 								<div className='mb-10'>
 									<div className='inline-flex items-center px-6 md:px-12 py-2 bg-[#FF0033] text-white font-mono text-lg md:text-xl font-bold tracking-widest rounded-full whitespace-nowrap shadow-lg shadow-[#FF0033]/30'>
-										{venue.day.toUpperCase()}&nbsp;[{idx === 0 ? '8/5 (四)' : '8/6 (五)'}]
+										{venue.day.toUpperCase()}&nbsp;[{idx === 0 ? '8/5 四' : '8/6 五'}]
 									</div>
 								</div>
 
