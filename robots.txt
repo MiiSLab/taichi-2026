@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://taichi2026.taiwanchi.org/sitemap.xml
