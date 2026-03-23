@@ -242,7 +242,7 @@ const CFPPage: React.FC = () => {
 					{CONTENT.cfpSection.topicsTitle}
 				</h3>
 
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 max-w-7xl w-full relative z-10 grid-flow-row-dense'>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 max-w-xl md:max-w-5xl w-full relative z-10 grid-flow-row-dense'>
 					{/* Left decorative dot removed */}
 
 					{[
@@ -279,7 +279,13 @@ const CFPPage: React.FC = () => {
 								className={`relative group transition-transform duration-300 hover:-translate-y-1 ${slot.tall ? 'row-span-2' : ''}`}
 							>
 								<div
-									className={`h-full text-black flex flex-col font-roboto p-2 ${['TR', 'TL'].includes(slot.cut) ? 'pt-10' : ''} relative ${bgUrl === 'none' ? 'bg-[#D9D9D9] rounded-2xl shadow-xl' : ''}`}
+									className={`h-full text-black flex flex-col font-roboto px-4 md:px-8 ${
+										['TC', 'TL'].includes(slot.cut)
+											? 'pt-[100px] md:pt-[140px] pb-8 md:pb-12'
+											: ['BC', 'BR', 'BL'].includes(slot.cut) || slot.tall
+												? 'pt-8 md:pt-12 pb-[80px] md:pb-[100px]'
+												: 'py-8 md:py-12'
+									} relative ${bgUrl === 'none' ? 'bg-[#D9D9D9] rounded-2xl shadow-xl' : ''}`}
 									style={
 										bgUrl !== 'none'
 											? {
