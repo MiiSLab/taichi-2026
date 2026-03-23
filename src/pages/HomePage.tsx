@@ -8,24 +8,32 @@ import OrganizationPage from './OrganizationPage';
 import VenuePage from './VenuePage';
 
 const HomePage: React.FC = () => {
-	const [collapseCircle, setCollapseCircle] = useState(100);
+	// 這裡接收從 ScrollCollapseSection 傳來的純粹動畫進度 (0 到 1)
+	const [transitionProgress, setTransitionProgress] = useState(0);
 	const [collapseActive, setCollapseActive] = useState(false);
 
-	// 觸發起點：縮小到剩 30% (即已經縮小了 70%) 才開始
-	const ANIM_START = 50;
+	// 從什麼時候開始 (0~1) 讓底下的內容浮出來。0.5 代表當向下捲動動畫跑到一半 (50%) 時開始浮現。
+	const CONTENT_APPEAR_THRESHOLD = 0.5;
 
-	// Fade starts when circle shrinks to ANIM_START, completes at 0%
-	const themeFade = Math.max(0, Math.min(1, (ANIM_START - collapseCircle) / ANIM_START));
+	// 重新推算底層內容的專屬動畫比例 (會從 Threshold 的百分比開始，重新從 0 算到 1)
+	const contentProgress = Math.max(
+		0,
+		(transitionProgress - CONTENT_APPEAR_THRESHOLD) / (1 - CONTENT_APPEAR_THRESHOLD)
+	);
 
-	// Slide up starts from 50vh (just below the screen) at circleSize=ANIM_START, to 0vh at circleSize=0.
-	const themeTranslateY = collapseCircle >= ANIM_START ? 20 : (collapseCircle / ANIM_START) * 20;
+	// 可以自由決定淡入的曲線 (現在是直接沿用原本的線性變數)
+	const themeFade = contentProgress;
+
+	// 控制底下物件從多深的地方浮上來 (單位: vh)，數字越大浮起距離越長
+	const FLOAT_DISTANCE_VH = 20;
+	const themeTranslateY = (1 - contentProgress) * FLOAT_DISTANCE_VH;
 
 	return (
 		<>
 			{/* HERO — scroll-collapse animation */}
 			<ScrollCollapseSection
-				onProgress={(size, active) => {
-					setCollapseCircle(size);
+				onProgress={(progress, active) => {
+					setTransitionProgress(progress);
 					setCollapseActive(active);
 				}}
 			/>

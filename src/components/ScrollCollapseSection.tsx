@@ -15,11 +15,16 @@ import React, { useEffect, useRef, useState } from 'react';
 const SCROLL_HEIGHT = '500vh'; // vertical "depth" for the animation
 
 // 這裡可以設定自動跑完的總秒數（單位：毫秒），數字越大代表越慢！
-const AUTO_SCROLL_DURATION = 2000;
+const AUTO_SCROLL_DURATION = 700;
+
+// 設定這個動畫的「滑動退場指數」(Ease-Out Rate)
+// 數字越大 -> 開頭爆發越快 -> 後半段極其緩慢的煞車感
+export const EASE_RATE = 1;
+const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, EASE_RATE);
 
 interface Props {
-	/** Reports the current circle size (0–100) and whether the animation is active. */
-	onProgress?: (circleSize: number, isActive: boolean) => void;
+	/** Reports pure animation progress (0–1) and whether the animation is active. */
+	onProgress?: (progress: number, isActive: boolean) => void;
 }
 
 const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
@@ -42,12 +47,8 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 				const elapsed = timestamp - startTime;
 				const progress = Math.min(elapsed / duration, 1);
 
-				// 您覺得感受不明顯，是因為前一版的次方數(3次方)不夠大！
-				// 您提到想要「一開始快，中間/後面慢」，這正是所謂的「Ease-Out（退場緩動）」！
-				// 這樣的曲線會在動畫最前段直接加速完成大部分的路程，然後剩下的一大半時間都處於非常緩慢的「減速滑行」狀態。
-				// easeRate 數字越大，開頭衝得越快、後面拖得越慢！
-				const easeRate = 6;
-				const ease = 1 - Math.pow(1 - progress, easeRate);
+				// 這裡單純驅動「網頁物理往下捲動」的平滑程度
+				const ease = easeOutQuint(progress);
 
 				window.scrollTo(0, startY + distance * ease);
 
@@ -106,17 +107,20 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 			// 3) Animation State Logic
 			if (scrollY >= scrollStart && scrollY <= scrollEnd) {
 				setIsActive(true);
-				const rawProgress = (scrollY - scrollStart) / (scrollEnd - scrollStart);
-				// 使用 ease-out 曲線 (Quad Ease Out)：讓前半段跑得快，後半段的動畫放慢
-				const progress = 1 - Math.pow(1 - rawProgress, 2);
+				// 定義真實的捲動進度 0~1 (因為 window.scrollTo 已經被 CustomScroll 加速過，這進度自動帶有 Ease 效果！)
+				const progress = (scrollY - scrollStart) / (scrollEnd - scrollStart);
+
 				const size = Math.max(100 - progress * 110, 0);
 				setCircleSize(size);
-				onProgress?.(size, true);
+
+				// 輸出純淨的進度 (0~1) 讓 HomePage 自由發揮
+				onProgress?.(progress, true);
 			} else {
 				setIsActive(false);
+				const progress = scrollY < scrollStart ? 0 : 1;
 				const size = scrollY < scrollStart ? 100 : 0;
 				setCircleSize(size);
-				onProgress?.(size, false);
+				onProgress?.(progress, false);
 			}
 		};
 
