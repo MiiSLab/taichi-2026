@@ -139,16 +139,16 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 																		}}
 																	>
 																		<div className='flex flex-col items-stretch w-max max-w-full mx-auto'>
-																			<h4 className='font-bold text-[0.95rem] md:text-[1.1rem] leading-tight mb-[2px] text-justify [text-align-last:justify]'>
+																			<h4 className=' text-[0.95rem] md:text-[1.1rem] leading-tight mb-[2px] text-justify [text-align-last:justify]'>
 																				{member.name}
 																			</h4>
 																			{member.notes && (
-																				<p className='text-[0.75rem] md:text-[0.85rem] font-semibold opacity-90 mb-1 leading-tight text-justify [text-align-last:justify]'>
+																				<p className='text-[0.75rem] md:text-[0.85rem] opacity-90 mb-1 leading-tight text-justify [text-align-last:justify]'>
 																					{member.notes}
 																				</p>
 																			)}
 																		</div>
-																		<p className='text-[0.7rem] md:text-[0.75rem] opacity-75 leading-tight tracking-wide px-1 md:px-2'>
+																		<p className='text-[0.7rem] md:text-[0.75rem] opacity-80 leading-tight tracking-wide px-1 md:px-2'>
 																			{[member.institution, member.department]
 																				.filter(Boolean)
 																				.join(' ')}
