@@ -179,9 +179,9 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 						style={{ opacity: Math.min((circleSize - 10) / 30, 1) }}
 					>
 						<div className='w-full md:w-[95%] max-w-7xl mb-4 flex flex-col items-center relative'>
-							{/* 上排文字：手機版靠左並向左偏移，桌機版置中 */}
-							<div className='w-full text-left md:text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-base sm:text-xl md:text-2xl -translate-x-4 md:translate-x-0 md:-mb-8 z-10'>
-								//12th Annual Conference of TAICHI//
+							{/* 上排文字：全部置中 */}
+							<div className='w-full text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-base md:text-2xl md:-mb-8 z-10 px-2 md:px-0'>
+								12th Annual Conference of TAICHI
 							</div>
 
 							<img
@@ -190,8 +190,8 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 								className='w-full object-contain drop-shadow-xl relative z-0'
 							/>
 
-							{/* 下排文字：手機版靠右並向右偏移，桌機版置中 */}
-							<div className='w-full text-right md:text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-base sm:text-xl md:text-2xl translate-x-4 md:translate-x-0 md:-mt-10 z-10'>
+							{/* 下排文字：全部置中 */}
+							<div className='w-full text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-base md:text-2xl md:-mt-10 z-10 px-2 md:px-0'>
 								2026/8/5 - 8/6 TAIPEI, TAIWAN
 							</div>
 						</div>

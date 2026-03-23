@@ -82,7 +82,7 @@ const HomePage: React.FC = () => {
 								<div className='flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-6'>
 									<div className='text-white font-roboto font-bold text-center'>
 										<div className='text-2xl md:text-3xl text-lab-lime mb-2 tracking-wider font-mono'>
-											TIL THE SUBMISSION DEADLINE
+											THE SUBMISSION DEADLINE
 										</div>
 										<div className='text-base md:text-lg text-gray-200 font-bold'>2026/6/18(四) 23:59 (GMT+8)</div>
 									</div>
