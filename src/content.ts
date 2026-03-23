@@ -209,9 +209,9 @@ export const CONTENT = {
 			{
 				id: 'papers',
 				title: '論文與圖像式論文（Full Paper & Pictorial)',
-				date: '2026/6/18(四) 23:59(台灣時區)',
-				notification: '2026/7/21(二) 23:59(台灣時區)',
-				cameraReady: '2026/7/27(一) 23:59(台灣時區)',
+				date: '2026/6/18(四) 23:59 (GMT+8)',
+				notification: '2026/7/21(二) 23:59 (GMT+8)',
+				cameraReady: '2026/7/27(一) 23:59 (GMT+8)',
 				extendedDate: '',
 				format: 'ACM SIGCHI Two-Column / DIS Pictorial',
 				links: [
@@ -273,17 +273,14 @@ export const CONTENT = {
 					'Yu-Chun (Grace) Yen / 顏羽君 / 國立陽明交通大學資訊工程系',
 					'論文投稿相關問題請洽 [taiwanchi26+paper@gmail.com](mailto:taiwanchi26+paper@gmail.com)',
 				],
-				specs: [
-					'Notification 結果通知: 2026/7/21(二) 23:59(台灣時區)',
-					'Camera-Ready Deadline 完稿日: 2026/7/27(一) 23:59(台灣時區)',
-				],
+				specs: ['Notification 結果通知: 2026/7/21(二) 23:59 (GMT+8)', 'Camera-Ready Deadline 完稿日: 2026/7/27(一) 23:59 (GMT+8)'],
 			},
 			{
 				id: 'posters',
 				title: 'Poster 海報論文',
-				date: '2026/6/18(四) 23:59(台灣時區)',
-				notificationDate: '2026/7/21(二) 23:59(台灣時區)',
-				cameraReadyDate: '2026/7/27(一) 23:59(台灣時區)',
+				date: '2026/6/18(四) 23:59 (GMT+8)',
+				notificationDate: '2026/7/21(二) 23:59 (GMT+8)',
+				cameraReadyDate: '2026/7/27(一) 23:59 (GMT+8)',
 				extendedDate: '',
 				format: 'ACM SIGCHI Two-Column',
 				links: [
@@ -322,17 +319,14 @@ export const CONTENT = {
 					'Wei-Ming Chung / 莊偉銘 / 銘傳大學商品設計系 講師',
 					'● 海報論文投稿相關問題請洽 [taiwanchi26+poster@gmail.com](mailto:taiwanchi26+poster@gmail.com)',
 				],
-				specs: [
-					'Notification 結果通知: 2026/7/21(二) 23:59(台灣時區)',
-					'Camera-Ready Deadline 完稿日: 2026/7/27(一) 23:59(台灣時區)',
-				],
+				specs: ['Notification 結果通知: 2026/7/21(二) 23:59 (GMT+8)', 'Camera-Ready Deadline 完稿日: 2026/7/27(一) 23:59 (GMT+8)'],
 			},
 			{
 				id: 'demos',
 				title: 'Interactivity and Demo 互動展示論文',
-				date: '2026/6/18(四) 23:59(台灣時區)',
-				notificationDate: '2026/7/21(二) 23:59(台灣時區)',
-				cameraReadyDate: '2026/7/27(一) 23:59(台灣時區)',
+				date: '2026/6/18(四) 23:59 (GMT+8)',
+				notificationDate: '2026/7/21(二) 23:59 (GMT+8)',
+				cameraReadyDate: '2026/7/27(一) 23:59 (GMT+8)',
 				extendedDate: '',
 				format: 'ACM SIGCHI Extended Abstract',
 				links: [
@@ -372,10 +366,7 @@ export const CONTENT = {
 					'Ching-Wen Hung / 洪靖雯 / 臺大資訊網路與多媒體研究所 博士候選人',
 					'● 展示投稿相關問題請洽 [taiwanchi26+demo@gmail.com](mailto:taiwanchi26+demo@gmail.com)',
 				],
-				specs: [
-					'Notification 結果通知: 2026/7/21(二) 23:59(台灣時區)',
-					'Camera-Ready Deadline 完稿日: 2026/7/27(一) 23:59(台灣時區)',
-				],
+				specs: ['Notification 結果通知: 2026/7/21(二) 23:59 (GMT+8)', 'Camera-Ready Deadline 完稿日: 2026/7/27(一) 23:59 (GMT+8)'],
 			},
 		],
 	},

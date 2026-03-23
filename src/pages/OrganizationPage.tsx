@@ -1,3 +1,4 @@
+import { Mail } from 'lucide-react';
 import React from 'react';
 import Skeleton from '../components/Skeleton';
 import Sponsors from '../components/Sponsors';
@@ -14,20 +15,21 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 	const committeeMembers = people.filter((p) => !(p.chairType ? String(p.chairType).toLowerCase() : '').includes('keynote'));
 	const SHOW_PEOPLE = !hidePeople;
 	return (
-		<div className='py-24 bg-transparent'>
-			{/* ORGANIZATION (COMMITTEE) */}
+		<div className='bg-transparent min-h-screen text-white w-full'>
+			{/* ORGANIZATION (COMMITTEE) TITLE ONLY HERO */}
+			{SHOW_PEOPLE && (
+				<div className='w-full pt-32 pb-16 px-6 md:px-20 relative overflow-hidden'>
+					<div className='flex flex-col items-center max-w-7xl mx-auto relative z-10 w-full'>
+						<h2 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] uppercase'>
+							{CONTENT.committeeSection.title}
+						</h2>
+					</div>
+				</div>
+			)}
+
 			{SHOW_PEOPLE && (
 				<section className='px-6 md:px-20 pb-24'>
 					<div className='max-w-7xl mx-auto'>
-						{/* Header */}
-						{SHOW_PEOPLE && (
-							<div className='flex flex-col items-center justify-center mb-16'>
-								<h2 className='text-5xl md:text-7xl font-pixel text-lab-lime drop-shadow-md mb-4 text-center'>
-									{CONTENT.committeeSection.title}
-								</h2>
-							</div>
-						)}
-
 						{isSyncing && people.length === 0 ? (
 							<div className='space-y-16'>
 								<div>
@@ -90,11 +92,28 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 													? `${titleData.zh}  /  ${titleData.en}`
 													: chairType.toUpperCase();
 
+												let emailInfo = null;
+												if (normalizedType === 'general chairs') emailInfo = 'taiwanchi26@gmail.com';
+												else if (normalizedType === 'paper chairs') emailInfo = 'taiwanchi26+paper@gmail.com';
+												else if (normalizedType === 'poster chairs') emailInfo = 'taiwanchi26+poster@gmail.com';
+												else if (normalizedType === 'demo chairs') emailInfo = 'taiwanchi26+demo@gmail.com';
+
 												return (
 													<div key={chairType} className='mb-20'>
-														<h3 className='font-pixel text-2xl md:text-3xl text-white mb-10 tracking-widest uppercase'>
-															{displayTitle}
-														</h3>
+														<div className='flex flex-col md:flex-row md:items-end gap-2 md:gap-4 lg:gap-6 mb-10'>
+															<h3 className='font-pixel text-2xl md:text-3xl text-lab-lime tracking-widest uppercase'>
+																{displayTitle}
+															</h3>
+															{emailInfo && (
+																<a
+																	href={`mailto:${emailInfo}`}
+																	className='font-roboto text-sm md:text-base text-gray-200 hover:text-white transition-colors tracking-wide flex items-center md:mb-1 opacity-80 hover:opacity-100 gap-2 pb-[2px]'
+																>
+																	<Mail size={16} />
+																	<span>{emailInfo}</span>
+																</a>
+															)}
+														</div>
 														<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-16'>
 															{groupedMembers[chairType].map((member) => (
 																<div

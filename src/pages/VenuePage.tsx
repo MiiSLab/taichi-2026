@@ -4,14 +4,17 @@ import { CONTENT } from '../content';
 
 const VenuePage: React.FC = () => {
 	return (
-		<section className='pt-24 px-6 md:px-20 bg-black min-h-screen'>
-			<div className='max-w-6xl mx-auto'>
-				<div className='flex flex-col items-center justify-center mb-24'>
-					<h2 className='font-mono md:font-pixel text-4xl md:text-5xl font-bold mb-12 text-lab-lime uppercase tracking-[0.2em] text-center'>
+		<section className='bg-black min-h-screen text-white w-full'>
+			{/* Top Hero-like Title Section without 100dvh to prevent vertical centering */}
+			<div className='w-full pt-32 pb-16 px-6 md:px-20 relative overflow-hidden'>
+				<div className='flex flex-col items-center max-w-7xl mx-auto relative z-10 w-full'>
+					<h2 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] uppercase'>
 						{CONTENT.venueSection.title}
 					</h2>
 				</div>
+			</div>
 
+			<div className='max-w-6xl mx-auto px-6 md:px-20 pb-24'>
 				<div className='flex flex-col gap-24 md:gap-32 mb-24'>
 					{CONTENT.venueSection.venues.map((venue, idx) => (
 						<div key={idx} className='grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-20 w-full max-w-5xl mx-auto'>

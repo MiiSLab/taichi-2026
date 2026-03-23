@@ -1,4 +1,4 @@
-import { Download, ExternalLink, FileText } from 'lucide-react';
+import { Clock, Download, ExternalLink, FileText } from 'lucide-react';
 import React from 'react';
 import CountdownTimer from '../components/CountdownTimer';
 import WarpBackground from '../components/WarpBackground';
@@ -87,7 +87,7 @@ const CFPPage: React.FC = () => {
 			<div className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center px-6 md:px-20 py-32 relative overflow-hidden'>
 				<WarpBackground />
 
-				<div className='flex flex-col items-center max-w-7xl relative z-10 w-full mt-8 md:mt-0'>
+				<div className='flex flex-col items-center max-w-7xl relative z-10 w-full'>
 					<h2 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]'>
 						CALL FOR PAPERS
 					</h2>
@@ -102,7 +102,7 @@ const CFPPage: React.FC = () => {
 						<div className='flex flex-col lg:flex-row items-center justify-between w-full max-w-5xl mx-auto gap-2 lg:gap-8 bg-white/5 border border-white/10 rounded-2xl px-6 py-4'>
 							<div className='text-white font-roboto font-bold text-center lg:text-left'>
 								<div className='text-xl md:text-2xl text-lab-lime mb-1 tracking-wider'>Deadline 截稿日</div>
-								<div className='text-sm md:text-base text-gray-300 font-normal'>2026/6/18(四) 23:59(台灣時區)</div>
+								<div className='text-sm md:text-base text-gray-300 font-normal'>2026/6/18(四) 23:59 (GMT+8)</div>
 							</div>
 							<div>
 								<CountdownTimer targetDateStr='2026-06-18T23:59:00+08:00' small />
@@ -112,7 +112,7 @@ const CFPPage: React.FC = () => {
 						<div className='flex flex-col lg:flex-row items-center justify-between w-full max-w-5xl mx-auto gap-2 lg:gap-8 bg-white/5 border border-white/10 rounded-2xl px-6 py-4'>
 							<div className='text-white font-roboto font-bold text-center lg:text-left'>
 								<div className='text-xl md:text-2xl text-lab-lime mb-1 tracking-wider'>Notification 結果通知</div>
-								<div className='text-sm md:text-base text-gray-300 font-normal'>2026/7/21(二) 23:59(台灣時區)</div>
+								<div className='text-sm md:text-base text-gray-300 font-normal'>2026/7/21(二) 23:59 (GMT+8)</div>
 							</div>
 							<div>
 								<CountdownTimer targetDateStr='2026-07-21T23:59:00+08:00' small />
@@ -122,7 +122,7 @@ const CFPPage: React.FC = () => {
 						<div className='flex flex-col lg:flex-row items-center justify-between w-full max-w-5xl mx-auto gap-2 lg:gap-8 bg-white/5 border border-white/10 rounded-2xl px-6 py-4'>
 							<div className='text-white font-roboto font-bold text-center lg:text-left'>
 								<div className='text-xl md:text-2xl text-lab-lime mb-1 tracking-wider'>Camera-Ready 完稿日</div>
-								<div className='text-sm md:text-base text-gray-300 font-normal'>2026/7/27(一) 23:59(台灣時區)</div>
+								<div className='text-sm md:text-base text-gray-300 font-normal'>2026/7/27(一) 23:59 (GMT+8)</div>
 							</div>
 							<div>
 								<CountdownTimer targetDateStr='2026-07-27T23:59:00+08:00' small />
@@ -131,9 +131,14 @@ const CFPPage: React.FC = () => {
 					</div>
 
 					{CONTENT.cfpSection.submissionLink && (
-						<button className='bg-lab-pink text-white font-bold py-4 px-16 rounded-full hover:bg-white hover:text-lab-pink transition-colors text-xl tracking-wider shadow-[0_0_20px_rgba(255,0,102,0.6)]'>
+						<a
+							href={CONTENT.cfpSection.submissionLink}
+							target='_blank'
+							rel='noopener noreferrer'
+							className='inline-flex bg-lab-pink text-white font-bold py-4 px-16 rounded-full hover:bg-white hover:text-lab-pink transition-colors text-xl tracking-wider shadow-[0_0_20px_rgba(255,0,102,0.6)]'
+						>
 							進入投稿系統
-						</button>
+						</a>
 					)}
 				</div>
 			</div>
@@ -173,8 +178,25 @@ const CFPPage: React.FC = () => {
 								</div>
 
 								<div className='flex flex-col mb-2 pt-4'>
-									<h3 className='font-roboto font-bold text-xl md:text-2xl text-lab-black pb-2 text-left'>{cat.title}</h3>
+									<div className='flex flex-col md:flex-row md:items-start lg:items-center justify-between gap-4 pb-2'>
+										<h3 className='font-roboto font-bold text-xl md:text-2xl text-lab-black text-left'>{cat.title}</h3>
+										{CONTENT.cfpSection.submissionLink && (
+											<a
+												href={CONTENT.cfpSection.submissionLink}
+												target='_blank'
+												rel='noopener noreferrer'
+												className='inline-flex items-center justify-center bg-[#FF0033] text-white font-bold py-2 px-6 rounded-full hover:bg-black hover:text-white transition-colors text-sm md:text-base tracking-widest shadow-md shrink-0'
+											>
+												進入投稿系統
+											</a>
+										)}
+									</div>
 									<div className='flex flex-col gap-1 text-sm font-roboto mt-2 mb-2'>
+										{cat.date && (
+											<div className='flex gap-2 font-bold text-[#FF0033] mb-1'>
+												<Clock size={18} className='mt-[-1px]' /> Deadline: {cat.date}
+											</div>
+										)}
 										<div className='flex gap-2 font-bold'>
 											<FileText size={18} className='mt-[-2px]' /> Description & Format
 										</div>
@@ -230,6 +252,7 @@ const CFPPage: React.FC = () => {
 										</p>
 									);
 								})}
+
 							</div>
 						</div>
 					);

@@ -28,67 +28,65 @@ const Sponsors: React.FC = () => {
 		}
 
 		return (
-			<div
-				className='bg-[#F7F7F7] rounded-xl px-6 py-4 flex items-center justify-center transition-transform duration-300 hover:-translate-y-1 shadow-sm'
-				title={item.name}
-			>
+			<div className='flex items-center justify-center transition-transform duration-300 hover:-translate-y-1' title={item.name}>
 				<img
 					src={imgSrc}
 					alt={item.name}
 					onError={() => setImgError(true)}
-					className='object-contain h-16 md:h-16 mix-blend-darken'
+					className='object-contain h-14 md:h-16 mix-blend-darken filter drop-shadow-sm'
 				/>
 			</div>
 		);
 	};
 
 	return (
-		<section className='py-20 px-10 md:px-16 bg-black min-h-screen'>
-			<div className='max-w-4xl mx-auto flex flex-col items-center'>
+		<section className='py-28 px-10 md:px-16 bg-[#FAFAFA] text-black w-full min-h-screen flex flex-col justify-center'>
+			<div className='max-w-4xl mx-auto flex flex-col items-center w-full'>
 				{/* ORGANIZERS SECTION */}
-				<div className='w-full mb-24'>
+				<div className='w-full mb-32 flex flex-col items-center'>
 					{/* Title */}
-					<h2 className='font-mono md:font-pixel text-4xl md:text-5xl font-bold mb-12 text-lab-lime uppercase tracking-[0.2em] text-center'>
+					<h2 className='font-mono md:font-pixel text-4xl md:text-5xl font-bold mb-16 text-[#FF0033] uppercase tracking-[0.2em] text-center'>
 						{organizerTitle}
 					</h2>
 
-					<div className='flex flex-col gap-8 w-full'>
-						{/* Main Organizers Card */}
-						<div className='bg-white rounded-[20px] p-6 md:p-8 w-full shadow-2xl'>
-							<h3 className='font-mono text-xs md:text-sm font-bold tracking-widest uppercase mb-6 text-black'>
+					<div className='flex flex-col gap-16 w-full'>
+						{/* Main Organizers */}
+						<div className='w-full flex flex-col'>
+							<h3 className='font-mono text-base md:text-lg font-bold tracking-[0.2em] uppercase mb-8 text-[#111]'>
 								Main Organizers
 							</h3>
-							<div className='flex flex-wrap gap-4'>
+							<div className='flex flex-wrap gap-8 md:gap-12'>
 								{organizers.map((item, idx) => (
 									<ImageBlock key={idx} item={item} />
 								))}
 							</div>
 						</div>
 
-						{/* Co-Organizers Card */}
-						<div className='bg-white rounded-[20px] p-6 md:p-8 w-full shadow-2xl'>
-							<h3 className='font-mono text-xs md:text-sm font-bold tracking-widest uppercase mb-6 text-black'>
-								Co-Organizers
-							</h3>
-							<div className='flex flex-wrap gap-4'>
-								{coOrganizers.map((item, idx) => (
-									<ImageBlock key={idx} item={item} />
-								))}
+						{/* Co-Organizers */}
+						{coOrganizers.length > 0 && (
+							<div className='w-full flex flex-col'>
+								<h3 className='font-mono text-base md:text-lg font-bold tracking-[0.2em] uppercase mb-8 text-[#111]'>
+									Co-Organizers
+								</h3>
+								<div className='flex flex-wrap gap-8 md:gap-12'>
+									{coOrganizers.map((item, idx) => (
+										<ImageBlock key={idx} item={item} />
+									))}
+								</div>
 							</div>
-						</div>
+						)}
 					</div>
 				</div>
 
-				{/* SPONSORS SECTION */}
-				<div className='w-full'>
+				<div className='w-full flex flex-col items-center'>
 					{/* Title */}
-					<h2 className='font-mono md:font-pixel text-4xl md:text-5xl font-bold mb-12 text-lab-lime uppercase tracking-[0.2em] text-center'>
+					<h2 className='font-mono md:font-pixel text-4xl md:text-5xl font-bold mb-16 text-[#FF0033] uppercase tracking-[0.2em] text-center'>
 						{sponsorTitle}
 					</h2>
 
-					{/* Sponsors Card */}
-					<div className='bg-white rounded-[20px] p-6 md:p-8 w-full shadow-2xl'>
-						<div className='flex flex-wrap gap-4'>
+					{/* Sponsors List */}
+					<div className='w-full flex flex-col'>
+						<div className='flex flex-wrap gap-8 md:gap-12'>
 							{sponsors.map((item, idx) => (
 								<ImageBlock key={idx} item={item} />
 							))}

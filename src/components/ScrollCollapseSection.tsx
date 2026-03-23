@@ -192,11 +192,9 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 
 							{/* 下排文字：手機版靠右並向右偏移，桌機版置中 */}
 							<div className='w-full text-right md:text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-base sm:text-xl md:text-2xl translate-x-4 md:translate-x-0 md:-mt-10 z-10'>
-								DATE:8/3~8/6 TAIPEI,TAIWAN
+								2026/8/5 - 8/6 TAIPEI, TAIWAN
 							</div>
 						</div>
-
-
 					</div>
 				</div>
 			)}

@@ -78,32 +78,32 @@ const HomePage: React.FC = () => {
 							className='relative z-10 flex flex-col items-center w-full max-w-8xl my-auto'
 							style={collapseActive ? { transform: `translateY(${themeTranslateY}vh)` } : undefined}
 						>
-							<div className='w-full mb-10'>
+							<div className='w-full mb-5'>
 								<div className='flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-6'>
 									<div className='text-white font-roboto font-bold text-center'>
 										<div className='text-2xl md:text-3xl text-lab-lime mb-2 tracking-wider font-mono'>
 											TIL THE SUBMISSION DEADLINE
 										</div>
-										<div className='text-base md:text-lg text-gray-200 font-bold'>2026/6/18(四) 23:59(台灣時區)</div>
+										<div className='text-base md:text-lg text-gray-200 font-bold'>2026/6/18(四) 23:59 (GMT+8)</div>
 									</div>
-									<div className='transform scale-90 md:scale-100 mt-2'>
+									<div className='transform scale-[70%] md:scale-[80%] mt-2'>
 										<CountdownTimer targetDateStr='2026-06-18T23:59:00+08:00' />
 									</div>
 								</div>
 							</div>
 							<Link to='/cfp'>
-								<button className='bg-[#FF0033] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF0033] transition-colors text-lg md:text-xl tracking-wider mb-10 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
+								<button className='bg-[#FF0033] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF0033] transition-colors text-lg md:text-xl tracking-wider mb-14 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
 									SUBMIT NOW!
 								</button>
 							</Link>
 
 							<div className='w-full flex flex-col gap-10 font-mono text-white/90 leading-loose text-sm md:text-base'>
-								<h2 className='text-2xl md:text-4xl text-center mb-2 md:mb-4 tracking-widest font-normal drop-shadow-lg text-white'>
+								<h2 className='text-xl md:text-3xl text-center mb-2 md:mb-4 tracking-widest font-normal drop-shadow-lg text-white'>
 									TAICHI2026主題：Big Bang! Futures!
 								</h2>
 
-								<div className='flex flex-col max-w-7xl mx-auto mb-8 md:mb-12'>
-									<p className='text-center tracking-wide text-xl md:text-2xl leading-relaxed'>
+								<div className='flex flex-col max-w-7xl mx-auto mb-4'>
+									<p className='text-center tracking-wide text-lg md:text-xl leading-relaxed'>
 										未來將不再以低語傳遞，而是以爆炸式發生。
 										<br />
 										The future doesn't whisper; it bangs!
