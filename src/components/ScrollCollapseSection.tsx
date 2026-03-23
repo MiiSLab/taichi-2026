@@ -37,10 +37,31 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 	useEffect(() => {
 		let lastY = window.scrollY;
 
+		const preventDefault = (e: Event) => e.preventDefault();
+		const preventDefaultForScrollKeys = (e: KeyboardEvent) => {
+			if (['Space', 'ArrowUp', 'ArrowDown', 'PageUp', 'PageDown', 'Home', 'End'].includes(e.code)) {
+				e.preventDefault();
+			}
+		};
+
+		const lockScroll = () => {
+			window.addEventListener('wheel', preventDefault, { passive: false });
+			window.addEventListener('touchmove', preventDefault, { passive: false });
+			window.addEventListener('keydown', preventDefaultForScrollKeys as any, { passive: false });
+		};
+
+		const unlockScroll = () => {
+			window.removeEventListener('wheel', preventDefault);
+			window.removeEventListener('touchmove', preventDefault);
+			window.removeEventListener('keydown', preventDefaultForScrollKeys as any); // Remove with same casting
+		};
+
 		const triggerCustomScroll = (targetY: number, duration: number) => {
 			const startY = window.scrollY;
 			const distance = targetY - startY;
 			let startTime: number | null = null;
+			
+			lockScroll();
 
 			const step = (timestamp: number) => {
 				if (!startTime) startTime = timestamp;
@@ -56,6 +77,7 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 					requestAnimationFrame(step);
 				} else {
 					window.scrollTo(0, targetY);
+					unlockScroll();
 					// 給予緩衝時間防止立刻連續觸發
 					setTimeout(() => {
 						isAutoScrolling.current = null;
@@ -127,7 +149,10 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 		window.addEventListener('scroll', handleScroll, { passive: true });
 		// Run once on mount to establish base
 		setTimeout(handleScroll, 100);
-		return () => window.removeEventListener('scroll', handleScroll);
+		return () => {
+			window.removeEventListener('scroll', handleScroll);
+			unlockScroll(); // Ensure scroll is unlocked when component unmounts
+		};
 	}, []);
 
 	return (
