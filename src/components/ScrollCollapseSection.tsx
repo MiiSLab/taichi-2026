@@ -192,7 +192,7 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 								{[
 									{ pct: 0, date: '8/3', label: 'APMAR' },
 									{ pct: 31.7, date: '8/4', label: 'APMAR' },
-									{ pct: 66.6, date: '8/5', label: 'TAICHI, 晶創人文, APMAR, ISAT' },
+									{ pct: 66.6, date: '8/5', label: 'TAICHI, 晶創人文,\n APMAR, ISAT' },
 									{ pct: 100, date: '8/6', label: 'TAICHI ISAT' },
 								].map(({ date, label }, idx, arr) => (
 									<div key={date} className='flex gap-5 relative min-h-[4rem] text-left'>
@@ -204,12 +204,12 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 											)}
 										</div>
 										{/* Text */}
-										<div className='flex flex-col pb-10 flex-1 min-w-0'>
-											<div className='text-[1.35rem] font-bold tracking-widest text-[#111] leading-none mb-1.5'>
+										<div className='flex flex-row pb-10 flex-1 min-w-0 gap-4 sm:gap-6 pt-[2px] font-mono'>
+											<div className='text-[15px] sm:text-[16px] font-bold tracking-wider text-[#111] leading-snug w-14 shrink-0'>
 												{date}
 											</div>
 											<div
-												className='text-[13px] sm:text-[14px] leading-[1.6] text-[#222] font-medium'
+												className='text-[13px] sm:text-[14px] leading-[1.6] text-[#222] font-bold tracking-tight'
 												style={{ whiteSpace: 'pre-line', wordBreak: 'break-word' }}
 											>
 												{label}
