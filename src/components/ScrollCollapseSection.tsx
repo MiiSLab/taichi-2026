@@ -178,11 +178,23 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 						className='flex flex-col items-center max-w-7xl w-full text-center px-4 pt-16'
 						style={{ opacity: Math.min((circleSize - 10) / 30, 1) }}
 					>
-						<img
-							src='/images/home_bg.png'
-							alt='Big Bang Futures'
-							className='w-[90%] md:w-[85%] max-w-5xl mb-8 object-contain drop-shadow-xl'
-						/>
+						<div className='w-[90%] md:w-[85%] max-w-5xl mb-8 flex flex-col items-center relative'>
+							{/* 上排文字：手機版靠左並向左偏移，桌機版置中 */}
+							<div className='w-full text-left md:text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-lg md:text-xl -translate-x-4 md:translate-x-0 md:-mb-6 z-10'>
+								//12th ANNUAL CONFERENCE//
+							</div>
+							
+							<img
+								src='/images/big_bang.svg'
+								alt='Big Bang Futures'
+								className='w-full object-contain drop-shadow-xl relative z-0'
+							/>
+							
+							{/* 下排文字：手機版靠右並向右偏移，桌機版置中 */}
+							<div className='w-full text-right md:text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-lg md:text-xl translate-x-4 md:translate-x-0 md:-mt-8 z-10'>
+								DATE:8/3~8/6 TAIPEI,TAIWAN
+							</div>
+						</div>
 
 						{/* Timeline */}
 						{/* Timeline */}
