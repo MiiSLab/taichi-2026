@@ -30,7 +30,7 @@ const VenuePage: React.FC = () => {
 								{/* Titles */}
 								<div className='flex flex-col gap-8 flex-1 justify-center mb-8'>
 									<h3 className='font-mono font-bold text-xl md:text-3xl text-white tracking-widest leading-snug break-all md:break-normal'>
-										{idx === 0 ? 'TAICHI BIG BANG 互動夜市' : 'TAICHI ISAT'}
+										{idx === 0 ? 'TAICHI BIG BANG 互動夜市' : 'TAICHI'}
 									</h3>
 
 									<div className='flex flex-col gap-4 font-mono mt-2 md:mt-4'>
