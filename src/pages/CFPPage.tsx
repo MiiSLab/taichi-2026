@@ -242,74 +242,74 @@ const CFPPage: React.FC = () => {
 					{CONTENT.cfpSection.topicsTitle}
 				</h3>
 
-				<div className='grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-12 max-w-4xl w-full relative z-10'>
-					{/* Left decorative dot */}
-					<div className='hidden md:block absolute left-[-3rem] top-[13%] w-[36px] h-[36px] bg-[#A8F020] rounded-full z-20'></div>
+				<div className='grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-4 max-w-7xl w-full relative z-10 grid-flow-row-dense'>
+					{/* Left decorative dot removed */}
 
 					{[
 						{ en: 'Usability and User Experience', cut: 'BR', row: 0 },
-						{ en: 'Interaction Techniques and Devices', cut: 'BL', row: 0 },
-						{ en: 'Understanding Users and Human Behavior', cut: 'TR', row: 1 },
+						{ en: 'Interaction Techniques and Devices', cut: 'BC', row: 0 },
+						{ en: 'Understanding Users and Human Behavior', cut: 'TL', row: 1 },
 						{ en: 'Design Methods and Processes', cut: 'TL', row: 1 },
-						{ en: 'Mobile and Ubiquitous Computing', cut: 'BR', row: 2 },
+						{ en: 'Mobile and Ubiquitous Computing', cut: 'BC', row: 2 },
 						{ en: 'Virtual, Augmented, Mixed, and Extended Reality (VR, AR, MR, XR)', cut: 'BL', row: 2, tall: true },
-						{ en: 'Human-AI Interaction', cut: 'TR', row: 3 },
-						{ en: 'DECORATION', cut: 'NONE', row: 3 },
+						{ en: 'Human-AI Interaction', cut: 'BR', row: 3 },
+
 						{ en: 'More-than-Human Design', cut: 'TL', row: 4 },
-						{ en: 'Ethics, Accessibility, and Inclusive Design', cut: 'BR', row: 4 },
+						{ en: 'Ethics, Accessibility, and Inclusive Design', cut: 'TC', row: 4 },
 						{ en: 'Specific Application Areas', cut: 'NONE', row: 5 },
 						{ en: 'Social Computing and Collaboration', cut: 'NONE', row: 5 },
 					].map((slot, idx) => {
-						if (slot.en === 'DECORATION') {
-							return (
-								<div key='deco' className='hidden md:flex items-center justify-center relative'>
-									{/* Green pinwheel decoration from Figma */}
-									<div
-										className='grid grid-cols-2 gap-2 w-[110px] h-[110px] transform rotate-12 absolute'
-										style={{ left: '15%' }}
-									>
-										<div className='w-full h-full bg-[#A8F020] rounded-[24px] flex items-center justify-center'>
-											<div className='w-[44px] h-[44px] bg-black rounded-full'></div>
-										</div>
-										<div className='w-full h-full bg-[#A8F020] rounded-[24px] flex items-center justify-center'>
-											<div className='w-[44px] h-[44px] bg-black rounded-full'></div>
-										</div>
-									</div>
-								</div>
-							);
-						}
-
 						const topic = CONTENT.cfpSection.topics.find((t) => t.en === slot.en);
 						if (!topic) return <div key={idx} className='hidden' />;
+
+						let bgUrl = '';
+						if (slot.tall) {
+							bgUrl = 'url(/images/tall_bottom_left.svg)';
+						} else {
+							if (slot.cut === 'BR') bgUrl = 'url(/images/bottom_right.svg)';
+							else if (slot.cut === 'BC') bgUrl = 'url(/images/bottom_center.svg)';
+							else if (slot.cut === 'TC') bgUrl = 'url(/images/top_center.svg)';
+							else if (slot.cut === 'TL') bgUrl = 'url(/images/top_left.svg)';
+							else bgUrl = 'none';
+						}
 
 						return (
 							<div
 								key={idx}
-								className={`rounded-2xl bg-[#D9D9D9] text-black flex flex-col font-roboto shadow-2xl transition-transform duration-300 hover:-translate-y-1 p-10 ${slot.tall ? 'row-span-2' : ''}`}
+								className={`relative group transition-transform duration-300 hover:-translate-y-1 ${slot.tall ? 'row-span-2' : ''}`}
 							>
-								<h4 className='font-bold text-base md:text-lg leading-snug mb-1 tracking-tight'>{topic.en}</h4>
-								<p className='font-bold text-sm md:text-base leading-snug mb-4 opacity-70'>{topic.ch}</p>
+								<div
+									className={`h-full text-black flex flex-col font-roboto p-2 ${['TR', 'TL'].includes(slot.cut) ? 'pt-10' : ''} relative ${bgUrl === 'none' ? 'bg-[#D9D9D9] rounded-2xl shadow-xl' : ''}`}
+									style={
+										bgUrl !== 'none'
+											? {
+													backgroundImage: bgUrl,
+													backgroundSize: '100% 100%',
+													backgroundRepeat: 'no-repeat',
+													filter: 'drop-shadow(0 20px 25px rgba(0,0,0,0.5))',
+												}
+											: {}
+									}
+								>
+									<h4 className='font-bold text-base md:text-lg leading-snug mb-1 tracking-tight'>{topic.en}</h4>
+									<p className='font-bold text-sm md:text-base leading-snug mb-4 opacity-70'>{topic.ch}</p>
 
-								{'details' in topic && topic.details && Array.isArray(topic.details) && (
-									<ul className='space-y-2 text-xs md:text-sm font-medium text-black/80 tracking-tight'>
-										{topic.details.map((detail, dIdx) => (
-											<li key={dIdx} className='flex gap-2 items-start'>
-												<span className='mt-[3px] text-black font-black text-xs flex-shrink-0'>•</span>
-												<span className='leading-normal'>{detail}</span>
-											</li>
-										))}
-									</ul>
-								)}
+									{'details' in topic && topic.details && Array.isArray(topic.details) && (
+										<ul className='space-y-2 text-xs md:text-sm font-medium text-black/80 tracking-tight'>
+											{topic.details.map((detail, dIdx) => (
+												<li key={dIdx} className='flex gap-2 items-start'>
+													<span className='mt-[3px] text-black font-black text-xs flex-shrink-0'>•</span>
+													<span className='leading-normal'>{detail}</span>
+												</li>
+											))}
+										</ul>
+									)}
+								</div>
 							</div>
 						);
 					})}
 
-					{/* Green dot centered at the BR/BL junction of row 0 and TR/TL of row 1  */}
-					{/* Positioned between row 1 bottom-right and row 2 top-left in the grid gap */}
-					<div
-						className='hidden md:block absolute w-[40px] h-[40px] bg-[#A8F020] rounded-full z-20 pointer-events-none'
-						style={{ left: 'calc(50% - 20px)', top: 'calc(25% - 20px)' }}
-					></div>
+					{/* Green dot centered junction removed */}
 				</div>
 
 				<div className='w-full max-w-5xl mt-32 mb-12 relative z-10'>
