@@ -54,7 +54,7 @@ const HomePage: React.FC = () => {
 					{/* THEME (Intro) AND COUNTDOWN */}
 					<section
 						id='theme'
-						className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-start md:justify-center pt-32 md:pt-20 pb-20 px-6 md:px-20 relative overflow-x-hidden overflow-y-auto'
+						className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-start pt-[120px] pb-20 px-6 md:px-20 relative overflow-x-hidden overflow-y-auto'
 						style={
 							collapseActive
 								? {
@@ -74,7 +74,7 @@ const HomePage: React.FC = () => {
 						<WarpBackground />
 
 						<div
-							className='relative z-10 flex flex-col items-center w-full max-w-8xl'
+							className='relative z-10 flex flex-col items-center w-full max-w-8xl my-auto'
 							style={collapseActive ? { transform: `translateY(${themeTranslateY}vh)` } : undefined}
 						>
 							<div className='w-full mb-10'>
