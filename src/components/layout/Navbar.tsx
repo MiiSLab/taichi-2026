@@ -135,19 +135,27 @@ const Navbar: React.FC = () => {
 					>
 						{CONTENT.nav.cfp}
 					</Link>
-					{/* CFP sub-items on mobile */}
-					<div className='flex flex-col items-center gap-4 text-xl opacity-80'>
+					
+					{/* CFP sub-items on mobile - Subtle List Approach */}
+					<div className='flex flex-col items-center gap-4 text-xl opacity-75 mt-[-0.5rem] mb-4'>
 						{CONTENT.nav.cfpSubmenu.map((item) => (
 							<Link
 								key={item.hash}
 								to={`/cfp${item.hash}`}
 								onClick={handleNav}
-								className={`transition-all duration-200 hover:font-bold hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] uppercase ${location.pathname === '/cfp' && location.hash === item.hash ? 'underline underline-offset-8 opacity-100' : 'hover:opacity-100'}`}
+								className={`flex items-center gap-2 transition-all duration-200 hover:font-bold hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] uppercase ${location.pathname === '/cfp' && location.hash === item.hash ? 'underline underline-offset-8 font-bold text-lab-lime opacity-100' : 'hover:opacity-100 py-1 hover:text-lab-lime'}`}
 							>
-								{item.label}
+								<span className='opacity-40 text-sm'>•</span> {item.label} <span className='opacity-40 text-sm'>•</span>
 							</Link>
 						))}
 					</div>
+					<Link
+						to='/organization'
+						onClick={handleNav}
+						className={`transition-all duration-200 hover:font-bold hover:drop-shadow-[0_0_8px_rgba(255,255,255,0.6)] ${location.pathname === '/organization' ? 'underline underline-offset-8' : ''}`}
+					>
+						{CONTENT.nav.organization}
+					</Link>
 					<span className='opacity-50 cursor-default text-2xl'>COMPETITION (TBD)</span>
 				</div>
 			)}

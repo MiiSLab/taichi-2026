@@ -262,47 +262,42 @@ const CFPPage: React.FC = () => {
 						const topic = CONTENT.cfpSection.topics.find((t) => t.en === slot.en);
 						if (!topic) return <div key={idx} className='hidden' />;
 
-						let bgUrl = '';
+						let bgClasses = 'bg-[#D9D9D9] rounded-2xl shadow-xl';
 						let paddingClasses = 'py-8 md:py-12';
+						let hasBg = false;
 
 						if (slot.tall) {
-							bgUrl = 'url(/images/tall_bottom_left.svg)';
-							paddingClasses = 'pt-8 md:pt-12 pb-[140px] md:pb-[240px]';
+							// 手機版沒有佔兩格高，用一般比例的 bottom_center，平板以上佔兩格才用真的 tall_bottom_left
+							bgClasses = 'bg-[url(/images/bottom_center.svg)] md:bg-[url(/images/tall_bottom_left.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
+							paddingClasses = 'pt-8 md:pt-12 pb-[80px] md:pb-[240px]';
+							hasBg = true;
 						} else {
 							if (slot.cut === 'BR') {
-								bgUrl = 'url(/images/bottom_right.svg)';
+								bgClasses = 'bg-[url(/images/bottom_right.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
 								paddingClasses = 'pt-8 md:pt-12 pb-[140px] md:pb-[180px]';
-							} else if (slot.cut === 'BC') {
-								bgUrl = 'url(/images/bottom_center.svg)';
+								hasBg = true;
+							} else if (slot.cut === 'BC' || slot.cut === 'BL') {
+								bgClasses = 'bg-[url(/images/bottom_center.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
 								paddingClasses = 'pt-8 md:pt-12 pb-[80px] md:pb-[120px]';
-							} else if (slot.cut === 'TC') {
-								bgUrl = 'url(/images/top_center.svg)';
+								hasBg = true;
+							} else if (slot.cut === 'TC' || slot.cut === 'TR') {
+								bgClasses = 'bg-[url(/images/top_center.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
 								paddingClasses = 'pt-[100px] md:pt-[120px] pb-8 md:pb-12';
+								hasBg = true;
 							} else if (slot.cut === 'TL') {
-								bgUrl = 'url(/images/top_left.svg)';
+								bgClasses = 'bg-[url(/images/top_left.svg)] bg-[length:100%_100%] bg-no-repeat drop-shadow-[0_20px_25px_rgba(0,0,0,0.5)]';
 								paddingClasses = 'pt-[120px] md:pt-[160px] pb-8 md:pb-12';
-							} else {
-								bgUrl = 'none';
+								hasBg = true;
 							}
 						}
 
 						return (
 							<div
 								key={idx}
-								className={`relative group transition-transform duration-300 hover:-translate-y-1 ${slot.tall ? 'row-span-2' : ''}`}
+								className={`relative group transition-transform duration-300 hover:-translate-y-1 ${slot.tall ? 'md:row-span-2' : ''}`}
 							>
 								<div
-									className={`h-full text-black flex flex-col font-roboto px-6 md:px-10 ${paddingClasses} relative ${bgUrl === 'none' ? 'bg-[#D9D9D9] rounded-2xl shadow-xl' : ''}`}
-									style={
-										bgUrl !== 'none'
-											? {
-													backgroundImage: bgUrl,
-													backgroundSize: '100% 100%',
-													backgroundRepeat: 'no-repeat',
-													filter: 'drop-shadow(0 20px 25px rgba(0,0,0,0.5))',
-												}
-											: {}
-									}
+									className={`h-full text-black flex flex-col font-roboto px-6 md:px-10 ${paddingClasses} relative ${bgClasses}`}
 								>
 									<h4 className='font-bold text-base md:text-lg leading-snug mb-1 tracking-tight'>{topic.en}</h4>
 									<p className='font-bold text-sm md:text-base leading-snug mb-4 opacity-70'>{topic.ch}</p>

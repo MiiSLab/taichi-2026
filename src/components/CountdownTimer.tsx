@@ -42,7 +42,7 @@ const CountdownTimer: React.FC<Props> = ({ targetDateStr = '2026-08-04T00:00:00+
 
 	const containerScale = small
 		? 'text-4xl md:text-5xl lg:text-5xl drop-shadow-[0_0_10px_rgba(255,0,102,0.6)]'
-		: 'text-6xl md:text-8xl lg:text-9xl drop-shadow-[0_0_20px_rgba(255,0,102,0.8)]';
+		: 'text-[2.5rem] sm:text-5xl md:text-7xl lg:text-9xl drop-shadow-[0_0_20px_rgba(255,0,102,0.8)]';
 
 	const labelScale = small ? 'text-[10px] md:text-xs' : 'text-sm md:text-lg';
 	const colonMargin = small ? 'mb-4 md:mb-6' : 'mb-8 md:mb-12';

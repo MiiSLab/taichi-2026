@@ -60,7 +60,7 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 			const startY = window.scrollY;
 			const distance = targetY - startY;
 			let startTime: number | null = null;
-			
+
 			lockScroll();
 
 			const step = (timestamp: number) => {
@@ -185,35 +185,71 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 						/>
 
 						{/* Timeline */}
-						<div className='relative mt-8 max-w-[876px] w-full mx-auto pb-12 px-8 text-roboto'>
-							<div className='relative w-full h-4 flex items-center mb-6'>
-								<div className='absolute left-0 right-0 h-[2px] bg-[#F7616C] z-0' />
-								{[0, 31.7, 66.6, 100].map((pct) => (
-									<div
-										key={pct}
-										className='absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'
-										style={{ left: `${pct}%` }}
-									/>
-								))}
-							</div>
-							<div className='relative w-full text-black font-mono h-24'>
+						{/* Timeline */}
+						<div className='w-full mt-12 md:mt-8 pb-12 text-roboto text-black font-mono max-w-[876px] mx-auto'>
+							{/* --- MOBILE VERTICAL TIMELINE --- */}
+							<div className='md:hidden flex flex-col px-4 max-w-[400px] w-full mx-auto md:ml-0 overflow-visible'>
 								{[
 									{ pct: 0, date: '8/3', label: 'APMAR' },
 									{ pct: 31.7, date: '8/4', label: 'APMAR' },
-									{ pct: 66.6, date: '8/5', label: 'TAICHI, 晶創人文,\nAPMAR, ISAT' },
+									{ pct: 66.6, date: '8/5', label: 'TAICHI, 晶創人文, APMAR, ISAT' },
 									{ pct: 100, date: '8/6', label: 'TAICHI ISAT' },
-								].map(({ pct, date, label }) => (
-									<div
-										key={pct}
-										className='absolute top-0 -translate-x-1/2 flex flex-col items-center w-44'
-										style={{ left: `${pct}%` }}
-									>
-										<div className='text-xl md:text-2xl font-bold'>{date}</div>
-										<div className='text-sm md:text-lg text-left leading-tight mt-1' style={{ whiteSpace: 'pre-line' }}>
-											{label}
+								].map(({ date, label }, idx, arr) => (
+									<div key={date} className='flex gap-5 relative min-h-[4rem] text-left'>
+										{/* Line & Dot */}
+										<div className='flex flex-col items-center relative mt-1.5'>
+											<div className='w-[14px] h-[14px] bg-[#F7616C] rounded-full z-10 shrink-0 shadow-md' />
+											{idx !== arr.length - 1 && (
+												<div className='absolute top-3.5 h-full w-[2px] bg-[#F7616C]/60 z-0' />
+											)}
+										</div>
+										{/* Text */}
+										<div className='flex flex-col pb-10 flex-1 min-w-0'>
+											<div className='text-[1.35rem] font-bold tracking-widest text-[#111] leading-none mb-1.5'>
+												{date}
+											</div>
+											<div
+												className='text-[13px] sm:text-[14px] leading-[1.6] text-[#222] font-medium'
+												style={{ whiteSpace: 'pre-line', wordBreak: 'break-word' }}
+											>
+												{label}
+											</div>
 										</div>
 									</div>
 								))}
+							</div>
+
+							{/* --- DESKTOP HORIZONTAL TIMELINE --- */}
+							<div className='hidden md:block relative w-full px-8'>
+								<div className='relative w-full h-4 flex items-center mb-6'>
+									<div className='absolute left-0 right-0 h-[2px] bg-[#F7616C] z-0' />
+									{[0, 31.7, 66.6, 100].map((pct) => (
+										<div
+											key={pct}
+											className='absolute top-1/2 -translate-y-1/2 w-4 h-4 bg-[#F7616C] rounded-full z-10 -translate-x-1/2'
+											style={{ left: `${pct}%` }}
+										/>
+									))}
+								</div>
+								<div className='relative w-full h-24'>
+									{[
+										{ pct: 0, date: '8/3', label: 'APMAR' },
+										{ pct: 31.7, date: '8/4', label: 'APMAR' },
+										{ pct: 66.6, date: '8/5', label: 'TAICHI, 晶創人文,\nAPMAR, ISAT' },
+										{ pct: 100, date: '8/6', label: 'TAICHI ISAT' },
+									].map(({ pct, date, label }) => (
+										<div
+											key={pct}
+											className='absolute top-0 -translate-x-1/2 flex flex-col items-center w-44'
+											style={{ left: `${pct}%` }}
+										>
+											<div className='text-2xl font-bold'>{date}</div>
+											<div className='text-lg text-left leading-tight mt-1' style={{ whiteSpace: 'pre-line' }}>
+												{label}
+											</div>
+										</div>
+									))}
+								</div>
 							</div>
 						</div>
 					</div>
