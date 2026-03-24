@@ -46,12 +46,22 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 		};
 
 		const lockScroll = () => {
+			// 強制停止手機版的慣性滾動 (Momentum Scrolling) 且避免桌機版隱藏捲軸造成的寬度跳動
+			const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
+			if (scrollBarWidth > 0 && !document.body.style.paddingRight) {
+				document.body.style.paddingRight = `${scrollBarWidth}px`;
+			}
+			document.body.style.overflow = 'hidden';
+
 			window.addEventListener('wheel', preventDefault, { passive: false });
 			window.addEventListener('touchmove', preventDefault, { passive: false });
 			window.addEventListener('keydown', preventDefaultForScrollKeys as any, { passive: false });
 		};
 
 		const unlockScroll = () => {
+			document.body.style.overflow = '';
+			document.body.style.paddingRight = '';
+
 			window.removeEventListener('wheel', preventDefault);
 			window.removeEventListener('touchmove', preventDefault);
 			window.removeEventListener('keydown', preventDefaultForScrollKeys as any); // Remove with same casting
