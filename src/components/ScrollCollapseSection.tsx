@@ -68,21 +68,28 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 		};
 
 		const triggerCustomScroll = (targetY: number, duration: number) => {
-			const startY = window.scrollY;
-			const distance = targetY - startY;
 			let startTime: number | null = null;
+			let startY: number | null = null;
+			let distance = 0;
 
 			lockScroll();
 
 			const step = (timestamp: number) => {
-				if (!startTime) startTime = timestamp;
+				if (startTime === null) {
+					startTime = timestamp;
+					// 為了避免和手機原生的高速慣性滾動「打架」產生回朔感，
+					// 必須在「動畫要畫出第一幀的那一刻」才去撈取精準的 y 軸，而不是上個月步的舊座標。
+					startY = window.scrollY;
+					distance = targetY - startY;
+				}
+
 				const elapsed = timestamp - startTime;
 				const progress = Math.min(elapsed / duration, 1);
 
 				// 這裡單純驅動「網頁物理往下捲動」的平滑程度
 				const ease = easeOutQuint(progress);
 
-				window.scrollTo(0, startY + distance * ease);
+				window.scrollTo(0, startY! + distance * ease);
 
 				if (progress < 1) {
 					requestAnimationFrame(step);
