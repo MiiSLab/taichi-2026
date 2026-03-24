@@ -58,7 +58,7 @@ const HomePage: React.FC = () => {
 					{/* THEME (Intro) AND COUNTDOWN */}
 					<section
 						id='theme'
-						className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-start pt-[120px] pb-20 px-6 md:px-20 relative overflow-x-hidden overflow-y-auto'
+						className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center pt-[80px] md:pt-[100px] pb-8 md:pb-12 px-6 md:px-20 relative overflow-hidden'
 						style={
 							collapseActive
 								? {
@@ -97,25 +97,25 @@ const HomePage: React.FC = () => {
 								</div>
 							</div>
 							<Link to='/cfp'>
-								<button className='bg-[#FF0033] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF0033] transition-colors text-lg md:text-xl tracking-wider mb-14 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
+								<button className='bg-[#FF0033] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF0033] transition-colors text-lg md:text-xl tracking-wider mb-6 md:mb-10 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
 									{CONTENT.submissionDeadline.buttonText}
 								</button>
 							</Link>
 
-							<div className='w-full flex flex-col gap-10 font-mono text-white/90 leading-loose text-sm md:text-base'>
-								<h1 className='text-xl md:text-3xl text-center mb-2 md:mb-4 tracking-widest font-normal drop-shadow-lg text-white'>
+							<div className='w-full flex flex-col gap-6 md:gap-8 font-mono text-white/90 leading-loose text-sm md:text-base'>
+								<h1 className='text-xl md:text-3xl text-center mb-1 md:mb-2 tracking-widest font-normal drop-shadow-[0_0_15px_rgba(168,240,32,0.5)] text-lab-lime'>
 									{CONTENT.theme.title}
 								</h1>
 
-								<div className='flex flex-col max-w-7xl mx-auto mb-4'>
-									<p className='text-center tracking-wide text-lg md:text-xl leading-relaxed'>{CONTENT.theme.sloganEn}</p>
-									<p className='text-center tracking-wide text-lg md:text-xl leading-relaxed mt-2'>
+								<div className='flex flex-col max-w-7xl mx-auto mb-1'>
+									<p className='text-center tracking-wide text-base md:text-lg leading-relaxed'>{CONTENT.theme.sloganEn}</p>
+									<p className='text-center tracking-wide text-base md:text-lg leading-relaxed mt-1'>
 										{CONTENT.theme.sloganZh}
 									</p>
 								</div>
-								<div className='flex flex-col gap-8 max-w-7xl mx-auto'>
-									<p className='text-justify tracking-wide '>{CONTENT.theme.descriptionEn}</p>
-									<p className='text-justify tracking-wide '>{CONTENT.theme.descriptionZh}</p>
+								<div className='flex flex-col gap-4 md:gap-6 max-w-7xl mx-auto'>
+									<p className='text-justify tracking-wide md:[text-align-last:center] text-white/80 text-xs md:text-sm'>{CONTENT.theme.descriptionEn}</p>
+									<p className='text-justify tracking-wide md:[text-align-last:center] text-white/80 text-xs md:text-sm'>{CONTENT.theme.descriptionZh}</p>
 								</div>
 							</div>
 						</div>

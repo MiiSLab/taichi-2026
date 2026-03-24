@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
 					<Link
 						to='#'
 						onClick={handleNav}
-						className='text-xl opacity-90 hover:opacity-60 hidden xl:block px-6 py-1.5 font-pixel font-bold rounded-full transition-colors bg-lab-black text-white hover:bg-lab-pink whitespace-nowrap'
+						className='text-xl opacity-90 hover:opacity-60 hidden xl:block px-6 py-1.5 font-pixel rounded-full transition-colors bg-lab-black text-white hover:bg-lab-pink whitespace-nowrap'
 					>
 						{CONTENT.nav.registration}(TBD)
 					</Link>

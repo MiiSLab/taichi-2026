@@ -144,7 +144,10 @@ const CFPPage: React.FC = () => {
 							<span className='font-pixel text-[#a8f020] text-sm md:text-xl tracking-[0.3em] mb-1 md:mb-2 uppercase drop-shadow-[0_0_15px_rgba(168,240,32,0.8)] group-hover:text-white transition-colors'>
 								EXPLORE MORE
 							</span>
-							<ChevronsDown className='w-12 h-12 md:w-16 md:h-16 text-[#a8f020] drop-shadow-[0_0_20px_rgba(168,240,32,0.8)] group-hover:text-white transition-colors' strokeWidth={1.5} />
+							<ChevronsDown
+								className='w-12 h-12 md:w-16 md:h-16 text-[#a8f020] drop-shadow-[0_0_20px_rgba(168,240,32,0.8)] group-hover:text-white transition-colors'
+								strokeWidth={1.5}
+							/>
 						</div>
 					</button>
 				</div>
@@ -259,7 +262,6 @@ const CFPPage: React.FC = () => {
 										</p>
 									);
 								})}
-
 							</div>
 						</div>
 					);
