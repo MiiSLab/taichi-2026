@@ -1,4 +1,4 @@
-import { Clock, Download, ExternalLink, FileText } from 'lucide-react';
+import { ChevronsDown, Clock, Download, ExternalLink, FileText } from 'lucide-react';
 import React from 'react';
 import CountdownTimer from '../components/CountdownTimer';
 import WarpBackground from '../components/WarpBackground';
@@ -87,21 +87,21 @@ const CFPPage: React.FC = () => {
 	return (
 		<section className='bg-black w-full relative text-white' id='important-dates'>
 			{/* Top Hero Section */}
-			<div className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center px-6 md:px-20 py-32 relative overflow-hidden'>
+			<div className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center px-6 md:px-20 py-16 md:py-32 relative overflow-hidden'>
 				<WarpBackground />
 
-				<div className='flex flex-col items-center max-w-7xl relative z-10 w-full'>
-					<h1 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]'>
+				<div className='flex flex-col items-center max-w-7xl relative z-10 w-full mt-4 md:mt-0'>
+					<h1 className='text-5xl md:text-8xl font-pixel text-white mb-4 md:mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]'>
 						CALL FOR PAPERS
 					</h1>
 					<p
-						className='font-pixel text-2xl md:text-3xl text-lab-pink text-center mb-16 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'
+						className='font-pixel text-xl md:text-3xl text-lab-pink text-center mb-8 md:mb-16 drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]'
 						style={{ letterSpacing: '0.3em' }}
 					>
 						{CONTENT.cfpSection.subtitle}
 					</p>
 
-					<div className='flex flex-col gap-10 md:gap-6 w-full mb-16'>
+					<div className='flex flex-col gap-4 md:gap-6 w-full mb-8 md:mb-12'>
 						<div className='flex flex-col lg:flex-row items-center justify-between w-full max-w-5xl mx-auto gap-2 lg:gap-8 bg-white/5 border border-white/10 rounded-2xl px-6 py-4'>
 							<div className='text-white font-roboto font-bold text-center lg:text-left'>
 								<div className='text-xl md:text-2xl text-lab-lime mb-1 tracking-wider'>Deadline 截稿日</div>
@@ -133,21 +133,25 @@ const CFPPage: React.FC = () => {
 						</div>
 					</div>
 
-					{CONTENT.cfpSection.submissionLink && (
-						<a
-							href={CONTENT.cfpSection.submissionLink}
-							target='_blank'
-							rel='noopener noreferrer'
-							className='inline-flex bg-lab-pink text-white font-bold py-4 px-16 rounded-full hover:bg-white hover:text-lab-pink transition-colors text-xl tracking-wider shadow-[0_0_20px_rgba(255,0,102,0.6)]'
-						>
-							進入投稿系統
-						</a>
-					)}
+					<button
+						onClick={() => {
+							document.getElementById('categories')?.scrollIntoView({ behavior: 'smooth' });
+						}}
+						className='mt-4 md:mt-12 flex flex-col items-center gap-2 group cursor-pointer transition-all hover:scale-105'
+						aria-label='Scroll to Categories'
+					>
+						<div className='flex flex-col items-center animate-bounce'>
+							<span className='font-pixel text-[#a8f020] text-sm md:text-xl tracking-[0.3em] mb-1 md:mb-2 uppercase drop-shadow-[0_0_15px_rgba(168,240,32,0.8)] group-hover:text-white transition-colors'>
+								EXPLORE MORE
+							</span>
+							<ChevronsDown className='w-12 h-12 md:w-16 md:h-16 text-[#a8f020] drop-shadow-[0_0_20px_rgba(168,240,32,0.8)] group-hover:text-white transition-colors' strokeWidth={1.5} />
+						</div>
+					</button>
 				</div>
 			</div>
 
 			{/* Categories */}
-			<div className='w-full font-roboto'>
+			<div id='categories' className='w-full font-roboto'>
 				{CONTENT.cfpSection.categories.map((cat) => {
 					const headingIdx = cat.description.findIndex((desc) => isHeading(desc));
 					const topDesc = headingIdx === -1 ? cat.description : cat.description.slice(0, headingIdx);

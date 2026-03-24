@@ -1,4 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
+import { CONTENT } from '../content';
 
 /**
  * ScrollCollapseSection
@@ -181,18 +182,18 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 						<div className='w-full md:w-[95%] max-w-7xl mb-4 flex flex-col items-center relative'>
 							{/* 上排文字：全部置中 */}
 							<div className='w-full text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-base md:text-2xl md:-mb-8 z-10 px-2 md:px-0'>
-								12th Annual Conference of TAICHI
+								{CONTENT.heroBanner.topText}
 							</div>
 
 							<img
 								src='/images/big_bang.svg'
-								alt='Big Bang Futures'
+								alt='TAICHI 2026 台灣人機互動研討會 - Big Bang Futures 主題標誌'
 								className='w-full object-contain drop-shadow-xl relative z-0'
 							/>
 
 							{/* 下排文字：全部置中 */}
 							<div className='w-full text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-base md:text-2xl md:-mt-10 z-10 px-2 md:px-0'>
-								2026/8/5 - 8/6 TAIPEI, TAIWAN
+								{CONTENT.heroBanner.bottomText}
 							</div>
 						</div>
 					</div>

@@ -94,10 +94,23 @@ export const CONTENT = {
 		coordinates: 'TAICHI 2026 \n BIG BANG FUTURES',
 		segment: 'HCI\nTAIWAN',
 	},
+	heroBanner: {
+		topText: '12th Annual Conference of TAICHI',
+		bottomText: '2026/8/5 - 8/6 TAIPEI, TAIWAN',
+	},
+	submissionDeadline: {
+		title: 'THE SUBMISSION DEADLINE',
+		date: '2026/6/18 Thursday 23:59 (GMT+8)',
+		buttonText: 'SUBMIT NOW!',
+	},
 	theme: {
-		title: 'TAICHI’26’s Main Theme -- Big Bang! Futures！',
-		p1: '未來將不再以低語傳遞，而是以爆炸式發生。本次大會主題 Big Bang! Futures，源自宇宙霹靂般的起始瞬間——爆炸、火花與生命的誕生，也象徵想法快速擴散、改變世界的一刻',
-		p2: '我們將這個瞬間帶進城市，化為一個可以逛、可以玩、可以一起參與的未來現場，透過互動裝置、實驗作品與夜市般的體驗空間，邀請民眾親身感受並討論科技如何影響未來生活與彼此之間的關係，讓多重未來在連鎖爆發中持續 Big Bang!',
+		title: 'TAICHI2026 Theme: Big Bang! Futures!',
+		sloganEn: "The future doesn't whisper; it bangs!",
+		sloganZh: '未來將不再以低語傳遞，而是以爆炸式發生。',
+		descriptionEn:
+			"The future doesn't whisper; it bangs! The theme Big Bang! Futures is inspired by the universe’s first spark—when explosion, energy, and life began. We bring this moment into the city as a future you can walk through, play with, and experience together. Through interactive works, experimental pieces, and a night-market atmosphere, the public is invited to explore how technology shapes future ways of living and relating—letting us BANG i nto multiple futures again and again!",
+		descriptionZh:
+			'本次大會主題「Big Bang! Futures」源自宇宙霹靂般的起始瞬間——爆炸、火花與生命的誕生，也象徵想法快速擴散、改變世界的一刻。我們將這個瞬間帶進城市，化為一個可以逛、可以玩、可以一起參與的未來現場，透過互動裝置、實驗作品與夜市般的體驗空間，邀請民眾親身感受並討論科技如何影響未來生活與彼此之間的關係，讓多重未來在連鎖爆發中持續 Big Bang！',
 	},
 	cfpSection: {
 		title: 'CALL FOR PAPERS',
@@ -416,6 +429,11 @@ export const CONTENT = {
 	},
 	venueSection: {
 		title: 'VENUE',
+		description: [
+			'TAICHI 2026 (Taiwan Association of Computer-Human Interaction) 以「Big Bang! Futures」為主題，將於 2026 年 8 月 5 日至 8 月 6 日舉行，匯聚設計、科技與人機互動領域的研究者與創作者，共同探索未來的多重可能。',
+			'本屆 TAICHI 為一系列跨域大型活動的一部分（2026/08/03–08/06），與 APMAR、晶創人文與 IAST 等單位共同串聯，打造橫跨學術、展演與公共參與的整體場域。',
+			'於 8 月 5 日（三）於三創生活園區，將舉辦對外開放的互動Poster與Demo市集與表演活動，邀請公眾一同走入未來情境，體驗科技如何形塑生活與人際關係。',
+		],
 		venues: [
 			{
 				day: 'Day 1',

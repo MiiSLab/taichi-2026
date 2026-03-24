@@ -14,6 +14,30 @@ const VenuePage: React.FC = () => {
 						{CONTENT.venueSection.title}
 					</h1>
 				</div>
+				{/* Global Venue Descriptions from content.ts */}
+				{CONTENT.venueSection.description && (
+					<div className='max-w-7xl mx-auto'>
+						<div className='w-full mb-20'>
+							<div className='grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8'>
+								{CONTENT.venueSection.description.map((desc, idx) => {
+									return (
+										<div
+											key={idx}
+											className='bg-[#111111] border border-white/5 p-4 md:p-8 rounded-[24px] hover:bg-[#151515] hover:border-[#a8f020]/30 transition-all duration-300 flex flex-col gap-3 group shadow-lg'
+										>
+											<div className='font-pixel text-[#a8f020] text-4xl opacity-50 group-hover:opacity-100 group-hover:scale-105 transition-all duration-300 origin-left'>
+												0{idx + 1}
+											</div>
+											<p className='text-gray-300 text-sm md:text-base tracking-wide leading-relaxed text-justify'>
+												{desc}
+											</p>
+										</div>
+									);
+								})}
+							</div>
+						</div>
+					</div>
+				)}
 			</div>
 
 			<div className='max-w-6xl mx-auto px-6 md:px-20 pb-24'>
