@@ -39,6 +39,13 @@ declare interface PersonItem {
 	order?: number;
 }
 
+interface ImageAdjustment {
+	objectPosition?: string;
+	scale?: number;
+	lastUrl?: string;
+}
+
+
 declare interface Speaker {
 	name: string;
 	headPhoto: string;
