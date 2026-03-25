@@ -11,6 +11,10 @@ interface DataContextType {
 	lastSynced: string;
 }
 
+const CACHE_KEY = 'taichi_2026_notion_cache';
+
+
+
 const DataContext = createContext<DataContextType>({
 	people: STATIC_PEOPLE,
 	sessions: STATIC_SESSIONS,
@@ -19,6 +23,8 @@ const DataContext = createContext<DataContextType>({
 	dataSource: 'static',
 	lastSynced: '',
 });
+
+
 
 export const useData = () => useContext(DataContext);
 
@@ -30,15 +36,32 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 	const [dataSource, setDataSource] = useState<'static' | 'notion'>('static');
 	const [lastSynced, setLastSynced] = useState<string>('');
 
+	// 1. Initial Load from Cache (Immediate)
 	useEffect(() => {
+		const cached = localStorage.getItem(CACHE_KEY);
+		if (cached) {
+			try {
+				const { data, timestamp, source } = JSON.parse(cached);
+				if (data.people) setPeople(data.people);
+				if (data.sessions) setSessions(data.sessions);
+				if (data.news) setNews(data.news);
+				setDataSource(source || 'notion');
+				const date = new Date(timestamp);
+				setLastSynced(`${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`);
+			} catch (e) {
+				console.warn('Failed to parse cache', e);
+			}
+		}
+		
+		// 2. Always trigger background sync on mount
 		handleSyncData();
 	}, []);
 
 	const handleSyncData = async () => {
 		setIsSyncing(true);
-		await new Promise((resolve) => setTimeout(resolve, 500));
 
 		try {
+			// Fetch in parallel
 			const [fetchedPeople, fetchedSessions, fetchedNews] = await Promise.all([
 				fetchPeopleFromNotion(),
 				fetchSessionsFromNotion(),
@@ -46,23 +69,39 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 			]);
 
 			let hasUpdate = false;
+			const newData: any = {};
+
 			if (fetchedPeople && fetchedPeople.length > 0) {
 				setPeople(fetchedPeople);
+				newData.people = fetchedPeople;
 				hasUpdate = true;
 			}
 			if (fetchedSessions && fetchedSessions.length > 0) {
 				setSessions(fetchedSessions);
+				newData.sessions = fetchedSessions;
 				hasUpdate = true;
 			}
 			if (fetchedNews && fetchedNews.length > 0) {
 				setNews(fetchedNews);
+				newData.news = fetchedNews;
 				hasUpdate = true;
 			}
 
 			if (hasUpdate) {
 				setDataSource('notion');
-				const now = new Date();
-				setLastSynced(`${now.getHours()}:${now.getMinutes().toString().padStart(2, '0')}`);
+				const now = Date.now();
+				const date = new Date(now);
+				setLastSynced(`${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`);
+
+				// Save to Cache
+				localStorage.setItem(
+					CACHE_KEY,
+					JSON.stringify({
+						data: newData,
+						timestamp: now,
+						source: 'notion',
+					}),
+				);
 			}
 		} catch (error) {
 			console.error('Failed to sync data from Notion:', error);
@@ -71,5 +110,9 @@ export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children
 		}
 	};
 
-	return <DataContext.Provider value={{ people, sessions, news, isSyncing, dataSource, lastSynced }}>{children}</DataContext.Provider>;
+	return (
+		<DataContext.Provider value={{ people, sessions, news, isSyncing, dataSource, lastSynced }}>{children}</DataContext.Provider>
+	);
 };
+
+

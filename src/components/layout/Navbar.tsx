@@ -3,8 +3,11 @@ import React, { useEffect, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { CONTENT } from '../../content';
 
+
 const Navbar: React.FC = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
+
+
 	const [isScrolled, setIsScrolled] = useState(false);
 	const location = useLocation();
 
@@ -27,11 +30,12 @@ const Navbar: React.FC = () => {
 				style={{ borderRadius: '9999px' }}
 			>
 				{/* Left Logo */}
-				<div className='flex-1 flex justify-start'>
-					<Link to='/' className='text-xl font-pixel  uppercase cursor-pointer hover:opacity-80 px-4' onClick={handleNav}>
+				<div className='flex-1 flex justify-start items-center gap-2'>
+					<Link to='/' className='text-xl font-pixel uppercase cursor-pointer hover:opacity-80 px-4 pr-1' onClick={handleNav}>
 						{CONTENT.nav.logo}
 					</Link>
 				</div>
+
 
 				{/* Center Links */}
 				<div className='hidden xl:flex flex-1 justify-center gap-6 font-pixel text-xl items-center whitespace-nowrap'>
