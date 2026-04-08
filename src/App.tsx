@@ -4,7 +4,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 const ComingSoon: React.FC = () => {
 	return (
 		<div className='min-h-screen flex flex-col items-center justify-center bg-lab-black text-lab-white p-6 text-center'>
-			<h1 className='text-4xl md:text-5xl lg:text-6xl font-bold text-lab-orange mb-8 tracking-wider'>第12屆台灣人機互動研討會</h1>
+			<h1 className='text-4xl md:text-5xl lg:text-6xl font-bold text-lab-lime mb-8 tracking-wider'>第12屆台灣人機互動研討會</h1>
 			<p className='text-2xl md:text-3xl font-medium mb-4 leading-relaxed text-lab-white/90'>
 				2026/08/05 - 08/06
 				<br />
