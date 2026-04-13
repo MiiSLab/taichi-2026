@@ -58,11 +58,13 @@
 							'pili-glow': '0 0 10px rgba(255, 192, 0, 0.7), 0 0 20px rgba(255, 192, 0, 0.5)',
 						},
 						fontFamily: {
-							sans: ['Inter', 'sans-serif'],
+							sans: ['"IBM Plex Sans"', '"Noto Sans TC"', 'sans-serif'],
+							mono: ['"Reddit Mono"', '"Roboto Mono"', 'monospace'],
 							pixel: ['"VT323"', 'monospace'],
 							reddit: ['"Reddit Mono"', 'monospace'],
-							roboto: ['"Roboto Mono"', 'monospace'],
+							roboto: ['"IBM Plex Sans"', '"Noto Sans TC"', 'sans-serif'],
 							dot: ['"DotGothic16"', 'sans-serif'],
+							dela: ['"Dela Gothic One"', '"DotGothic16"', 'sans-serif'],
 						},
 						animation: {
 							'spin-slow': 'spin 10s linear infinite',
@@ -80,6 +82,33 @@
 		</script>
 		<style>
 			/* ── Self-hosted fonts (public/fonts/) ─────────────────────── */
+			@font-face {
+				font-family: 'IBM Plex Sans';
+				src: url('/fonts/ibm-plex-sans-latin-ext.woff2') format('woff2');
+				font-weight: 100 700;
+				font-style: normal;
+				font-display: swap;
+				unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+					U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+					U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+			}
+			@font-face {
+				font-family: 'IBM Plex Sans';
+				src: url('/fonts/ibm-plex-sans-latin.woff2') format('woff2');
+				font-weight: 100 700;
+				font-style: normal;
+				font-display: swap;
+				unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+					U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191,
+					U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+			}
+			@font-face {
+				font-family: 'Noto Sans TC';
+				src: url('/fonts/noto-sans-tc-variable.woff2') format('woff2');
+				font-weight: 100 900;
+				font-style: normal;
+				font-display: swap;
+			}
 			@font-face {
 				font-family: 'VT323';
 				src: url('/fonts/vt323-v18-latin-regular.woff2') format('woff2');
@@ -115,6 +144,13 @@
 				font-style: normal;
 				font-display: block;
 			}
+			@font-face {
+				font-family: 'Dela Gothic One';
+				src: url('/fonts/dela-gothic-one-v19-regular.ttf') format('truetype');
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
+			}
 
 			body {
 				margin: 0;
@@ -139,6 +175,7 @@
 		</style>
 
 		<link rel="stylesheet" href="/index.css" />
+		<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 		<script>
 			// Restore the intended path after redirect from 404.html
 			(function () {
@@ -165,7 +202,8 @@
 				}
 			}
 		</script>
-		<script type="module" crossorigin src="/assets/index-DUgcEnBh.js"></script>
+		<script type="module" crossorigin src="/assets/index-e_1C2FWp.js"></script>
+		<link rel="stylesheet" crossorigin href="/assets/index-WOsTgdH0.css">
 	</head>
 	<body>
 		<!-- Font loading overlay: hides FOUC until web fonts are ready -->
