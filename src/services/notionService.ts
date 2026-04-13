@@ -139,7 +139,10 @@ export const fetchPeopleFromNotion = async (): Promise<PersonItem[]> => {
 				const imageUrl = extractImageUrl(rawImage);
 
 				const institution = String(getProp(props, 'Institution') || '');
+				const institutionEn = String(getProp(props, 'Institution (EN)') || '');
 				const department = String(getProp(props, 'Department') || '');
+				const departmentEn = String(getProp(props, 'Department (EN)') || '');
+				const nameEn = String(getProp(props, 'Name (EN)') || '');
 				const country = String(getProp(props, 'Country') || '');
 				const notes = String(getProp(props, 'Notes') || '');
 				const orderVal = getProp(props, 'Order') ?? getProp(props, 'order');
@@ -148,12 +151,15 @@ export const fetchPeopleFromNotion = async (): Promise<PersonItem[]> => {
 				return {
 					id: row.id,
 					name,
+					nameEn: nameEn || undefined,
 					chairType,
 					email: email || undefined,
 					image: imageUrl || 'https://images.unsplash.com/photo-1511367461989-f85a21fda167?q=80&w=1000&auto=format&fit=crop',
 					website: website || undefined,
 					institution: institution || undefined,
+					institutionEn: institutionEn || undefined,
 					department: department || undefined,
+					departmentEn: departmentEn || undefined,
 					country: country || undefined,
 					notes: notes || undefined,
 					order,

@@ -12,15 +12,41 @@ const WarpBackground: React.FC = () => {
 
 		let width = 0;
 		let height = 0;
-		const count = 500;
 		const stars: Star[] = [];
+		let starCount = 0;
+		let speedMultiplier = 1;
+		let trailAlpha = 0.15;
 		let animationFrameId: number;
+
+		const getResponsiveSettings = (nextWidth: number, nextHeight: number) => {
+			const areaRatio = Math.min(1, (nextWidth * nextHeight) / (1440 * 900));
+			const widthRatio = Math.min(1, nextWidth / 1440);
+
+			return {
+				count: Math.max(75, Math.round(300 * Math.max(0.4, areaRatio))),
+				speed: Math.max(0.42, widthRatio),
+				trail: nextWidth < 768 ? 0.22 : nextWidth < 1024 ? 0.18 : 0.15,
+			};
+		};
+
+		const repopulateStars = () => {
+			stars.length = 0;
+			for (let i = 0; i < starCount; i++) {
+				stars.push(new Star());
+			}
+		};
 
 		function resize() {
 			if (!canvas) return;
 			// Match canvas internal resolution to its actual display dimension
 			width = canvas.width = canvas.offsetWidth;
 			height = canvas.height = canvas.offsetHeight;
+
+			const responsiveSettings = getResponsiveSettings(width, height);
+			starCount = responsiveSettings.count;
+			speedMultiplier = responsiveSettings.speed;
+			trailAlpha = responsiveSettings.trail;
+			repopulateStars();
 		}
 
 		class Star {
@@ -43,7 +69,7 @@ const WarpBackground: React.FC = () => {
 				this.y = (Math.random() - 0.5) * height * 2;
 				this.z = width;
 				this.pz = this.z;
-				this.speed = Math.random() * 15 + 5;
+				this.speed = (Math.random() * 15 + 5) * speedMultiplier;
 				this.color = Math.random() > 0.7 ? '#FFB800' : '#FFFFFF';
 				this.lineWidth = Math.random() * 2 + 1;
 			}
@@ -77,9 +103,6 @@ const WarpBackground: React.FC = () => {
 
 		// Initial setup
 		resize();
-		for (let i = 0; i < count; i++) {
-			stars.push(new Star());
-		}
 
 		window.addEventListener('resize', resize);
 
@@ -87,7 +110,7 @@ const WarpBackground: React.FC = () => {
 			if (!ctx || !canvas) return;
 
 			// Fade out previous frame to create motion blur trails
-			ctx.fillStyle = 'rgba(0, 0, 0, 0.15)';
+			ctx.fillStyle = `rgba(0, 0, 0, ${trailAlpha})`;
 			ctx.fillRect(0, 0, width, height);
 
 			ctx.globalCompositeOperation = 'lighter';

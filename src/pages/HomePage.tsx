@@ -1,16 +1,25 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import CountdownTimer from '../components/CountdownTimer';
+import ScrollReveal from '../components/ScrollReveal';
 import ScrollCollapseSection from '../components/ScrollCollapseSection';
 import Sponsors from '../components/Sponsors';
 import WarpBackground from '../components/WarpBackground';
-import { CONTENT } from '../content';
+import { typography } from '../design-system/typography';
+import { useContent, useLanguage } from '../context/LanguageContext';
+import ConstellationMapSection from '../components/ConstellationMap';
 import { useSEO } from '../hooks/useSEO';
-import OrganizationPage from './OrganizationPage';
-import VenuePage from './VenuePage';
 
 const HomePage: React.FC = () => {
-	useSEO('首頁', 'TAICHI 2026 台灣人機互動研討會。主題：Big Bang! Futures! 探索未來人機互動。');
+	const content = useContent();
+	const { language } = useLanguage();
+	const homeCfpButtonLabel = language === 'zh' ? '立即投稿' : 'Submit Now';
+	useSEO(
+		language === 'zh' ? '首頁' : 'Home',
+		language === 'zh'
+			? 'TAICHI 2026 台灣人機互動研討會。主題：Big Bang! Futures!'
+			: 'TAICHI 2026 conference website. Theme: Big Bang! Futures!',
+	);
 
 	// 這裡接收從 ScrollCollapseSection 傳來的純粹動畫進度 (0 到 1)
 	const [transitionProgress, setTransitionProgress] = useState(0);
@@ -58,7 +67,7 @@ const HomePage: React.FC = () => {
 					{/* THEME (Intro) AND COUNTDOWN */}
 					<section
 						id='theme'
-						className='bg-black w-full min-h-[100dvh] flex flex-col items-center justify-center pt-[80px] md:pt-[100px] pb-8 md:pb-12 px-6 md:px-20 relative overflow-hidden'
+						className='relative flex min-h-[100dvh] w-full flex-col items-center justify-center overflow-hidden bg-black px-5 pb-10 pt-[88px] sm:px-6 md:px-20 md:pb-12 md:pt-[100px]'
 						style={
 							collapseActive
 								? {
@@ -78,59 +87,99 @@ const HomePage: React.FC = () => {
 						<WarpBackground />
 
 						<div
-							className='relative z-10 flex flex-col items-center w-full max-w-8xl my-auto'
+							className='relative z-10 my-auto flex w-full max-w-8xl flex-col items-center'
 							style={collapseActive ? { transform: `translateY(${themeTranslateY}vh)` } : undefined}
 						>
-							<div className='w-full mb-5'>
-								<div className='flex flex-col items-center justify-center w-full max-w-4xl mx-auto gap-6'>
-									<div className='text-white font-roboto font-bold text-center'>
-										<div className='text-2xl md:text-3xl text-lab-lime mb-2 tracking-wider font-mono'>
-											{CONTENT.submissionDeadline.title}
-										</div>
-										<div className='text-base md:text-lg text-gray-200 font-bold'>
-											{CONTENT.submissionDeadline.date}
-										</div>
-									</div>
-									<div className='transform scale-[70%] md:scale-[80%] mt-2'>
-										<CountdownTimer targetDateStr='2026-06-18T23:59:00+08:00' />
-									</div>
-								</div>
-							</div>
-							<Link to='/cfp'>
-								<button className='bg-[#FF0033] text-white font-bold py-3 md:py-4 px-12 md:px-16 rounded-full hover:bg-white hover:text-[#FF0033] transition-colors text-lg md:text-xl tracking-wider mb-6 md:mb-10 shadow-[0_0_20px_rgba(255,0,77,0.6)]'>
-									{CONTENT.submissionDeadline.buttonText}
-								</button>
-							</Link>
-
-							<div className='w-full flex flex-col gap-6 md:gap-8 font-mono text-white/90 leading-loose text-sm md:text-base'>
-								<h1 className='text-xl md:text-3xl text-center mb-1 md:mb-2 tracking-widest font-normal drop-shadow-[0_0_15px_rgba(168,240,32,0.5)] text-lab-lime'>
-									{CONTENT.theme.title}
+							<div className='flex w-full max-w-[22rem] flex-col gap-5 font-sans text-sm leading-7 text-white/90 sm:max-w-[28rem] md:max-w-5xl md:gap-8 md:text-base md:leading-loose'>
+								<h1 className={`mb-1 font-dela ${typography.pattern.heroIntroTitle} text-lab-lime drop-shadow-[0_0_15px_rgba(168,240,32,0.5)] md:mb-2`}>
+									{language === 'zh' ? (
+										<>
+											<span className='block text-center md:hidden'>TAICHI2026主題：</span>
+											<span className='block text-center md:hidden'>Big Bang! Futures!</span>
+											<span className='hidden md:block'>{content.theme.title}</span>
+										</>
+									) : (
+										content.theme.title
+									)}
 								</h1>
 
-								<div className='flex flex-col max-w-7xl mx-auto mb-1'>
-									<p className='text-center tracking-wide text-base md:text-lg leading-relaxed'>{CONTENT.theme.sloganEn}</p>
-									<p className='text-center tracking-wide text-base md:text-lg leading-relaxed mt-1'>
-										{CONTENT.theme.sloganZh}
-									</p>
+								<div className='mb-1 flex flex-col md:mx-auto md:max-w-4xl'>
+									<p className={`${typography.pattern.heroIntroLead} text-white`}>{content.theme.slogan}</p>
 								</div>
-								<div className='flex flex-col gap-4 md:gap-6 max-w-7xl mx-auto'>
-									<p className='text-justify tracking-wide md:[text-align-last:center] text-white/80 text-xs md:text-sm'>{CONTENT.theme.descriptionEn}</p>
-									<p className='text-justify tracking-wide md:[text-align-last:center] text-white/80 text-xs md:text-sm'>{CONTENT.theme.descriptionZh}</p>
+								<div className='flex flex-col gap-4 md:mx-auto md:max-w-5xl md:gap-6'>
+									<p className={`${typography.pattern.heroIntroBody} text-white/80`}>{content.theme.description}</p>
 								</div>
 							</div>
 						</div>
 					</section>
 				</div>
 
-				{/* VENUE Section */}
-				{/* <section id='venue'>
-					<VenuePage />
-				</section> */}
+				<ScrollReveal delay={40}>
+					<section className='relative overflow-hidden bg-black px-5 py-16 sm:px-6 md:py-24'>
+						<WarpBackground />
+						<div className='absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/45' />
+						<div className='absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-black' />
 
-				{/* ORGANIZATION Section */}
-				<section id='organization'>
-					<OrganizationPage hidePeople={true} />
-				</section>
+						<div className='relative z-10 mx-auto flex w-full max-w-[1280px] flex-col items-center gap-10'>
+							<div className='flex w-full max-w-[36rem] flex-col items-center text-center'>
+								<div className='flex w-full flex-col items-center px-5 py-6 sm:px-6 md:px-8 md:py-8'>
+									<ScrollReveal delay={0}>
+										<p className='ds-section-kicker text-[16px] sm:text-[18px] md:text-[20px]'>
+											{language === 'zh' ? '投稿截止日期：' : 'Submission Deadline: '}
+											<span className='text-white'>{language === 'zh' ? '2026/06/18 23:59 (GMT+8)' : '2026/06/18 23:59 (GMT+8)'}</span>
+										</p>
+									</ScrollReveal>
+									<ScrollReveal delay={90} className='mt-6 flex w-full justify-center'>
+										<CountdownTimer targetDateStr='2026-06-18T23:59:00+08:00' variant='cfpHero' />
+									</ScrollReveal>
+
+									<ScrollReveal delay={180} className='mt-8'>
+										<Link
+											to='/cfp'
+											className={`ds-button-submit min-w-[220px] px-5 py-4 ${typography.scale.buttonLabel} sm:min-w-[240px] sm:px-6`}
+										>
+											<span>{homeCfpButtonLabel}</span>
+											<span className='text-[24px] leading-none'>→</span>
+										</Link>
+									</ScrollReveal>
+								</div>
+							</div>
+						</div>
+					</section>
+				</ScrollReveal>
+
+				<ConstellationMapSection language={language} />
+
+				<ScrollReveal delay={80}>
+					<section id='important-dates' className='relative flex min-h-[78dvh] w-full flex-col items-center justify-center bg-black px-5 pb-20 pt-16 sm:px-6 md:min-h-[88dvh] md:px-20 md:pb-24 md:pt-12'>
+						<div className='relative z-10 flex w-full max-w-[1453px] flex-col items-center'>
+							<ScrollReveal delay={0}>
+								<h3 className='ds-section-title mb-10 text-center md:mb-12'>
+									{content.cfpSection.importantDatesTitle}
+								</h3>
+							</ScrollReveal>
+							<div className='mx-auto grid w-full auto-rows-fr grid-cols-1 justify-items-center gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:justify-items-stretch xl:max-w-[1220px] xl:gap-0'>
+								{content.cfpSection.heroTimelineItems.map((item, index) => (
+									<ScrollReveal key={item.title} delay={80 + index * 70} className='w-full'>
+										<div
+											className={`flex h-full min-h-[112px] w-full max-w-[28rem] flex-col items-center justify-start rounded-none bg-white/5 px-3 py-4 text-center sm:max-w-none xl:bg-transparent xl:px-6 xl:py-0 ${index < content.cfpSection.heroTimelineItems.length - 1 ? 'xl:border-r xl:border-white/10' : ''}`}
+										>
+											<p className={`${typography.scale.sectionEyebrow} text-[#A8F020]`}>{item.title}</p>
+											<p className={`mt-[14px] ${typography.scale.deadlineValue} text-white`}>{item.date}</p>
+											<p className={`mt-2 ${typography.scale.deadlineMeta} text-white/50`}>{item.subtitle}</p>
+										</div>
+									</ScrollReveal>
+								))}
+							</div>
+						</div>
+					</section>
+				</ScrollReveal>
+
+				<ScrollReveal delay={120}>
+					<div>
+						<Sponsors />
+					</div>
+				</ScrollReveal>
 			</div>
 		</>
 	);

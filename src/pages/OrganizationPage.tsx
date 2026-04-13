@@ -1,12 +1,15 @@
-import { Check, Copy, Mail, RotateCcw, Settings } from 'lucide-react';
-import React, { useState } from 'react';
+import { Copy, RotateCcw, Settings } from 'lucide-react';
+import React, { useMemo, useState } from 'react';
 import { useSearchParams } from 'react-router-dom';
 
-
-
+import FramePanel from '../components/FramePanel';
+import ScrollReveal from '../components/ScrollReveal';
 import Skeleton from '../components/Skeleton';
 import Sponsors from '../components/Sponsors';
-import { CONFIG, CONTENT } from '../content';
+import { CONFIG } from '../content';
+import { panelFrame } from '../design-system/panel';
+import { typography } from '../design-system/typography';
+import { useContent, useLanguage } from '../context/LanguageContext';
 import { useData } from '../context/DataContext';
 import { useSEO } from '../hooks/useSEO';
 
@@ -14,8 +17,280 @@ interface OrganizationPageProps {
 	hidePeople?: boolean;
 }
 
+type GroupedMembers = Record<string, PersonItem[]>;
+
+const getNormalizedChairType = (chairType: string) => {
+	let normalizedType = chairType.toLowerCase().trim();
+	if (normalizedType.endsWith('chair')) {
+		normalizedType += 's';
+	}
+	return normalizedType;
+};
+
+const getDisplayName = (member: PersonItem, language: 'zh' | 'en') => {
+	if (language === 'en' && member.nameEn) {
+		return { primary: member.nameEn, secondary: member.name };
+	}
+	// Try splitting "Chinese / English" format
+	const segments = member.name
+		.split('/')
+		.map((segment) => segment.trim())
+		.filter(Boolean);
+
+	if (segments.length >= 2) {
+		const [first, second] = segments;
+		const firstHasChinese = /[\u3400-\u9fff]/.test(first);
+		const secondHasChinese = /[\u3400-\u9fff]/.test(second);
+
+		if (language === 'en') {
+			if (firstHasChinese && !secondHasChinese) return { primary: second, secondary: first };
+			if (!firstHasChinese && secondHasChinese) return { primary: first, secondary: second };
+		} else {
+			if (firstHasChinese && !secondHasChinese) return { primary: first, secondary: second };
+			if (!firstHasChinese && secondHasChinese) return { primary: second, secondary: first };
+		}
+		return { primary: first, secondary: second };
+	}
+
+	if (language === 'en' && member.nameEn) {
+		return { primary: member.nameEn, secondary: member.name };
+	}
+	return { primary: member.name, secondary: member.nameEn || '' };
+};
+
+const buildMetaLines = (member: PersonItem, language: 'zh' | 'en') => {
+	const institution = (language === 'en' && member.institutionEn) ? member.institutionEn : member.institution;
+	const department = (language === 'en' && member.departmentEn) ? member.departmentEn : member.department;
+	return [institution, department].filter(Boolean);
+};
+
+const toTitleCase = (value: string) =>
+	value
+		.toLowerCase()
+		.split(' ')
+		.filter(Boolean)
+		.map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+		.join(' ');
+
+const MemberCard = ({
+	member,
+	localAdjustments,
+	updateAdjustment,
+	resetAdjustment,
+	isEditMode,
+	variant,
+}: {
+	member: PersonItem;
+	localAdjustments: Record<string, ImageAdjustment>;
+	updateAdjustment: (id: string, field: keyof ImageAdjustment, value: string | number) => void;
+	resetAdjustment: (id: string) => void;
+	isEditMode: boolean;
+	variant: 'hero' | 'feature' | 'row';
+}) => {
+	const { language } = useLanguage();
+	const adjustment = localAdjustments[member.id];
+	const name = getDisplayName(member, language);
+	const metaLines = buildMetaLines(member, language);
+	const isHero = variant === 'hero';
+	const isFeature = variant === 'feature';
+	const isRow = variant === 'row';
+	const frameClasses = isHero
+		? 'group flex min-h-[214px] flex-col gap-4 bg-[rgba(24,24,27,0.5)] px-[41px] py-[41px] transition-all duration-300 hover:bg-[rgba(32,32,36,0.72)] hover:shadow-[0_0_0_1px_rgba(168,240,32,0.28)] md:flex-row md:items-start md:gap-4'
+		: isFeature
+			? 'group flex min-h-[290px] flex-col items-center bg-[rgba(24,24,27,0.5)] px-[33px] py-[33px] text-center transition-all duration-300 hover:bg-[rgba(32,32,36,0.72)] hover:shadow-[0_0_0_1px_rgba(168,240,32,0.28)]'
+			: 'group flex min-h-[80px] flex-row items-center gap-4 rounded-[10px] bg-[rgba(0,0,0,0.4)] pl-4 pr-4 transition-colors duration-200 hover:bg-[rgba(168,240,32,0.08)]';
+	const avatarClasses = isHero
+		? 'size-[80px] border-2 border-[rgba(168,240,32,0.3)]'
+		: isFeature
+			? 'size-[96px] border-2 border-[rgba(168,240,32,0.3)]'
+			: 'size-[48px] border border-[rgba(168,240,32,0.3)]';
+	const primaryNameClasses = isHero
+		? 'text-[24px] leading-[32px]'
+		: isFeature
+			? 'text-[20px] leading-[28px]'
+			: 'text-[16px] leading-[24px]';
+	const secondaryNameClasses = isHero
+		? 'text-[18px] leading-[28px]'
+		: isFeature
+			? 'text-[14px] leading-[20px]'
+			: 'text-[13px] leading-[18px]';
+	const metaClasses = isHero
+		? 'text-[14px] leading-[20px] text-[rgba(255,255,255,0.7)]'
+		: isFeature
+			? 'text-[12px] leading-[16px] text-[rgba(255,255,255,0.6)]'
+			: 'text-[11px] leading-[14px] text-[rgba(255,255,255,0.6)]';
+
+	return (
+		<div className={`relative overflow-visible ${frameClasses}`}>
+			<div
+				className={`relative shrink-0 overflow-hidden rounded-full bg-zinc-900 ${avatarClasses} ${isHero ? 'mx-auto md:mx-0' : isFeature ? 'mx-auto' : ''}`}
+			>
+				{member.image ? (
+					<div
+						className='h-full w-full transition-transform duration-300'
+						style={{
+							transform: `scale(${adjustment?.scale || 1})`,
+						}}
+					>
+						<img
+							src={member.image}
+							alt={member.name}
+							className='h-full w-full object-cover transition-transform duration-300 group-hover:scale-[1.06]'
+							style={{
+								objectPosition: adjustment?.objectPosition || '50% 50%',
+							}}
+						/>
+					</div>
+				) : (
+					<div className='flex h-full w-full items-center justify-center bg-zinc-800 font-roboto text-xs uppercase tracking-[0.3em] text-zinc-400'>
+						Photo
+					</div>
+				)}
+			</div>
+
+			<div
+				className={`flex min-w-0 flex-1 flex-col ${isHero ? 'items-center text-center md:items-start md:text-left' : isFeature ? 'items-center text-center' : 'items-start'
+					}`}
+			>
+				<h3 className={`font-roboto font-bold ${isRow ? 'transition-colors duration-200 group-hover:text-[#A8F020]' : 'text-white'} ${primaryNameClasses}`}>
+					{name.primary}
+				</h3>
+				{name.secondary && (
+					<p className={`mt-1 font-roboto text-[#A8F020] ${isRow ? 'transition-opacity duration-200 group-hover:opacity-100' : ''} ${secondaryNameClasses}`}>
+						{name.secondary}
+					</p>
+				)}
+				<div className={`${isRow ? 'mt-0.5' : 'mt-2'} font-roboto ${metaClasses}`}>
+					{metaLines.map((line) => (
+						<p key={line}>{line}</p>
+					))}
+				</div>
+			</div>
+
+			{isEditMode && (
+				<div className='absolute right-4 top-4 z-20 flex w-32 flex-col gap-3 rounded-xl border border-white/15 bg-black/85 p-3 shadow-2xl'>
+					<div className='text-[9px] uppercase tracking-[0.3em] text-zinc-400'>Adjust</div>
+					<div className='flex flex-col gap-1'>
+						<label className='text-[9px] text-zinc-400'>Pos X: {adjustment?.objectPosition?.split(' ')[0] || '50%'}</label>
+						<input
+							type='range'
+							min='0'
+							max='100'
+							value={parseInt(adjustment?.objectPosition?.split(' ')[0] || '50')}
+							onChange={(event) => {
+								const y = adjustment?.objectPosition?.split(' ')[1] || '50%';
+								updateAdjustment(member.id, 'objectPosition', `${event.target.value}% ${y}`);
+							}}
+							className='h-1 w-full cursor-pointer appearance-none rounded-lg bg-white/20 accent-lab-lime'
+						/>
+					</div>
+					<div className='flex flex-col gap-1'>
+						<label className='text-[9px] text-zinc-400'>Pos Y: {adjustment?.objectPosition?.split(' ')[1] || '50%'}</label>
+						<input
+							type='range'
+							min='0'
+							max='100'
+							value={parseInt(adjustment?.objectPosition?.split(' ')[1] || '50')}
+							onChange={(event) => {
+								const x = adjustment?.objectPosition?.split(' ')[0] || '50%';
+								updateAdjustment(member.id, 'objectPosition', `${x} ${event.target.value}%`);
+							}}
+							className='h-1 w-full cursor-pointer appearance-none rounded-lg bg-white/20 accent-lab-lime'
+						/>
+					</div>
+					<div className='flex flex-col gap-1'>
+						<label className='text-[9px] text-zinc-400'>Scale: {adjustment?.scale || 1}</label>
+						<input
+							type='range'
+							min='0.5'
+							max='3'
+							step='0.05'
+							value={adjustment?.scale || 1}
+							onChange={(event) => updateAdjustment(member.id, 'scale', parseFloat(event.target.value))}
+							className='h-1 w-full cursor-pointer appearance-none rounded-lg bg-white/20 accent-lab-lime'
+						/>
+					</div>
+					<button
+						onClick={() => resetAdjustment(member.id)}
+						className='mt-1 inline-flex items-center justify-center gap-1 rounded-md bg-red-500/20 px-2 py-1 text-[9px] uppercase tracking-[0.2em] text-red-300 transition-colors hover:bg-red-500/35'
+					>
+						<RotateCcw size={10} />
+						Reset
+					</button>
+				</div>
+			)}
+		</div>
+	);
+};
+
+const SectionHeader = ({ normalizedType }: { normalizedType: string }) => {
+	const content = useContent();
+	const { language } = useLanguage();
+	const titleMap = content.committeeSection.chairTitles as Record<string, { zh: string; en: string }>;
+	const titleData = titleMap[normalizedType];
+	const displayTitle = language === 'zh' ? titleData?.zh || normalizedType : toTitleCase(titleData?.en || normalizedType);
+
+	return (
+		<div className={`mb-5 ${panelFrame.sectionDivider} border-[#A8F020] text-center`}>
+			<h2 className='ds-panel-subheading text-[24px] leading-[32px] text-[#CCFF00]'>
+				{displayTitle}
+			</h2>
+		</div>
+	);
+};
+
+const SmallGroupPanel = ({
+	normalizedType,
+	members,
+	localAdjustments,
+	updateAdjustment,
+	resetAdjustment,
+	isEditMode,
+}: {
+	normalizedType: string;
+	members: PersonItem[];
+	localAdjustments: Record<string, ImageAdjustment>;
+	updateAdjustment: (id: string, field: keyof ImageAdjustment, value: string | number) => void;
+	resetAdjustment: (id: string) => void;
+	isEditMode: boolean;
+}) => {
+	const content = useContent();
+	const { language } = useLanguage();
+	const titleMap = content.committeeSection.chairTitles as Record<string, { zh: string; en: string }>;
+	const titleData = titleMap[normalizedType];
+	const displayTitle = language === 'zh' ? titleData?.zh || normalizedType : toTitleCase(titleData?.en || normalizedType);
+
+	return (
+		<FramePanel className='h-full' contentClassName='px-[24px] py-[28px] md:px-[42px] md:py-[42px]' showCorners={false}>
+			<h3 className='ds-panel-subheading mb-8 text-[24px] leading-[32px] text-[#CCFF00]'>
+				{displayTitle}
+			</h3>
+			<div className='flex flex-col gap-4'>
+				{members.map((member) => (
+					<MemberCard
+						key={member.id}
+						member={member}
+						localAdjustments={localAdjustments}
+						updateAdjustment={updateAdjustment}
+						resetAdjustment={resetAdjustment}
+						isEditMode={isEditMode}
+						variant='row'
+					/>
+				))}
+			</div>
+		</FramePanel>
+	);
+};
+
 const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false }) => {
-	useSEO('組織委員會', 'TAICHI 2026 研討會籌備委員與大會主席名單。團隊介紹與聯絡資訊。');
+	const content = useContent();
+	const { language } = useLanguage();
+	useSEO(
+		language === 'zh' ? '組織委員會' : 'Organization',
+		language === 'zh'
+			? 'TAICHI 2026 研討會籌備委員與大會主席名單。'
+			: 'TAICHI 2026 organizing committee and conference chairs.',
+	);
 
 	const { people, isSyncing } = useData();
 	const [searchParams] = useSearchParams();
@@ -25,348 +300,226 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 	const updateAdjustment = (id: string, field: keyof ImageAdjustment, value: string | number) => {
 		setLocalAdjustments((prev) => {
 			const current = prev[id] || {};
-			const member = people.find((p) => p.id === id);
+			const member = people.find((person) => person.id === id);
 
-			let newPos = current.objectPosition || '50% 50%';
-			const parts = newPos.split(' ');
-			let x = parts[0] || '50%';
-			let y = parts[1] || '50%';
-
-			if (field === 'objectPosition') {
-				// value is expected to be "x y" or we handle it by field
-				newPos = String(value);
-			}
-
-			const finalAdjustment = {
-				...current,
-				[field]: value,
-				lastUrl: member?.image || current.lastUrl,
-			};
-
-			// Special handling for X/Y convenience if we were to pass them separately
-			// But for now we just pass the whole string from the UI
 			return {
 				...prev,
-				[id]: finalAdjustment,
+				[id]: {
+					...current,
+					[field]: value,
+					lastUrl: member?.image || current.lastUrl,
+				},
 			};
 		});
 	};
 
+	const resetAdjustment = (id: string) => {
+		setLocalAdjustments((prev) => {
+			const next = { ...prev };
+			delete next[id];
+			return next;
+		});
+	};
 
-	const committeeMembers = people.filter((p) => !(p.chairType ? String(p.chairType).toLowerCase() : '').includes('keynote'));
+	const groupedMembers = useMemo(() => {
+		const groups: GroupedMembers = {};
+		people
+			.filter((person) => !(person.chairType ? person.chairType.toLowerCase() : '').includes('keynote'))
+			.forEach((member) => {
+				const chairType = member.chairType || 'Committee Member';
+				if (!groups[chairType]) {
+					groups[chairType] = [];
+				}
+				groups[chairType].push(member);
+			});
 
-	const SHOW_PEOPLE = !hidePeople;
+		Object.values(groups).forEach((members) => {
+			members.sort((a, b) => {
+				const orderA = typeof a.order === 'number' ? a.order : 999999;
+				const orderB = typeof b.order === 'number' ? b.order : 999999;
+				return orderA - orderB;
+			});
+		});
+
+		return Object.entries(groups)
+			.sort(([chairTypeA], [chairTypeB]) => {
+				const normalizedA = getNormalizedChairType(chairTypeA);
+				const normalizedB = getNormalizedChairType(chairTypeB);
+				const indexA = CONFIG.notion.chairTypeOrder.findIndex((type) => type.toLowerCase() === normalizedA);
+				const indexB = CONFIG.notion.chairTypeOrder.findIndex((type) => type.toLowerCase() === normalizedB);
+
+				if (indexA === -1 && indexB === -1) return chairTypeA.localeCompare(chairTypeB);
+				if (indexA === -1) return 1;
+				if (indexB === -1) return -1;
+				return indexA - indexB;
+			})
+			.map(([chairType, members]) => ({
+				chairType,
+				normalizedType: getNormalizedChairType(chairType),
+				members,
+			}));
+	}, [people]);
+
+	const showPeople = !hidePeople;
+	const generalChairs = groupedMembers.find((group) => group.normalizedType === 'general chairs');
+	const featuredGroups = groupedMembers.filter((group) => ['steering committees'].includes(group.normalizedType));
+	const remainingGroups = groupedMembers.filter(
+		(group) => group.normalizedType !== 'general chairs' && !['steering committees', 'program chairs'].includes(group.normalizedType),
+	);
+
 	return (
-		<div className='bg-transparent min-h-screen text-white w-full'>
-			{/* ORGANIZATION (COMMITTEE) TITLE ONLY HERO */}
-			{SHOW_PEOPLE && (
-				<div className='w-full pt-32 pb-16 px-6 md:px-20 relative overflow-hidden'>
-					<div className='flex flex-col items-center max-w-7xl mx-auto relative z-10 w-full'>
-						<h1 className='text-5xl md:text-8xl font-pixel text-white mb-6 text-center tracking-widest leading-tight drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] uppercase'>
-							{CONTENT.committeeSection.title}
+		<div className='min-h-screen w-full bg-[#0D0D11] text-white'>
+			{showPeople && (
+				<div className='relative w-full overflow-hidden px-6 pb-16 pt-48 md:px-20'>
+					<ScrollReveal className='relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center'>
+						<h1 className={`ds-page-title mb-6 text-center ${typography.scale.pageTitle}`}>
+							{content.committeeSection.title}
 						</h1>
-					</div>
+					</ScrollReveal>
 				</div>
 			)}
 
-			{SHOW_PEOPLE && (
-				<section className='px-6 md:px-20 pb-24'>
-					<div className='max-w-7xl mx-auto'>
-						{isSyncing && people.length === 0 ? (
-							<div className='space-y-16'>
-								<div>
-									<div className='h-8 bg-gray-200 rounded w-48 mb-8 animate-pulse'></div>
-									<Skeleton variant='person' count={8} />
+			{showPeople && (
+				<section className='px-4 pb-8 md:px-8 md:pb-12'>
+					<div className='mx-auto max-w-[1280px]'>
+						<ScrollReveal delay={70}>
+							<div className='ds-surface-panel px-6 py-12 text-center md:px-16 md:py-16'>
+							<div className='mx-auto flex max-w-4xl flex-col items-center gap-8 md:gap-10'>
+								<h2 className='ds-section-title text-[28px] leading-[1.35] md:text-[30px]'>
+									{content.committeeSection.aboutTitle}
+								</h2>
+								<div className={`space-y-4 ${typography.scale.body} text-white/85`}>
+									{content.committeeSection.aboutDescription.map((paragraph) => (
+										<p key={paragraph}>{paragraph}</p>
+									))}
 								</div>
+								<a
+									href={content.committeeSection.aboutButtonUrl}
+									target='_blank'
+									rel='noreferrer'
+									className='ds-button-secondary min-h-[46px] px-8 text-[18px] leading-[28px]'
+								>
+									{content.committeeSection.aboutButtonText}
+								</a>
+							</div>
+							</div>
+						</ScrollReveal>
+					</div>
+				</section>
+			)}
+
+			{showPeople && (
+				<section className='pb-24 pt-16 md:pt-20'>
+					<div className='mx-auto max-w-[1280px] px-4 md:px-8'>
+						{isSyncing && people.length === 0 ? (
+							<div className='space-y-40'>
+								<div className='h-8 w-56 animate-pulse rounded bg-zinc-800' />
+								<Skeleton variant='person' count={8} />
 							</div>
 						) : (
-							<>
-								{(() => {
-									if (!SHOW_PEOPLE) return null;
-									const groupedMembers: Record<string, PersonItem[]> = {};
-									committeeMembers.forEach((member) => {
-										const chairType = member.chairType || 'Committee Member';
-										if (!groupedMembers[chairType]) {
-											groupedMembers[chairType] = [];
-										}
-										groupedMembers[chairType].push(member);
-									});
-
-									// Sort members within each group by order property
-									Object.keys(groupedMembers).forEach((chairType) => {
-										groupedMembers[chairType].sort((a, b) => {
-											// If order is not filled (undefined), treat it as a very large number to make it maximum
-											const orderA = typeof a.order === 'number' ? a.order : 999999;
-											const orderB = typeof b.order === 'number' ? b.order : 999999;
-											return orderA - orderB;
-										});
-									});
-
-									const sortedChairTypes = Object.keys(groupedMembers).sort((a, b) => {
-										const indexA = CONFIG.notion.chairTypeOrder.findIndex(
-											(type) => type.toLowerCase() === a.toLowerCase(),
-										);
-										const indexB = CONFIG.notion.chairTypeOrder.findIndex(
-											(type) => type.toLowerCase() === b.toLowerCase(),
-										);
-										if (indexA === -1 && indexB === -1) return a.localeCompare(b);
-										if (indexA === -1) return 1;
-										if (indexB === -1) return -1;
-										return indexA - indexB;
-									});
-
-									return (
-										<div className='space-y-16'>
-											{sortedChairTypes.map((chairType) => {
-												let normalizedType = chairType.toLowerCase().trim();
-												// Logic to force plural "chairs" to match config keys
-												if (normalizedType.endsWith('chair')) {
-													normalizedType += 's';
-												}
-
-												// Get title from map with separate zh and en fields
-												const titleMap = CONTENT.committeeSection.chairTitles as Record<
-													string,
-													{ zh: string; en: string }
-												>;
-												const titleData = titleMap[normalizedType];
-												const displayTitle = titleData
-													? `${titleData.zh}  /  ${titleData.en}`
-													: chairType.toUpperCase();
-
-												let emailInfo = null;
-												if (normalizedType === 'general chairs') emailInfo = 'taiwanchi26@gmail.com';
-												else if (normalizedType === 'paper chairs') emailInfo = 'taiwanchi26+paper@gmail.com';
-												else if (normalizedType === 'poster chairs') emailInfo = 'taiwanchi26+poster@gmail.com';
-												else if (normalizedType === 'demo chairs') emailInfo = 'taiwanchi26+demo@gmail.com';
-
-												return (
-													<div key={chairType} className='mb-20'>
-														<div className='flex flex-col md:flex-row md:items-end gap-2 md:gap-4 lg:gap-6 mb-10'>
-															<h3 className='font-pixel text-2xl md:text-3xl text-lab-lime tracking-widest uppercase'>
-																{displayTitle}
-															</h3>
-															{emailInfo && (
-																<a
-																	href={`mailto:${emailInfo}`}
-																	className='font-roboto text-sm md:text-base text-gray-200 hover:text-white transition-colors tracking-wide flex items-center md:mb-1 opacity-80 hover:opacity-100 gap-2 pb-[2px]'
-																>
-																	<Mail size={16} />
-																	<span>{emailInfo}</span>
-																</a>
-															)}
-														</div>
-														<div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-x-4 gap-y-10 md:gap-x-8 md:gap-y-16'>
-															{groupedMembers[chairType].map((member) => {
-																const adjustment = localAdjustments[member.id];
-
-
-
-																// Check if image updated in Notion
-																if (
-																	adjustment &&
-																	adjustment.lastUrl &&
-																	member.image &&
-																	adjustment.lastUrl !== member.image
-																) {
-																	console.warn(
-																		`[Image Update] Notion image for ${member.name} has changed. Previous adjustment might be off.`,
-																		{
-																			memberId: member.id,
-																			currentUrl: member.image,
-																			lastAdjustedUrl: adjustment.lastUrl,
-																		},
-																	);
-																}
-
-																return (
-																	<div
-																		key={member.id}
-																		className='group relative w-full max-w-[341px] mx-auto aspect-[341/272]'
-																	>
-
-																	<img
-																		src='/images/organization_photo_frame.svg'
-																		alt='frame'
-																		className='absolute inset-0 w-full h-full drop-shadow-md transition-all duration-300'
-																	/>
-
-																	{/* Content Wrapper */}
-																	{/* Custom calculated placement based on organization_photo_frame.svg viewBox="0 0 341 272" and cx="171.484" cy="115.474" r="57.4739" */}
-
-																	{/* Photo perfectly covering the black circle */}
-																	<div
-																		className='absolute z-10 rounded-full overflow-hidden bg-[#111] shadow-inner shrink-0'
-																		style={{
-																			width: '33.71%', // (57.4739 * 2) / 341
-																			aspectRatio: '1 / 1',
-																			left: '33.43%', // (171.484 - 57.4739) / 341
-																			top: '21.32%', // (115.474 - 57.4739) / 272
-																		}}
-																	>
-																		{member.image && (
-																			<div
-																				className='w-full h-full transition-transform duration-300'
-																				style={{
-																					transform: `scale(${adjustment?.scale || 1})`,
-																				}}
-																			>
-																				<img
-																					src={member.image}
-																					alt={member.name}
-																					className='absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-[115%]'
-																					style={{
-																						objectPosition: adjustment?.objectPosition || 'center',
-																					}}
-																				/>
-																			</div>
-																		)}
-
-
-																	</div>
-
-																	{/* Edit Controls */}
-																	{isEditMode && (
-																		<div className='absolute -right-4 top-0 z-50 bg-black/80 backdrop-blur-md p-3 rounded-xl border border-white/20 shadow-2xl flex flex-col gap-3 w-32'>
-																			<div className='text-[10px] uppercase tracking-widest opacity-60 mb-1'>Adjust Image</div>
-																			<div className='flex flex-col gap-1'>
-																				<label className='text-[9px] opacity-70'>Pos X: {adjustment?.objectPosition?.split(' ')[0] || '50%'}</label>
-																				<input
-																					type='range'
-																					min='0'
-																					max='100'
-																					value={parseInt(adjustment?.objectPosition?.split(' ')[0] || '50')}
-																					onChange={(e) => {
-																						const y = adjustment?.objectPosition?.split(' ')[1] || '50%';
-																						updateAdjustment(member.id, 'objectPosition', `${e.target.value}% ${y}`);
-																					}}
-																					className='w-full accent-lab-lime h-1 bg-white/20 rounded-lg appearance-none cursor-pointer'
-																				/>
-																			</div>
-																			<div className='flex flex-col gap-1'>
-																				<label className='text-[9px] opacity-70'>Pos Y: {adjustment?.objectPosition?.split(' ')[1] || '50%'}</label>
-																				<input
-																					type='range'
-																					min='0'
-																					max='100'
-																					value={parseInt(adjustment?.objectPosition?.split(' ')[1] || '50')}
-																					onChange={(e) => {
-																						const x = adjustment?.objectPosition?.split(' ')[0] || '50%';
-																						updateAdjustment(member.id, 'objectPosition', `${x} ${e.target.value}%`);
-																					}}
-																					className='w-full accent-lab-lime h-1 bg-white/20 rounded-lg appearance-none cursor-pointer'
-																				/>
-																			</div>
-
-																			<div className='flex flex-col gap-1'>
-																				<label className='text-[9px] opacity-70'>Scale: {adjustment?.scale || 1}</label>
-																				<input
-																					type='range'
-																					min='0.5'
-																					max='3'
-																					step='0.05'
-																					value={adjustment?.scale || 1}
-																					onChange={(e) => updateAdjustment(member.id, 'scale', parseFloat(e.target.value))}
-																					className='w-full accent-lab-lime h-1 bg-white/20 rounded-lg appearance-none cursor-pointer'
-																				/>
-																			</div>
-																			<button
-																				onClick={() => {
-																					const newAdjustments = { ...localAdjustments };
-																					delete newAdjustments[member.id];
-																					setLocalAdjustments(newAdjustments);
-																				}}
-																				className='mt-2 p-1 text-[9px] bg-red-500/20 hover:bg-red-500/40 text-red-500 rounded transition-colors flex items-center justify-center gap-1 uppercase tracking-tighter'
-																			>
-																				<RotateCcw size={10} /> Reset
-																			</button>
-																		</div>
-																	)}
-
-
-																	{/* Text Container placed in the lower wide area */}
-																	<div
-																		className='absolute z-10 text-center flex flex-col justify-center text-black w-[96%]'
-																		style={{
-																			left: '2%',
-																			top: '66%',
-																			height: '32%',
-																		}}
-																	>
-																		<div className='flex flex-col items-stretch w-max max-w-full mx-auto'>
-																			<h4 className=' text-[1rem] md:text-[1.1rem] leading-tight mb-0 text-justify [text-align-last:justify]'>
-																				{member.name}
-																			</h4>
-																			{member.notes && (
-																				<p className='text-[0.75rem] md:text-[0.8rem] opacity-90 mb-0.5 leading-tight text-justify [text-align-last:justify]'>
-																					{member.notes}
-																				</p>
-																			)}
-																		</div>
-																		<p className='text-[0.65rem] md:text-[0.7rem] opacity-80 leading-tight tracking-wide px-1 md:px-2 whitespace-nowrap'>
-																			{[member.institution, member.department].filter(Boolean).join(' ')}
-																		</p>
-
-
-
-																	</div>
-																	</div>
-																);
-															})}
-
-														</div>
-													</div>
-												);
-											})}
+							<div className='space-y-36 md:space-y-40'>
+								{generalChairs && (
+									<section>
+										<SectionHeader normalizedType={generalChairs.normalizedType} />
+										<div className='grid gap-6 xl:grid-cols-2'>
+											{generalChairs.members.map((member, index) => (
+												<ScrollReveal key={member.id} delay={index * 90}>
+													<MemberCard
+														member={member}
+														localAdjustments={localAdjustments}
+														updateAdjustment={updateAdjustment}
+														resetAdjustment={resetAdjustment}
+														isEditMode={isEditMode}
+														variant='hero'
+													/>
+												</ScrollReveal>
+											))}
 										</div>
-									);
-								})()}
-							</>
+									</section>
+								)}
+
+								{featuredGroups.map((group) => (
+									<section key={group.chairType}>
+										<SectionHeader normalizedType={group.normalizedType} />
+										<div className='grid gap-6 md:grid-cols-2 xl:grid-cols-3'>
+											{group.members.map((member, index) => (
+												<ScrollReveal key={member.id} delay={index * 80}>
+													<MemberCard
+														member={member}
+														localAdjustments={localAdjustments}
+														updateAdjustment={updateAdjustment}
+														resetAdjustment={resetAdjustment}
+														isEditMode={isEditMode}
+														variant='feature'
+													/>
+												</ScrollReveal>
+											))}
+										</div>
+									</section>
+								))}
+
+								{remainingGroups.length > 0 && (
+									<div className='grid gap-8 xl:grid-cols-2 items-stretch'>
+										{remainingGroups.map((group, index) => (
+											<ScrollReveal key={group.chairType} delay={(index % 2) * 90}>
+												<SmallGroupPanel
+													normalizedType={group.normalizedType}
+													members={group.members}
+													localAdjustments={localAdjustments}
+													updateAdjustment={updateAdjustment}
+													resetAdjustment={resetAdjustment}
+													isEditMode={isEditMode}
+												/>
+											</ScrollReveal>
+										))}
+									</div>
+								)}
+							</div>
 						)}
 					</div>
 				</section>
 			)}
+
 			<Sponsors />
 
-			{/* ADMIN CONFIG GENERATOR */}
 			{isEditMode && (
 				<div className='fixed bottom-8 right-8 z-[100] w-[400px] max-w-[90vw]'>
-					<div className='bg-zinc-900 border border-white/20 rounded-2xl shadow-2xl overflow-hidden flex flex-col max-h-[500px]'>
-						<div className='bg-zinc-800 px-5 py-3 flex items-center justify-between border-b border-white/10'>
+					<div className='flex max-h-[500px] flex-col overflow-hidden rounded-2xl border border-white/20 bg-zinc-900 shadow-2xl'>
+						<div className='flex items-center justify-between border-b border-white/10 bg-zinc-800 px-5 py-3'>
 							<div className='flex items-center gap-3'>
-								<Settings className='text-lab-lime animate-spin-slow' size={18} />
+								<Settings className='animate-spin-slow text-lab-lime' size={18} />
 								<span className='font-pixel text-sm tracking-widest'>CONFIG GENERATOR</span>
 							</div>
-							<div className='text-[10px] opacity-40 uppercase'>Notion Image ID Map</div>
+							<div className='text-[10px] uppercase opacity-40'>Notion Image ID Map</div>
 						</div>
-						<div className='p-4 overflow-y-auto custom-scrollbar bg-black/40'>
-							<p className='text-[11px] opacity-60 mb-3 leading-relaxed'>
+						<div className='custom-scrollbar overflow-y-auto bg-black/40 p-4'>
+							<p className='mb-3 text-[11px] leading-relaxed opacity-60'>
 								Adjust images above, then copy this object into <code className='text-lab-lime'>src/content.ts</code>.
 							</p>
-							<div className='relative group'>
-								<pre className='text-[10px] leading-relaxed bg-black/60 p-4 rounded-lg font-mono text-gray-300 border border-white/5 overflow-x-auto selection:bg-lab-lime/30'>
+							<div className='group relative'>
+								<pre className='overflow-x-auto rounded-lg border border-white/5 bg-black/60 p-4 font-mono text-[10px] leading-relaxed text-gray-300 selection:bg-lab-lime/30'>
 									{`imageAdjustments: ${JSON.stringify(localAdjustments, null, 2)} as Record<string, ImageAdjustment>,`}
 								</pre>
 								<button
 									onClick={() => {
 										const code = `imageAdjustments: ${JSON.stringify(localAdjustments, null, 2)} as Record<string, ImageAdjustment>,`;
 										navigator.clipboard.writeText(code);
-										const btn = document.getElementById('copy-btn');
-										if (btn) btn.innerText = 'COPIED!';
+										const button = document.getElementById('copy-btn');
+										if (button) button.innerText = 'COPIED!';
 										setTimeout(() => {
-											if (btn) btn.innerText = 'COPY CODE';
+											if (button) button.innerText = 'COPY CODE';
 										}, 2000);
 									}}
-									className='absolute top-3 right-3 bg-lab-lime text-black px-3 py-1.5 rounded-md font-bold text-[10px] hover:scale-105 transition-all active:scale-95 flex items-center gap-2 shadow-lg'
+									className='absolute right-3 top-3 inline-flex items-center gap-2 rounded-md bg-lab-lime px-3 py-1.5 text-[10px] font-bold text-black shadow-lg transition-all hover:scale-105 active:scale-95'
 								>
 									<Copy size={12} />
 									<span id='copy-btn'>COPY CODE</span>
 								</button>
 							</div>
 						</div>
-						<div className='bg-zinc-800/50 px-5 py-2 text-[9px] opacity-50 flex justify-between items-center'>
+						<div className='flex items-center justify-between bg-zinc-800/50 px-5 py-2 text-[9px] opacity-50'>
 							<span>{Object.keys(localAdjustments).length} Member(s) adjusted</span>
-							<span className='text-lab-lime font-bold'>DEVELOPER MODE ACTIVE</span>
+							<span className='font-bold text-lab-lime'>DEVELOPER MODE ACTIVE</span>
 						</div>
 					</div>
 				</div>
@@ -374,6 +527,5 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 		</div>
 	);
 };
-
 
 export default OrganizationPage;

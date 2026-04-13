@@ -29,11 +29,14 @@ declare interface SessionItem {
 declare interface PersonItem {
 	id: string;
 	name: string;
+	nameEn?: string;
 	chairType: string; // "General Chair", "Program Chair", "Technical Chair", etc.
 	email?: string;
 	image?: string;
 	institution?: string;
+	institutionEn?: string;
 	department?: string;
+	departmentEn?: string;
 	country?: string;
 	notes?: string;
 	order?: number;

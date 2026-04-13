@@ -1,0 +1,32 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+
+const source = readFileSync(new URL('./Navbar.tsx', import.meta.url), 'utf8');
+
+assert.match(source, /border-white\/10/);
+assert.match(source, /ds-nav-shell/);
+assert.match(source, /ds-nav-link/);
+assert.match(source, /ds-nav-link--active/);
+assert.match(source, /ds-nav-pill/);
+assert.match(source, /ds-nav-segmented/);
+assert.match(source, /ds-nav-segment/);
+assert.match(source, /ds-nav-segment--active/);
+assert.match(source, /ds-nav-drawer/);
+assert.match(source, /ds-nav-submenu/);
+assert.match(source, /content\.nav\.cfp/);
+assert.match(source, /content\.nav\.registration/);
+assert.match(source, /content\.nav\.logo/);
+assert.match(source, /\/competition/);
+assert.match(source, /\/vote/);
+assert.match(source, /label: 'VOTE'/);
+assert.match(source, /中/);
+assert.match(source, /EN/);
+assert.match(source, /aria-expanded=\{isMenuOpen\}/);
+assert.match(source, /overflow-y-auto/);
+assert.match(source, /const MobilePinnedSubmenuLink/);
+assert.match(source, /const getMobileSubmenuLabel = \(label: string\)/);
+assert.match(source, /label === 'Important Date' \? 'Date' : label/);
+assert.match(source, /activeSubmenu\.length > 0 && !isMenuOpen/);
+assert.match(source, /xl:hidden ds-nav-submenu/);
+assert.match(source, /overflow-x-auto px-4 py-3/);
+assert.match(source, /min-w-max items-center justify-center gap-4/);

@@ -1,11 +1,18 @@
 import { ChevronDown } from 'lucide-react';
 import React from 'react';
 import Skeleton from '../components/Skeleton';
-import { CONTENT } from '../content';
+import { useContent, useLanguage } from '../context/LanguageContext';
 import { useData } from '../context/DataContext';
+
+const getPersonDisplayName = (person: PersonItem, language: 'zh' | 'en') => {
+	if (language === 'en' && person.nameEn) return person.nameEn;
+	return person.name;
+};
 
 const AgendaPage: React.FC = () => {
 	const { sessions, people, isSyncing } = useData();
+	const content = useContent();
+	const { language } = useLanguage();
 	const keynoteSpeakers = people.filter((p) => (p.chairType ? String(p.chairType).toLowerCase() : '').includes('keynote'));
 
 	return (
@@ -13,7 +20,7 @@ const AgendaPage: React.FC = () => {
 			<div className='max-w-6xl mx-auto'>
 				{/* Header (Program) */}
 				<div className='flex flex-col items-center justify-center mb-16'>
-					<h2 className='text-5xl md:text-7xl font-pixel text-lab-dark mb-4 text-center'>{CONTENT.programSection.title}</h2>
+					<h2 className='text-5xl md:text-7xl font-pixel text-lab-dark mb-4 text-center'>{content.programSection.title}</h2>
 				</div>
 
 				<div>
@@ -23,7 +30,7 @@ const AgendaPage: React.FC = () => {
 							<Skeleton variant='card' count={3} />
 						</div>
 					) : sessions.length === 0 ? (
-						<div className='text-center font-mono text-gray-400 py-12'>Agenda to be announced.</div>
+						<div className='text-center font-mono text-gray-400 py-12'>{content.programSection.agendaTba}</div>
 					) : (
 						(() => {
 							const sessionsByDay: Record<string, SessionItem[]> = {};
@@ -65,7 +72,7 @@ const AgendaPage: React.FC = () => {
 																	<span className='font-bold text-lg'>{sess.title}</span>
 																	{sess.chairs && sess.chairs.length > 0 && (
 																		<div className='text-sm text-gray-500 mt-1'>
-																			Chairs: {sess.chairs.map((c) => c.name).join(', ')}
+																			{content.programSection.chairsLabel}: {sess.chairs.map((c) => getPersonDisplayName(c, language)).join(', ')}
 																		</div>
 																	)}
 																</div>
@@ -90,7 +97,7 @@ const AgendaPage: React.FC = () => {
 																				<h4 className='font-bold text-base mb-1'>{topic.topic}</h4>
 																				{topic.chairs && topic.chairs.length > 0 && (
 																					<p className='text-sm text-gray-500'>
-																						{topic.chairs.map((c) => c.name).join(', ')}
+																						{topic.chairs.map((c) => getPersonDisplayName(c, language)).join(', ')}
 																					</p>
 																				)}
 																			</div>
@@ -110,7 +117,7 @@ const AgendaPage: React.FC = () => {
 
 				{/* Keynotes Section */}
 				<div id='keynotes' className='mt-24 pt-16 border-t border-gray-200'>
-					<h2 className='text-5xl md:text-7xl font-pixel text-lab-dark mb-16 text-center'>{CONTENT.keynoteSection.title}</h2>
+					<h2 className='text-5xl md:text-7xl font-pixel text-lab-dark mb-16 text-center'>{content.keynoteSection.title}</h2>
 					{isSyncing && keynoteSpeakers.length === 0 ? (
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
 							{[1, 2].map((i) => (
@@ -127,7 +134,7 @@ const AgendaPage: React.FC = () => {
 					) : (
 						<div className='grid grid-cols-1 md:grid-cols-2 gap-12'>
 							{keynoteSpeakers.length === 0 && !isSyncing && (
-								<div className='col-span-full text-center font-mono opacity-50'>Speakers TBD</div>
+								<div className='col-span-full text-center font-mono opacity-50'>{content.keynoteSection.tbd}</div>
 							)}
 							{keynoteSpeakers.map((speaker) => (
 								<div key={speaker.id} className='flex flex-col md:flex-row gap-6 items-center md:items-start group'>
@@ -139,8 +146,12 @@ const AgendaPage: React.FC = () => {
 										/>
 									</div>
 									<div className='text-center md:text-left flex-1'>
-										<h3 className='font-pixel text-3xl text-lab-orange mb-2'>{speaker.name}</h3>
-										<p className='font-mono text-sm text-gray-600 mb-4'>{speaker.institution + speaker.department}</p>
+										<h3 className='font-pixel text-3xl text-lab-orange mb-2'>{getPersonDisplayName(speaker, language)}</h3>
+										<p className='font-mono text-sm text-gray-600 mb-4'>
+											{(language === 'en' && speaker.institutionEn) ? speaker.institutionEn : speaker.institution}
+											{' '}
+											{(language === 'en' && speaker.departmentEn) ? speaker.departmentEn : speaker.department}
+										</p>
 										<div className='bg-gray-50 p-4 rounded text-sm text-gray-600 italic border border-gray-200'>
 											"{speaker.chairType}"
 										</div>

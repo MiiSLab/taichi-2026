@@ -40,6 +40,12 @@
 			type="image/svg+xml"
 			href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath d='M50 0 L60 30 L90 20 L70 45 L100 60 L70 70 L80 100 L50 80 L20 100 L30 70 L0 60 L30 45 L10 20 L40 30 Z' fill='%23a8f020' /%3E%3C/svg%3E"
 		/>
+		<link rel="preconnect" href="https://fonts.googleapis.com" />
+		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+		<link
+			href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans:wght@400;500;600;700&family=Noto+Sans+TC:wght@400;500;700;900&display=swap"
+			rel="stylesheet"
+		/>
 		<script src="https://cdn.tailwindcss.com"></script>
 
 		<script>
@@ -58,11 +64,13 @@
 							'pili-glow': '0 0 10px rgba(255, 192, 0, 0.7), 0 0 20px rgba(255, 192, 0, 0.5)',
 						},
 						fontFamily: {
-							sans: ['Inter', 'sans-serif'],
+							sans: ['"IBM Plex Sans"', '"Noto Sans TC"', 'sans-serif'],
+							mono: ['"Reddit Mono"', '"Roboto Mono"', 'monospace'],
 							pixel: ['"VT323"', 'monospace'],
 							reddit: ['"Reddit Mono"', 'monospace'],
-							roboto: ['"Roboto Mono"', 'monospace'],
+							roboto: ['"IBM Plex Sans"', '"Noto Sans TC"', 'sans-serif'],
 							dot: ['"DotGothic16"', 'sans-serif'],
+							dela: ['"Dela Gothic One"', '"DotGothic16"', 'sans-serif'],
 						},
 						animation: {
 							'spin-slow': 'spin 10s linear infinite',
@@ -115,6 +123,13 @@
 				font-style: normal;
 				font-display: block;
 			}
+			@font-face {
+				font-family: 'Dela Gothic One';
+				src: url('/fonts/dela-gothic-one-v19-regular.ttf') format('truetype');
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
+			}
 
 			body {
 				margin: 0;
@@ -152,6 +167,7 @@
 			}
 		</script>
 		<link rel="stylesheet" href="/index.css" />
+		<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 		<script>
 			// Restore the intended path after redirect from 404.html
 			(function () {

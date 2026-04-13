@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { CONTENT } from '../content';
+import { typography } from '../design-system/typography';
+import { useContent } from '../context/LanguageContext';
 import { useData } from '../context/DataContext';
 import NewsDetail from './NewsDetail';
 import Skeleton from './Skeleton';
@@ -13,6 +14,7 @@ interface NewsSectionProps {
 
 const NewsSection: React.FC<NewsSectionProps> = ({ limit, hideHeader, unwrap }) => {
 	const { news, isSyncing } = useData();
+	const content = useContent();
 	const [selectedNews, setSelectedNews] = useState<NewsItem | null>(null);
 
 	const visibleNews = limit ? news.slice(0, limit) : news;
@@ -25,10 +27,10 @@ const NewsSection: React.FC<NewsSectionProps> = ({ limit, hideHeader, unwrap }) 
 		<div className={unwrap ? '' : 'max-w-7xl mx-auto'}>
 			{!hideHeader && (
 				<div className='flex justify-between items-end mb-16'>
-					<h2 className='font-pixel text-5xl text-lab-dark'>{CONTENT.newsSection.title}</h2>
+					<h2 className={`${typography.fontFamily.display} text-5xl text-lab-dark`}>{content.newsSection.title}</h2>
 					{limit && news.length > limit && (
 						<Link to='/news' className='text-lab-orange font-bold hover:underline'>
-							VIEW ALL NEWS
+							{content.newsSection.viewAll}
 						</Link>
 					)}
 				</div>
@@ -60,7 +62,7 @@ const NewsSection: React.FC<NewsSectionProps> = ({ limit, hideHeader, unwrap }) 
 								{(item.createdTime || item.date) && (
 									<div className='font-mono text-xs text-gray-500 mb-2'>{item.createdTime || item.date}</div>
 								)}
-								<h3 className='font-pixel text-2xl leading-none mb-4 group-hover:text-lab-orange'>{item.title}</h3>
+								<h3 className={`${typography.fontFamily.display} mb-4 text-2xl leading-none group-hover:text-lab-orange`}>{item.title}</h3>
 								<p className='font-sans text-sm text-gray-600 line-clamp-2'>{item.content}</p>
 							</div>
 						</div>

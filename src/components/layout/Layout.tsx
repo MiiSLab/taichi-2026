@@ -10,7 +10,7 @@ const Layout: React.FC = () => {
 		if (hash) {
 			const element = document.getElementById(hash.replace('#', ''));
 			if (element) {
-				const headerOffset = 100;
+				const headerOffset = pathname.startsWith('/cfp') ? 156 : 100;
 				const elementPosition = element.getBoundingClientRect().top;
 				const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
@@ -25,7 +25,7 @@ const Layout: React.FC = () => {
 	}, [pathname, hash]);
 
 	return (
-		<div className='min-h-screen bg-lab-black text-white font-sans selection:bg-lab-pink selection:text-white overflow-x-hidden'>
+		<div className='site-theme ds-app-shell min-h-screen overflow-x-hidden selection:bg-[rgba(243,100,88,0.9)] selection:text-white'>
 			<Navbar />
 			<main>
 				<Outlet />

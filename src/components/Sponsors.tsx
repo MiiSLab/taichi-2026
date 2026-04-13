@@ -1,98 +1,159 @@
 import React from 'react';
-import { CONTENT } from '../content';
+import ScrollReveal from './ScrollReveal';
+import { typography } from '../design-system/typography';
+import { useContent } from '../context/LanguageContext';
+
+interface LogoItem {
+	name: string;
+	logo: string;
+	size: string;
+}
+
+const getSafePath = (path: string) => {
+	if (!path) return '';
+	if (path.startsWith('http')) return path;
+	const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL.slice(0, -1) : import.meta.env.BASE_URL;
+	const cleanPath = path.startsWith('/') ? path : `/${path}`;
+	return `${base}${cleanPath}`;
+};
+
+const getLogoFrameClasses = (size: string) => {
+	switch (size) {
+		case 'large':
+			return 'min-h-[76px] min-w-0 px-1.5 py-2 md:min-h-[120px] md:shrink-0 md:px-5 md:py-4';
+		case 'small':
+			return 'min-h-[70px] min-w-0 px-1 py-2 md:min-h-[96px] md:shrink-0 md:px-4 md:py-3';
+		case 'S':
+			return 'min-h-[68px] min-w-0 px-1 py-2 md:min-h-[92px] md:shrink-0 md:px-3 md:py-3';
+		default:
+			return 'min-h-[70px] min-w-0 px-1 py-2 md:min-h-[96px] md:shrink-0 md:px-4 md:py-3';
+	}
+};
+
+const getLogoImageClasses = (size: string) => {
+	switch (size) {
+		case 'large':
+			return 'max-h-[46px] w-[min(38vw,148px)] max-w-[148px] md:w-auto md:max-h-[78px] md:max-w-[255px]';
+		case 'small':
+			return 'max-h-[40px] w-[min(34vw,128px)] max-w-[128px] md:w-auto md:max-h-[64px] md:max-w-[204px]';
+		case 'S':
+			return 'max-h-[38px] w-[min(32vw,118px)] max-w-[118px] md:w-auto md:max-h-[58px] md:max-w-[186px]';
+		default:
+			return 'max-h-[40px] w-[min(34vw,128px)] max-w-[128px] md:max-h-16 md:max-w-[220px]';
+	}
+};
+
+const getLogoOpticalClasses = (name: string) => {
+	switch (name) {
+		case '台灣人機互動學會':
+			return {
+				frame: 'md:-translate-x-1',
+				image: 'md:max-w-[238px]',
+			};
+		case '國科會晶創人文計畫':
+			return {
+				frame: 'md:translate-x-1',
+				image: 'md:max-h-[70px] md:max-w-[242px]',
+			};
+		case '國立臺灣科技大學':
+			return {
+				frame: '',
+				image: 'md:max-h-[68px] md:max-w-[196px]',
+			};
+		case '國立臺北科技大學':
+			return {
+				frame: '',
+				image: 'md:max-h-[64px] md:max-w-[182px]',
+			};
+		case '美國在台協會':
+			return {
+				frame: '',
+				image: 'md:max-h-[68px] md:max-w-[214px]',
+			};
+		case '美國創新中心':
+			return {
+				frame: '',
+				image: 'md:max-h-[62px] md:max-w-[210px]',
+			};
+		case 'APMAR':
+			return {
+				frame: '',
+				image: 'max-h-[34px] max-w-[104px] md:max-h-[50px] md:max-w-[156px]',
+			};
+		default:
+			return {
+				frame: '',
+				image: '',
+			};
+	}
+};
+
+const LogoRow = ({ items, centered = false, delayStep = 70 }: { items: readonly LogoItem[]; centered?: boolean; delayStep?: number }) => (
+	<div className={`flex w-full flex-nowrap items-center gap-2 md:w-auto md:gap-6 ${centered ? 'justify-center' : 'justify-start'}`}>
+		{items.map((item, index) => {
+			const opticalClasses = getLogoOpticalClasses(item.name);
+
+			return (
+				<ScrollReveal key={item.name} delay={index * delayStep}>
+					<div className={`flex flex-1 items-center justify-center md:flex-none ${getLogoFrameClasses(item.size)} ${opticalClasses.frame}`}>
+						<img
+							src={getSafePath(item.logo)}
+							alt={item.name}
+							className={`object-contain transition duration-300 hover:scale-[1.02] ${getLogoImageClasses(item.size)} ${opticalClasses.image}`}
+						/>
+					</div>
+				</ScrollReveal>
+			);
+		})}
+	</div>
+);
 
 const Sponsors: React.FC = () => {
-	const { organizers, coOrganizers, sponsors, organizerTitle, sponsorTitle } = CONTENT.sponsorsSection;
-
-	// Actual Image Renderer that robustly handles fallbacks
-	const ImageBlock = ({ item }: { item: { name: string; logo: string; size: string } }) => {
-		const [imgError, setImgError] = React.useState(false);
-
-		const getSafePath = (path: string) => {
-			if (!path) return '';
-			if (path.startsWith('http')) return path; // External link
-			const base = import.meta.env.BASE_URL.endsWith('/') ? import.meta.env.BASE_URL.slice(0, -1) : import.meta.env.BASE_URL;
-			const cleanPath = path.startsWith('/') ? path : `/${path}`;
-			return `${base}${cleanPath}`;
-		};
-
-		const imgSrc = getSafePath(item.logo);
-
-		if (imgError || !item.logo) {
-			// Placeholder
-			return (
-				<div className='bg-[#F5F5F5] border border-gray-200 flex items-center justify-center text-center p-4 rounded-xl transition-all h-24 w-48'>
-					<span className='font-mono text-xs text-gray-500 font-bold'>{item.name}</span>
-				</div>
-			);
-		}
-
-		return (
-			<div className='flex items-center justify-center transition-transform duration-300 hover:-translate-y-1' title={item.name}>
-				<img
-					src={imgSrc}
-					alt={item.name}
-					onError={() => setImgError(true)}
-					className='object-contain h-14 md:h-16 mix-blend-darken filter drop-shadow-sm'
-				/>
-			</div>
-		);
-	};
+	const { organizers, coOrganizers, supportingOrganizers, sponsors, mainOrganizers, coOrganizersTitle, supportingOrganizersTitle, sponsorsTitle } = useContent().sponsorsSection;
 
 	return (
-		<section className='py-28 px-10 md:px-16 bg-[#FAFAFA] text-black w-full min-h-screen flex flex-col justify-center'>
-			<div className='max-w-4xl mx-auto flex flex-col items-center w-full'>
-				{/* ORGANIZERS SECTION */}
-				<div className='w-full mb-32 flex flex-col items-center'>
-					{/* Title */}
-					<h2 className='font-mono md:font-pixel text-4xl md:text-5xl font-bold mb-16 text-[#FF0033] uppercase tracking-[0.2em] text-center'>
-						{organizerTitle}
-					</h2>
+		<section className='w-full bg-[#F2F2ED] px-6 py-24 text-black md:px-14 md:py-28 lg:px-20'>
+			<div className='mx-auto flex max-w-[1200px] flex-col items-center space-y-24 text-center'>
+				<div className='flex w-full flex-col items-center space-y-12'>
 
-					<div className='flex flex-col gap-16 w-full'>
-						{/* Main Organizers */}
-						<div className='w-full flex flex-col'>
-							<h3 className='font-mono text-base md:text-lg font-bold tracking-[0.2em] uppercase mb-8 text-[#111]'>
-								Main Organizers
-							</h3>
-							<div className='flex flex-wrap gap-8 md:gap-12'>
-								{organizers.map((item, idx) => (
-									<ImageBlock key={idx} item={item} />
-								))}
+					<div className='flex w-full flex-col items-center justify-center gap-10'>
+						<ScrollReveal delay={60}>
+							<div className='flex w-full max-w-[620px] flex-col items-center gap-3 md:gap-4'>
+								<p className='font-roboto text-[12px] uppercase tracking-[0.42em] text-black/55'>{mainOrganizers}</p>
+								<LogoRow items={organizers} centered />
 							</div>
-						</div>
+						</ScrollReveal>
 
-						{/* Co-Organizers */}
 						{coOrganizers.length > 0 && (
-							<div className='w-full flex flex-col'>
-								<h3 className='font-mono text-base md:text-lg font-bold tracking-[0.2em] uppercase mb-8 text-[#111]'>
-									Co-Organizers
-								</h3>
-								<div className='flex flex-wrap gap-8 md:gap-12'>
-									{coOrganizers.map((item, idx) => (
-										<ImageBlock key={idx} item={item} />
-									))}
+							<ScrollReveal delay={140}>
+								<div className='flex w-full max-w-[520px] flex-col items-center gap-3 md:gap-4'>
+									<p className='font-roboto text-[12px] uppercase tracking-[0.42em] text-black/55'>{coOrganizersTitle}</p>
+									<LogoRow items={coOrganizers} centered />
 								</div>
-							</div>
+							</ScrollReveal>
 						)}
+
+						{supportingOrganizers && supportingOrganizers.length > 0 && (
+							<ScrollReveal delay={200}>
+								<div className='flex w-full max-w-[520px] flex-col items-center gap-3 md:gap-4'>
+									<p className='font-roboto text-[12px] uppercase tracking-[0.42em] text-black/55'>{supportingOrganizersTitle}</p>
+									<LogoRow items={supportingOrganizers} centered />
+								</div>
+							</ScrollReveal>
+						)}
+
+						{sponsors && sponsors.length > 0 && (
+							<ScrollReveal delay={200}>
+								<div className='flex w-full max-w-[520px] flex-col items-center gap-3 md:gap-4'>
+									<p className='font-roboto text-[12px] uppercase tracking-[0.42em] text-black/55'>{sponsorsTitle}</p>
+									<LogoRow items={sponsors} centered delayStep={60} />
+								</div>
+							</ScrollReveal>
+						)}
+
 					</div>
 				</div>
 
-				<div className='w-full flex flex-col items-center'>
-					{/* Title */}
-					<h2 className='font-mono md:font-pixel text-4xl md:text-5xl font-bold mb-16 text-[#FF0033] uppercase tracking-[0.2em] text-center'>
-						{sponsorTitle}
-					</h2>
-
-					{/* Sponsors List */}
-					<div className='w-full flex flex-col'>
-						<div className='flex flex-wrap gap-8 md:gap-12'>
-							{sponsors.map((item, idx) => (
-								<ImageBlock key={idx} item={item} />
-							))}
-						</div>
-					</div>
-				</div>
 			</div>
 		</section>
 	);

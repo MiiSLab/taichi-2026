@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { CONTENT } from '../content';
+import { useContent } from '../context/LanguageContext';
 
 /**
  * ScrollCollapseSection
@@ -30,6 +30,7 @@ interface Props {
 
 const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
+	const content = useContent();
 	const [circleSize, setCircleSize] = useState(100);
 	const [isActive, setIsActive] = useState(false);
 
@@ -193,24 +194,24 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 				>
 					{/* Content inside the shrinking circle — matches the original lime hero */}
 					<div
-						className='flex flex-col items-center max-w-7xl w-full text-center px-4 pt-16'
+						className='flex w-full max-w-[22rem] flex-col items-center px-4 pt-20 text-center sm:max-w-[28rem] md:max-w-4xl md:px-6 md:pt-16 lg:max-w-7xl'
 						style={{ opacity: Math.min((circleSize - 10) / 30, 1) }}
 					>
-						<div className='w-full md:w-[95%] max-w-7xl mb-4 flex flex-col items-center relative'>
+						<div className='relative mb-4 flex w-full max-w-[22rem] flex-col items-center sm:max-w-[30rem] md:w-[95%] md:max-w-7xl'>
 							{/* 上排文字：全部置中 */}
-							<div className='w-full text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-base md:text-2xl md:-mb-8 z-10 px-2 md:px-0'>
-								{CONTENT.heroBanner.topText}
+							<div className='z-10 w-full px-2 text-center font-mono text-[11px] font-bold tracking-[0.18em] text-[#382D3B] drop-shadow-sm sm:text-sm md:-mb-8 md:px-0 md:text-2xl'>
+								{content.heroBanner.topText}
 							</div>
 
 							<img
-								src='/images/big_bang.svg'
-								alt='TAICHI 2026 台灣人機互動研討會 - Big Bang Futures 主題標誌'
-								className='w-full object-contain drop-shadow-xl relative z-0'
+								src='/images/heropage_info.png'
+								alt='主視覺準備上架'
+								className='relative z-0 w-full max-w-[20rem] object-contain drop-shadow-xl sm:max-w-[28rem] md:max-w-none'
 							/>
 
 							{/* 下排文字：全部置中 */}
-							<div className='w-full text-center font-mono font-bold tracking-widest text-[#382D3B] drop-shadow-sm text-sm sm:text-base md:text-2xl md:-mt-10 z-10 px-2 md:px-0'>
-								{CONTENT.heroBanner.bottomText}
+							<div className='z-10 w-full px-2 text-center font-mono text-[11px] font-bold tracking-[0.18em] text-[#382D3B] drop-shadow-sm sm:text-sm md:-mt-10 md:px-0 md:text-2xl'>
+								{content.heroBanner.bottomText}
 							</div>
 						</div>
 					</div>
