@@ -10,6 +10,10 @@ import { useContent, useLanguage } from '../context/LanguageContext';
 import ConstellationMapSection from '../components/ConstellationMap';
 import { useSEO } from '../hooks/useSEO';
 
+// 主視覺尚未完成，暫時隱藏整個 ScrollCollapseSection 過場動畫。
+// 主圖製作完成後，將此旗標改回 true 即可恢復。
+const HERO_COLLAPSE_ENABLED = false;
+
 const HomePage: React.FC = () => {
 	const content = useContent();
 	const { language } = useLanguage();
@@ -47,18 +51,20 @@ const HomePage: React.FC = () => {
 	return (
 		<>
 			{/* HERO — scroll-collapse animation */}
-			<ScrollCollapseSection
-				onProgress={(progress, active) => {
-					setTransitionProgress(progress);
-					setCollapseActive(active);
-				}}
-			/>
+			{HERO_COLLAPSE_ENABLED && (
+				<ScrollCollapseSection
+					onProgress={(progress, active) => {
+						setTransitionProgress(progress);
+						setCollapseActive(active);
+					}}
+				/>
+			)}
 
-			{/* 
+			{/*
 				Negative margin pulls the document flow up by 100vh.
 			  This aligns the top of this wrapper EXACTLY to the viewport top when ScrollCollapseSection finishes its 300vh scroll progress.
 			*/}
-			<div className='bg-black w-full min-h-screen flex flex-col' style={{ marginTop: '-100vh' }}>
+			<div className='bg-black w-full min-h-screen flex flex-col' style={HERO_COLLAPSE_ENABLED ? { marginTop: '-100vh' } : undefined}>
 				{/* 
 					Placeholder to reserve height so layout doesn't shift when section becomes fixed out-of-flow.
 					This prevents the "disappearing and reappearing from bottom" bug.
