@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useContent } from '../context/LanguageContext';
+import HomeHeroIntro from './home/HomeHeroIntro';
 
 /**
  * ScrollCollapseSection
@@ -30,7 +30,6 @@ interface Props {
 
 const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
-	const content = useContent();
 	const [circleSize, setCircleSize] = useState(100);
 	const [isActive, setIsActive] = useState(false);
 
@@ -192,28 +191,8 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 						overflow: 'hidden',
 					}}
 				>
-					{/* Content inside the shrinking circle — matches the original lime hero */}
-					<div
-						className='flex w-full max-w-[22rem] flex-col items-center px-4 pt-20 text-center sm:max-w-[28rem] md:max-w-4xl md:px-6 md:pt-16 lg:max-w-7xl'
-						style={{ opacity: Math.min((circleSize - 10) / 30, 1) }}
-					>
-						<div className='relative mb-4 flex w-full max-w-[22rem] flex-col items-center sm:max-w-[30rem] md:w-[95%] md:max-w-7xl'>
-							{/* 上排文字：全部置中 */}
-							<div className='z-10 w-full px-2 text-center font-mono text-[11px] font-bold tracking-[0.18em] text-[#382D3B] drop-shadow-sm sm:text-sm md:-mb-8 md:px-0 md:text-2xl'>
-								{content.heroBanner.topText}
-							</div>
-
-							<img
-								src='/images/heropage_info.png'
-								alt='主視覺準備上架'
-								className='relative z-0 w-full max-w-[20rem] object-contain drop-shadow-xl sm:max-w-[28rem] md:max-w-none'
-							/>
-
-							{/* 下排文字：全部置中 */}
-							<div className='z-10 w-full px-2 text-center font-mono text-[11px] font-bold tracking-[0.18em] text-[#382D3B] drop-shadow-sm sm:text-sm md:-mt-10 md:px-0 md:text-2xl'>
-								{content.heroBanner.bottomText}
-							</div>
-						</div>
+					<div style={{ width: '100%', height: '100%', opacity: Math.min((circleSize - 10) / 30, 1) }}>
+						<HomeHeroIntro layout='embedded' scrollProgressOverride={1 - circleSize / 100} />
 					</div>
 				</div>
 			)}

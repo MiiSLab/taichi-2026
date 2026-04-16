@@ -262,6 +262,315 @@
 	padding: 0.1875rem;
 }
 
+.hero-intro-scroll-shell {
+	position: relative;
+}
+
+.hero-intro-embedded {
+	position: relative;
+	width: 100%;
+	height: 100%;
+}
+
+.hero-intro {
+	position: relative;
+	min-height: 100dvh;
+}
+
+.hero-intro__sticky {
+	position: sticky;
+	top: 0;
+	display: grid;
+	min-height: 100dvh;
+	place-items: center;
+	overflow: clip;
+	background:
+		radial-gradient(circle at center, rgba(168, 240, 32, 0.08), transparent 36%),
+		#050805;
+	isolation: isolate;
+}
+
+.hero-intro__background,
+.hero-hologram-canvas,
+.hero-intro__scanlines,
+.hero-intro__vignette,
+.hero-intro__pixel-curtain,
+.hero-hologram-scene,
+.hero-hologram-scene__scanlines,
+.hero-hologram-scene__vignette {
+	position: absolute;
+	inset: 0;
+}
+
+.hero-hologram-scene {
+	display: block;
+	width: 100%;
+	height: 100%;
+	pointer-events: none;
+	overflow: hidden;
+}
+
+.hero-hologram-scene__scanlines {
+	background: linear-gradient(rgba(168, 240, 32, 0.12) 50%, transparent 50%);
+	background-size: 100% 4px;
+	opacity: 0.24;
+	mix-blend-mode: screen;
+}
+
+.hero-hologram-scene__vignette {
+	background: radial-gradient(circle, transparent 40%, black 100%);
+	opacity: 0.6;
+}
+
+.hero-intro__scanlines {
+	background-image: linear-gradient(to bottom, rgba(168, 240, 32, 0.13) 0, rgba(168, 240, 32, 0.13) 1px, transparent 1px, transparent 13px);
+	background-size: 100% 14px;
+	mix-blend-mode: screen;
+	opacity: 0.44;
+	pointer-events: none;
+}
+
+.hero-intro__vignette {
+	background:
+		radial-gradient(circle at center, transparent 0, transparent 45%, rgba(0, 0, 0, 0.56) 100%),
+		linear-gradient(180deg, rgba(0, 0, 0, 0.42), rgba(0, 0, 0, 0.6));
+	pointer-events: none;
+}
+
+.hero-intro__pixel-curtain {
+	z-index: 1;
+	display: grid;
+	grid-template-columns: repeat(60, 1fr);
+	grid-template-rows: repeat(36, 1fr);
+	pointer-events: none;
+}
+
+.hero-intro__pixel {
+	background: #a8f020;
+	transition:
+		opacity 240ms steps(1, end),
+		transform 240ms steps(1, end);
+	opacity: 1;
+	transform: scale(1);
+}
+
+.hero-intro__pixel--open {
+	opacity: 0;
+	transform: scale(0.7);
+}
+
+.hero-intro__pixel--residual {
+	opacity: 0.82;
+}
+
+.hero-intro__content {
+	position: relative;
+	z-index: 2;
+	display: flex;
+	min-height: 100dvh;
+	width: min(calc(100vw - 5rem), 1080px);
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 1.5rem;
+	padding: 1rem;
+	text-align: center;
+	opacity: 0.22;
+	filter: saturate(0.92) blur(1px);
+	transform: scale(0.985);
+	transition:
+		opacity 560ms cubic-bezier(0.16, 1, 0.3, 1),
+		filter 560ms cubic-bezier(0.16, 1, 0.3, 1),
+		transform 560ms cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.hero-intro__content--revealed {
+	opacity: 1;
+	filter: saturate(1) blur(0);
+	transform: scale(1);
+}
+
+.hero-intro__lockup-stack {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	gap: clamp(0.8rem, 1.4vw, 1.15rem);
+	width: clamp(30rem, 60vw, 75rem);
+	max-width: calc(100vw - 5rem);
+	pointer-events: none;
+}
+
+.hero-intro__hero-asset {
+	display: block;
+	width: 100%;
+	height: auto;
+	object-fit: contain;
+	user-select: none;
+	-webkit-user-drag: none;
+	will-change: opacity, transform;
+}
+
+.hero-intro__hero-asset--title {
+	width: min(100%, 72rem);
+	filter:
+		drop-shadow(0 0 24px rgba(168, 240, 32, 0.3))
+		drop-shadow(0 0 52px rgba(168, 240, 32, 0.12));
+}
+
+.hero-intro__hero-asset--taichi {
+	width: min(42%, 28rem);
+}
+
+.hero-intro__hero-asset--date {
+	width: min(48%, 34rem);
+}
+
+.hero-intro__scroll-hint {
+	position: absolute;
+	left: 50%;
+	bottom: clamp(1.75rem, 3.5vw, 3rem);
+	margin: 0;
+	color: rgba(255, 255, 255, 0.68);
+	font-family: var(--font-ui);
+	font-size: 1rem;
+	letter-spacing: 0.18em;
+	text-transform: uppercase;
+	text-shadow: 0 0 12px rgba(168, 240, 32, 0.12);
+	transform: translateX(-50%);
+}
+
+@keyframes hero-glitch-shift {
+	0%, 100% {
+		transform: translate3d(0, 0, 0);
+	}
+
+	8% {
+		transform: translate3d(-5px, 1px, 0) skewX(-8deg);
+	}
+
+	9% {
+		transform: translate3d(7px, -1px, 0) skewX(8deg);
+	}
+
+	16% {
+		transform: translate3d(-3px, 0, 0);
+	}
+
+	18% {
+		transform: translate3d(8px, -2px, 0);
+	}
+
+	19% {
+		transform: translate3d(-7px, 2px, 0);
+	}
+
+	48% {
+		transform: translate3d(0, 0, 0);
+	}
+
+	49% {
+		transform: translate3d(5px, 0, 0);
+	}
+
+	50% {
+		transform: translate3d(-5px, 0, 0);
+	}
+
+	61% {
+		transform: translate3d(6px, -1px, 0) skewX(6deg);
+	}
+
+	62% {
+		transform: translate3d(-4px, 1px, 0) skewX(-6deg);
+	}
+
+	72% {
+		transform: translate3d(0, 0, 0);
+	}
+
+	73% {
+		transform: translate3d(6px, 1px, 0);
+	}
+
+	74% {
+		transform: translate3d(-5px, -2px, 0);
+	}
+
+	87% {
+		transform: translate3d(8px, 0, 0);
+	}
+
+	88% {
+		transform: translate3d(-6px, 0, 0);
+	}
+}
+
+@keyframes hero-wordmark-flicker {
+	0%, 100% {
+		filter: none;
+		opacity: 1;
+	}
+
+	12% {
+		filter: brightness(1.18) saturate(1.1);
+	}
+
+	13% {
+		filter: brightness(0.84) saturate(1.24);
+	}
+
+	26% {
+		filter: brightness(1.1);
+	}
+
+	27% {
+		filter: brightness(0.92) saturate(1.18);
+	}
+
+	56% {
+		opacity: 0.96;
+	}
+
+	57% {
+		opacity: 1;
+	}
+
+	79% {
+		filter: brightness(1.16) saturate(1.08);
+	}
+}
+
+@media (max-width: 768px) {
+	.hero-intro__content {
+		width: min(94vw, 32rem);
+		gap: 1rem;
+		padding-inline: 0.75rem;
+	}
+
+	.hero-intro__lockup-stack {
+		width: min(100%, 31rem);
+		max-width: 100%;
+	}
+
+	.hero-intro__hero-asset--taichi {
+		width: min(55%, 16rem);
+	}
+
+	.hero-intro__hero-asset--date {
+		width: min(74%, 20rem);
+	}
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.hero-intro__content,
+	.hero-intro__hero-asset,
+	.hero-intro__pixel {
+		animation: none !important;
+		transition: none !important;
+	}
+}
+
 .ds-nav-segment {
 	display: inline-flex;
 	align-items: center;
@@ -367,7 +676,7 @@
 
 .scroll-reveal {
 	opacity: 0;
-	transform: translate3d(0, var(--motion-distance-reveal, 28px), 0);
+	transform: translate3d(0, 28px, 0);
 	transition-duration: var(--motion-duration-reveal, 520ms);
 	transition-property: opacity, transform;
 	transition-timing-function: var(--motion-ease-standard, cubic-bezier(0.22, 1, 0.36, 1));

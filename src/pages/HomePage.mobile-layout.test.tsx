@@ -6,27 +6,23 @@ test('homepage and countdown source include mobile-first adaptations', () => {
 	const homeSource = readFileSync(new URL('./HomePage.tsx', import.meta.url), 'utf8');
 	const timerSource = readFileSync(new URL('../components/CountdownTimer.tsx', import.meta.url), 'utf8');
 
-	assert.match(homeSource, /max-w-\[22rem\]/);
-	assert.match(homeSource, /sm:max-w-\[28rem\]/);
-	assert.match(homeSource, /md:max-w-5xl/);
-	assert.match(homeSource, /typography\.pattern\.heroIntroTitle/);
+	assert.match(homeSource, /import ScrollCollapseSection from '\.\.\/components\/ScrollCollapseSection'/);
 	assert.match(homeSource, /ds-section-title/);
 	assert.match(homeSource, /typography\.scale\.sectionEyebrow/);
 	assert.match(homeSource, /typography\.scale\.deadlineValue/);
 	assert.match(homeSource, /typography\.scale\.deadlineMeta/);
 	assert.match(homeSource, /language === 'zh'/);
-	assert.match(homeSource, /TAICHI2026主題：/);
-	assert.match(homeSource, /Big Bang! Futures!/);
-	assert.match(homeSource, /block text-center md:hidden/);
-	assert.match(homeSource, /hidden md:block/);
 	assert.match(homeSource, /投稿截止日期：/);
 	assert.match(homeSource, /import ScrollReveal from '\.\.\/components\/ScrollReveal'/);
 	assert.match(homeSource, /import \{ typography \} from '\.\.\/design-system\/typography'/);
-	assert.match(homeSource, /<ScrollReveal delay=\{40\}>/);
 	assert.match(homeSource, /<ScrollReveal delay=\{80\}>/);
 	assert.match(homeSource, /<ScrollReveal delay=\{120\}>/);
 	assert.match(homeSource, /<ScrollReveal delay=\{90\} className='mt-6 flex w-full justify-center'>/);
 	assert.match(homeSource, /<ScrollReveal delay=\{180\} className='mt-8'>/);
+	assert.match(homeSource, /<ScrollCollapseSection[\s\S]*onProgress=/);
+	assert.match(homeSource, /marginTop: '-100vh'/);
+	assert.match(homeSource, /nextSectionTranslateY/);
+	assert.match(homeSource, /nextSectionOpacity/);
 	assert.match(homeSource, /min-h-\[78dvh\][\s\S]*md:min-h-\[88dvh\]/);
 	assert.match(homeSource, /delay=\{80 \+ index \* 70\}/);
 	assert.match(homeSource, /grid w-full auto-rows-fr grid-cols-1 justify-items-center gap-3 sm:grid-cols-2 lg:grid-cols-4 lg:justify-items-stretch xl:max-w-\[1220px\] xl:gap-0/);
@@ -45,7 +41,10 @@ test('homepage and countdown source include mobile-first adaptations', () => {
 test('homepage source includes theme intro, home cfp hero, important dates, and sponsors flow', () => {
 	const homeSource = readFileSync(new URL('./HomePage.tsx', import.meta.url), 'utf8');
 
+	assert.match(homeSource, /<ScrollCollapseSection/);
 	assert.match(homeSource, /content\.theme\.title/);
+	assert.match(homeSource, /content\.theme\.slogan/);
+	assert.match(homeSource, /content\.theme\.description/);
 	assert.match(homeSource, /content\.cfpSection\.importantDatesTitle/);
 	assert.match(homeSource, /content\.cfpSection\.heroTimelineItems\.map/);
 	assert.match(homeSource, /Submit Now/);
