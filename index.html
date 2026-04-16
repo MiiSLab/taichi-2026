@@ -104,7 +104,7 @@
 			}
 			@font-face {
 				font-family: 'Noto Sans TC';
-				src: url('/fonts/noto-sans-tc-variable.woff2') format('woff2');
+				src: url('/fonts/noto-sans-tc-subset.woff2') format('woff2');
 				font-weight: 100 900;
 				font-style: normal;
 				font-display: swap;
@@ -114,39 +114,39 @@
 				src: url('/fonts/vt323-v18-latin-regular.woff2') format('woff2');
 				font-weight: 400;
 				font-style: normal;
-				font-display: block;
+				font-display: swap;
 			}
 			@font-face {
 				font-family: 'DotGothic16';
 				src: url('/fonts/dotgothic16-v21-latin-regular.woff2') format('woff2');
 				font-weight: 400;
 				font-style: normal;
-				font-display: block;
+				font-display: swap;
 			}
 			@font-face {
 				font-family: 'Reddit Mono';
 				src: url('/fonts/reddit-mono-v5-latin-regular.woff2') format('woff2');
 				font-weight: 400;
 				font-style: normal;
-				font-display: block;
+				font-display: swap;
 			}
 			@font-face {
 				font-family: 'Roboto Mono';
 				src: url('/fonts/roboto-mono-v31-latin-regular.woff2') format('woff2');
 				font-weight: 400;
 				font-style: normal;
-				font-display: block;
+				font-display: swap;
 			}
 			@font-face {
 				font-family: 'Inter';
 				src: url('/fonts/inter-v20-latin-regular.woff2') format('woff2');
 				font-weight: 400;
 				font-style: normal;
-				font-display: block;
+				font-display: swap;
 			}
 			@font-face {
 				font-family: 'Dela Gothic One';
-				src: url('/fonts/dela-gothic-one-v19-regular.ttf') format('truetype');
+				src: url('/fonts/dela-gothic-one-v19-regular.woff2') format('woff2');
 				font-weight: 400;
 				font-style: normal;
 				font-display: swap;
@@ -174,8 +174,13 @@
 			}
 		</style>
 
+		<!-- Preload above-the-fold hero assets so first paint kicks off the network earlier -->
+		<link rel="preload" as="font" type="font/woff2" href="/fonts/noto-sans-tc-subset.woff2" crossorigin />
+		<link rel="preload" as="font" type="font/woff2" href="/fonts/ibm-plex-sans-latin.woff2" crossorigin />
+		<link rel="preload" as="image" type="image/avif" href="/images/home_bg.avif" fetchpriority="high" />
+		<link rel="preload" as="image" type="image/avif" href="/images/home_bg_TAICHI.avif" fetchpriority="high" />
+		<link rel="preload" as="image" type="image/avif" href="/images/home_date.avif" fetchpriority="high" />
 		<link rel="stylesheet" href="/index.css" />
-		<script src="https://mcp.figma.com/mcp/html-to-design/capture.js" async></script>
 		<script>
 			// Restore the intended path after redirect from 404.html
 			(function () {
@@ -202,8 +207,11 @@
 				}
 			}
 		</script>
-		<script type="module" crossorigin src="/assets/index-BFVM01K8.js"></script>
-		<link rel="stylesheet" crossorigin href="/assets/index-BeLwzvCV.css">
+		<script type="module" crossorigin src="/assets/index-7-mWIRYZ.js"></script>
+		<link rel="modulepreload" crossorigin href="/assets/react-vendor-DQfhz_P5.js">
+		<link rel="modulepreload" crossorigin href="/assets/motion-DmuVWGzW.js">
+		<link rel="modulepreload" crossorigin href="/assets/three-DTZfIL9r.js">
+		<link rel="stylesheet" crossorigin href="/assets/index-BsLBI6h0.css">
 	</head>
 	<body>
 		<!-- Font loading overlay: hides FOUC until web fonts are ready -->
@@ -243,15 +251,24 @@
 			}
 		</style>
 		<script>
-			document.fonts.ready.then(function () {
+			(function () {
 				var loader = document.getElementById('font-loader');
-				if (loader) {
+				if (!loader) return;
+				var hidden = false;
+				function hide() {
+					if (hidden) return;
+					hidden = true;
 					loader.style.opacity = '0';
 					setTimeout(function () {
 						loader.style.display = 'none';
 					}, 420);
 				}
-			});
+				if (document.fonts && document.fonts.ready) {
+					document.fonts.ready.then(hide);
+				}
+				// Hard cap: never block first paint longer than 1.5s, even if fonts fail.
+				setTimeout(hide, 1500);
+			})();
 		</script>
 
 		<div id="root"></div>
