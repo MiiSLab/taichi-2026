@@ -256,12 +256,13 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 				linesGroup.add(new THREE.Line(geometry, material));
 			}
 
-			const clock = new THREE.Clock();
+			const timer = new THREE.Timer();
 			let frameId = 0;
 			let isRunning = false;
 
 			const renderFrame = () => {
-				const elapsedTime = clock.getElapsedTime();
+				timer.update();
+				const elapsedTime = timer.getElapsed();
 				const vHeight = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
 				const vWidth = vHeight * camera.aspect;
 				const sceneVisibility = Math.max(0.36, openProgressRef.current) * (1 - scrollProgressRef.current * 0.22);
@@ -329,7 +330,9 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 			const startLoop = () => {
 				if (isRunning) return;
 				isRunning = true;
-				clock.start();
+				// Reset on resume so the time delta from the pause window doesn't
+				// inject a sudden phase jump into the sin/cos-driven shader animations.
+				timer.reset();
 				frameId = window.requestAnimationFrame(renderFrame);
 			};
 
@@ -337,7 +340,6 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 				if (!isRunning) return;
 				isRunning = false;
 				window.cancelAnimationFrame(frameId);
-				clock.stop();
 			};
 
 			const handleResize = () => {
@@ -401,6 +403,7 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 
 			cleanup = () => {
 				stopLoop();
+				timer.dispose();
 				document.removeEventListener('visibilitychange', handleVisibility);
 				intersectionObserver.disconnect();
 				longTaskObserver?.disconnect();

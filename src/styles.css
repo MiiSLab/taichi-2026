@@ -1,3 +1,9 @@
+/* Tailwind layers — must come first so component-class rules below can
+ * override utility classes when needed (specificity tie-break by source order). */
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 .site-theme {
 	--color-black-950: #0b0b0b;
 	--color-gray-900: #161616;
