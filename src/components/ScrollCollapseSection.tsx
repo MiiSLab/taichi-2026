@@ -11,6 +11,18 @@ import HomeHeroIntro from './home/HomeHeroIntro';
  *
  * Place this component between sections of HomePage to create a dramatic
  * scroll-driven transition.
+ *
+ * --- Performance notes ---
+ * Scroll is a high-frequency event. To avoid React reconciliation thrash:
+ *   • circleSize is held in a ref, and the lime overlay's clip-path is
+ *     written directly to the DOM each frame (no setState during scroll).
+ *   • setIsActive only fires when the boolean flips at boundary entry/exit,
+ *     not every frame.
+ *   • onProgress and scrollProgressOverride into HomeHeroIntro are throttled
+ *     to ~10 fps so the embedded Three.js scene doesn't re-render on every
+ *     wheel tick. The visual still updates every frame because the lime
+ *     clip-path itself is purely DOM.
+ *   • All scroll-triggered work is batched into a single rAF callback.
  */
 
 const SCROLL_HEIGHT = '500vh'; // vertical "depth" for the animation
@@ -23,6 +35,11 @@ const AUTO_SCROLL_DURATION = 700;
 export const EASE_RATE = 1;
 const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, EASE_RATE);
 
+// Throttle interval for parent / Three.js updates (ms). 90ms ≈ 11fps which is
+// plenty for hologram scene fade calculations and avoids cascading React
+// re-renders down through HomeHeroIntro → HeroHologramBackground.
+const PROGRESS_EMIT_INTERVAL_MS = 90;
+
 interface Props {
 	/** Reports pure animation progress (0–1) and whether the animation is active. */
 	onProgress?: (progress: number, isActive: boolean) => void;
@@ -30,10 +47,26 @@ interface Props {
 
 const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
-	const [circleSize, setCircleSize] = useState(100);
-	const [isActive, setIsActive] = useState(false);
+	const overlayRef = useRef<HTMLDivElement>(null);
+	const innerRef = useRef<HTMLDivElement>(null);
 
 	const isAutoScrolling = useRef<'down' | 'up' | null>(null);
+	const isActiveRef = useRef(false);
+	const onProgressRef = useRef(onProgress);
+	const lastProgressEmitRef = useRef(0);
+	const pendingScrollRef = useRef(false);
+	const rafIdRef = useRef<number | null>(null);
+
+	const [isActive, setIsActive] = useState(false);
+	// throttledProgress only updates ~11fps so HomeHeroIntro / Three.js don't
+	// re-render every frame. The lime clip-path itself is updated every frame
+	// via direct DOM mutation in updateOverlayDOM.
+	const [throttledProgress, setThrottledProgress] = useState(0);
+
+	// Keep callback ref fresh without retriggering the mount effect.
+	useEffect(() => {
+		onProgressRef.current = onProgress;
+	}, [onProgress]);
 
 	useEffect(() => {
 		let lastY = window.scrollY;
@@ -64,7 +97,7 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 
 			window.removeEventListener('wheel', preventDefault);
 			window.removeEventListener('touchmove', preventDefault);
-			window.removeEventListener('keydown', preventDefaultForScrollKeys as any); // Remove with same casting
+			window.removeEventListener('keydown', preventDefaultForScrollKeys as any);
 		};
 
 		const triggerCustomScroll = (targetY: number, duration: number) => {
@@ -77,16 +110,12 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 			const step = (timestamp: number) => {
 				if (startTime === null) {
 					startTime = timestamp;
-					// 為了避免和手機原生的高速慣性滾動「打架」產生回朔感，
-					// 必須在「動畫要畫出第一幀的那一刻」才去撈取精準的 y 軸，而不是上個月步的舊座標。
 					startY = window.scrollY;
 					distance = targetY - startY;
 				}
 
 				const elapsed = timestamp - startTime;
 				const progress = Math.min(elapsed / duration, 1);
-
-				// 這裡單純驅動「網頁物理往下捲動」的平滑程度
 				const ease = easeOutQuint(progress);
 
 				window.scrollTo(0, startY! + distance * ease);
@@ -96,7 +125,6 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 				} else {
 					window.scrollTo(0, targetY);
 					unlockScroll();
-					// 給予緩衝時間防止立刻連續觸發
 					setTimeout(() => {
 						isAutoScrolling.current = null;
 					}, 100);
@@ -105,94 +133,122 @@ const ScrollCollapseSection: React.FC<Props> = ({ onProgress }) => {
 			requestAnimationFrame(step);
 		};
 
-		const handleScroll = () => {
+		// Direct DOM update — keeps the visual at 60fps without React reconciliation.
+		const updateOverlayDOM = (size: number) => {
+			const overlay = overlayRef.current;
+			const inner = innerRef.current;
+			if (overlay) overlay.style.clipPath = `circle(${size}% at 50% 50%)`;
+			if (inner) {
+				const opacity = Math.min(Math.max((size - 10) / 30, 0), 1);
+				inner.style.opacity = String(opacity);
+			}
+		};
+
+		const processScroll = () => {
+			pendingScrollRef.current = false;
 			if (!containerRef.current) return;
 
 			const container = containerRef.current;
-			const containerTop = container.offsetTop; // px from page top
-			const containerH = container.offsetHeight; // exactly height based on CSS
-			// Calculate true pure 100vh matching the CSS exactly, to avoid mobile address bar jitter
+			const containerTop = container.offsetTop;
+			const containerH = container.offsetHeight;
 			const exact100vh = window.innerHeight;
 			const scrollY = window.scrollY;
 			const deltaY = scrollY - lastY;
 			lastY = scrollY;
 
-			// We animate while the section is "in view" as a scroll target
-			const scrollStart = containerTop; // circle starts shrinking
-			const scrollEnd = containerTop + containerH - exact100vh; // circle finishes perfectly aligned with next block
+			const scrollStart = containerTop;
+			const scrollEnd = containerTop + containerH - exact100vh;
 
 			// 1) Auto Scroll Trigger Logic
-			// If we are not currently auto-scrolling
 			if (!isAutoScrolling.current) {
-				// Scrolling DOWN into the zone (triggered after passing a few pixels into it)
 				if (deltaY > 0 && scrollY > scrollStart + 20 && scrollY < scrollEnd - exact100vh * 0.1) {
 					isAutoScrolling.current = 'down';
 					triggerCustomScroll(scrollEnd, AUTO_SCROLL_DURATION);
-				}
-				// Scrolling UP into the zone from below
-				else if (deltaY < 0 && scrollY < scrollEnd - 10 && scrollY > scrollStart + exact100vh * 0.1) {
+				} else if (deltaY < 0 && scrollY < scrollEnd - 10 && scrollY > scrollStart + exact100vh * 0.1) {
 					isAutoScrolling.current = 'up';
 					triggerCustomScroll(scrollStart, AUTO_SCROLL_DURATION);
 				}
 			}
 
 			// 2) Auto Scroll Release Logic
-			// Release the lock when we reach the target or aggressively scroll past it
 			if (isAutoScrolling.current === 'down' && scrollY >= scrollEnd - 10) {
 				isAutoScrolling.current = null;
 			} else if (isAutoScrolling.current === 'up' && scrollY <= scrollStart + 10) {
 				isAutoScrolling.current = null;
 			}
 
-			// 3) Animation State Logic
+			// 3) Animation State Logic — DOM-direct path
+			let progress: number;
+			let nowActive: boolean;
+			let size: number;
 			if (scrollY >= scrollStart && scrollY <= scrollEnd) {
-				setIsActive(true);
-				// 定義真實的捲動進度 0~1 (因為 window.scrollTo 已經被 CustomScroll 加速過，這進度自動帶有 Ease 效果！)
-				const progress = (scrollY - scrollStart) / (scrollEnd - scrollStart);
-
-				const size = Math.max(100 - progress * 110, 0);
-				setCircleSize(size);
-
-				// 輸出純淨的進度 (0~1) 讓 HomePage 自由發揮
-				onProgress?.(progress, true);
+				nowActive = true;
+				progress = (scrollY - scrollStart) / (scrollEnd - scrollStart);
+				size = Math.max(100 - progress * 110, 0);
 			} else {
-				setIsActive(false);
-				const progress = scrollY < scrollStart ? 0 : 1;
-				const size = scrollY < scrollStart ? 100 : 0;
-				setCircleSize(size);
-				onProgress?.(progress, false);
+				nowActive = false;
+				progress = scrollY < scrollStart ? 0 : 1;
+				size = scrollY < scrollStart ? 100 : 0;
 			}
+
+			// Boundary state — fires React update only when active flag flips.
+			if (nowActive !== isActiveRef.current) {
+				isActiveRef.current = nowActive;
+				setIsActive(nowActive);
+			}
+
+			// Per-frame visual update — no React involved.
+			if (nowActive) updateOverlayDOM(size);
+
+			// Throttle parent / hologram updates to keep React tree work down.
+			const now = performance.now();
+			if (now - lastProgressEmitRef.current >= PROGRESS_EMIT_INTERVAL_MS) {
+				lastProgressEmitRef.current = now;
+				setThrottledProgress(progress);
+				onProgressRef.current?.(progress, nowActive);
+			}
+		};
+
+		// rAF batch — collapse multiple scroll events per frame into one process call.
+		const handleScroll = () => {
+			if (pendingScrollRef.current) return;
+			pendingScrollRef.current = true;
+			rafIdRef.current = requestAnimationFrame(processScroll);
 		};
 
 		window.addEventListener('scroll', handleScroll, { passive: true });
 		// Run once on mount to establish base
-		setTimeout(handleScroll, 100);
+		const initTimeout = window.setTimeout(handleScroll, 100);
+
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
-			unlockScroll(); // Ensure scroll is unlocked when component unmounts
+			if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
+			window.clearTimeout(initTimeout);
+			unlockScroll();
 		};
 	}, []);
 
 	return (
 		<div ref={containerRef} style={{ height: SCROLL_HEIGHT, position: 'relative' }}>
-			{/* Full-screen lime overlay — only renders when we are scrolling through the section */}
 			{isActive && (
 				<div
+					ref={overlayRef}
 					style={{
 						position: 'fixed',
 						inset: 0,
 						zIndex: 40, // below navbar (z-50)
 						background: '#a8f020',
-						clipPath: `circle(${circleSize}% at 50% 50%)`,
+						clipPath: 'circle(100% at 50% 50%)',
 						display: 'flex',
 						alignItems: 'center',
 						justifyContent: 'center',
 						pointerEvents: 'none',
 						overflow: 'hidden',
+						willChange: 'clip-path',
 					}}
 				>
-					<div style={{ width: '100%', height: '100%', opacity: Math.min((circleSize - 10) / 30, 1) }}>
-						<HomeHeroIntro layout='embedded' scrollProgressOverride={1 - circleSize / 100} />
+					<div ref={innerRef} style={{ width: '100%', height: '100%', opacity: 1 }}>
+						<HomeHeroIntro layout='embedded' scrollProgressOverride={throttledProgress} />
 					</div>
 				</div>
 			)}
