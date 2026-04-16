@@ -8,7 +8,7 @@ export type MockPoster = {
 	theme: string;
 };
 
-const POSTER_IMAGE_URL = '/images/fake poster demo.jpg';
+const POSTER_IMAGE_URL = '/images/fake poster demo.avif';
 
 const posterThemes = [
 	'Human-AI Interaction',

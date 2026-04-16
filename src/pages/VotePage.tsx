@@ -13,7 +13,7 @@ import { useSEO } from '../hooks/useSEO';
 import { mockPosters, posterImageUrl, type MockPoster } from '../data/mockPosters';
 
 const ACCENT_GREEN = '#A8F020';
-const POSTER_IMAGE = '/images/fake poster demo.jpg';
+const POSTER_IMAGE = '/images/fake poster demo.avif';
 
 
 

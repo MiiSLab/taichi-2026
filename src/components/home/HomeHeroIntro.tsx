@@ -1,18 +1,20 @@
-import React, { useEffect, useRef, useState } from 'react';
-import HeroHologramBackground from './HeroHologramBackground';
+import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
+
+const HeroHologramBackground = lazy(() => import('./HeroHologramBackground'));
 
 const HERO_REVEAL_DURATION_MS = 2400;
 const HERO_SCROLL_HEIGHT = '320vh';
-const heroWordmarkSrc = '/images/home_bg.png';
-const heroTaichiSrc = '/images/home_bg_TAICHI.png';
-const heroDateSrc = '/images/home_date.png';
+// Module-level flag: lives only as long as the current JS runtime.
+// → Reset on hard reload (F5), new tab, or incognito (so reveal plays again).
+// → Preserved across SPA route changes (so returning to "/" from /cfp does NOT replay).
+let hasRevealedThisRuntime = false;
+const heroWordmarkSrc = '/images/home_bg.avif';
+const heroTaichiSrc = '/images/home_bg_TAICHI.avif';
+const heroDateSrc = '/images/home_date.avif';
 const PIXEL_COLUMNS = 60;
 const PIXEL_ROWS = 36;
-const pixelCells = Array.from({ length: PIXEL_COLUMNS * PIXEL_ROWS }, (_, index) => {
-	const column = index % PIXEL_COLUMNS;
-	const row = Math.floor(index / PIXEL_COLUMNS);
-	return { column, row };
-});
+const PIXEL_FILL = '#a8f020';
+const PIXEL_RESIDUAL_FILL = 'rgba(168, 240, 32, 0.82)';
 
 type HomeHeroIntroProps = {
 	onProgress?: (progress: number, isActive: boolean) => void;
@@ -25,12 +27,45 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 	layout = 'standalone',
 	scrollProgressOverride,
 }) => {
-	const [isRevealComplete, setIsRevealComplete] = useState(false);
+	const hasRevealedBefore = hasRevealedThisRuntime;
+	const [isRevealComplete, setIsRevealComplete] = useState(hasRevealedBefore);
 	const [prefersReducedMotion, setPrefersReducedMotion] = useState(false);
-	const [openProgress, setOpenProgress] = useState(0);
+	const [openProgress, setOpenProgress] = useState(hasRevealedBefore ? 1 : 0);
 	const [scrollProgress, setScrollProgress] = useState(0);
+	const [shouldMountHologram, setShouldMountHologram] = useState(hasRevealedBefore);
 	const containerRef = useRef<HTMLDivElement | null>(null);
+	const pixelCanvasRef = useRef<HTMLCanvasElement | null>(null);
+	const openProgressRef = useRef(openProgress);
 	const isEmbedded = layout === 'embedded';
+
+	useEffect(() => {
+		openProgressRef.current = openProgress;
+	}, [openProgress]);
+
+	useEffect(() => {
+		if (shouldMountHologram) return;
+		let cancelled = false;
+		const arm = () => {
+			if (cancelled) return;
+			setShouldMountHologram(true);
+		};
+		const idleHandle =
+			typeof window.requestIdleCallback === 'function'
+				? window.requestIdleCallback(arm, { timeout: 1500 })
+				: window.setTimeout(arm, 900);
+		return () => {
+			cancelled = true;
+			if (typeof window.cancelIdleCallback === 'function' && typeof idleHandle === 'number') {
+				try {
+					window.cancelIdleCallback(idleHandle);
+				} catch {
+					window.clearTimeout(idleHandle);
+				}
+			} else {
+				window.clearTimeout(idleHandle as number);
+			}
+		};
+	}, [shouldMountHologram]);
 
 	useEffect(() => {
 		const media = window.matchMedia('(prefers-reduced-motion: reduce)');
@@ -39,9 +74,10 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 		applyPreference();
 		media.addEventListener('change', applyPreference);
 
-		if (media.matches) {
+		if (media.matches || hasRevealedBefore) {
 			setIsRevealComplete(true);
 			setOpenProgress(1);
+			hasRevealedThisRuntime = true;
 			return () => media.removeEventListener('change', applyPreference);
 		}
 
@@ -61,6 +97,7 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 			}
 
 			setIsRevealComplete(true);
+			hasRevealedThisRuntime = true;
 		};
 
 		frameId = window.requestAnimationFrame(animateOpen);
@@ -69,7 +106,85 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 			window.cancelAnimationFrame(frameId);
 			media.removeEventListener('change', applyPreference);
 		};
+	}, [hasRevealedBefore]);
+
+	useEffect(() => {
+		const canvas = pixelCanvasRef.current;
+		if (!canvas) return;
+		const ctx = canvas.getContext('2d');
+		if (!ctx) return;
+
+		let cssWidth = 0;
+		let cssHeight = 0;
+		let lastDrawn = -1;
+
+		const drawPixels = (progress: number) => {
+			if (cssWidth === 0 || cssHeight === 0) return;
+			lastDrawn = progress;
+			ctx.clearRect(0, 0, cssWidth, cssHeight);
+			if (progress >= 1.16) return;
+			const cellW = cssWidth / PIXEL_COLUMNS;
+			const cellH = cssHeight / PIXEL_ROWS;
+			const fillW = Math.ceil(cellW) + 1;
+			const fillH = Math.ceil(cellH) + 1;
+			let currentFill: string | null = null;
+			for (let row = 0; row < PIXEL_ROWS; row += 1) {
+				const normalizedY = row / (PIXEL_ROWS - 1);
+				const yEdge = Math.abs(normalizedY - 0.5) > 0.72;
+				for (let col = 0; col < PIXEL_COLUMNS; col += 1) {
+					const normalizedX = col / (PIXEL_COLUMNS - 1);
+					const fromCenter = Math.abs(normalizedX - 0.5) * 2;
+					const stagger = ((row * 17 + col * 13) % 9) / 42;
+					const branch = ((row * 11 + col * 7) % 5) / 90;
+					const threshold = Math.min(1.15, fromCenter * 0.94 + stagger - branch);
+					if (progress > threshold) continue;
+					const isResidual =
+						(yEdge || Math.abs(normalizedX - 0.5) > 0.72) && progress > threshold - 0.08;
+					const fill = isResidual ? PIXEL_RESIDUAL_FILL : PIXEL_FILL;
+					if (fill !== currentFill) {
+						ctx.fillStyle = fill;
+						currentFill = fill;
+					}
+					ctx.fillRect(col * cellW, row * cellH, fillW, fillH);
+				}
+			}
+		};
+
+		const resize = () => {
+			const parent = canvas.parentElement;
+			if (!parent) return;
+			cssWidth = parent.clientWidth;
+			cssHeight = parent.clientHeight;
+			const dpr = Math.min(window.devicePixelRatio || 1, 2);
+			canvas.width = Math.max(1, Math.floor(cssWidth * dpr));
+			canvas.height = Math.max(1, Math.floor(cssHeight * dpr));
+			canvas.style.width = `${cssWidth}px`;
+			canvas.style.height = `${cssHeight}px`;
+			ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+			drawPixels(openProgressRef.current);
+		};
+
+		const drawIfChanged = () => {
+			const progress = openProgressRef.current;
+			if (Math.abs(progress - lastDrawn) < 0.001 && progress < 1) return;
+			drawPixels(progress);
+		};
+
+		(canvas as HTMLCanvasElement & { __drawIfChanged?: () => void }).__drawIfChanged = drawIfChanged;
+
+		resize();
+		window.addEventListener('resize', resize);
+		return () => {
+			window.removeEventListener('resize', resize);
+		};
 	}, []);
+
+	useEffect(() => {
+		const canvas = pixelCanvasRef.current as
+			| (HTMLCanvasElement & { __drawIfChanged?: () => void })
+			| null;
+		canvas?.__drawIfChanged?.();
+	}, [openProgress]);
 
 	useEffect(() => {
 		if (isEmbedded) return;
@@ -120,36 +235,19 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 		<section className='hero-intro'>
 			<div className='hero-intro__sticky'>
 				<div className='hero-intro__background'>
-					<HeroHologramBackground
-						openProgress={openProgress}
-						scrollProgress={scrollProgress}
-						reducedMotion={prefersReducedMotion}
-					/>
+					{shouldMountHologram ? (
+						<Suspense fallback={null}>
+							<HeroHologramBackground
+								openProgress={openProgress}
+								scrollProgress={scrollProgress}
+								reducedMotion={prefersReducedMotion}
+							/>
+						</Suspense>
+					) : null}
 					<div className='hero-intro__scanlines' />
 					<div className='hero-intro__vignette' />
 					<div className='hero-intro__pixel-curtain' aria-hidden='true'>
-						{pixelCells.map(({ column, row }) => {
-							const normalizedX = column / (PIXEL_COLUMNS - 1);
-							const normalizedY = row / (PIXEL_ROWS - 1);
-							const fromCenter = Math.abs(normalizedX - 0.5) * 2;
-							const stagger = ((row * 17 + column * 13) % 9) / 42;
-							const branch = ((row * 11 + column * 7) % 5) / 90;
-							const threshold = Math.min(1.15, fromCenter * 0.94 + stagger - branch);
-							const isOpen = openProgress > threshold;
-							const residual = !isOpen && (Math.abs(normalizedX - 0.5) > 0.72 || Math.abs(normalizedY - 0.5) > 0.72) && openProgress > threshold - 0.08;
-							return (
-								<span
-									key={`${column}-${row}`}
-									className={`hero-intro__pixel ${isOpen ? 'hero-intro__pixel--open' : ''} ${residual ? 'hero-intro__pixel--residual' : ''}`}
-									style={
-										{
-											'--pixel-column': column,
-											'--pixel-row': row,
-										} as React.CSSProperties
-									}
-								/>
-							);
-						})}
+						<canvas ref={pixelCanvasRef} className='hero-intro__pixel-canvas' />
 					</div>
 				</div>
 
@@ -162,6 +260,9 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 							src={heroWordmarkSrc}
 							alt='BIG BANG! FUTURES'
 							className='hero-intro__hero-asset hero-intro__hero-asset--title'
+							loading='eager'
+							decoding='async'
+							fetchPriority='high'
 							style={{
 								opacity: titleProgress,
 								transform: `translate3d(0, ${(1 - titleProgress) * 2.8}rem, 0) scale(${0.92 + titleProgress * 0.08})`,
@@ -171,6 +272,9 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 							src={heroTaichiSrc}
 							alt='TAICHI26'
 							className='hero-intro__hero-asset hero-intro__hero-asset--taichi'
+							loading='eager'
+							decoding='async'
+							fetchPriority='high'
 							style={{
 								opacity: taichiProgress,
 								transform: `translate3d(0, ${(1 - taichiProgress) * 2.2}rem, 0) scale(${0.94 + taichiProgress * 0.06})`,
@@ -180,6 +284,9 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 							src={heroDateSrc}
 							alt='2026 8.05 WED to 8.06 TUE'
 							className='hero-intro__hero-asset hero-intro__hero-asset--date'
+							loading='eager'
+							decoding='async'
+							fetchPriority='high'
 							style={{
 								opacity: dateProgress,
 								transform: `translate3d(0, ${(1 - dateProgress) * 1.8}rem, 0) scale(${0.95 + dateProgress * 0.05})`,

@@ -1,13 +1,18 @@
-import React, { useEffect, useRef } from 'react';
-import * as THREE from 'three';
+import React, { useEffect, useRef, useState } from 'react';
+import type * as THREE_NS from 'three';
 
 const HOLOGRAM_COLOR = '#a8f020';
+const LITE_MODE_KEY = 'taichi:low_perf_mode';
+const LONG_TASK_THRESHOLD_MS = 150;
+const LONG_TASK_BUDGET = 4;
+const LONG_TASK_OBSERVE_WINDOW_MS = 5000;
 const backgroundTextureUrls = [
-	new URL('/images/background 1.png', import.meta.url).href,
-	new URL('/images/background 2.png', import.meta.url).href,
-	new URL('/images/background 3.png', import.meta.url).href,
-	new URL('/images/background 4.png', import.meta.url).href,
+	'/images/background 1.avif',
+	'/images/background 2.avif',
+	'/images/background 3.avif',
+	'/images/background 4.avif',
 ];
+const LITE_FALLBACK_SRC = backgroundTextureUrls[0];
 
 const vertexShader = `
 	varying vec2 vUv;
@@ -61,6 +66,30 @@ type HeroHologramBackgroundProps = {
 	reducedMotion?: boolean;
 };
 
+const detectLiteMode = (): boolean => {
+	if (typeof window === 'undefined') return false;
+	try {
+		const params = new URLSearchParams(window.location.search);
+		if (params.get('lite') === '1') return true;
+		if (window.localStorage?.getItem(LITE_MODE_KEY) === '1') return true;
+	} catch {
+		// ignore storage errors
+	}
+	const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
+	if (connection?.saveData) return true;
+	if (connection?.effectiveType && /^(slow-2g|2g)$/i.test(connection.effectiveType)) return true;
+	if (window.matchMedia?.('(prefers-reduced-data: reduce)').matches) return true;
+	return false;
+};
+
+const persistLiteMode = () => {
+	try {
+		window.localStorage?.setItem(LITE_MODE_KEY, '1');
+	} catch {
+		// ignore
+	}
+};
+
 const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 	openProgress = 1,
 	scrollProgress = 0,
@@ -69,6 +98,7 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const openProgressRef = useRef(openProgress);
 	const scrollProgressRef = useRef(scrollProgress);
+	const [liteMode] = useState<boolean>(detectLiteMode);
 
 	useEffect(() => {
 		openProgressRef.current = openProgress;
@@ -79,194 +109,303 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 	}, [scrollProgress]);
 
 	useEffect(() => {
+		if (liteMode) return;
 		const container = containerRef.current;
 		if (!container) return;
 
-		let width = container.clientWidth || window.innerWidth;
-		let height = container.clientHeight || window.innerHeight;
-		const scene = new THREE.Scene();
-		scene.background = new THREE.Color(0x000000);
+		let cancelled = false;
+		let cleanup: (() => void) | null = null;
 
-		const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
-		camera.position.z = 8;
+		const init = async () => {
+			const THREE = (await import('three')) as typeof THREE_NS;
+			if (cancelled || !containerRef.current) return;
 
-		const renderer = new THREE.WebGLRenderer({
-			antialias: true,
-			alpha: true,
-			powerPreference: 'high-performance',
-		});
-		renderer.setSize(width, height);
-		renderer.setPixelRatio(Math.min(window.devicePixelRatio, reducedMotion ? 1.2 : 2));
-		renderer.domElement.style.position = 'absolute';
-		renderer.domElement.style.top = '0';
-		renderer.domElement.style.left = '0';
-		renderer.domElement.style.width = '100%';
-		renderer.domElement.style.height = '100%';
-		container.appendChild(renderer.domElement);
+			let width = container.clientWidth || window.innerWidth;
+			let height = container.clientHeight || window.innerHeight;
+			const scene = new THREE.Scene();
+			scene.background = new THREE.Color(0x000000);
 
-		const textureLoader = new THREE.TextureLoader();
-		const hologramGroup = new THREE.Group();
-		scene.add(hologramGroup);
+			const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
+			camera.position.z = 8;
 
-		const materials: THREE.ShaderMaterial[] = [];
-		backgroundTextureUrls.forEach((url) => {
-			const material = new THREE.ShaderMaterial({
-				vertexShader,
-				fragmentShader,
-				uniforms: {
-					uTime: { value: 0 },
-					uTexture: { value: new THREE.Texture() },
-					uColor: { value: new THREE.Color(HOLOGRAM_COLOR) },
-					uGlitchIntensity: { value: 1.0 },
-					uOpacity: { value: 0.0 },
-				},
-				transparent: true,
-				side: THREE.DoubleSide,
-				blending: THREE.AdditiveBlending,
+			const renderer = new THREE.WebGLRenderer({
+				antialias: true,
+				alpha: true,
+				powerPreference: 'high-performance',
+			});
+			renderer.setSize(width, height);
+			renderer.setPixelRatio(Math.min(window.devicePixelRatio, reducedMotion ? 1.2 : 2));
+			renderer.domElement.style.position = 'absolute';
+			renderer.domElement.style.top = '0';
+			renderer.domElement.style.left = '0';
+			renderer.domElement.style.width = '100%';
+			renderer.domElement.style.height = '100%';
+			container.appendChild(renderer.domElement);
+
+			const textureLoader = new THREE.TextureLoader();
+			const hologramGroup = new THREE.Group();
+			scene.add(hologramGroup);
+
+			const materials: THREE_NS.ShaderMaterial[] = [];
+			backgroundTextureUrls.forEach((url) => {
+				const material = new THREE.ShaderMaterial({
+					vertexShader,
+					fragmentShader,
+					uniforms: {
+						uTime: { value: 0 },
+						uTexture: { value: new THREE.Texture() },
+						uColor: { value: new THREE.Color(HOLOGRAM_COLOR) },
+						uGlitchIntensity: { value: 1.0 },
+						uOpacity: { value: 0.0 },
+					},
+					transparent: true,
+					side: THREE.DoubleSide,
+					blending: THREE.AdditiveBlending,
+				});
+
+				const geometry = new THREE.PlaneGeometry(1, 1);
+				const mesh = new THREE.Mesh(geometry, material);
+				mesh.scale.set(0, 0, 0);
+				hologramGroup.add(mesh);
+				materials.push(material);
+
+				textureLoader.load(url, (texture) => {
+					if (cancelled) {
+						texture.dispose();
+						return;
+					}
+					material.uniforms.uTexture.value = texture;
+					const image = texture.image;
+					const aspect = image.width / image.height;
+					const baseSize = 5;
+					if (aspect > 1) {
+						mesh.scale.set(baseSize, baseSize / aspect, 1);
+					} else {
+						mesh.scale.set(baseSize * aspect, baseSize, 1);
+					}
+					mesh.userData.originalScale = mesh.scale.clone();
+				});
 			});
 
-			const geometry = new THREE.PlaneGeometry(1, 1);
-			const mesh = new THREE.Mesh(geometry, material);
-			mesh.scale.set(0, 0, 0);
-			hologramGroup.add(mesh);
-			materials.push(material);
+			const blocksGroup = new THREE.Group();
+			scene.add(blocksGroup);
+			const blockCount = reducedMotion ? 10 : 20;
+			const blockMaterials: THREE_NS.MeshBasicMaterial[] = [];
 
-			textureLoader.load(url, (texture) => {
-				material.uniforms.uTexture.value = texture;
-				const image = texture.image;
-				const aspect = image.width / image.height;
-				const baseSize = 5;
-				if (aspect > 1) {
-					mesh.scale.set(baseSize, baseSize / aspect, 1);
-				} else {
-					mesh.scale.set(baseSize * aspect, baseSize, 1);
-				}
-				mesh.userData.originalScale = mesh.scale.clone();
-			});
-		});
+			for (let i = 0; i < blockCount; i += 1) {
+				const geometry = new THREE.PlaneGeometry(Math.random() * 3, Math.random() * 0.8);
+				const material = new THREE.MeshBasicMaterial({
+					color: HOLOGRAM_COLOR,
+					transparent: true,
+					opacity: 0,
+					blending: THREE.AdditiveBlending,
+				});
+				const block = new THREE.Mesh(geometry, material);
+				blocksGroup.add(block);
+				blockMaterials.push(material);
+			}
 
-		const blocksGroup = new THREE.Group();
-		scene.add(blocksGroup);
-		const blockCount = reducedMotion ? 10 : 20;
-		const blockMaterials: THREE.MeshBasicMaterial[] = [];
+			const linesCount = reducedMotion ? 24 : 60;
+			const linesGroup = new THREE.Group();
+			scene.add(linesGroup);
 
-		for (let i = 0; i < blockCount; i += 1) {
-			const geometry = new THREE.PlaneGeometry(Math.random() * 3, Math.random() * 0.8);
-			const material = new THREE.MeshBasicMaterial({
-				color: HOLOGRAM_COLOR,
-				transparent: true,
-				opacity: 0,
-				blending: THREE.AdditiveBlending,
-			});
-			const block = new THREE.Mesh(geometry, material);
-			blocksGroup.add(block);
-			blockMaterials.push(material);
-		}
+			for (let i = 0; i < linesCount; i += 1) {
+				const geometry = new THREE.BufferGeometry();
+				const y = (Math.random() - 0.5) * 15;
+				geometry.setFromPoints([new THREE.Vector3(-20, y, 0), new THREE.Vector3(20, y, 0)]);
+				const material = new THREE.LineBasicMaterial({
+					color: HOLOGRAM_COLOR,
+					transparent: true,
+					opacity: Math.random() * 0.3,
+					blending: THREE.AdditiveBlending,
+				});
+				linesGroup.add(new THREE.Line(geometry, material));
+			}
 
-		const linesCount = reducedMotion ? 24 : 60;
-		const linesGroup = new THREE.Group();
-		scene.add(linesGroup);
+			const clock = new THREE.Clock();
+			let frameId = 0;
+			let isRunning = false;
 
-		for (let i = 0; i < linesCount; i += 1) {
-			const geometry = new THREE.BufferGeometry();
-			const y = (Math.random() - 0.5) * 15;
-			geometry.setFromPoints([new THREE.Vector3(-20, y, 0), new THREE.Vector3(20, y, 0)]);
-			const material = new THREE.LineBasicMaterial({
-				color: HOLOGRAM_COLOR,
-				transparent: true,
-				opacity: Math.random() * 0.3,
-				blending: THREE.AdditiveBlending,
-			});
-			linesGroup.add(new THREE.Line(geometry, material));
-		}
+			const renderFrame = () => {
+				const elapsedTime = clock.getElapsedTime();
+				const vHeight = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
+				const vWidth = vHeight * camera.aspect;
+				const sceneVisibility = Math.max(0.36, openProgressRef.current) * (1 - scrollProgressRef.current * 0.22);
 
-		const clock = new THREE.Clock();
-		let frameId = 0;
+				materials.forEach((mat, i) => {
+					mat.uniforms.uTime.value = elapsedTime;
+					const noise = Math.sin(elapsedTime * 3.0 + i * 15.0) * 0.5 + 0.5;
+					const threshold = reducedMotion ? 0.92 : 0.85;
+					const isVisible = noise > threshold;
+					const prevOpacity = mat.uniforms.uOpacity.value;
 
-		const animate = () => {
-			const elapsedTime = clock.getElapsedTime();
-			const vHeight = 2 * Math.tan((camera.fov * Math.PI) / 360) * camera.position.z;
-			const vWidth = vHeight * camera.aspect;
-			const sceneVisibility = Math.max(0.36, openProgressRef.current) * (1 - scrollProgressRef.current * 0.22);
-
-			materials.forEach((mat, i) => {
-				mat.uniforms.uTime.value = elapsedTime;
-				const noise = Math.sin(elapsedTime * 3.0 + i * 15.0) * 0.5 + 0.5;
-				const threshold = reducedMotion ? 0.92 : 0.85;
-				const isVisible = noise > threshold;
-				const prevOpacity = mat.uniforms.uOpacity.value;
-
-				if (isVisible) {
-					if (prevOpacity < 0.05) {
-						hologramGroup.children[i].position.set(0, 0, 0);
-						const originalScale = hologramGroup.children[i].userData.originalScale;
-						if (originalScale) {
-							const imgAspect = originalScale.x / originalScale.y;
-							const screenAspect = vWidth / vHeight;
-							if (imgAspect > screenAspect) {
-								const s = vWidth / originalScale.x;
-								hologramGroup.children[i].scale.set(originalScale.x * s, originalScale.y * s, 1);
-							} else {
-								const s = vHeight / originalScale.y;
-								hologramGroup.children[i].scale.set(originalScale.x * s, originalScale.y * s, 1);
+					if (isVisible) {
+						if (prevOpacity < 0.05) {
+							hologramGroup.children[i].position.set(0, 0, 0);
+							const originalScale = hologramGroup.children[i].userData.originalScale;
+							if (originalScale) {
+								const imgAspect = originalScale.x / originalScale.y;
+								const screenAspect = vWidth / vHeight;
+								if (imgAspect > screenAspect) {
+									const s = vWidth / originalScale.x;
+									hologramGroup.children[i].scale.set(originalScale.x * s, originalScale.y * s, 1);
+								} else {
+									const s = vHeight / originalScale.y;
+									hologramGroup.children[i].scale.set(originalScale.x * s, originalScale.y * s, 1);
+								}
 							}
 						}
+						mat.uniforms.uOpacity.value = sceneVisibility * (0.5 + Math.random() * 0.28);
+					} else {
+						mat.uniforms.uOpacity.value = 0.0;
 					}
-					mat.uniforms.uOpacity.value = sceneVisibility * (0.5 + Math.random() * 0.28);
-				} else {
-					mat.uniforms.uOpacity.value = 0.0;
-				}
 
-				mat.uniforms.uGlitchIntensity.value = isVisible ? (Math.random() > 0.7 ? 25.0 : 4.0) : 0.0;
-			});
+					mat.uniforms.uGlitchIntensity.value = isVisible ? (Math.random() > 0.7 ? 25.0 : 4.0) : 0.0;
+				});
 
-			blockMaterials.forEach((mat, i) => {
-				const blockNoise = Math.sin(elapsedTime * 8.0 + i * 50.0) * 0.5 + 0.5;
-				if (blockNoise > 0.9) {
-					mat.opacity = sceneVisibility * 0.9;
-					if (Math.random() > 0.95) {
-						blocksGroup.children[i].position.set((Math.random() - 0.5) * 18, (Math.random() - 0.5) * 12, (Math.random() - 0.5) * 6);
+				blockMaterials.forEach((mat, i) => {
+					const blockNoise = Math.sin(elapsedTime * 8.0 + i * 50.0) * 0.5 + 0.5;
+					if (blockNoise > 0.9) {
+						mat.opacity = sceneVisibility * 0.9;
+						if (Math.random() > 0.95) {
+							blocksGroup.children[i].position.set((Math.random() - 0.5) * 18, (Math.random() - 0.5) * 12, (Math.random() - 0.5) * 6);
+						}
+					} else {
+						mat.opacity = 0;
 					}
-				} else {
-					mat.opacity = 0;
-				}
-			});
+				});
 
-			linesGroup.children.forEach((child, i) => {
-				const line = child as THREE.Line;
-				const material = line.material as THREE.LineBasicMaterial;
-				line.position.y += Math.sin(elapsedTime * 0.8 + i) * 0.01;
-				if (Math.random() > 0.99) {
-					material.opacity = sceneVisibility * 0.8;
-				} else {
-					material.opacity = Math.max(material.opacity - 0.02, 0.08);
-				}
-			});
+				linesGroup.children.forEach((child, i) => {
+					const line = child as THREE_NS.Line;
+					const material = line.material as THREE_NS.LineBasicMaterial;
+					line.position.y += Math.sin(elapsedTime * 0.8 + i) * 0.01;
+					if (Math.random() > 0.99) {
+						material.opacity = sceneVisibility * 0.8;
+					} else {
+						material.opacity = Math.max(material.opacity - 0.02, 0.08);
+					}
+				});
 
-			renderer.render(scene, camera);
-			frameId = window.requestAnimationFrame(animate);
+				renderer.render(scene, camera);
+				frameId = window.requestAnimationFrame(renderFrame);
+			};
+
+			const startLoop = () => {
+				if (isRunning) return;
+				isRunning = true;
+				clock.start();
+				frameId = window.requestAnimationFrame(renderFrame);
+			};
+
+			const stopLoop = () => {
+				if (!isRunning) return;
+				isRunning = false;
+				window.cancelAnimationFrame(frameId);
+				clock.stop();
+			};
+
+			const handleResize = () => {
+				if (!containerRef.current) return;
+				width = containerRef.current.clientWidth || window.innerWidth;
+				height = containerRef.current.clientHeight || window.innerHeight;
+				camera.aspect = width / height;
+				camera.updateProjectionMatrix();
+				renderer.setSize(width, height);
+			};
+
+			handleResize();
+			window.addEventListener('resize', handleResize);
+
+			// Long-task watcher: if main thread chokes early, persist lite mode for next visit.
+			let longTaskObserver: PerformanceObserver | null = null;
+			let longTaskCount = 0;
+			const observeStart = performance.now();
+			if (typeof PerformanceObserver !== 'undefined') {
+				try {
+					longTaskObserver = new PerformanceObserver((list) => {
+						for (const entry of list.getEntries()) {
+							if (entry.duration >= LONG_TASK_THRESHOLD_MS) {
+								longTaskCount += 1;
+								if (longTaskCount >= LONG_TASK_BUDGET) {
+									persistLiteMode();
+									longTaskObserver?.disconnect();
+									longTaskObserver = null;
+									break;
+								}
+							}
+						}
+						if (performance.now() - observeStart > LONG_TASK_OBSERVE_WINDOW_MS) {
+							longTaskObserver?.disconnect();
+							longTaskObserver = null;
+						}
+					});
+					longTaskObserver.observe({ entryTypes: ['longtask'] });
+				} catch {
+					longTaskObserver = null;
+				}
+			}
+
+			// Viewport gate: only run animation when hero is on screen.
+			const intersectionObserver = new IntersectionObserver(
+				(entries) => {
+					for (const entry of entries) {
+						if (entry.isIntersecting) startLoop();
+						else stopLoop();
+					}
+				},
+				{ threshold: 0.05 },
+			);
+			intersectionObserver.observe(container);
+
+			const handleVisibility = () => {
+				if (document.hidden) stopLoop();
+				else if (container.getBoundingClientRect().bottom > 0) startLoop();
+			};
+			document.addEventListener('visibilitychange', handleVisibility);
+
+			cleanup = () => {
+				stopLoop();
+				document.removeEventListener('visibilitychange', handleVisibility);
+				intersectionObserver.disconnect();
+				longTaskObserver?.disconnect();
+				window.removeEventListener('resize', handleResize);
+				materials.forEach((mat) => {
+					const tex = mat.uniforms.uTexture.value as THREE_NS.Texture | null;
+					tex?.dispose();
+					mat.dispose();
+				});
+				blockMaterials.forEach((mat) => mat.dispose());
+				linesGroup.children.forEach((child) => {
+					const line = child as THREE_NS.Line;
+					(line.material as THREE_NS.Material).dispose();
+					line.geometry.dispose();
+				});
+				hologramGroup.children.forEach((child) => {
+					(child as THREE_NS.Mesh).geometry.dispose();
+				});
+				scene.clear();
+				renderer.dispose();
+				if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
+			};
 		};
 
-		const handleResize = () => {
-			width = container.clientWidth || window.innerWidth;
-			height = container.clientHeight || window.innerHeight;
-			camera.aspect = width / height;
-			camera.updateProjectionMatrix();
-			renderer.setSize(width, height);
-		};
-
-		handleResize();
-		animate();
-		window.addEventListener('resize', handleResize);
+		init();
 
 		return () => {
-			window.removeEventListener('resize', handleResize);
-			window.cancelAnimationFrame(frameId);
-			scene.clear();
-			renderer.dispose();
-			if (container.contains(renderer.domElement)) container.removeChild(renderer.domElement);
+			cancelled = true;
+			cleanup?.();
 		};
-	}, [reducedMotion]);
+	}, [reducedMotion, liteMode]);
+
+	if (liteMode) {
+		return (
+			<div ref={containerRef} className='hero-hologram-scene hero-hologram-scene--lite' aria-hidden='true'>
+				<img src={LITE_FALLBACK_SRC} alt='' className='hero-hologram-scene__lite-image' />
+				<div className='hero-hologram-scene__scanlines' />
+				<div className='hero-hologram-scene__vignette' />
+			</div>
+		);
+	}
 
 	return (
 		<div ref={containerRef} className='hero-hologram-scene' aria-hidden='true'>

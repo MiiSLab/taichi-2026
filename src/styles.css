@@ -310,6 +310,17 @@
 	overflow: hidden;
 }
 
+.hero-hologram-scene__lite-image {
+	position: absolute;
+	inset: 0;
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	opacity: 0.55;
+	filter: hue-rotate(40deg) saturate(0.7) brightness(0.85);
+	mix-blend-mode: screen;
+}
+
 .hero-hologram-scene__scanlines {
 	background: linear-gradient(rgba(168, 240, 32, 0.12) 50%, transparent 50%);
 	background-size: 100% 4px;
@@ -339,28 +350,14 @@
 
 .hero-intro__pixel-curtain {
 	z-index: 1;
-	display: grid;
-	grid-template-columns: repeat(60, 1fr);
-	grid-template-rows: repeat(36, 1fr);
 	pointer-events: none;
 }
 
-.hero-intro__pixel {
-	background: #a8f020;
-	transition:
-		opacity 240ms steps(1, end),
-		transform 240ms steps(1, end);
-	opacity: 1;
-	transform: scale(1);
-}
-
-.hero-intro__pixel--open {
-	opacity: 0;
-	transform: scale(0.7);
-}
-
-.hero-intro__pixel--residual {
-	opacity: 0.82;
+.hero-intro__pixel-canvas {
+	display: block;
+	width: 100%;
+	height: 100%;
+	image-rendering: pixelated;
 }
 
 .hero-intro__content {
@@ -564,8 +561,7 @@
 
 @media (prefers-reduced-motion: reduce) {
 	.hero-intro__content,
-	.hero-intro__hero-asset,
-	.hero-intro__pixel {
+	.hero-intro__hero-asset {
 		animation: none !important;
 		transition: none !important;
 	}

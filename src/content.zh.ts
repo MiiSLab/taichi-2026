@@ -303,7 +303,7 @@ export const CONTENT_ZH = {
 			{
 				id: 'venue-day-1',
 				tabLabel: '[ 8/5 ]',
-				heroImage: '/images/day1location.png',
+				heroImage: '/images/day1location.avif',
 				heroTitle: '8/5(三) 互動夜市 [對外公開]',
 				heroSubtitle: 'TAICHI、晶創人文、APMAR、ISAT 聯合活動',
 				highlight: { label: '地點', venue: '臺北三創生活園區 5F 和 12F', details: ['5F 國際大咖 Keynote 演講連環場', '12F 互動夜市、小吃、表演揍作伙來'], note: '詳細行程表待公告。' },
@@ -319,12 +319,12 @@ export const CONTENT_ZH = {
 			{
 				id: 'venue-day-2',
 				tabLabel: '[ 8/6 ]',
-				heroImage: '/images/day2location.png',
+				heroImage: '/images/day2location.avif',
 				heroTitle: '8/6(四) 年度研討會',
 				heroSubtitle: 'TAICHI 年度學會研討會',
 				highlight: { label: '地點', venue: '國立臺北科技大學', details: ['論文發表與論壇講座'], note: '詳細議程與場地配置將陸續公告。' },
 				venues: [
-					{ title: '國際演講廳 [臺北科技大學]', subtitle: 'National Taipei University of Technology, Taipei', addressLabel: '地址', addressZh: '10608 臺北市大安區忠孝東路三段 1 號', addressEn: "No. 1, Sec. 3, Zhongxiao E. Rd., Da'an Dist., Taipei City 10608", venueLabel: '會議場地', venueName: '論文發表、講座。', photoImage: '/images/day2_X.jpg', mapLink: 'https://maps.app.goo.gl/p97U3oZnXoUvrXmo7', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.6783181717664!2d121.53284755506823!3d25.043802836933057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97d255598df%3A0x47ea748e8f3f53aa!2z5ZyL56uL6Ie65YyX56eR5oqA5aSn5a24!5e0!3m2!1szh-TW!2stw!4v1772020528494!5m2!1szh-TW!2stw' },
+					{ title: '國際演講廳 [臺北科技大學]', subtitle: 'National Taipei University of Technology, Taipei', addressLabel: '地址', addressZh: '10608 臺北市大安區忠孝東路三段 1 號', addressEn: "No. 1, Sec. 3, Zhongxiao E. Rd., Da'an Dist., Taipei City 10608", venueLabel: '會議場地', venueName: '論文發表、講座。', photoImage: '/images/day2_X.avif', mapLink: 'https://maps.app.goo.gl/p97U3oZnXoUvrXmo7', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.6783181717664!2d121.53284755506823!3d25.043802836933057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97d255598df%3A0x47ea748e8f3f53aa!2z5ZyL56uL6Ie65YyX56eR5oqA5aSn5a24!5e0!3m2!1szh-TW!2stw!4v1772020528494!5m2!1szh-TW!2stw' },
 				],
 				travelPanels: [
 					{ title: '大眾運輸', items: [{ title: '捷運 MRT', lines: ['板南線 / 忠孝新生站 4 號出口，步行約 5 分鐘', '文湖線 / 忠孝復興站轉乘，步行或公車前往'] }, { title: '高鐵 HSR / 台鐵 TRA', lines: ['台北車站下車後轉乘捷運板南線至忠孝新生站'] }, { title: '公車 Bus', lines: ['正義郵局、臺北科技大學周邊站牌，多條路線可達'] }] },
