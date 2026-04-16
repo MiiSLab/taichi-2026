@@ -1,6 +1,7 @@
 import { AnimatePresence, motion, useReducedMotion } from 'motion/react';
 import React, { useEffect } from 'react';
 import { Outlet, useLocation } from 'react-router-dom';
+import HeroIntroOverlay from '../HeroIntroOverlay';
 import Footer from './Footer';
 import Navbar from './Navbar';
 
@@ -30,6 +31,7 @@ const Layout: React.FC = () => {
 
 	return (
 		<div className='site-theme ds-app-shell min-h-screen overflow-x-hidden selection:bg-[rgba(243,100,88,0.9)] selection:text-white'>
+			<HeroIntroOverlay />
 			<Navbar />
 			<main>
 				<AnimatePresence mode='wait' initial={false}>
