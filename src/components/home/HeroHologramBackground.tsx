@@ -3,10 +3,10 @@ import * as THREE from 'three';
 
 const HOLOGRAM_COLOR = '#a8f020';
 const backgroundTextureUrls = [
-	new URL('../../../archive/hologram-glitch-experience/public/images/background 1.png', import.meta.url).href,
-	new URL('../../../archive/hologram-glitch-experience/public/images/background 2.png', import.meta.url).href,
-	new URL('../../../archive/hologram-glitch-experience/public/images/background 3.png', import.meta.url).href,
-	new URL('../../../archive/hologram-glitch-experience/public/images/background 4.png', import.meta.url).href,
+	new URL('/images/background 1.png', import.meta.url).href,
+	new URL('/images/background 2.png', import.meta.url).href,
+	new URL('/images/background 3.png', import.meta.url).href,
+	new URL('/images/background 4.png', import.meta.url).href,
 ];
 
 const vertexShader = `
