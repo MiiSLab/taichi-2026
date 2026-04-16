@@ -1,4 +1,5 @@
 import React, { Suspense, lazy, useEffect, useRef, useState } from 'react';
+import { detectPerformanceTier, type PerformanceTier } from '../../utils/performanceTier';
 
 const HeroHologramBackground = lazy(() => import('./HeroHologramBackground'));
 
@@ -11,8 +12,13 @@ let hasRevealedThisRuntime = false;
 const heroWordmarkSrc = '/images/home_bg.avif';
 const heroTaichiSrc = '/images/home_bg_TAICHI.avif';
 const heroDateSrc = '/images/home_date.avif';
-const PIXEL_COLUMNS = 60;
-const PIXEL_ROWS = 36;
+// Pixel-curtain resolution scales with performance tier so weaker GPUs
+// don't have to fillRect 2160 cells every frame during the reveal.
+const PIXEL_GRID_BY_TIER: Record<PerformanceTier, { cols: number; rows: number }> = {
+	full: { cols: 60, rows: 36 },
+	medium: { cols: 40, rows: 24 },
+	lite: { cols: 30, rows: 18 },
+};
 const PIXEL_FILL = '#a8f020';
 const PIXEL_RESIDUAL_FILL = 'rgba(168, 240, 32, 0.82)';
 
@@ -33,6 +39,8 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 	const [openProgress, setOpenProgress] = useState(hasRevealedBefore ? 1 : 0);
 	const [scrollProgress, setScrollProgress] = useState(0);
 	const [shouldMountHologram, setShouldMountHologram] = useState(hasRevealedBefore);
+	const [tier] = useState<PerformanceTier>(detectPerformanceTier);
+	const { cols: PIXEL_COLUMNS, rows: PIXEL_ROWS } = PIXEL_GRID_BY_TIER[tier];
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const pixelCanvasRef = useRef<HTMLCanvasElement | null>(null);
 	const openProgressRef = useRef(openProgress);

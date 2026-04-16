@@ -1,8 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react';
 import type * as THREE_NS from 'three';
+import { degradeTier, detectPerformanceTier, type PerformanceTier } from '../../utils/performanceTier';
 
 const HOLOGRAM_COLOR = '#a8f020';
-const LITE_MODE_KEY = 'taichi:low_perf_mode';
 const LONG_TASK_THRESHOLD_MS = 150;
 const LONG_TASK_BUDGET = 4;
 const LONG_TASK_OBSERVE_WINDOW_MS = 5000;
@@ -14,6 +14,34 @@ const backgroundTextureUrls = [
 ];
 const LITE_FALLBACK_SRC = backgroundTextureUrls[0];
 
+type SceneConfig = {
+	textureCount: number;
+	blockCount: number;
+	linesCount: number;
+	pixelRatio: number;
+	useSimpleShader: boolean;
+	antialias: boolean;
+};
+
+const SCENE_CONFIGS: Record<Exclude<PerformanceTier, 'lite'>, SceneConfig> = {
+	full: {
+		textureCount: 4,
+		blockCount: 20,
+		linesCount: 60,
+		pixelRatio: 2,
+		useSimpleShader: false,
+		antialias: true,
+	},
+	medium: {
+		textureCount: 2,
+		blockCount: 8,
+		linesCount: 24,
+		pixelRatio: 1.5,
+		useSimpleShader: true,
+		antialias: false,
+	},
+};
+
 const vertexShader = `
 	varying vec2 vUv;
 	uniform float uTime;
@@ -24,7 +52,8 @@ const vertexShader = `
 	}
 `;
 
-const fragmentShader = `
+// Full-fat shader: glitch displacement, scanlines, fine pixel grid, flicker.
+const fragmentShaderFull = `
 	varying vec2 vUv;
 	uniform float uTime;
 	uniform sampler2D uTexture;
@@ -60,34 +89,32 @@ const fragmentShader = `
 	}
 `;
 
+// Lite shader (for medium tier): drop the per-pixel grid mask, drop per-fragment
+// flicker random, halve scanline frequency. Saves the most expensive pixel-fill ops.
+const fragmentShaderSimple = `
+	varying vec2 vUv;
+	uniform float uTime;
+	uniform sampler2D uTexture;
+	uniform vec3 uColor;
+	uniform float uOpacity;
+
+	void main() {
+		vec2 uv = vUv;
+		vec4 texColor = texture2D(uTexture, uv);
+		float scanline = sin(uv.y * 400.0 + uTime * 12.0) * 0.15 + 0.85;
+		vec3 finalColor = (texColor.rgb * 0.8 + 0.2) * uColor;
+		float edge = 1.0 - (abs(uv.x - 0.5) * 2.0);
+		edge *= 1.0 - (abs(uv.y - 0.5) * 2.0);
+		edge = pow(edge, 0.5);
+		float alpha = (texColor.a * 0.8 + 0.2) * (scanline * 0.7 + 0.3) * edge * uOpacity;
+		gl_FragColor = vec4(finalColor, alpha);
+	}
+`;
+
 type HeroHologramBackgroundProps = {
 	openProgress?: number;
 	scrollProgress?: number;
 	reducedMotion?: boolean;
-};
-
-const detectLiteMode = (): boolean => {
-	if (typeof window === 'undefined') return false;
-	try {
-		const params = new URLSearchParams(window.location.search);
-		if (params.get('lite') === '1') return true;
-		if (window.localStorage?.getItem(LITE_MODE_KEY) === '1') return true;
-	} catch {
-		// ignore storage errors
-	}
-	const connection = (navigator as Navigator & { connection?: { saveData?: boolean; effectiveType?: string } }).connection;
-	if (connection?.saveData) return true;
-	if (connection?.effectiveType && /^(slow-2g|2g)$/i.test(connection.effectiveType)) return true;
-	if (window.matchMedia?.('(prefers-reduced-data: reduce)').matches) return true;
-	return false;
-};
-
-const persistLiteMode = () => {
-	try {
-		window.localStorage?.setItem(LITE_MODE_KEY, '1');
-	} catch {
-		// ignore
-	}
 };
 
 const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
@@ -98,7 +125,7 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 	const containerRef = useRef<HTMLDivElement | null>(null);
 	const openProgressRef = useRef(openProgress);
 	const scrollProgressRef = useRef(scrollProgress);
-	const [liteMode] = useState<boolean>(detectLiteMode);
+	const [tier] = useState<PerformanceTier>(detectPerformanceTier);
 
 	useEffect(() => {
 		openProgressRef.current = openProgress;
@@ -109,9 +136,13 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 	}, [scrollProgress]);
 
 	useEffect(() => {
-		if (liteMode) return;
+		if (tier === 'lite') return;
 		const container = containerRef.current;
 		if (!container) return;
+
+		const config = SCENE_CONFIGS[tier];
+		const fragmentShader = config.useSimpleShader ? fragmentShaderSimple : fragmentShaderFull;
+		const textureUrls = backgroundTextureUrls.slice(0, config.textureCount);
 
 		let cancelled = false;
 		let cleanup: (() => void) | null = null;
@@ -129,12 +160,13 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 			camera.position.z = 8;
 
 			const renderer = new THREE.WebGLRenderer({
-				antialias: true,
+				antialias: config.antialias,
 				alpha: true,
 				powerPreference: 'high-performance',
 			});
 			renderer.setSize(width, height);
-			renderer.setPixelRatio(Math.min(window.devicePixelRatio, reducedMotion ? 1.2 : 2));
+			const targetPixelRatio = reducedMotion ? Math.min(config.pixelRatio, 1.2) : config.pixelRatio;
+			renderer.setPixelRatio(Math.min(window.devicePixelRatio, targetPixelRatio));
 			renderer.domElement.style.position = 'absolute';
 			renderer.domElement.style.top = '0';
 			renderer.domElement.style.left = '0';
@@ -147,17 +179,19 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 			scene.add(hologramGroup);
 
 			const materials: THREE_NS.ShaderMaterial[] = [];
-			backgroundTextureUrls.forEach((url) => {
+			textureUrls.forEach((url) => {
+				const uniforms: Record<string, { value: unknown }> = {
+					uTime: { value: 0 },
+					uTexture: { value: new THREE.Texture() },
+					uColor: { value: new THREE.Color(HOLOGRAM_COLOR) },
+					uOpacity: { value: 0.0 },
+				};
+				if (!config.useSimpleShader) uniforms.uGlitchIntensity = { value: 1.0 };
+
 				const material = new THREE.ShaderMaterial({
 					vertexShader,
 					fragmentShader,
-					uniforms: {
-						uTime: { value: 0 },
-						uTexture: { value: new THREE.Texture() },
-						uColor: { value: new THREE.Color(HOLOGRAM_COLOR) },
-						uGlitchIntensity: { value: 1.0 },
-						uOpacity: { value: 0.0 },
-					},
+					uniforms: uniforms as THREE_NS.ShaderMaterial['uniforms'],
 					transparent: true,
 					side: THREE.DoubleSide,
 					blending: THREE.AdditiveBlending,
@@ -189,7 +223,7 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 
 			const blocksGroup = new THREE.Group();
 			scene.add(blocksGroup);
-			const blockCount = reducedMotion ? 10 : 20;
+			const blockCount = reducedMotion ? Math.max(4, Math.floor(config.blockCount / 2)) : config.blockCount;
 			const blockMaterials: THREE_NS.MeshBasicMaterial[] = [];
 
 			for (let i = 0; i < blockCount; i += 1) {
@@ -205,7 +239,7 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 				blockMaterials.push(material);
 			}
 
-			const linesCount = reducedMotion ? 24 : 60;
+			const linesCount = reducedMotion ? Math.max(8, Math.floor(config.linesCount / 2)) : config.linesCount;
 			const linesGroup = new THREE.Group();
 			scene.add(linesGroup);
 
@@ -260,7 +294,9 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 						mat.uniforms.uOpacity.value = 0.0;
 					}
 
-					mat.uniforms.uGlitchIntensity.value = isVisible ? (Math.random() > 0.7 ? 25.0 : 4.0) : 0.0;
+					if (mat.uniforms.uGlitchIntensity) {
+						mat.uniforms.uGlitchIntensity.value = isVisible ? (Math.random() > 0.7 ? 25.0 : 4.0) : 0.0;
+					}
 				});
 
 				blockMaterials.forEach((mat, i) => {
@@ -316,7 +352,7 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 			handleResize();
 			window.addEventListener('resize', handleResize);
 
-			// Long-task watcher: if main thread chokes early, persist lite mode for next visit.
+			// Long-task watcher: if the main thread chokes early, demote tier for next visit.
 			let longTaskObserver: PerformanceObserver | null = null;
 			let longTaskCount = 0;
 			const observeStart = performance.now();
@@ -327,7 +363,7 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 							if (entry.duration >= LONG_TASK_THRESHOLD_MS) {
 								longTaskCount += 1;
 								if (longTaskCount >= LONG_TASK_BUDGET) {
-									persistLiteMode();
+									degradeTier(tier === 'full' ? 'medium' : 'lite', true);
 									longTaskObserver?.disconnect();
 									longTaskObserver = null;
 									break;
@@ -395,9 +431,9 @@ const HeroHologramBackground: React.FC<HeroHologramBackgroundProps> = ({
 			cancelled = true;
 			cleanup?.();
 		};
-	}, [reducedMotion, liteMode]);
+	}, [reducedMotion, tier]);
 
-	if (liteMode) {
+	if (tier === 'lite') {
 		return (
 			<div ref={containerRef} className='hero-hologram-scene hero-hologram-scene--lite' aria-hidden='true'>
 				<img src={LITE_FALLBACK_SRC} alt='' className='hero-hologram-scene__lite-image' />
