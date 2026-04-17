@@ -7,7 +7,7 @@ import HomePage from './pages/HomePage';
 
 const AgendaPage = lazy(() => import('./pages/AgendaPage'));
 const CFPPage = lazy(() => import('./pages/CFPPage'));
-const CompetitionPage = lazy(() => import('./pages/CompetitionPage'));
+// const CompetitionPage = lazy(() => import('./pages/CompetitionPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const OrganizationPage = lazy(() => import('./pages/OrganizationPage'));
@@ -65,7 +65,7 @@ const App: React.FC = () => {
 									<Route path='cfp' element={<CFPPage />} />
 									<Route path='venue' element={<VenuePage />} />
 									<Route path='organization' element={<OrganizationPage />} />
-									<Route path='competition' element={<CompetitionPage />} />
+									{/* <Route path='competition' element={<CompetitionPage />} /> */}
 									<Route path='vote' element={<VotePage />} />
 									<Route path='*' element={<NotFoundPage />} />
 								</Route>
