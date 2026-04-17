@@ -1,14 +1,14 @@
 import { ChevronUp, ChevronsDown } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
-import FramePanel from '../components/FramePanel';
+import ConstellationMapSection from '../components/ConstellationMap';
 import CountdownTimer from '../components/CountdownTimer';
+import FramePanel from '../components/FramePanel';
 import ScrollReveal from '../components/ScrollReveal';
 import WarpBackground from '../components/WarpBackground';
-import ConstellationMapSection from '../components/ConstellationMap';
-import { panelFrame } from '../design-system/panel';
-import { typography } from '../design-system/typography';
 import { SiteContent } from '../content';
 import { useContent, useLanguage } from '../context/LanguageContext';
+import { panelFrame } from '../design-system/panel';
+import { typography } from '../design-system/typography';
 import { useSEO } from '../hooks/useSEO';
 
 type Category = SiteContent['cfpSection']['categories'][number];
@@ -290,19 +290,27 @@ const DotHeader = ({ title }: { title: string }) => (
 );
 
 const SubmissionButton = () => {
-	const content = useContent();
+	const { language } = useLanguage();
 
 	return (
-		<a
-			href={content.cfpSection.submissionLink}
-			target='_blank'
-			rel='noopener noreferrer'
-			className={`ds-button-submit w-full px-5 py-4 ${typography.scale.buttonLabel} sm:px-6`}
+		<div
+			className={`ds-button-submit pointer-events-none w-full cursor-not-allowed px-5 py-4 opacity-50 ${typography.scale.buttonLabel} sm:px-6`}
 		>
-			<span>{content.submissionDeadline.buttonText}</span>
-			<span className='text-[24px] leading-none'>→</span>
-		</a>
+			<span>{language === 'zh' ? '投稿即將開放' : 'Submission Coming Soon'}</span>
+		</div>
 	);
+
+	// 	return (
+	// 	<a
+	// 		href={content.cfpSection.submissionLink}
+	// 		target='_blank'
+	// 		rel='noopener noreferrer'
+	// 		className={`ds-button-submit w-full px-5 py-4 ${typography.scale.buttonLabel} sm:px-6`}
+	// 	>
+	// 		<span>{content.submissionDeadline.buttonText}</span>
+	// 		<span className='text-[24px] leading-none'>→</span>
+	// 	</a>
+	// );
 };
 
 const CategoryHero = ({
