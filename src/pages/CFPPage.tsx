@@ -290,27 +290,19 @@ const DotHeader = ({ title }: { title: string }) => (
 );
 
 const SubmissionButton = () => {
-	const { language } = useLanguage();
+	const content = useContent();
 
 	return (
-		<div
-			className={`ds-button-submit pointer-events-none w-full cursor-not-allowed px-5 py-4 opacity-50 ${typography.scale.buttonLabel} sm:px-6`}
+		<a
+			href={content.cfpSection.submissionLink}
+			target='_blank'
+			rel='noopener noreferrer'
+			className={`ds-button-submit w-full px-5 py-4 ${typography.scale.buttonLabel} sm:px-6`}
 		>
-			<span>{language === 'zh' ? '投稿即將開放' : 'Submission Coming Soon'}</span>
-		</div>
+			<span>{content.submissionDeadline.buttonText}</span>
+			<span className='text-[24px] leading-none'>→</span>
+		</a>
 	);
-
-	// 	return (
-	// 	<a
-	// 		href={content.cfpSection.submissionLink}
-	// 		target='_blank'
-	// 		rel='noopener noreferrer'
-	// 		className={`ds-button-submit w-full px-5 py-4 ${typography.scale.buttonLabel} sm:px-6`}
-	// 	>
-	// 		<span>{content.submissionDeadline.buttonText}</span>
-	// 		<span className='text-[24px] leading-none'>→</span>
-	// 	</a>
-	// );
 };
 
 const CategoryHero = ({
