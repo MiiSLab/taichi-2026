@@ -6,12 +6,17 @@
     <priority>1.0</priority>
   </url>
   <url>
-    <loc>https://taichi2026.taiwanchi.org/cfp</loc>
+    <loc>https://taichi2026.taiwanchi.org/news</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.7</priority>
+  </url>
+  <url>
+    <loc>https://taichi2026.taiwanchi.org/agenda</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
   <url>
-    <loc>https://taichi2026.taiwanchi.org/organization</loc>
+    <loc>https://taichi2026.taiwanchi.org/cfp</loc>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
   </url>
@@ -21,7 +26,12 @@
     <priority>0.7</priority>
   </url>
   <url>
-    <loc>https://taichi2026.taiwanchi.org/program</loc>
+    <loc>https://taichi2026.taiwanchi.org/organization</loc>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://taichi2026.taiwanchi.org/vote</loc>
     <changefreq>weekly</changefreq>
     <priority>0.7</priority>
   </url>
