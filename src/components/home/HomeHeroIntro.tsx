@@ -11,7 +11,7 @@ const HERO_SCROLL_HEIGHT = '320vh';
 let hasRevealedThisRuntime = false;
 const heroWordmarkSrc = '/images/home_bg.avif';
 const heroTaichiSrc = '/images/home_bg_TAICHI.avif';
-const heroDateSrc = '/images/home_date.avif';
+const heroDateSrc = '/images/home_date.png';
 // Pixel-curtain resolution scales with performance tier so weaker GPUs
 // don't have to fillRect 2160 cells every frame during the reveal.
 const PIXEL_GRID_BY_TIER: Record<PerformanceTier, { cols: number; rows: number }> = {

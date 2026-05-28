@@ -153,6 +153,7 @@ const Navbar: React.FC = () => {
 	const desktopItems = [
 		{ label: content.nav.venue, to: '/venue', isActive: location.pathname === '/venue' },
 		{ label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp') },
+		{ label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly' },
 		{ label: content.nav.organization, to: '/organization', isActive: location.pathname === '/organization' },
 		// { label: 'COMPETITION', to: '/competition', isActive: location.pathname === '/competition' },
 		{ label: 'VOTE', to: '/vote', isActive: location.pathname === '/vote' },
@@ -161,6 +162,7 @@ const Navbar: React.FC = () => {
 	const mobileItems = [
 		{ key: 'venue', label: content.nav.venue, to: '/venue', isActive: location.pathname === '/venue', submenuKey: 'venue' as const },
 		{ key: 'cfp', label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp'), submenuKey: 'cfp' as const },
+		{ key: 'family-friendly', label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly' },
 		{ key: 'organization', label: content.nav.organization, to: '/organization', isActive: location.pathname === '/organization' },
 		// { key: 'competition', label: 'COMPETITION', to: '/competition', isActive: location.pathname === '/competition' },
 		{ key: 'vote', label: 'VOTE', to: '/vote', isActive: location.pathname === '/vote' },

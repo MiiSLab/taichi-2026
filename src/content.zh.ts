@@ -15,6 +15,7 @@ export const CONTENT_ZH = {
 		keynotes: 'KEYNOTES',
 		organization: 'ORGANIZATION',
 		cfp: 'CALL FOR PAPERS',
+		familyFriendly: 'FAMILY-FRIENDLY',
 		venue: 'VENUE',
 		registration: 'REGISTRATION',
 		notion: 'DB ADMIN',
@@ -228,6 +229,17 @@ export const CONTENT_ZH = {
 		badge: 'COMING SOON',
 		highlightTitle: '精彩競賽即將登場',
 		description: 'TAICHI 2026 正在籌備精彩的競賽活動，敬請期待！相關資訊將於近期公佈，請密切關注官網更新。',
+	},
+	familyFriendlySection: {
+		title: 'Family-Friendly',
+		seoTitle: 'Family-Friendly',
+		seoDescription: 'TAICHI 2026 歡迎攜帶家屬同行，打造更友善的參與現場。',
+		introLines: [
+			'歡迎攜伴、攜童或家人同行。',
+			'今年特別設置 TAICHI-Kids 工作坊！',
+			'讓孩子一起來 Big Bang!',
+		],
+		outroLine: '更多活動規劃將後續公告！敬請期待！',
 	},
 	keynoteSection: {
 		title: 'KEYNOTE SPEAKERS',

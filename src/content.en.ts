@@ -151,6 +151,16 @@ export const CONTENT_EN = {
 		highlightTitle: 'Competition Details Coming Soon',
 		description: 'TAICHI 2026 is preparing a new competition program. More details will be announced soon, so please stay tuned to the official website.',
 	},
+	familyFriendlySection: {
+		...CONTENT_ZH.familyFriendlySection,
+		seoDescription: 'TAICHI 2026 welcomes family-accompanied participation and supports a more inclusive on-site experience.',
+		introLines: [
+			'Partners, children, and family members are welcome.',
+			'This year we are preparing a TAICHI-Kids workshop!',
+			'Let the kids join the Big Bang!',
+		],
+		outroLine: 'More family-friendly activities will be announced soon. Stay tuned!',
+	},
 	keynoteSection: {
 		title: 'KEYNOTE SPEAKERS',
 		subtitle: 'INVITED TALKS',

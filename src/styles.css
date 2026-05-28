@@ -443,6 +443,65 @@
 	transform: translateX(-50%);
 }
 
+/* ── Family-Friendly orbit animation ── */
+
+.family-orbit-hero {
+	position: relative;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	width: 100%;
+	overflow: visible;
+}
+
+.family-orbit {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	width: min(100%, 72rem);
+	pointer-events: none;
+}
+
+.family-orbit__stage {
+	position: relative;
+	width: min(92vw, 70rem);
+	height: clamp(20rem, 34vw, 28rem);
+	margin: 0 auto;
+	isolation: isolate;
+}
+
+.family-orbit__planet-anchor {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	z-index: 4;
+	animation: family-orbit-spin-single linear infinite;
+	animation-duration: 16s;
+}
+
+.family-orbit__planet {
+	display: block;
+	object-fit: contain;
+	position: relative;
+	z-index: 5;
+	filter:
+		drop-shadow(0 0 18px rgba(168, 240, 32, 0.28))
+		drop-shadow(0 0 36px rgba(168, 240, 32, 0.16));
+	transform: rotate(calc(var(--orbit-angle, 0deg) * -1));
+}
+
+.family-orbit__planet--one   { width: clamp(5.8rem, 10vw, 7.4rem);  height: clamp(5.8rem, 10vw, 7.4rem); }
+.family-orbit__planet--two   { width: clamp(5rem, 9vw, 6.4rem);     height: clamp(5rem, 9vw, 6.4rem); }
+.family-orbit__planet--three { width: clamp(6.2rem, 11vw, 7.8rem);  height: clamp(6.2rem, 11vw, 7.8rem); }
+.family-orbit__planet--four  { width: clamp(5.1rem, 9.2vw, 6.6rem); height: clamp(5.1rem, 9.2vw, 6.6rem); }
+.family-orbit__planet--five  { width: clamp(5.4rem, 9.5vw, 6.9rem); height: clamp(5.4rem, 9.5vw, 6.9rem); }
+
+@keyframes family-orbit-spin-single {
+	from { transform: translate(-50%, -50%) rotate(var(--orbit-angle, 0deg)) translateX(clamp(10rem, 18vw, 14rem)); }
+	to   { transform: translate(-50%, -50%) rotate(calc(var(--orbit-angle, 0deg) + 360deg)) translateX(clamp(10rem, 18vw, 14rem)); }
+}
+
 @keyframes hero-glitch-shift {
 	0%, 100% {
 		transform: translate3d(0, 0, 0);
@@ -563,6 +622,11 @@
 	.hero-intro__hero-asset--date {
 		width: min(74%, 20rem);
 	}
+
+	.family-orbit__stage {
+		width: min(96vw, 34rem);
+		height: 15rem;
+	}
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -570,6 +634,10 @@
 	.hero-intro__hero-asset {
 		animation: none !important;
 		transition: none !important;
+	}
+
+	.family-orbit__planet-anchor {
+		animation: none !important;
 	}
 }
 
