@@ -362,9 +362,13 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 
 	const showPeople = !hidePeople;
 	const generalChairs = groupedMembers.find((group) => group.normalizedType === 'general chairs');
-	const featuredGroups = groupedMembers.filter((group) => ['steering committees'].includes(group.normalizedType));
+	const featuredGroups = groupedMembers.filter((group) =>
+		['steering committees', 'best paper award committee'].includes(group.normalizedType),
+	);
 	const remainingGroups = groupedMembers.filter(
-		(group) => group.normalizedType !== 'general chairs' && !['steering committees', 'program chairs'].includes(group.normalizedType),
+		(group) =>
+			group.normalizedType !== 'general chairs' &&
+			!['steering committees', 'best paper award committee', 'program chairs'].includes(group.normalizedType),
 	);
 
 	return (

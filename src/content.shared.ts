@@ -9,6 +9,7 @@ export const CONFIG = {
 		chairTypeOrder: [
 			'General Chairs',
 			'Steering Committees',
+			'Best Paper Award Committee',
 			'Paper Chairs',
 			'Poster Chairs',
 			'Demo Chairs',

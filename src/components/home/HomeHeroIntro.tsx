@@ -290,7 +290,7 @@ const HomeHeroIntro: React.FC<HomeHeroIntroProps> = ({
 						/>
 						<img
 							src={heroDateSrc}
-							alt='2026 8.05 WED to 8.06 TUE'
+							alt='2026 8.05 WED to 8.06 THU'
 							className='hero-intro__hero-asset hero-intro__hero-asset--date'
 							loading='eager'
 							decoding='async'
