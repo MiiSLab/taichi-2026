@@ -248,6 +248,7 @@ export const CONTENT_ZH = {
 		surveyDescription: '若您計畫攜帶家屬前來，請填寫此調查表，協助我們提前準備。',
 		surveyButtonText: '前往調查表',
 		surveyUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSe00DvkS2zWTNY0Hfi0mKwePdPc-777Jypcxh1ulxQ7DRDcJg/viewform',
+		outroLine: '更多活動規劃將後續公告！敬請期待！',
 	},
 	keynoteSection: {
 		title: 'KEYNOTE SPEAKERS',

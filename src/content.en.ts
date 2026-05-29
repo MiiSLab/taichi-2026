@@ -169,6 +169,7 @@ export const CONTENT_EN = {
 		surveyDescription:
 			'If you plan to attend with family members, please fill out this short survey so we can prepare in advance.',
 		surveyButtonText: 'Open Survey Form',
+		outroLine: 'More family-friendly activities will be announced soon. Stay tuned!',
 	},
 	keynoteSection: {
 		title: 'KEYNOTE SPEAKERS',

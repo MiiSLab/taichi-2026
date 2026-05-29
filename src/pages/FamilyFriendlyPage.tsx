@@ -79,6 +79,12 @@ const FamilyFriendlyPage: React.FC = () => {
 							</a>
 						</div>
 					</ScrollReveal>
+
+					<ScrollReveal delay={240}>
+						<p className='mt-12 text-center font-pixel text-[15px] uppercase tracking-[0.14em] text-[#A8F020]'>
+							{section.outroLine}
+						</p>
+					</ScrollReveal>
 				</div>
 			</section>
 		</div>
