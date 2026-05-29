@@ -65,6 +65,7 @@ export const CONTENT_EN = {
 					'Notes',
 					'● All submissions use **double-blind review**. Please upload an anonymized PDF file; non-anonymized submissions will be desk rejected. The PDF including attachments must be **under 20MB**. Please optimize the file in Acrobat while keeping the content clearly legible on screen.',
 					'● Accepted papers will be included in the informal TAICHI 2026 online proceedings for download. Authors who prefer not to include the full paper may instead choose to have an abstract version included in the informal proceedings.',
+					'● Whether a submitted paper may be converted to a poster after review will depend on the overall submission volume; authors are encouraged to submit in the format best suited to their work.',
 					'Desk Reject Policy',
 					'● If a submission is out of scope, has unclear or incomplete contributions, or does not follow the required format, the organizers reserve the right to conduct an initial screening and directly reject the paper before review (desk reject). Possible cases include:',
 					'● ● __Scope__：The submission does not sufficiently review relevant literature or provide enough context to explain its novelty and contribution to design research or interactive systems. The paper should be grounded in prior research, design practice, or relevant domains, and its contribution should be commensurate with its length.',
@@ -153,13 +154,21 @@ export const CONTENT_EN = {
 	},
 	familyFriendlySection: {
 		...CONTENT_ZH.familyFriendlySection,
-		seoDescription: 'TAICHI 2026 welcomes family-accompanied participation and supports a more inclusive on-site experience.',
-		introLines: [
-			'Partners, children, and family members are welcome.',
-			'This year we are preparing a TAICHI-Kids workshop!',
-			'Let the kids join the Big Bang!',
+		seoDescription:
+			'TAICHI 2026 welcomes family-accompanied participation and supports a more inclusive on-site experience.',
+		headline: 'TAICHI 2026 Welcomes Families: Introducing Our First Family-Friendly Initiative',
+		paragraphs: [
+			'TAICHI 2026 warmly welcomes all attendees, and we are delighted to welcome your families as well.',
+			'Our families are a source of support, inspiration, and strength. Whether they are partners, children, or parents, they accompany us through our journeys in research, work, and everyday life. For TAICHI, inviting families to be part of this academic gathering is both a natural and meaningful step.',
+			'This year, TAICHI 2026 is launching its first family-friendly initiative, designed to help attendees who are coming with family members participate in the conference with greater peace of mind. We will provide a family-friendly space with areas for rest, companionship, and simple play activities. We will also prepare light activities for children who may be curious about what their parents or family members do in their research and professional lives. In addition, family-friendly seating will be reserved in the conference rooms to offer greater flexibility for attendees with caregiving needs.',
+			'We will also provide a brief family-friendly guide to the area around the venue, helping you locate nearby parks, pharmacies, convenient facilities, and quiet places for short breaks.',
+			'This is TAICHI’s first step toward creating a more family-friendly conference experience. Through this new initiative, we hope to make our academic community more closely connected to the realities of everyday life, and to support more researchers in participating fully in the conference. If you plan to attend with family members, please let us know through the registration form so that we can better prepare in advance.',
+			'We look forward to welcoming you and your family to TAICHI 2026.',
 		],
-		outroLine: 'More family-friendly activities will be announced soon. Stay tuned!',
+		surveyHeading: 'TAICHI 2026 Family Attendance Survey',
+		surveyDescription:
+			'If you plan to attend with family members, please fill out this short survey so we can prepare in advance.',
+		surveyButtonText: 'Open Survey Form',
 	},
 	keynoteSection: {
 		title: 'KEYNOTE SPEAKERS',

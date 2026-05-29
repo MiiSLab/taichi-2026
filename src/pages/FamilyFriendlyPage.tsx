@@ -43,19 +43,41 @@ const FamilyFriendlyPage: React.FC = () => {
 				</ScrollReveal>
 			</div>
 
-			<section className='px-4 pb-16 pt-20 md:px-8 md:pb-24 md:pt-24'>
-				<div className='mx-auto max-w-7xl'>
-					<ScrollReveal delay={80}>
-						<div className='space-y-4 text-center'>
-							{section.introLines.map((line) => (
-								<p key={line} className={`${typography.scale.bodyLg} text-white`}>
-									{line}
+			<section className='px-4 pb-20 pt-20 md:px-8 md:pb-28 md:pt-24'>
+				<div className='mx-auto max-w-3xl'>
+					<ScrollReveal delay={60}>
+						<h2 className={`mb-10 ${typography.scale.sectionTitle} text-[#CCFF00]`}>
+							{section.headline}
+						</h2>
+					</ScrollReveal>
+
+					<ScrollReveal delay={120}>
+						<article className='space-y-6'>
+							{section.paragraphs.map((p, i) => (
+								<p key={i} className={`${typography.scale.bodyLg} text-white/90`}>
+									{p}
 								</p>
 							))}
+						</article>
+					</ScrollReveal>
+
+					<ScrollReveal delay={180}>
+						<div className='ds-surface-panel mt-16 px-6 py-10 md:px-12 md:py-12'>
+							<h3 className={`mb-3 ${typography.scale.cardTitle} text-white`}>
+								{section.surveyHeading}
+							</h3>
+							<p className={`mb-8 ${typography.scale.body} text-white/75`}>
+								{section.surveyDescription}
+							</p>
+							<a
+								href={section.surveyUrl}
+								target='_blank'
+								rel='noreferrer'
+								className='ds-button-secondary min-h-[46px] px-8 text-[18px] leading-[28px]'
+							>
+								{section.surveyButtonText} →
+							</a>
 						</div>
-						<p className='mt-8 text-center font-pixel text-[15px] uppercase tracking-[0.14em] text-[#A8F020]'>
-							{section.outroLine}
-						</p>
 					</ScrollReveal>
 				</div>
 			</section>
