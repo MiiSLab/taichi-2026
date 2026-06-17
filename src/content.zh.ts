@@ -257,7 +257,7 @@ export const CONTENT_ZH = {
 	sponsorshipSection: {
 		seoTitle: '贊助邀請',
 		seoDescription: 'TAICHI 2026 誠摯邀請企業機關共同襄助第十二屆臺灣人機互動研討會，下載完整贊助邀請與辦法。',
-		pageTitle: '贊助邀請',
+		pageTitle: 'Sponsorship',
 		kicker: 'TAICHI 2026 SPONSORSHIP',
 		headline: '一起把未來 Big Bang！',
 		paragraphs: [
