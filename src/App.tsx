@@ -13,6 +13,7 @@ const NewsPage = lazy(() => import('./pages/NewsPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const OrganizationPage = lazy(() => import('./pages/OrganizationPage'));
 const PosterUploadPage = lazy(() => import('./pages/PosterUploadPage'));
+const SponsorshipPage = lazy(() => import('./pages/SponsorshipPage'));
 const VenuePage = lazy(() => import('./pages/VenuePage'));
 const VotePage = lazy(() => import('./pages/VotePage'));
 
@@ -67,6 +68,7 @@ const App: React.FC = () => {
 									<Route path='family-friendly' element={<FamilyFriendlyPage />} />
 									<Route path='venue' element={<VenuePage />} />
 									<Route path='organization' element={<OrganizationPage />} />
+									<Route path='sponsorship' element={<SponsorshipPage />} />
 									{/* <Route path='competition' element={<CompetitionPage />} /> */}
 									<Route path='vote' element={<VotePage />} />
 									<Route path='*' element={<NotFoundPage />} />

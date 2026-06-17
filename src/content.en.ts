@@ -171,6 +171,84 @@ export const CONTENT_EN = {
 		surveyButtonText: 'Open Survey Form',
 		outroLine: 'More family-friendly activities will be announced soon. Stay tuned!',
 	},
+	sponsorshipSection: {
+		...CONTENT_ZH.sponsorshipSection,
+		seoTitle: 'Sponsorship',
+		seoDescription:
+			'TAICHI 2026 sincerely invites companies and organizations to support the 12th Taiwan CHI conference. Download the full sponsorship invitation and prospectus.',
+		pageTitle: 'Sponsorship',
+		kicker: 'TAICHI 2026 SPONSORSHIP',
+		headline: 'Let’s make the future go Big Bang!',
+		paragraphs: [
+			'TAICHI 2026 takes place on August 5–6 at Syntrend Creative Park and National Taipei University of Technology in Taipei. This year’s theme, “Big Bang! Futures”, brings the universe’s first explosive moment into the city — a future you can walk through, play with, and experience together, through interactive installations, experimental works, and a night-market-style space where everyone can feel how technology shapes the way we’ll live.',
+			'This year is different: on August 5 we join forces at Syntrend with the NSTC Taiwan Chip-based Humanities initiative, the Asia-Pacific APMAR, and the technology-art society ISAT — bringing academia, exhibition, and the public together in one shared field, with a large turnout of scholars, industry partners, and the public expected.',
+			'TAICHI is the Taiwan HCI community’s most important annual gathering, held every year since 2015 and drawing hundreds of scholars, industry partners, and students. Our members’ work regularly appears at top international venues such as CHI, UIST, CSCW, Ubicomp, and DIS.',
+			'We warmly invite you to become a sponsor this year — to put your brand alongside some of the most creative people around, and make Taiwan’s future experience go Big Bang together. The sponsorship plans are below; we look forward to partnering with you.',
+		],
+		highlightsTitle: 'Event Highlights',
+		highlights: [
+			{ label: 'DATE', value: 'Aug 5 – 6, 2026' },
+			{ label: 'VENUE', value: 'Syntrend Creative Park × NTUT' },
+			{ label: 'THEME', value: 'Big Bang! Futures' },
+			{ label: 'CO-HOSTED', value: 'Chip-based Humanities × APMAR × ISAT' },
+			{ label: 'COMMUNITY', value: 'Hundreds of scholars, industry & students yearly' },
+		],
+		plansTitle: 'Sponsorship Plans',
+		plansIntro:
+			'The following sponsorship plans are available. If none fits your organization’s needs, you are welcome to contact us to discuss other options.',
+		tierNames: ['Diamond', 'Platinum', 'Gold', 'Silver'],
+		planRows: [
+			{ label: 'Amount (NT$)', values: ['80,000', '50,000', '30,000', '15,000'] },
+			{ label: 'Complimentary tickets', values: ['8', '6', '3', '2'] },
+			{ label: 'Logo on conference website', values: ['✓', '✓', '✓', '✓'] },
+			{
+				label: 'On-site logo display',
+				values: ['Stage, podium, registration & venue signage', 'Stage, podium, registration & venue signage', 'Stage, podium, registration & venue signage', 'Stage, podium, registration & venue signage'],
+			},
+			{ label: 'Online handbook (program) logo', values: ['Logo + promo copy', 'Logo + promo copy', 'Logo + promo copy', 'Logo only'] },
+			{ label: 'Dedicated exhibition booth', values: ['1 set / 2 booths', '1 set / 1 booth', '1 set / 1 booth', '—'] },
+			{ label: 'Flyer at registration desk', values: ['✓', '✓', '✓', '—'] },
+			{ label: 'On-site video rotation', values: ['✓ (30 sec)', '✓ (10 sec)', '✓ (5 sec)', '—'] },
+			{ label: 'Aug 5 Interactive Night Market', values: ['Logo + stage intro (8 min)', 'Logo + stage intro (5 min)', 'Logo display', '—'] },
+		],
+		plansNoteTitle: 'Notes',
+		plansNotes: [
+			'Please contact the organizing team to confirm sponsorship items before completing the sponsorship agreement.',
+			'Please complete payment within one week of confirming your sponsorship items so promotional preparations can proceed.',
+			'Plans and on-site space are limited; the organizers reserve related decisions on a first-paid, first-served basis.',
+		],
+		pdfHeading: 'Full Sponsorship Invitation & Prospectus',
+		pdfDescription: 'Sponsorship tiers, benefits, and how to sign up are detailed in the full document. You are welcome to download it.',
+		pdfButtonText: 'Download Sponsorship Prospectus (PDF)',
+		processTitle: 'Sponsorship Process',
+		processSteps: [
+			{
+				title: 'Step 1 | Confirm sponsorship items',
+				body: [
+					'Sponsorship contact: Max Chen, Dept. of Information Management, Ming Chuan University | 0952-702363 | maxchen@mail.mcu.edu.tw',
+					'Payment contact: June Lai, Taiwan CHI society | 02-33664888 ext. 503 | june@cmlab.csie.ntu.edu.tw',
+				],
+			},
+			{
+				title: 'Step 2 | Send the sponsorship agreement',
+				body: ['Email or fax the [Sponsorship Agreement] to June Lai (june@cmlab.csie.ntu.edu.tw) and Max Chen (maxchen@mail.mcu.edu.tw).'],
+			},
+			{
+				title: 'Step 3 | Make payment',
+				body: ['Account name: Taiwan Association for Computer-Human Interaction', 'Bank: Hua Nan Commercial Bank (code 008)', 'Account no.: 154-10-009173-1'],
+			},
+			{
+				title: 'Step 4 | Payment notification',
+				body: [
+					'After payment, email June Lai (june@cmlab.csie.ntu.edu.tw) and Max Chen (maxchen@mail.mcu.edu.tw) with:',
+					'1. The last five digits of the paying account',
+					'2. The name and phone number of the paying company’s contact person',
+				],
+			},
+		],
+		contactHeading: 'Sponsorship Inquiries',
+		contactText: 'For any sponsorship-related questions, please contact the organizing team:',
+	},
 	keynoteSection: {
 		title: 'KEYNOTE SPEAKERS',
 		subtitle: 'INVITED TALKS',
