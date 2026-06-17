@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link } from 'react-router-dom';
 import AnnouncementsSection from '../components/AnnouncementsSection';
 import ConstellationMapSection from '../components/ConstellationMap';
@@ -22,52 +22,15 @@ const HomePage: React.FC = () => {
 			: 'TAICHI 2026 conference website. Theme: Big Bang! Futures!',
 	);
 
-	const [transitionProgress, setTransitionProgress] = useState(0);
-	const [collapseActive, setCollapseActive] = useState(false);
-
-	const CONTENT_APPEAR_THRESHOLD = 0.5;
-	const rawContentProgress = Math.max(0, (transitionProgress - CONTENT_APPEAR_THRESHOLD) / (1 - CONTENT_APPEAR_THRESHOLD));
-	const FADE_EASE_RATE = 4;
-	const contentProgress = 1 - Math.pow(1 - rawContentProgress, FADE_EASE_RATE);
-	const FLOAT_DISTANCE_VH = 20;
-	const nextSectionOpacity = contentProgress;
-	const nextSectionTranslateY = (1 - contentProgress) * FLOAT_DISTANCE_VH;
 	const themeTitleParts = content.theme.title.split(/(?=Big Bang! Futures!)/);
 
 	return (
 		<>
-			<ScrollCollapseSection
-				onProgress={(progress, active) => {
-					setTransitionProgress(progress);
-					setCollapseActive(active);
-				}}
-			/>
+			<ScrollCollapseSection />
 
 			<div className='flex flex-col w-full min-h-screen bg-black' style={{ marginTop: '-100vh' }}>
-				{/* Latest announcements — first reveal target after the BOOM hero */}
-				<div style={{ minHeight: '100dvh', width: '100%' }}>
-					<div
-						className='relative min-h-[100dvh] w-full overflow-hidden bg-black'
-						style={
-							collapseActive
-								? {
-										position: 'fixed',
-										inset: 0,
-										zIndex: 25,
-										opacity: nextSectionOpacity,
-										transform: `translateY(${nextSectionTranslateY}vh)`,
-										pointerEvents: nextSectionOpacity > 0 ? 'auto' : 'none',
-										overflowY: 'auto',
-									}
-								: {
-										position: 'relative',
-										zIndex: 25,
-									}
-						}
-					>
-						<AnnouncementsSection />
-					</div>
-				</div>
+				{/* Latest announcements — first section, revealed as the BOOM hero circle collapses */}
+				<AnnouncementsSection />
 
 				<div style={{ minHeight: '100dvh', width: '100%' }}>
 					<section className='relative z-[25] px-5 py-16 overflow-hidden bg-black sm:px-6 md:py-24'>
