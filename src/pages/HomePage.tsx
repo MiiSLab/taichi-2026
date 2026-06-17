@@ -47,7 +47,7 @@ const HomePage: React.FC = () => {
 				{/* Latest announcements — first reveal target after the BOOM hero */}
 				<div style={{ minHeight: '100dvh', width: '100%' }}>
 					<div
-						className='relative flex min-h-[100dvh] w-full items-center overflow-hidden bg-black'
+						className='relative min-h-[100dvh] w-full overflow-hidden bg-black'
 						style={
 							collapseActive
 								? {
@@ -57,6 +57,7 @@ const HomePage: React.FC = () => {
 										opacity: nextSectionOpacity,
 										transform: `translateY(${nextSectionTranslateY}vh)`,
 										pointerEvents: nextSectionOpacity > 0 ? 'auto' : 'none',
+										overflowY: 'auto',
 									}
 								: {
 										position: 'relative',
@@ -64,9 +65,7 @@ const HomePage: React.FC = () => {
 									}
 						}
 					>
-						<div className='w-full'>
-							<AnnouncementsSection />
-						</div>
+						<AnnouncementsSection />
 					</div>
 				</div>
 

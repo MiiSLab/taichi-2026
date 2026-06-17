@@ -25,7 +25,7 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3 }
 	if (items.length === 0) return null;
 
 	return (
-		<section className='relative w-full px-5 py-20 overflow-hidden bg-black sm:px-6 md:px-20 md:py-24'>
+		<section className='relative flex min-h-[100dvh] w-full flex-col justify-center overflow-hidden bg-black px-5 pb-20 pt-28 sm:px-6 md:px-20 md:pb-24 md:pt-32'>
 			<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.10),transparent_42%)]' />
 
 			<div className='relative z-10 mx-auto w-full max-w-[1280px]'>
