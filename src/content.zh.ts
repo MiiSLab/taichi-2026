@@ -34,7 +34,7 @@ export const CONTENT_ZH = {
 	},
 	submissionDeadline: {
 		title: '投稿截止日期',
-		date: '2026/6/18（四）23:59 (GMT+8)',
+		date: '2026/6/23（二）23:59 (GMT+8)',
 		buttonText: '立即投稿',
 	},
 	theme: {
@@ -49,12 +49,12 @@ export const CONTENT_ZH = {
 		topicsTitle: '研討會主題',
 		importantDatesTitle: '重要時程',
 		submissionLink: 'https://easychair.org/conferences/?conf=taichi2026',
-		heroDeadlineNote: '截投稿截止日期: 2026/06/18 23:59 (GMT+8)',
+		heroDeadlineNote: '截投稿截止日期: 2026/06/23 23:59 (GMT+8)',
 		heroTimelineItems: [
-			{ title: 'DEADLINE', date: '06.18', subtitle: '投稿截止日期' },
-			{ title: 'NOTIFICATION', date: '07.21', subtitle: '審查結果通知' },
-			{ title: 'CAMERA-READY DEADLINE', date: '07.27', subtitle: '最終完稿截止日期' },
-			{ title: 'CONFERENCE', date: '08.05-06', subtitle: '會議日期' },
+			{ title: 'DEADLINE', date: '06.23', oldDate: '06.18', subtitle: '投稿截止日期' },
+			{ title: 'NOTIFICATION', date: '07.21', oldDate: '', subtitle: '審查結果通知' },
+			{ title: 'CAMERA-READY DEADLINE', date: '07.27', oldDate: '', subtitle: '最終完稿截止日期' },
+			{ title: 'CONFERENCE', date: '08.05-06', oldDate: '', subtitle: '會議日期' },
 		],
 		exploreMore: 'EXPLORE MORE',
 		topics: [
@@ -74,7 +74,8 @@ export const CONTENT_ZH = {
 			{
 				id: 'papers',
 				title: '論 文 與 圖 像 式 論 文',
-				date: '2026/6/18(四) 23:59 (GMT+8)',
+				date: '2026/6/23(二) 23:59 (GMT+8)',
+				oldDate: '2026/6/18(四)',
 				notification: '2026/7/21(二) 23:59 (GMT+8)',
 				cameraReady: '2026/7/27(一) 23:59 (GMT+8)',
 				links: [
@@ -121,7 +122,8 @@ export const CONTENT_ZH = {
 			{
 				id: 'posters',
 				title: '海 報 論 文',
-				date: '2026/6/18(四) 23:59 (GMT+8)',
+				date: '2026/6/23(二) 23:59 (GMT+8)',
+				oldDate: '2026/6/18(四)',
 				notificationDate: '2026/7/21(二) 23:59 (GMT+8)',
 				cameraReadyDate: '2026/7/27(一) 23:59 (GMT+8)',
 				links: [
@@ -154,7 +156,8 @@ export const CONTENT_ZH = {
 			{
 				id: 'demos',
 				title: '互 動 展 示',
-				date: '2026/6/18(四) 23:59 (GMT+8)',
+				date: '2026/6/23(二) 23:59 (GMT+8)',
+				oldDate: '2026/6/18(四)',
 				notificationDate: '2026/7/21(二) 23:59 (GMT+8)',
 				cameraReadyDate: '2026/7/27(一) 23:59 (GMT+8)',
 				links: [

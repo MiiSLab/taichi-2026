@@ -2,8 +2,8 @@ import React from 'react';
 
 const SubmissionTimeline: React.FC = () => {
     const timelineData = [
-        { title: "Full Paper & Pictorial", date: "June 18, 2026" },
-        { title: "Poster & Demo", date: "June 18, 2026" },
+        { title: "Full Paper & Pictorial", date: "June 23, 2026" },
+        { title: "Poster & Demo", date: "June 23, 2026" },
         { title: "Notification", date: "July 21, 2026" },
         { title: "Camera-Ready", date: "July 27, 2026" },
     ];

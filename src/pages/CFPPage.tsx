@@ -51,8 +51,6 @@ type DeskRejectCard = {
 	body: string;
 };
 
-
-
 type SectionTheme = {
 	mainTitle: string;
 	accentTitle: string;
@@ -114,25 +112,13 @@ const parseText = (text: string) => {
 			);
 		} else if (match[5]) {
 			parts.push(
-				<a
-					key={`url-${count}`}
-					href={match[5]}
-					className={getLinkClassName(match[5])}
-					target='_blank'
-					rel='noreferrer'
-				>
+				<a key={`url-${count}`} href={match[5]} className={getLinkClassName(match[5])} target='_blank' rel='noreferrer'>
 					{match[5]}
 				</a>,
 			);
 		} else {
 			parts.push(
-				<a
-					key={`link-${count}`}
-					href={match[4]}
-					className={getLinkClassName(match[4])}
-					target='_blank'
-					rel='noreferrer'
-				>
+				<a key={`link-${count}`} href={match[4]} className={getLinkClassName(match[4])} target='_blank' rel='noreferrer'>
 					{match[3]}
 				</a>,
 			);
@@ -151,8 +137,7 @@ const parseText = (text: string) => {
 
 const stripBullet = (text: string) => text.replace(/^●\s*/, '');
 
-const findDescriptionIndex = (lines: string[], candidates: string[]) =>
-	lines.findIndex((line) => candidates.includes(line.trim()));
+const findDescriptionIndex = (lines: string[], candidates: string[]) => lines.findIndex((line) => candidates.includes(line.trim()));
 
 const sliceBetween = (lines: string[], start: number, end?: number) => {
 	if (start < 0) {
@@ -200,7 +185,8 @@ const getPosterSectionContent = (category: Category, language: 'zh' | 'en'): Pos
 
 	return {
 		intro: category.description[0],
-		extraIntro: language === 'zh' ? '今年海報展出會開放大眾參觀。' : 'This year, the poster exhibition will also be open to the public.',
+		extraIntro:
+			language === 'zh' ? '今年海報展出會開放大眾參觀。' : 'This year, the poster exhibition will also be open to the public.',
 		contact: stripBullet(category.description[contactIndex]),
 		formatHeading: category.description[formatIndex],
 		formatBullets: sliceBetween(category.description, formatIndex + 1, noteIndex),
@@ -270,13 +256,7 @@ const parseSubmissionDate = (date: string) => {
 		secondary: match[2].trim(),
 	};
 };
-const SectionHeader = ({
-	title,
-	className = '',
-}: {
-	title: string;
-	className?: string;
-}) => (
+const SectionHeader = ({ title, className = '' }: { title: string; className?: string }) => (
 	<div className={`${panelFrame.sectionDivider} ${className}`}>
 		<h3 className='font-roboto text-[24px] font-bold leading-8 text-white'>{title}</h3>
 	</div>
@@ -309,21 +289,24 @@ const CategoryHero = ({
 	id,
 	theme,
 	date,
+	oldDate,
 	intro,
 	extraIntro,
 }: {
 	id: string;
 	theme: SectionTheme;
 	date: string;
+	oldDate?: string;
 	intro: string;
 	extraIntro?: string;
 }) => {
+	const { language } = useLanguage();
 	const submissionDate = parseSubmissionDate(date);
 
 	return (
 		<section id={id} className='relative overflow-hidden'>
 			<div
-				className='absolute inset-0 bg-cover bg-center'
+				className='absolute inset-0 bg-center bg-cover'
 				style={{ backgroundImage: `url(${theme.backgroundImage})`, backgroundPosition: theme.backgroundPosition ?? 'center' }}
 			/>
 			<div className='absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/45' />
@@ -332,7 +315,9 @@ const CategoryHero = ({
 			<div className='relative mx-auto max-w-[1280px] px-4 py-10 md:px-8 md:py-14'>
 				<div className='max-w-[592px]'>
 					<h2 className='font-dela text-[36px] leading-tight text-[#A8F020] md:text-[36px] xl:text-[48px]'>{theme.mainTitle}</h2>
-					<p className='mt-3 font-roboto text-[20px] font-bold leading-7 text-[#A8F020] sm:text-[22px] md:text-[24px] xl:text-[30px]'>{theme.accentTitle}</p>
+					<p className='mt-3 font-roboto text-[20px] font-bold leading-7 text-[#A8F020] sm:text-[22px] md:text-[24px] xl:text-[30px]'>
+						{theme.accentTitle}
+					</p>
 
 					<ScrollReveal delay={40}>
 						<FramePanel
@@ -341,10 +326,27 @@ const CategoryHero = ({
 							cornerSize={12}
 							cornerClassName='hidden md:block'
 						>
-							<p className='font-mono text-[14px] font-bold tracking-[0.05em] text-[#A8F020]'>{theme.submissionLabel}</p>
-							<p className='mt-3 font-mono text-[26px] font-bold leading-tight text-white sm:text-[30px] md:text-[36px]'>{submissionDate.primary}</p>
+							<div className='flex items-center gap-3'>
+								<p className='font-mono text-[14px] font-bold tracking-[0.05em] text-[#A8F020]'>{theme.submissionLabel}</p>
+								{oldDate ? (
+									<span className='inline-flex w-fit items-center rounded border border-[#FF5C5C]/60 bg-[#FF5C5C]/15 px-2.5 py-1 font-pixel font-bold text-[12px] tracking-[0.12em] text-[#FF6B6B]'>
+										{language === 'zh' ? '⚠ 已延期 EXTENDED' : '⚠ EXTENDED'}
+									</span>
+								) : null}
+							</div>
+							{oldDate ? (
+								<p className='mt-2 font-mono text-[15px] font-medium leading-5 text-white/40 line-through decoration-2 md:text-[16px]'>
+									{language === 'zh' ? '原訂 ' : 'Was '}
+									{oldDate}
+								</p>
+							) : null}
+							<p className='mt-2 font-mono text-[26px] font-bold leading-tight text-white sm:text-[30px] md:text-[36px]'>
+								{submissionDate.primary}
+							</p>
 							{submissionDate.secondary ? (
-								<p className='mt-2 font-medium text-[15px] leading-6 text-white/60 md:text-[16px]'>{submissionDate.secondary}</p>
+								<p className='mt-2 font-medium text-[15px] leading-6 text-white/60 md:text-[16px]'>
+									{submissionDate.secondary}
+								</p>
 							) : null}
 						</FramePanel>
 					</ScrollReveal>
@@ -411,34 +413,23 @@ const ChairsPanel = ({ title, chairs }: { title: string; chairs: string[] }) => 
 );
 
 const ContactStrip = ({ text }: { text: string }) => (
-	<div className='mt-8 px-6 py-5 text-center md:px-10'>
+	<div className='px-6 py-5 mt-8 text-center md:px-10'>
 		<div className={`${typography.scale.label} text-white/80`}>{parseText(text)}</div>
 	</div>
 );
 
-
-
-
-
-
-
-const PaperSection = ({
-	category,
-	content,
-	theme,
-}: {
-	category: Category;
-	content: PaperSectionContent;
-	theme: SectionTheme;
-}) => (
-	<div className='bg-black pb-24'>
-		<CategoryHero id='papers' theme={theme} date={category.date} intro={content.intro} />
+const PaperSection = ({ category, content, theme }: { category: Category; content: PaperSectionContent; theme: SectionTheme }) => (
+	<div className='pb-24 bg-black'>
+		<CategoryHero id='papers' theme={theme} date={category.date} oldDate={category.oldDate} intro={content.intro} />
 
 		<div className='mx-auto -mt-10 max-w-[1280px] px-4 md:px-8'>
-			<div className='bg-black/90 px-0 pt-12'>
+			<div className='px-0 pt-12 bg-black/90'>
 				<div className='grid items-stretch gap-6 xl:grid-cols-2 xl:gap-8'>
 					<ScrollReveal delay={0} className='h-full'>
-						<FramePanel className='h-full min-h-[420px] xl:min-h-[460px]' contentClassName='flex h-full flex-col p-6 md:p-8 xl:p-10'>
+						<FramePanel
+							className='h-full min-h-[420px] xl:min-h-[460px]'
+							contentClassName='flex h-full flex-col p-6 md:p-8 xl:p-10'
+						>
 							<SectionHeader title={content.fullPaperHeading} />
 							<p className={`mt-6 ${typography.scale.body} text-white/80`}>{parseText(content.fullPaperIntro)}</p>
 							<BulletList items={content.fullPaperBullets} className='mt-6' />
@@ -447,7 +438,10 @@ const PaperSection = ({
 					</ScrollReveal>
 
 					<ScrollReveal delay={90} className='h-full'>
-						<FramePanel className='h-full min-h-[420px] xl:min-h-[460px]' contentClassName='flex h-full flex-col p-6 md:p-8 xl:p-10'>
+						<FramePanel
+							className='h-full min-h-[420px] xl:min-h-[460px]'
+							contentClassName='flex h-full flex-col p-6 md:p-8 xl:p-10'
+						>
 							<SectionHeader title={content.pictorialHeading} />
 							<p className={`mt-6 ${typography.scale.body} text-white/80`}>{parseText(content.pictorialIntro)}</p>
 							<BulletList items={content.pictorialBullets} className='mt-6' />
@@ -456,14 +450,14 @@ const PaperSection = ({
 					</ScrollReveal>
 				</div>
 
-				<div className='mt-10 grid gap-4 xl:mt-12 xl:grid-cols-2 xl:gap-8'>
+				<div className='grid gap-4 mt-10 xl:mt-12 xl:grid-cols-2 xl:gap-8'>
 					<ScrollReveal delay={0} className='order-1 xl:col-span-2'>
 						<FramePanel contentClassName='p-6 md:p-8 xl:p-10'>
 							<DotHeader title={content.deskRejectHeading} />
 							<p className={`mt-5 ${typography.scale.body} text-white/80 xl:mt-6`}>
 								{parseText(stripBullet(content.deskRejectIntro))}
 							</p>
-							<div className='mt-8 grid gap-6 xl:grid-cols-3'>
+							<div className='grid gap-6 mt-8 xl:grid-cols-3'>
 								{content.deskRejectBullets.map((item, index) => {
 									const card = parseDeskRejectCard(item);
 									return (
@@ -471,7 +465,9 @@ const PaperSection = ({
 											<div className='rounded-[10px] border border-white/10 bg-black/30 p-6'>
 												<p className='font-roboto text-[16px] font-bold leading-6 text-white'>{card.title}</p>
 												{card.subtitle ? (
-													<p className='mt-1 font-roboto text-[12px] font-bold leading-4 text-white/50'>{card.subtitle}</p>
+													<p className='mt-1 font-roboto text-[12px] font-bold leading-4 text-white/50'>
+														{card.subtitle}
+													</p>
 												) : null}
 												<p className={`mt-4 ${typography.scale.body} text-white/70`}>{parseText(card.body)}</p>
 											</div>
@@ -485,7 +481,12 @@ const PaperSection = ({
 					<ScrollReveal delay={40} className='order-2'>
 						<FramePanel className='h-full min-h-[320px]' contentClassName='px-8 pb-8 pt-5 xl:p-8'>
 							<DotHeader title={content.noteHeading} />
-							<BulletList items={content.noteBullets} className='mt-5 xl:mt-8' bulletClassName='text-white/70' itemClassName='text-white/90' />
+							<BulletList
+								items={content.noteBullets}
+								className='mt-5 xl:mt-8'
+								bulletClassName='text-white/70'
+								itemClassName='text-white/90'
+							/>
 						</FramePanel>
 					</ScrollReveal>
 
@@ -511,11 +512,18 @@ const PosterDemoSection = ({
 	category: Category;
 	content: PosterDemoSectionContent;
 }) => (
-	<div className='bg-black pb-24'>
-		<CategoryHero id={id} theme={theme} date={category.date} intro={content.intro} extraIntro={content.extraIntro} />
+	<div className='pb-24 bg-black'>
+		<CategoryHero
+			id={id}
+			theme={theme}
+			date={category.date}
+			oldDate={category.oldDate}
+			intro={content.intro}
+			extraIntro={content.extraIntro}
+		/>
 
 		<div className='mx-auto -mt-10 max-w-[1280px] px-4 md:px-8'>
-			<div className='bg-black/90 px-0 pt-12'>
+			<div className='px-0 pt-12 bg-black/90'>
 				<ScrollReveal delay={0}>
 					<FramePanel contentClassName='p-6 md:p-8 xl:p-10'>
 						<SectionHeader title={content.formatHeading} />
@@ -523,11 +531,16 @@ const PosterDemoSection = ({
 					</FramePanel>
 				</ScrollReveal>
 
-				<div className='mt-12 grid gap-6 xl:grid-cols-2 xl:gap-8'>
+				<div className='grid gap-6 mt-12 xl:grid-cols-2 xl:gap-8'>
 					<ScrollReveal delay={0}>
 						<FramePanel className='h-full' contentClassName='p-8'>
 							<DotHeader title={content.noteHeading} />
-							<BulletList items={content.noteBullets} className='mt-8' bulletClassName='text-white/70' itemClassName='text-white/90' />
+							<BulletList
+								items={content.noteBullets}
+								className='mt-8'
+								bulletClassName='text-white/70'
+								itemClassName='text-white/90'
+							/>
 						</FramePanel>
 					</ScrollReveal>
 
@@ -589,13 +602,15 @@ const CFPPage: React.FC = () => {
 	};
 
 	return (
-		<section className='relative w-full bg-black text-white'>
+		<section className='relative w-full text-white bg-black'>
 			<div className='relative flex min-h-[100dvh] w-full flex-col items-center overflow-hidden bg-black px-6 pb-20 pt-32 md:px-20 md:pb-24 md:pt-48'>
 				<WarpBackground />
 
 				<div className='relative z-10 mt-4 flex w-full max-w-[1454px] flex-col items-center md:mt-0'>
 					<ScrollReveal>
-						<h1 className={`mb-10 text-center ${typography.scale.pageTitle} text-[#A8F020] drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] md:mb-12`}>
+						<h1
+							className={`mb-10 text-center ${typography.scale.pageTitle} text-[#A8F020] drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] md:mb-12`}
+						>
 							{content.cfpSection.title}
 						</h1>
 					</ScrollReveal>
@@ -611,8 +626,21 @@ const CFPPage: React.FC = () => {
 										key={item.title}
 										className={`flex h-full min-h-[112px] w-full max-w-[28rem] flex-col items-center justify-start rounded-none bg-white/5 px-3 py-4 text-center sm:max-w-none xl:bg-transparent xl:px-6 xl:py-0 ${index < content.cfpSection.heroTimelineItems.length - 1 ? 'xl:border-r xl:border-white/10' : ''}`}
 									>
-										<p className={`${typography.scale.sectionEyebrow} text-[#A8F020]`}>{item.title}</p>
-										<p className={`mt-[14px] ${typography.scale.deadlineValue} text-white`}>{item.date}</p>
+										<p className={`${typography.scale.sectionEyebrow} text-[#A8F020]`}>
+											{item.title}
+											{item.oldDate ? (
+												<span className='ms-2 mt-1 inline-flex items-center rounded bg-[#FF5C5C]/15 px-2 py-0.5 font-pixel text-[12px] font-bold tracking-[0.1em] text-[#FF6B6B]'>
+													{language === 'zh' ? '已延期' : 'EXTENDED'}
+												</span>
+											) : null}
+										</p>
+
+										<p className={`mt-[14px] ${typography.scale.deadlineValue} text-white`}>
+											{item.oldDate ? (
+												<span className='mr-2 line-through text-white/40 decoration-2'>{item.oldDate}</span>
+											) : null}
+											{item.date}
+										</p>
 										<p className={`mt-2 ${typography.scale.deadlineMeta} text-white/50`}>{item.subtitle}</p>
 									</div>
 								))}
@@ -621,7 +649,7 @@ const CFPPage: React.FC = () => {
 
 						<button
 							onClick={() => scrollToSection('#papers')}
-							className='group mt-16 flex cursor-pointer flex-col items-center gap-2 transition-all hover:scale-105'
+							className='flex flex-col items-center gap-2 mt-16 transition-all cursor-pointer group hover:scale-105'
 							aria-label='Scroll to Paper Section'
 							type='button'
 						>
@@ -641,14 +669,15 @@ const CFPPage: React.FC = () => {
 
 			<ConstellationMapSection language={language} />
 
-			{paperCategory && paperContent ? <PaperSection category={paperCategory} content={paperContent} theme={categoryThemes.papers} /> : null}
+			{paperCategory && paperContent ? (
+				<PaperSection category={paperCategory} content={paperContent} theme={categoryThemes.papers} />
+			) : null}
 			{posterCategory && posterContent ? (
 				<PosterDemoSection id='posters' theme={categoryThemes.posters} category={posterCategory} content={posterContent} />
 			) : null}
 			{demoCategory && demoContent ? (
 				<PosterDemoSection id='demos' theme={categoryThemes.demos} category={demoCategory} content={demoContent} />
 			) : null}
-
 
 			{showBackToTop ? (
 				<button

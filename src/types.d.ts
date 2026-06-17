@@ -65,6 +65,7 @@ declare interface NewsItem {
 	place: string; // From Location
 	image: string; // From Headphoto
 	link: string; // From Link
+	linkLabel?: string; // Optional CTA label for the link button (static announcements)
 }
 
 declare interface PublicationItem {

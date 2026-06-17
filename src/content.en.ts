@@ -23,7 +23,7 @@ export const CONTENT_EN = {
 	},
 	submissionDeadline: {
 		title: 'SUBMISSION DEADLINE',
-		date: '2026/6/18 Thu. 23:59 (GMT+8)',
+		date: '2026/6/23 Tue. 23:59 (GMT+8)',
 		buttonText: 'SUBMIT NOW',
 	},
 	theme: {
@@ -37,12 +37,12 @@ export const CONTENT_EN = {
 		subtitle: 'SUBMISSION INFO',
 		topicsTitle: 'Conference Topics',
 		importantDatesTitle: 'Important Date',
-		heroDeadlineNote: 'Submission deadline: 2026/06/18 23:59 (GMT+8)',
+		heroDeadlineNote: 'Submission deadline: 2026/06/23 23:59 (GMT+8)',
 		heroTimelineItems: [
-			{ title: 'DEADLINE', date: '06.18', subtitle: 'Submission deadline' },
-			{ title: 'NOTIFICATION', date: '07.21', subtitle: 'Review results announced' },
-			{ title: 'CAMERA-READY DEADLINE', date: '07.27', subtitle: 'Final camera-ready due' },
-			{ title: 'CONFERENCE', date: '08.05-06', subtitle: 'Conference dates' },
+			{ title: 'DEADLINE', date: '06.23', oldDate: '06.18', subtitle: 'Submission deadline' },
+			{ title: 'NOTIFICATION', date: '07.21', oldDate: '', subtitle: 'Review results announced' },
+			{ title: 'CAMERA-READY DEADLINE', date: '07.27', oldDate: '', subtitle: 'Final camera-ready due' },
+			{ title: 'CONFERENCE', date: '08.05-06', oldDate: '', subtitle: 'Conference dates' },
 		],
 		categories: [
 			{
