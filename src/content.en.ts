@@ -325,8 +325,8 @@ export const CONTENT_EN = {
 					note: 'Detailed schedule will be announced soon.',
 				},
 				venues: [
-					{ ...CONTENT_ZH.venueSection.days[0].venues[0], title: '5F Hall [Syntrend Creative Park]', addressLabel: 'Address', venueLabel: 'Venue', venueName: '5F Hall hosts international keynote talks.' },
-					{ ...CONTENT_ZH.venueSection.days[0].venues[1], title: '12F Multi-Function Hall [Syntrend Creative Park]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Interactive night market, snacks, and Live Coding performances.' },
+					{ ...CONTENT_ZH.venueSection.days[0].venues[0], title: '5F CLAPPER STUDIO [Syntrend Creative Park]', addressLabel: 'Address', venueLabel: 'Venue', venueName: '5F CLAPPER STUDIO hosts international keynote talks.' },
+					{ ...CONTENT_ZH.venueSection.days[0].venues[1], title: '12F SYNTREND SHOW [Syntrend Creative Park]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Interactive night market, snacks, and Live Coding performances.' },
 				],
 				travelPanels: [
 					{ title: 'Public Transportation', items: [{ title: 'MRT', lines: ['Bannan Line / Zhongxiao Xinsheng Station Exit 1, about a 3-minute walk', 'Zhonghe-Xinlu Line / Zhongxiao Xinsheng Station Exit 1, about a 3-minute walk'] }, { title: 'Bus', lines: ['Multiple routes stop near Syntrend Creative Park and Guanghua Market'] }] },
@@ -337,8 +337,8 @@ export const CONTENT_EN = {
 				...CONTENT_ZH.venueSection.days[1],
 				heroTitle: '8/6(Thu): Annual Conference',
 				heroSubtitle: 'TAICHI annual conference',
-				highlight: { label: 'Venue', venue: 'National Taipei University of Technology', details: ['Paper presentations and forum sessions'], note: 'Detailed agenda and room allocation will be announced soon.' },
-				venues: [{ ...CONTENT_ZH.venueSection.days[1].venues[0], title: 'International Lecture Hall [National Taipei University of Technology]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Paper presentations and talks.' }],
+				highlight: { label: 'Venue', venue: 'NTUT, Pioneer International R&D Building', details: ['Paper presentations and forum sessions'], note: 'Detailed agenda and room allocation will be announced soon.' },
+				venues: [{ ...CONTENT_ZH.venueSection.days[1].venues[0], title: 'International Conference Hall [Pioneer International R&D Building, NTUT]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Paper presentations and talks.' }],
 				travelPanels: [
 					{ title: 'Public Transportation', items: [{ title: 'MRT', lines: ['Bannan Line / Zhongxiao Xinsheng Station Exit 4, about a 5-minute walk', 'Transfer from Wenhu Line at Zhongxiao Fuxing and continue on foot or by bus'] }, { title: 'HSR / TRA', lines: ['From Taipei Main Station, transfer to the Bannan Line and exit at Zhongxiao Xinsheng'] }, { title: 'Bus', lines: ['Multiple routes stop near Zhengyi Post Office and NTUT'] }] },
 					{ title: 'Driving', items: [{ title: 'Parking', lines: ['Parking lots around NTUT', 'Jianguo elevated roadway parking', 'Street parking near the campus'] }], calloutTitle: 'Recommendation', callout: 'Parking near the campus is limited. Consider arriving early or taking the MRT.' },
