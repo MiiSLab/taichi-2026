@@ -6,10 +6,14 @@ export default {
 	theme: {
 		extend: {
 			colors: {
+				// Brand tokens — driven by the CSS channel vars in styles.css
+				// (.site-theme). Override those vars (.palette-preview) to recolour.
+				primary: 'rgb(var(--brand-primary) / <alpha-value>)',
+				secondary: 'rgb(var(--brand-secondary) / <alpha-value>)',
 				'lab-orange': '#FE5945',
 				'lab-white': '#F0F0F0',
 				'lab-dark': '#222222',
-				'lab-lime': '#a8f020',
+				'lab-lime': 'rgb(var(--brand-primary) / <alpha-value>)',
 				'lab-pink': '#ff0033',
 				'lab-black': '#050505',
 			},

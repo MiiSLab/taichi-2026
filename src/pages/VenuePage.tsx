@@ -31,7 +31,7 @@ const TimelineItem = ({
 	>
 		<span
 			className={`min-h-[24px] w-full text-center font-mono text-[16px] font-bold leading-6 transition-all duration-300 ${
-				highlighted ? 'scale-110 text-[#A8F020]' : 'text-[#D9D9D9]/70'
+				highlighted ? 'scale-110 text-primary' : 'text-[#D9D9D9]/70'
 			}`}
 		>
 			{label}
@@ -40,14 +40,14 @@ const TimelineItem = ({
 			<span
 				className={`size-[15px] rounded-full border transition-all duration-300 ${
 					highlighted
-						? 'scale-[1.3] border-[#A8F020] bg-[#A8F020] shadow-[0_0_18px_rgba(168,240,32,0.7)]'
+						? 'scale-[1.3] border-primary bg-primary shadow-[0_0_18px_rgba(168,240,32,0.7)]'
 						: 'border-[#D9D9D9]/60 bg-[#D9D9D9]'
 				}`}
 			/>
 		</span>
 		<span
 			className={`mt-3 min-h-[48px] w-full whitespace-pre-line text-center font-mono text-[14px] font-bold leading-6 transition-colors duration-300 ${
-				highlighted ? 'text-[#A8F020]' : 'text-[#D9D9D9]/70'
+				highlighted ? 'text-primary' : 'text-[#D9D9D9]/70'
 			}`}
 		>
 			{sublabel}
@@ -159,7 +159,7 @@ const VenuePage: React.FC = () => {
 									<div className='relative mx-auto hidden w-full max-w-[958px] md:block'>
 										<div className='absolute left-[24.5px] top-[43px] h-px w-[875.5px] bg-white/30' />
 										<div
-											className='absolute left-[24.5px] top-[43px] h-px bg-[#A8F020] transition-all duration-300'
+											className='absolute left-[24.5px] top-[43px] h-px bg-primary transition-all duration-300'
 											style={{ width: hoveredTimelineKey === 'preEvent' ? '250px' : '0px' }}
 										/>
 
@@ -208,7 +208,7 @@ const VenuePage: React.FC = () => {
 									<h2 className='ds-section-title mb-6 text-[2rem] md:text-[2.5rem] md:leading-[1.5]'>
 										{day.heroTitle}
 									</h2>
-									<p className='mb-10 font-mono text-base font-bold text-[#a8f020] md:text-[1.55rem] md:leading-9'>
+									<p className='mb-10 font-mono text-base font-bold text-primary md:text-[1.55rem] md:leading-9'>
 										{day.heroSubtitle}
 									</p>
 									<ScrollReveal delay={40} className='max-w-[590px]'>
@@ -280,7 +280,7 @@ const VenuePage: React.FC = () => {
 									{day.travelPanels.map((panel, index) => (
 										<ScrollReveal key={`${day.id}-${panel.title}`} delay={index * 90}>
 											<div className='ds-surface-soft h-full px-6 py-6 md:px-[41px] md:py-[41px]'>
-												<h3 className='font-mono text-xl font-bold text-[#a8f020] md:text-2xl'>{panel.title}</h3>
+												<h3 className='font-mono text-xl font-bold text-primary md:text-2xl'>{panel.title}</h3>
 												<div className='mt-8 space-y-8'>
 													{panel.items.map(item => (
 														<div key={`${panel.title}-${item.title}`}>
@@ -294,8 +294,8 @@ const VenuePage: React.FC = () => {
 													))}
 
 													{panel.callout && (
-														<div className='rounded-[10px] border-l-4 border-[#a8f020] bg-black/40 px-6 py-5'>
-															<p className='mb-3 font-mono text-sm font-bold text-[#a8f020]'>{panel.calloutTitle}</p>
+														<div className='rounded-[10px] border-l-4 border-primary bg-black/40 px-6 py-5'>
+															<p className='mb-3 font-mono text-sm font-bold text-primary'>{panel.calloutTitle}</p>
 															<p className={`${typography.scale.body} text-white/80`}>{panel.callout}</p>
 														</div>
 													)}

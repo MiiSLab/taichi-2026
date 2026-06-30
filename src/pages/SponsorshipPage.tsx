@@ -10,7 +10,7 @@ import { useSEO } from '../hooks/useSEO';
 // such as "✓（30 sec）".
 const highlightMarkers = (text: string) =>
 	text.split(/(✓|—)/).map((token, i) => {
-		if (token === '✓') return <span key={i} className='text-[#A8F020]'>✓</span>;
+		if (token === '✓') return <span key={i} className='text-primary'>✓</span>;
 		if (token === '—') return <span key={i} className='text-white/25'>—</span>;
 		return <React.Fragment key={i}>{token}</React.Fragment>;
 	});
@@ -62,17 +62,17 @@ const SponsorshipPage: React.FC = () => {
 					{/* Sponsorship plans comparison table */}
 					<ScrollReveal delay={220}>
 						<div className='mt-12'>
-							<h3 className={`mb-3 ${typography.scale.sectionTitle} text-[#A8F020]`}>{section.plansTitle}</h3>
+							<h3 className={`mb-3 ${typography.scale.sectionTitle} text-primary`}>{section.plansTitle}</h3>
 							<p className={`mb-6 max-w-3xl ${typography.scale.body} text-white/75`}>{section.plansIntro}</p>
 							<div className='overflow-x-auto ds-surface-panel'>
 								<table className='w-full min-w-[680px] border-collapse text-left'>
 									<thead>
-										<tr className='border-b border-[#A8F020]/40'>
+										<tr className='border-b border-primary/40'>
 											<th className='p-4 ds-section-kicker' />
 											{section.tierNames.map((tier) => (
 												<th
 													key={tier}
-													className='p-4 text-center font-dela text-[18px] leading-tight text-[#A8F020]'
+													className='p-4 text-center font-dela text-[18px] leading-tight text-primary'
 												>
 													{tier}
 												</th>
@@ -104,11 +104,11 @@ const SponsorshipPage: React.FC = () => {
 					{/* Sponsorship process */}
 					<ScrollReveal delay={340}>
 						<div className='mt-12'>
-							<h3 className={`mb-6 ${typography.scale.sectionTitle} text-[#A8F020]`}>{section.processTitle}</h3>
+							<h3 className={`mb-6 ${typography.scale.sectionTitle} text-primary`}>{section.processTitle}</h3>
 							<div className='space-y-4'>
 								{section.processSteps.map((step, i) => (
 									<div key={i} className='px-6 py-6 ds-surface-panel md:px-8'>
-										<h4 className='mb-3 font-roboto text-[18px] font-bold text-[#A8F020]'>{step.title}</h4>
+										<h4 className='mb-3 font-roboto text-[18px] font-bold text-primary'>{step.title}</h4>
 										<div className='space-y-1.5'>
 											{step.body.map((line, li) => (
 												<p key={li} className={`${typography.scale.body} text-white/80 [overflow-wrap:anywhere]`}>
@@ -129,7 +129,7 @@ const SponsorshipPage: React.FC = () => {
 							<ul className='space-y-2.5'>
 								{section.plansNotes.map((note, i) => (
 									<li key={i} className={`flex items-start gap-3 ${typography.scale.body} text-white/80`}>
-										<span className='mt-[2px] font-bold text-[#A8F020]'>•</span>
+										<span className='mt-[2px] font-bold text-primary'>•</span>
 										<span>{note}</span>
 									</li>
 								))}
@@ -162,7 +162,7 @@ const SponsorshipPage: React.FC = () => {
 							<p className={`${typography.scale.body} text-white/75`}>{section.contactText}</p>
 							<a
 								href={`mailto:${section.contactEmail}`}
-								className='mt-2 inline-block font-mono text-[18px] font-bold text-[#A8F020] transition-colors hover:text-white hover:underline'
+								className='mt-2 inline-block font-mono text-[18px] font-bold text-primary transition-colors hover:text-white hover:underline'
 							>
 								{section.contactEmail}
 							</a>

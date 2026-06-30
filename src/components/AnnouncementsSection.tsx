@@ -31,7 +31,7 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3 }
 			<div className='relative z-10 mx-auto w-full max-w-[1280px]'>
 				<ScrollReveal>
 					<p className='text-center ds-section-kicker'>{content.newsSection.subtitle}</p>
-					<h2 className={`mt-3 text-center ${typography.scale.sectionTitle} text-[#A8F020]`}>{content.newsSection.title}</h2>
+					<h2 className={`mt-3 text-center ${typography.scale.sectionTitle} text-primary`}>{content.newsSection.title}</h2>
 				</ScrollReveal>
 
 				<div className={`mt-12 grid grid-cols-1 gap-6 md:mt-16 xl:gap-8 ${items.length > 1 ? 'md:grid-cols-2' : 'md:max-w-2xl md:mx-auto'}`}>
@@ -40,7 +40,7 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3 }
 							<FramePanel className='h-full' contentClassName='flex h-full flex-col p-6 md:p-8'>
 								<div className='flex items-start justify-between gap-4'>
 									{item.subtitle ? (
-										<span className={`${typography.scale.sectionEyebrow} text-[#A8F020]`}>{item.subtitle}</span>
+										<span className={`${typography.scale.sectionEyebrow} text-primary`}>{item.subtitle}</span>
 									) : (
 										<span />
 									)}
@@ -66,7 +66,7 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3 }
 										href={item.link}
 										target='_blank'
 										rel='noreferrer'
-										className='group/btn mt-auto inline-flex w-fit items-center gap-2 rounded border border-[#A8F020]/60 bg-[#A8F020]/10 px-5 py-2.5 font-pixel text-[14px] tracking-[0.08em] text-[#A8F020] transition-colors hover:bg-[#A8F020] hover:text-black'
+										className='group/btn mt-auto inline-flex w-fit items-center gap-2 rounded border border-primary/60 bg-primary/10 px-5 py-2.5 font-pixel text-[14px] tracking-[0.08em] text-primary transition-colors hover:bg-primary hover:text-black'
 									>
 										{item.linkLabel || content.newsSection.readMore}
 										<ArrowUpRight className='size-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5' strokeWidth={2.5} />

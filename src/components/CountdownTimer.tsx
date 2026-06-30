@@ -48,7 +48,7 @@ const CountdownTimer: React.FC<Props> = ({
 
 	const containerScale =
 		variant === 'cfpHero'
-			? `${typography.pattern.countdownHeroValue} text-[#A8F020] drop-shadow-[0_0_28px_rgba(168,240,32,0.55)]`
+			? `${typography.pattern.countdownHeroValue} text-primary drop-shadow-[0_0_28px_rgba(168,240,32,0.55)]`
 			: small
 				? 'text-4xl md:text-5xl lg:text-5xl drop-shadow-[0_0_10px_rgba(255,0,102,0.6)]'
 				: `${typography.pattern.countdownDefaultValue} drop-shadow-[0_0_20px_rgba(255,0,102,0.8)]`;

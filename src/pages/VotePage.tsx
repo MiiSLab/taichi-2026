@@ -78,7 +78,7 @@ function PosterCard3D({
 			</mesh>
 			{showVoteBadge ? (
 				<Html position={[0.8, 1.3, 0.1]} center>
-					<div className='rounded-full border border-[#A8F020] bg-black/80 px-2 py-0.5 font-mono text-[10px] text-[#A8F020]'>
+					<div className='rounded-full border border-primary bg-black/80 px-2 py-0.5 font-mono text-[10px] text-primary'>
 						{poster.voteCount}
 					</div>
 				</Html>
@@ -124,13 +124,13 @@ function DesktopPosterScene({
 function PosterMetaBar({ poster, language }: { poster: MockPoster; language: 'zh' | 'en' }) {
 	return (
 		<div className='mt-4 flex flex-wrap items-center gap-3 border-y border-white/10 py-3'>
-			<p className='font-mono text-[11px] uppercase tracking-[0.22em] text-[#A8F020]'>{poster.id.replace('poster-', 'Poster ')}</p>
-			<span className='rounded border border-[#A8F020]/30 bg-[#A8F020]/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-[#A8F020]'>
+			<p className='font-mono text-[11px] uppercase tracking-[0.22em] text-primary'>{poster.id.replace('poster-', 'Poster ')}</p>
+			<span className='rounded border border-primary/30 bg-primary/10 px-2 py-0.5 font-mono text-[10px] uppercase tracking-[0.2em] text-primary'>
 				{poster.theme}
 			</span>
 			<div className='ml-auto flex items-center gap-2 font-mono text-[10px] uppercase tracking-[0.2em] text-white/55'>
 				<span>{language === 'zh' ? '當前票數' : 'Current Votes'}</span>
-				<span className='font-pixel text-2xl leading-none text-[#A8F020]'>{poster.voteCount}</span>
+				<span className='font-pixel text-2xl leading-none text-primary'>{poster.voteCount}</span>
 			</div>
 		</div>
 	);
@@ -161,13 +161,13 @@ function PosterDetailModal({
 				animate={{ opacity: 1, y: 0, scale: 1 }}
 				exit={{ opacity: 0, y: 24, scale: 0.98 }}
 				transition={{ type: 'spring', damping: 24, stiffness: 240 }}
-				className={`relative flex w-full overflow-hidden border border-[#A8F020]/30 bg-[rgba(5,5,8,0.96)] shadow-[0_0_80px_rgba(0,0,0,0.7)] ${isDesktop ? 'max-w-5xl flex-row' : 'max-h-[92vh] max-w-xl flex-col'
+				className={`relative flex w-full overflow-hidden border border-primary/30 bg-[rgba(5,5,8,0.96)] shadow-[0_0_80px_rgba(0,0,0,0.7)] ${isDesktop ? 'max-w-5xl flex-row' : 'max-h-[92vh] max-w-xl flex-col'
 					}`}
 			>
 				<button
 					type='button'
 					onClick={onClose}
-					className='absolute right-4 top-4 z-10 rounded-full border border-white/12 bg-black/45 p-2 text-white/70 transition-colors hover:border-[#A8F020]/40 hover:text-white'
+					className='absolute right-4 top-4 z-10 rounded-full border border-white/12 bg-black/45 p-2 text-white/70 transition-colors hover:border-primary/40 hover:text-white'
 				>
 					<X size={20} />
 				</button>
@@ -204,7 +204,7 @@ function PosterDetailModal({
 						<button
 							type='button'
 							onClick={onClose}
-							className='mt-4 w-full border border-white/20 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white transition-all hover:border-[#A8F020] hover:bg-[#A8F020]/10 hover:text-[#A8F020]'
+							className='mt-4 w-full border border-white/20 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white transition-all hover:border-primary hover:bg-primary/10 hover:text-primary'
 						>
 							{language === 'zh' ? '關閉' : 'Close'}
 						</button>
@@ -233,7 +233,7 @@ function PosterImageViewer({
 			<button
 				type='button'
 				onClick={onClose}
-				className='absolute right-4 top-4 z-10 rounded-full border border-white/12 bg-black/45 p-2 text-white/70 transition-colors hover:border-[#A8F020]/40 hover:text-white'
+				className='absolute right-4 top-4 z-10 rounded-full border border-white/12 bg-black/45 p-2 text-white/70 transition-colors hover:border-primary/40 hover:text-white'
 			>
 				<X size={20} />
 			</button>
@@ -250,8 +250,8 @@ function PosterImageViewer({
 function GalleryLoader() {
 	return (
 		<div className='flex h-full w-full flex-col items-center justify-center gap-4 bg-[#050505]'>
-			<Loader2 className='animate-spin text-[#A8F020]' size={48} />
-			<p className='animate-pulse font-mono text-xs text-[#A8F020]'>INITIALIZING POSTER GALAXY...</p>
+			<Loader2 className='animate-spin text-primary' size={48} />
+			<p className='animate-pulse font-mono text-xs text-primary'>INITIALIZING POSTER GALAXY...</p>
 		</div>
 	);
 }
@@ -331,7 +331,7 @@ function MobilePosterGallery({
 			<div className='mx-auto flex w-full max-w-6xl flex-col gap-6'>
 				<div className='flex items-end justify-between gap-4'>
 					<div>
-						<p className='font-mono text-[10px] uppercase tracking-[0.24em] text-[#A8F020]'>
+						<p className='font-mono text-[10px] uppercase tracking-[0.24em] text-primary'>
 							{language === 'zh' ? 'Mobile Poster Gallery' : 'Mobile Poster Gallery'}
 						</p>
 						<h2 className='mt-2 font-pixel text-[26px] uppercase tracking-[0.12em] text-white'>
@@ -360,7 +360,7 @@ function MobilePosterGallery({
 								type='button'
 								onClick={() => scrollToPoster(poster.id)}
 								className={`rounded-full border px-3 py-1 font-mono text-[11px] tracking-[0.14em] transition-colors ${selectedPoster?.id === poster.id
-									? 'border-[#A8F020]/60 bg-[#A8F020]/12 text-[#A8F020]'
+									? 'border-primary/60 bg-primary/12 text-primary'
 									: 'border-white/10 bg-black/45 text-white/58'
 									}`}
 							>
@@ -385,20 +385,20 @@ function MobilePosterGallery({
 									whileTap={{ scale: 0.98 }}
 									onClick={() => onSelectPoster(poster)}
 									className={`snap-center overflow-hidden border bg-[rgba(10,10,12,0.96)] text-left shadow-[0_25px_60px_rgba(0,0,0,0.45)] transition-all ${isSelected
-										? 'w-[82vw] max-w-[21rem] -translate-y-1 rotate-0 border-[#A8F020]/55'
+										? 'w-[82vw] max-w-[21rem] -translate-y-1 rotate-0 border-primary/55'
 										: 'w-[72vw] max-w-[18rem] rotate-[-2deg] border-white/12'
 										}`}
 								>
 									<div className='relative'>
 										<img src={posterImageUrl} alt={poster.title} className='aspect-[2/3] w-full object-cover' />
 										<div className='absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black via-black/45 to-transparent' />
-										<div className='absolute right-3 top-3 rounded-full border border-[#A8F020]/70 bg-black/75 px-2 py-1 font-mono text-[10px] text-[#A8F020]'>
+										<div className='absolute right-3 top-3 rounded-full border border-primary/70 bg-black/75 px-2 py-1 font-mono text-[10px] text-primary'>
 											{poster.voteCount}
 										</div>
 									</div>
 									<div className='space-y-3 p-4'>
 										<div className='flex items-center justify-between gap-3'>
-											<p className='font-mono text-[10px] uppercase tracking-[0.22em] text-[#A8F020]'>{poster.id.replace('poster-', 'Poster ')}</p>
+											<p className='font-mono text-[10px] uppercase tracking-[0.22em] text-primary'>{poster.id.replace('poster-', 'Poster ')}</p>
 											<span className='rounded border border-white/10 px-2 py-1 font-mono text-[10px] uppercase tracking-[0.18em] text-white/55'>
 												{poster.theme}
 											</span>
@@ -452,8 +452,8 @@ const VotePage: React.FC = () => {
 				<WarpBackground />
 				<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.18),transparent_42%),radial-gradient(circle_at_80%_20%,rgba(118,215,255,0.14),transparent_26%)]' />
 				<ScrollReveal className='relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center gap-8'>
-					<h1 className={`text-center ${typography.scale.pageTitle} text-[#A8F020] drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]`}>Vote</h1>
-					<div className='inline-flex items-center gap-3 border border-[#A8F020]/30 bg-[#A8F020]/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-[#A8F020]'>
+					<h1 className={`text-center ${typography.scale.pageTitle} text-primary drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]`}>Vote</h1>
+					<div className='inline-flex items-center gap-3 border border-primary/30 bg-primary/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-primary'>
 						<span>COMING SOON</span>
 					</div>
 					<p className={`max-w-3xl text-center ${typography.scale.bodyLg} text-white/72`}>

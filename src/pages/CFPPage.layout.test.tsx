@@ -15,7 +15,7 @@ test('cfp page keeps shared hero structure and typography tokens wired in', () =
 	assert.doesNotMatch(source, /'break-all'/);
 	assert.match(source, /import FramePanel from '\.\.\/components\/FramePanel'/);
 	assert.match(source, /import \{ panelFrame \} from '\.\.\/design-system\/panel'/);
-	assert.match(source, /border-transparent bg-transparent md:border-\[#A8F020\]\/40 md:bg-black\/60/);
+	assert.match(source, /border-transparent bg-transparent md:border-primary\/40 md:bg-black\/60/);
 	assert.match(source, /cornerClassName='hidden md:block'/);
 	assert.match(source, /import \{ typography \} from '\.\.\/design-system\/typography'/);
 	assert.match(source, /typography\.scale\.pageTitle/);
@@ -24,7 +24,7 @@ test('cfp page keeps shared hero structure and typography tokens wired in', () =
 	assert.match(source, /typography\.scale\.deadlineMeta/);
 	assert.match(source, /typography\.scale\.body/);
 	assert.match(source, /panelFrame\.sectionDivider/);
-	assert.match(source, /typography\.scale\.pageTitle\} text-\[#A8F020\]/);
+	assert.match(source, /typography\.scale\.pageTitle\} text-primary/);
 	assert.match(source, /content\.cfpSection\.importantDatesTitle/);
 	assert.match(source, /flex h-full min-h-\[112px\] w-full max-w-\[28rem\] flex-col items-center justify-start/);
 	assert.match(source, /<ConstellationMapSection language=\{language\} \/>/);

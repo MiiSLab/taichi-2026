@@ -42,7 +42,7 @@ const HomeSections: React.FC = () => {
 							</h2>
 						</ScrollReveal>
 						<ScrollReveal delay={140}>
-							<p className='mt-6 max-w-[42rem] text-[1.15rem] font-medium leading-relaxed text-[#A8F020] sm:text-[1.28rem] md:text-[1.45rem]'>
+							<p className='mt-6 max-w-[42rem] text-[1.15rem] font-medium leading-relaxed text-primary sm:text-[1.28rem] md:text-[1.45rem]'>
 								{content.theme.slogan}
 							</p>
 						</ScrollReveal>
@@ -68,7 +68,7 @@ const HomeSections: React.FC = () => {
 									{language === 'zh' ? '投稿截止日期：' : 'Submission Deadline: '}
 									<span className='mr-2 line-through decoration-2 text-white/40'>2026/06/18</span>
 									<span className='mr-2 text-white'>2026/06/23 23:59 (GMT+8)</span>
-									<span className='inline-flex items-center rounded border border-[#FF5C5C]/60 bg-[#FF5C5C]/15 px-2 py-0.5 align-middle font-pixel text-[12px] font-bold tracking-[0.1em] text-[#FF6B6B]'>
+									<span className='inline-flex items-center rounded border border-secondary/60 bg-secondary/15 px-2 py-0.5 align-middle font-pixel text-[12px] font-bold tracking-[0.1em] text-secondary'>
 										{language === 'zh' ? '已延期' : 'EXTENDED'}
 									</span>
 								</p>
@@ -107,10 +107,10 @@ const HomeSections: React.FC = () => {
 									<div
 										className={`flex h-full min-h-[112px] w-full max-w-[28rem] flex-col items-center justify-start rounded-none bg-white/5 px-3 py-4 text-center sm:max-w-none xl:bg-transparent xl:px-6 xl:py-0 ${index < content.cfpSection.heroTimelineItems.length - 1 ? 'xl:border-r xl:border-white/10' : ''}`}
 									>
-										<p className={`${typography.scale.sectionEyebrow} text-[#A8F020]`}>
+										<p className={`${typography.scale.sectionEyebrow} text-primary`}>
 											{item.title}
 											{item.oldDate ? (
-												<span className='ms-2 mt-1 inline-flex items-center rounded bg-[#FF5C5C]/15 px-2 py-0.5 font-pixel text-[11px] font-bold tracking-[0.1em] text-[#FF6B6B]'>
+												<span className='ms-2 mt-1 inline-flex items-center rounded bg-secondary/15 px-2 py-0.5 font-pixel text-[11px] font-bold tracking-[0.1em] text-secondary'>
 													{language === 'zh' ? '已延期' : 'EXTENDED'}
 												</span>
 											) : null}

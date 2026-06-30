@@ -152,11 +152,11 @@ const MemberCard = ({
 				className={`flex min-w-0 flex-1 flex-col ${isHero ? 'items-center text-center md:items-start md:text-left' : isFeature ? 'items-center text-center' : 'items-start'
 					}`}
 			>
-				<h3 className={`font-roboto font-bold ${isRow ? 'transition-colors duration-200 group-hover:text-[#A8F020]' : 'text-white'} ${primaryNameClasses}`}>
+				<h3 className={`font-roboto font-bold ${isRow ? 'transition-colors duration-200 group-hover:text-primary' : 'text-white'} ${primaryNameClasses}`}>
 					{name.primary}
 				</h3>
 				{name.secondary && (
-					<p className={`mt-1 font-roboto text-[#A8F020] ${isRow ? 'transition-opacity duration-200 group-hover:opacity-100' : ''} ${secondaryNameClasses}`}>
+					<p className={`mt-1 font-roboto text-primary ${isRow ? 'transition-opacity duration-200 group-hover:opacity-100' : ''} ${secondaryNameClasses}`}>
 						{name.secondary}
 					</p>
 				)}
@@ -231,7 +231,7 @@ const SectionHeader = ({ normalizedType }: { normalizedType: string }) => {
 	const displayTitle = language === 'zh' ? titleData?.zh || normalizedType : toTitleCase(titleData?.en || normalizedType);
 
 	return (
-		<div className={`mb-5 ${panelFrame.sectionDivider} border-[#A8F020] text-center`}>
+		<div className={`mb-5 ${panelFrame.sectionDivider} border-primary text-center`}>
 			<h2 className='ds-panel-subheading text-[24px] leading-[32px] text-[#CCFF00]'>
 				{displayTitle}
 			</h2>

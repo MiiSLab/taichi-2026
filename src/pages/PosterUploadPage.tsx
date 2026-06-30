@@ -117,7 +117,7 @@ const PosterUploadPage: React.FC = () => {
 
 									<div className='poster-upload-readout border-b border-white/10 pb-4'>
 										<p className='poster-upload-label'>Selected Theme</p>
-										<p className='mt-3 font-dela text-lg tracking-[0.08em] text-[#A8F020]'>{selectedThemeMeta.label}</p>
+										<p className='mt-3 font-dela text-lg tracking-[0.08em] text-primary'>{selectedThemeMeta.label}</p>
 										<p className={`mt-2 ${typography.scale.label} text-white/64`}>{selectedThemeMeta.zhLabel}</p>
 									</div>
 								</div>
@@ -196,9 +196,9 @@ const PosterUploadPage: React.FC = () => {
 											</div>
 										) : (
 											<div className='flex flex-col items-center justify-center gap-3 text-center text-white/72'>
-												<ImagePlus size={32} className='text-[#A8F020]' />
+												<ImagePlus size={32} className='text-primary' />
 												<div>
-													<p className='font-pixel text-[1.25rem] uppercase tracking-[0.08em] text-[#A8F020]'>Select image file</p>
+													<p className='font-pixel text-[1.25rem] uppercase tracking-[0.08em] text-primary'>Select image file</p>
 													<p className={`mt-2 ${typography.scale.label}`}>PNG, JPG or WEBP poster image</p>
 												</div>
 											</div>
@@ -224,9 +224,9 @@ const PosterUploadPage: React.FC = () => {
 
 								{mockSubmitted ? (
 									<div className='poster-upload-confirmation ds-surface-soft flex items-start gap-4 p-5'>
-										<CheckCircle2 className='mt-1 text-[#A8F020]' size={22} />
+										<CheckCircle2 className='mt-1 text-primary' size={22} />
 										<div>
-											<p className='font-pixel text-[1.3rem] uppercase tracking-[0.08em] text-[#A8F020]'>Submission received</p>
+											<p className='font-pixel text-[1.3rem] uppercase tracking-[0.08em] text-primary'>Submission received</p>
 											<p className={`mt-2 ${typography.scale.label} text-white/72`}>
 												{title || 'Untitled poster'} has been staged for review with theme {selectedThemeMeta.label}. This is a front-end only confirmation state.
 											</p>

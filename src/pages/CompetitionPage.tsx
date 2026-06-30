@@ -21,10 +21,10 @@ const CompetitionPage: React.FC = () => {
 				<WarpBackground />
 				<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.18),transparent_42%),radial-gradient(circle_at_80%_20%,rgba(118,215,255,0.14),transparent_26%)]' />
 				<ScrollReveal className='relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center gap-8'>
-					<h1 className={`text-center ${typography.scale.pageTitle} text-[#A8F020] drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]`}>
+					<h1 className={`text-center ${typography.scale.pageTitle} text-primary drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]`}>
 						{content.competitionSection.title}
 					</h1>
-					<div className='inline-flex items-center gap-3 border border-[#A8F020]/30 bg-[#A8F020]/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-[#A8F020]'>
+					<div className='inline-flex items-center gap-3 border border-primary/30 bg-primary/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-primary'>
 						{content.competitionSection.badge}
 					</div>
 					<p className={`max-w-3xl text-center ${typography.scale.bodyLg} text-white/72`}>

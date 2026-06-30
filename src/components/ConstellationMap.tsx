@@ -85,9 +85,28 @@ const THEME_DESCRIPTIONS: Record<string, { en: string[]; cn: string[] }> = {
 	},
 };
 
-const NEON_GREEN = '#39FF14';
-const ACCENT_GREEN = '#A8F020';
+// Brand colours for the 3D views. Three.js can't read CSS vars, so these are
+// synced from the --brand-* tokens at runtime (syncBrandColors, called from
+// ConstellationMapSection). Primary = highlights / radar, secondary = orbit
+// lines & stars. Fallbacks match the original palette.
+let NEON_GREEN = '#39FF14'; // → brand primary
+let ACCENT_GREEN = '#A8F020'; // → brand primary
+let SECONDARY_COLOR = '#f36458'; // → brand secondary
 const DARK_BG = '#050505';
+
+function rgbFromVar(name: string, fallback: string): string {
+	if (typeof document === 'undefined') return fallback;
+	const el = document.querySelector('.site-theme');
+	if (!el) return fallback;
+	const v = getComputedStyle(el).getPropertyValue(name).trim(); // e.g. "251 64 21"
+	return /^\d+\s+\d+\s+\d+$/.test(v) ? `rgb(${v.replace(/\s+/g, ', ')})` : fallback;
+}
+
+function syncBrandColors() {
+	NEON_GREEN = rgbFromVar('--brand-primary', '#39FF14');
+	ACCENT_GREEN = rgbFromVar('--brand-primary', '#A8F020');
+	SECONDARY_COLOR = rgbFromVar('--brand-secondary', '#f36458');
+}
 const INTER_FONT = 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff';
 
 
@@ -109,7 +128,7 @@ function ThemeDetailPanel({ theme, language, onClose }: { theme: string; languag
 			animate={{ opacity: 1, x: 0 }}
 			exit={{ opacity: 0, x: 80 }}
 			transition={{ type: 'spring', damping: 26, stiffness: 260 }}
-			className='fixed right-4 top-4 z-50 w-[320px] max-h-[calc(100dvh-6rem)] overflow-y-auto border border-[#A8F020]/40 bg-[rgba(5,5,8,0.94)] p-6 shadow-[0_0_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl md:right-8 md:top-1/2 md:w-[360px] md:max-h-[80vh] md:-translate-y-1/2'
+			className='fixed right-4 top-4 z-50 w-[320px] max-h-[calc(100dvh-6rem)] overflow-y-auto border border-primary/40 bg-[rgba(5,5,8,0.94)] p-6 shadow-[0_0_60px_rgba(0,0,0,0.6)] backdrop-blur-2xl md:right-8 md:top-1/2 md:w-[360px] md:max-h-[80vh] md:-translate-y-1/2'
 		>
 			<button type='button' onClick={onClose} className='absolute right-4 top-4 text-white/40 transition-colors hover:text-white'>
 				<X size={20} />
@@ -120,12 +139,12 @@ function ThemeDetailPanel({ theme, language, onClose }: { theme: string; languag
 			<h3 className='font-sans text-[22px] font-bold leading-tight tracking-tight text-white'>{title}</h3>
 			<p className={`mt-1 ${typography.scale.label} text-white/45`}>{subtitle}</p>
 
-			<div className='mt-5 h-px w-full bg-gradient-to-r from-[#A8F020]/50 via-[#A8F020]/12 to-transparent' />
+			<div className='mt-5 h-px w-full bg-gradient-to-r from-primary/50 via-primary/12 to-transparent' />
 
 			<ul className={`mt-5 space-y-3 ${typography.scale.label} text-white/78`}>
 				{bullets.map((b) => (
 					<li key={b} className='flex items-start gap-3'>
-						<span className='mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-[#A8F020]' />
+						<span className='mt-[7px] h-1.5 w-1.5 shrink-0 rounded-full bg-primary' />
 						<span>{b}</span>
 					</li>
 				))}
@@ -134,7 +153,7 @@ function ThemeDetailPanel({ theme, language, onClose }: { theme: string; languag
 			<button
 				type='button'
 				onClick={onClose}
-				className='mt-8 w-full border border-white/20 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white transition-all hover:border-[#A8F020] hover:bg-[#A8F020]/10 hover:text-[#A8F020]'
+				className='mt-8 w-full border border-white/20 py-3 font-mono text-[11px] uppercase tracking-[0.16em] text-white transition-all hover:border-primary hover:bg-primary/10 hover:text-primary'
 			>
 				{language === 'zh' ? '關閉' : 'Close'}
 			</button>
@@ -210,25 +229,25 @@ function OrbitRing({
 
 	return (
 		<group>
-			<Line points={orbitPoints} color='#f36458' lineWidth={0.5} transparent opacity={0.05} dashed dashScale={5} dashSize={0.5} gapSize={0.5} />
+			<Line points={orbitPoints} color={SECONDARY_COLOR} lineWidth={0.5} transparent opacity={0.05} dashed dashScale={5} dashSize={0.5} gapSize={0.5} />
 			<group ref={groupRef}>
 				<Line
 					points={[new THREE.Vector3(labelX, 0, labelZ), new THREE.Vector3(labelX, labelY - 0.5, labelZ)]}
-					color={isSelected ? NEON_GREEN : '#f36458'}
+					color={isSelected ? NEON_GREEN : SECONDARY_COLOR}
 					lineWidth={1}
 					transparent
 					opacity={isSelected ? 0.4 : 0.1}
 				/>
 				{trailArcs.map((pts, k) => (
-					<Line key={`arc-${k}`} points={pts} color='#f36458' lineWidth={1.2} transparent opacity={0.15} />
+					<Line key={`arc-${k}`} points={pts} color={SECONDARY_COLOR} lineWidth={1.2} transparent opacity={0.15} />
 				))}
 				<Billboard position={[labelX, labelY, labelZ]}>
 					<Html center transform distanceFactor={20}>
 						<div
 							className={`pointer-events-auto flex cursor-pointer flex-col items-center rounded-sm border px-3.5 py-2 text-center backdrop-blur-md transition-all duration-300 md:px-5 md:py-2.5 ${
 								isSelected
-									? 'scale-110 border-[#A8F020] bg-[#A8F020]/20 text-[#A8F020] shadow-[0_0_20px_rgba(168,240,32,0.25)]'
-									: 'border-[#f36458]/20 bg-black/60 text-[#f36458] hover:border-[#f36458]/50'
+									? 'scale-110 border-primary bg-primary/20 text-primary shadow-[0_0_20px_rgba(168,240,32,0.25)]'
+									: 'border-secondary/20 bg-black/60 text-secondary hover:border-secondary/50'
 							}`}
 							style={{ maxWidth: language === 'zh' ? 168 : 232 }}
 							onClick={(e) => {
@@ -243,7 +262,7 @@ function OrbitRing({
 				{particles.map((pos, k) => (
 					<mesh key={`p-${k}`} position={pos}>
 						<sphereGeometry args={[0.2, 8, 8]} />
-						<meshStandardMaterial color='#f36458' emissive='#f36458' emissiveIntensity={0.5} metalness={0.8} roughness={0.2} />
+						<meshStandardMaterial color={SECONDARY_COLOR} emissive={SECONDARY_COLOR} emissiveIntensity={0.5} metalness={0.8} roughness={0.2} />
 					</mesh>
 				))}
 			</group>
@@ -335,16 +354,16 @@ function ConstellationScene({
 			<group>
 				<mesh>
 					<sphereGeometry args={[5, 32, 32]} />
-					<meshStandardMaterial color='#f36458' emissive='#f36458' emissiveIntensity={1.5} />
+					<meshStandardMaterial color={SECONDARY_COLOR} emissive={SECONDARY_COLOR} emissiveIntensity={1.5} />
 				</mesh>
 				<Billboard position={[0, 7, 0]}>
 					<Html center transform distanceFactor={20}>
-						<span className='pointer-events-none font-pixel text-[28px] tracking-[0.12em] text-[#f36458]' style={{ whiteSpace: 'nowrap' }}>
+						<span className='pointer-events-none font-pixel text-[28px] tracking-[0.12em] text-secondary' style={{ whiteSpace: 'nowrap' }}>
 							TAICHI 2026
 						</span>
 					</Html>
 				</Billboard>
-				<pointLight intensity={3} distance={150} color='#f36458' />
+				<pointLight intensity={3} distance={150} color={SECONDARY_COLOR} />
 			</group>
 			{THEMES.map((theme, i) => {
 				const radius = 15 + i * 5;
@@ -604,13 +623,13 @@ function RadarScene({
 						<AnimatePresence mode='wait'>
 							{title ? (
 								<motion.div key={title} initial={{ opacity: 0, scale: 0.8 }} animate={{ opacity: 1, scale: 1 }} exit={{ opacity: 0, scale: 0.8 }} className='flex flex-col items-center'>
-									<h2 className='mb-4 text-2xl font-bold uppercase leading-none tracking-tighter text-[#39FF14] md:text-4xl'>{title}</h2>
+									<h2 className='mb-4 text-2xl font-bold uppercase leading-none tracking-tighter text-primary md:text-4xl'>{title}</h2>
 									<p className={`max-w-[280px] ${typography.scale.label} text-white/80 md:max-w-[320px]`}>{descText}</p>
 								</motion.div>
 							) : (
 								<motion.div initial={{ opacity: 0.2 }} animate={{ opacity: 0.4 }} className='flex flex-col items-center'>
-									<div className='mb-4 h-16 w-16 animate-spin rounded-full border-2 border-dashed border-[#39FF14]' style={{ animationDuration: '8s' }} />
-									<p className='font-mono text-[10px] uppercase tracking-[0.4em] text-[#39FF14]'>Radar Active</p>
+									<div className='mb-4 h-16 w-16 animate-spin rounded-full border-2 border-dashed border-primary' style={{ animationDuration: '8s' }} />
+									<p className='font-mono text-[10px] uppercase tracking-[0.4em] text-primary'>Radar Active</p>
 								</motion.div>
 							)}
 						</AnimatePresence>
@@ -653,7 +672,7 @@ function GridView({
 						onClick={() => onSelectTheme(isSelected ? null : theme)}
 						className={`group relative flex flex-col overflow-hidden border p-5 text-left transition-all duration-300 ${
 							isSelected
-								? 'border-[#A8F020] bg-[#A8F020]/10 shadow-[0_0_30px_rgba(168,240,32,0.15)]'
+								? 'border-primary bg-primary/10 shadow-[0_0_30px_rgba(168,240,32,0.15)]'
 								: 'border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]'
 						}`}
 						layout
@@ -662,12 +681,12 @@ function GridView({
 						transition={{ delay: i * 0.04 }}
 					>
 						{/* Index badge */}
-						<span className={`mb-3 font-pixel text-[10px] tracking-[0.2em] ${isSelected ? 'text-[#A8F020]' : 'text-white/25'}`}>
+						<span className={`mb-3 font-pixel text-[10px] tracking-[0.2em] ${isSelected ? 'text-primary' : 'text-white/25'}`}>
 							{String(i + 1).padStart(2, '0')}
 						</span>
 
 						{/* Title */}
-						<h4 className={`font-roboto text-[15px] font-bold leading-tight tracking-tight ${isSelected ? 'text-[#A8F020]' : 'text-[#f36458]'}`}>{label}</h4>
+						<h4 className={`font-roboto text-[15px] font-bold leading-tight tracking-tight ${isSelected ? 'text-primary' : 'text-secondary'}`}>{label}</h4>
 						<p className='mt-1 font-roboto text-[11px] text-white/35'>{subtitle}</p>
 
 						{/* Expandable bullets */}
@@ -680,11 +699,11 @@ function GridView({
 									transition={{ duration: 0.3 }}
 									className='overflow-hidden'
 								>
-									<div className='mt-4 h-px w-full bg-gradient-to-r from-[#A8F020]/40 to-transparent' />
+									<div className='mt-4 h-px w-full bg-gradient-to-r from-primary/40 to-transparent' />
 									<ul className='mt-3 space-y-2 font-roboto text-[12px] leading-[18px] text-white/70'>
 										{bullets.map((b) => (
 											<li key={b} className='flex items-start gap-2'>
-												<span className='mt-[5px] h-1 w-1 shrink-0 rounded-full bg-[#A8F020]' />
+												<span className='mt-[5px] h-1 w-1 shrink-0 rounded-full bg-primary' />
 												<span>{b}</span>
 											</li>
 										))}
@@ -694,7 +713,7 @@ function GridView({
 						</AnimatePresence>
 
 						{/* Decorative corner */}
-						<div className={`absolute right-0 top-0 h-8 w-8 border-b border-l ${isSelected ? 'border-[#A8F020]/30' : 'border-white/5'} transition-colors`} />
+						<div className={`absolute right-0 top-0 h-8 w-8 border-b border-l ${isSelected ? 'border-primary/30' : 'border-white/5'} transition-colors`} />
 					</motion.button>
 				);
 			})}
@@ -736,7 +755,7 @@ function ViewToggle({
 						type='button'
 						onClick={() => onChange(m.key)}
 						className={`flex items-center gap-2 rounded-full px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] transition-all ${
-							viewMode === m.key ? 'bg-[#A8F020] text-black shadow-[0_0_15px_rgba(168,240,32,0.3)]' : 'text-white/60 hover:bg-white/[0.06] hover:text-white'
+							viewMode === m.key ? 'bg-primary text-black shadow-[0_0_15px_rgba(168,240,32,0.3)]' : 'text-white/60 hover:bg-white/[0.06] hover:text-white'
 						}`}
 					>
 						{m.icon}
@@ -761,6 +780,16 @@ export default function ConstellationMapSection({ language }: ConstellationMapSe
 	const [isMobile, setIsMobile] = useState(false);
 	const [viewMode, setViewMode] = useState<ViewMode>('constellation');
 	const orbitControlsRef = useRef<any>(null);
+
+	// Keep the Three.js colours in sync with the --brand-* CSS tokens. Re-runs on
+	// every render; the palette-preview toggle bumps a tick to force a re-read.
+	const [, setPaletteTick] = useState(0);
+	useEffect(() => {
+		const onPalette = () => setPaletteTick((t) => t + 1);
+		window.addEventListener('palette-preview-changed', onPalette);
+		return () => window.removeEventListener('palette-preview-changed', onPalette);
+	}, []);
+	syncBrandColors();
 
 	const handleViewChange = (v: ViewMode) => {
 		setSelectedTheme(v === 'radar' ? (currentTheme) => currentTheme ?? THEMES[0] : null);
@@ -839,7 +868,7 @@ export default function ConstellationMapSection({ language }: ConstellationMapSe
 			<div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.08),transparent_34%),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:auto,100%_28px] opacity-60' />
 
 			{/* Title */}
-			<h3 className='relative z-10 mb-4 text-center font-dela text-[28px] tracking-[0.12em] text-[#A8F020] md:text-[40px]'>
+			<h3 className='relative z-10 mb-4 text-center font-dela text-[28px] tracking-[0.12em] text-primary md:text-[40px]'>
 				{language === 'zh' ? '研討會主題' : 'Conference Topics'}
 			</h3>
 			<p className='relative z-10 mb-6 max-w-[760px] text-center font-roboto text-[14px] leading-[22px] text-white/55 md:text-[15px] md:leading-[24px]'>

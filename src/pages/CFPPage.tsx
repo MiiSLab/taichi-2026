@@ -90,7 +90,7 @@ const parseText = (text: string) => {
 	let match;
 	let count = 0;
 	const getLinkClassName = (href: string) =>
-		`${href.startsWith('mailto:') ? 'inline-block whitespace-nowrap break-normal' : 'min-w-0 break-words [overflow-wrap:anywhere]'} text-[#F5FF33] transition-colors hover:text-[#A8F020] hover:underline`;
+		`${href.startsWith('mailto:') ? 'inline-block whitespace-nowrap break-normal' : 'min-w-0 break-words [overflow-wrap:anywhere]'} text-[#F5FF33] transition-colors hover:text-primary hover:underline`;
 
 	while ((match = regex.exec(text)) !== null) {
 		if (match.index > lastIndex) {
@@ -100,7 +100,7 @@ const parseText = (text: string) => {
 
 		if (match[1]) {
 			parts.push(
-				<strong key={`bold-highlight-${count}`} className='font-extrabold text-[#A8F020]'>
+				<strong key={`bold-highlight-${count}`} className='font-extrabold text-primary'>
 					{match[1]}
 				</strong>,
 			);
@@ -264,8 +264,8 @@ const SectionHeader = ({ title, className = '' }: { title: string; className?: s
 
 const DotHeader = ({ title }: { title: string }) => (
 	<div className='flex items-center gap-3'>
-		<div className='size-2 rounded-full bg-[#A8F020]' />
-		<h3 className='font-roboto text-[20px] font-bold leading-7 text-[#A8F020]'>{title}</h3>
+		<div className='size-2 rounded-full bg-primary' />
+		<h3 className='font-roboto text-[20px] font-bold leading-7 text-primary'>{title}</h3>
 	</div>
 );
 
@@ -314,22 +314,22 @@ const CategoryHero = ({
 
 			<div className='relative mx-auto max-w-[1280px] px-4 py-10 md:px-8 md:py-14'>
 				<div className='max-w-[592px]'>
-					<h2 className='font-dela text-[36px] leading-tight text-[#A8F020] md:text-[36px] xl:text-[48px]'>{theme.mainTitle}</h2>
-					<p className='mt-3 font-roboto text-[20px] font-bold leading-7 text-[#A8F020] sm:text-[22px] md:text-[24px] xl:text-[30px]'>
+					<h2 className='font-dela text-[36px] leading-tight text-primary md:text-[36px] xl:text-[48px]'>{theme.mainTitle}</h2>
+					<p className='mt-3 font-roboto text-[20px] font-bold leading-7 text-primary sm:text-[22px] md:text-[24px] xl:text-[30px]'>
 						{theme.accentTitle}
 					</p>
 
 					<ScrollReveal delay={40}>
 						<FramePanel
-							className='mt-8 border-transparent bg-transparent md:border-[#A8F020]/40 md:bg-black/60'
+							className='mt-8 border-transparent bg-transparent md:border-primary/40 md:bg-black/60'
 							contentClassName='px-0 py-0 md:px-8 md:py-8'
 							cornerSize={12}
 							cornerClassName='hidden md:block'
 						>
 							<div className='flex items-center gap-3'>
-								<p className='font-mono text-[14px] font-bold tracking-[0.05em] text-[#A8F020]'>{theme.submissionLabel}</p>
+								<p className='font-mono text-[14px] font-bold tracking-[0.05em] text-primary'>{theme.submissionLabel}</p>
 								{oldDate ? (
-									<span className='inline-flex w-fit items-center rounded border border-[#FF5C5C]/60 bg-[#FF5C5C]/15 px-2.5 py-1 font-pixel font-bold text-[12px] tracking-[0.12em] text-[#FF6B6B]'>
+									<span className='inline-flex w-fit items-center rounded border border-secondary/60 bg-secondary/15 px-2.5 py-1 font-pixel font-bold text-[12px] tracking-[0.12em] text-secondary'>
 										{language === 'zh' ? '⚠ 已延期 EXTENDED' : '⚠ EXTENDED'}
 									</span>
 								) : null}
@@ -369,7 +369,7 @@ const BulletList = ({
 	items,
 	className = '',
 	itemClassName = '',
-	bulletClassName = 'text-[#A8F020]',
+	bulletClassName = 'text-primary',
 }: {
 	items: string[];
 	className?: string;
@@ -609,14 +609,14 @@ const CFPPage: React.FC = () => {
 				<div className='relative z-10 mt-4 flex w-full max-w-[1454px] flex-col items-center md:mt-0'>
 					<ScrollReveal>
 						<h1
-							className={`mb-10 text-center ${typography.scale.pageTitle} text-[#A8F020] drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] md:mb-12`}
+							className={`mb-10 text-center ${typography.scale.pageTitle} text-primary drop-shadow-[0_0_15px_rgba(0,0,0,0.8)] md:mb-12`}
 						>
 							{content.cfpSection.title}
 						</h1>
 					</ScrollReveal>
 
 					<div className='mt-16 flex w-full max-w-[1453px] flex-col items-center md:mt-20' id='important-dates'>
-						<h3 className='mb-10 text-center font-dela text-[28px] tracking-[0.12em] text-[#A8F020] md:mb-12 md:text-[40px]'>
+						<h3 className='mb-10 text-center font-dela text-[28px] tracking-[0.12em] text-primary md:mb-12 md:text-[40px]'>
 							{content.cfpSection.importantDatesTitle}
 						</h3>
 						<ScrollReveal className='w-full' delay={80}>
@@ -626,10 +626,10 @@ const CFPPage: React.FC = () => {
 										key={item.title}
 										className={`flex h-full min-h-[112px] w-full max-w-[28rem] flex-col items-center justify-start rounded-none bg-white/5 px-3 py-4 text-center sm:max-w-none xl:bg-transparent xl:px-6 xl:py-0 ${index < content.cfpSection.heroTimelineItems.length - 1 ? 'xl:border-r xl:border-white/10' : ''}`}
 									>
-										<p className={`${typography.scale.sectionEyebrow} text-[#A8F020]`}>
+										<p className={`${typography.scale.sectionEyebrow} text-primary`}>
 											{item.title}
 											{item.oldDate ? (
-												<span className='ms-2 mt-1 inline-flex items-center rounded bg-[#FF5C5C]/15 px-2 py-0.5 font-pixel text-[12px] font-bold tracking-[0.1em] text-[#FF6B6B]'>
+												<span className='ms-2 mt-1 inline-flex items-center rounded bg-secondary/15 px-2 py-0.5 font-pixel text-[12px] font-bold tracking-[0.1em] text-secondary'>
 													{language === 'zh' ? '已延期' : 'EXTENDED'}
 												</span>
 											) : null}
@@ -654,11 +654,11 @@ const CFPPage: React.FC = () => {
 							type='button'
 						>
 							<div className='flex flex-col items-center animate-bounce'>
-								<span className='mb-1 font-pixel text-sm uppercase tracking-[0.3em] text-[#a8f020] drop-shadow-[0_0_15px_rgba(168,240,32,0.8)] transition-colors group-hover:text-white md:mb-2 md:text-xl'>
+								<span className='mb-1 font-pixel text-sm uppercase tracking-[0.3em] text-primary drop-shadow-[0_0_15px_rgba(168,240,32,0.8)] transition-colors group-hover:text-white md:mb-2 md:text-xl'>
 									{content.cfpSection.exploreMore}
 								</span>
 								<ChevronsDown
-									className='h-12 w-12 text-[#a8f020] drop-shadow-[0_0_20px_rgba(168,240,32,0.8)] transition-colors group-hover:text-white md:h-16 md:w-16'
+									className='h-12 w-12 text-primary drop-shadow-[0_0_20px_rgba(168,240,32,0.8)] transition-colors group-hover:text-white md:h-16 md:w-16'
 									strokeWidth={1.5}
 								/>
 							</div>
@@ -683,7 +683,7 @@ const CFPPage: React.FC = () => {
 				<button
 					type='button'
 					onClick={scrollToTop}
-					className='fixed bottom-8 right-6 z-50 inline-flex items-center gap-2 border border-[#A8F020] bg-black/85 px-4 py-3 font-pixel text-[20px] tracking-[0.08em] text-[#A8F020] transition-colors hover:bg-[rgba(168,240,32,0.16)] hover:text-white'
+					className='fixed bottom-8 right-6 z-50 inline-flex items-center gap-2 border border-primary bg-black/85 px-4 py-3 font-pixel text-[20px] tracking-[0.08em] text-primary transition-colors hover:bg-[rgba(168,240,32,0.16)] hover:text-white'
 					aria-label='Back to top'
 				>
 					<ChevronUp className='size-4' strokeWidth={2.5} />
