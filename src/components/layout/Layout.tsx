@@ -60,7 +60,11 @@ const Layout: React.FC = () => {
 					🎨 配色預覽中 · 點此關閉
 				</button>
 			)}
-			<HeroIntroOverlay />
+			{/* Skip the entry intro while previewing candidate colours — it otherwise
+			    replays on every hard reload (module flag resets on F5) and gets in the
+			    way of checking the palette. palettePreview is seeded synchronously from
+			    localStorage, so a reload-in-preview never flashes the intro. */}
+			{!palettePreview && <HeroIntroOverlay />}
 			<Navbar />
 			<main>
 				<AnimatePresence mode='wait' initial={false}>

@@ -463,18 +463,18 @@ function MobileCarousel() {
 }
 
 // ─── Mobile layout ────────────────────────────────────────────────────────────
-function MobileView() {
+function MobileView({ navH }: { navH: number }) {
   const { green, greenCh } = usePalette();
   return (
-    <div style={{ width: '100%', minHeight: '100dvh', background: '#000', overflowX: 'hidden', overflowY: 'auto', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+    <div style={{ width: '100%', minHeight: '100dvh', paddingTop: navH, boxSizing: 'border-box', background: '#000', overflowX: 'hidden', overflowY: 'auto', position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
       {/* Animated grid — behind everything */}
       <MobileGrid />
 
-      {/* Top frame strip — pinned to top of viewport */}
+      {/* Top frame strip — pinned just below the fixed navbar */}
       <img
         src={frameTopImg}
         alt=''
-        style={{ position: 'absolute', top: 0, left: 0, width: '100%', height: 'auto', pointerEvents: 'none', zIndex: 30 }}
+        style={{ position: 'absolute', top: navH, left: 0, width: '100%', height: 'auto', pointerEvents: 'none', zIndex: 30 }}
       />
 
       {/* Bottom frame strip — pinned to bottom of viewport */}
@@ -580,28 +580,31 @@ function PixelBlocks() {
 }
 
 // ─── Desktop layout (scaled Figma design) ───────────────────────────────────
-function DesktopView({ scale }: { scale: number }) {
+function DesktopView({ scale, navH }: { scale: number; navH: number }) {
   return (
     <div style={{ width: '100%', height: '100%', minHeight: '100dvh', overflowX: 'hidden', overflowY: 'auto', background: '#000' }}>
       <div style={{ position: 'relative', width: '100%', height: '100dvh', overflow: 'hidden' }}>
-        <img
-          src={frameImg}
-          alt=''
-          style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', zIndex: 30 }}
-        />
-        <div style={{
-          position: 'absolute',
-          width: DESIGN_W,
-          height: DESIGN_H,
-          left: '50%',
-          top: '50%',
-          transform: `translate(-50%, -50%) scale(${scale})`,
-          transformOrigin: 'center center',
-        }}>
-          <NewHeroPage />
-          <DesktopGrid />
-          <PixelBlocks />
-          <DesktopCharacterStrip scale={scale} />
+        {/* Everything sits in the region below the fixed navbar so the cabinet isn't clipped. */}
+        <div style={{ position: 'absolute', top: navH, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
+          <img
+            src={frameImg}
+            alt=''
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', zIndex: 30 }}
+          />
+          <div style={{
+            position: 'absolute',
+            width: DESIGN_W,
+            height: DESIGN_H,
+            left: '50%',
+            top: '50%',
+            transform: `translate(-50%, -50%) scale(${scale})`,
+            transformOrigin: 'center center',
+          }}>
+            <NewHeroPage />
+            <DesktopGrid />
+            <PixelBlocks />
+            <DesktopCharacterStrip scale={scale} />
+          </div>
         </div>
       </div>
     </div>
@@ -614,17 +617,26 @@ export default function NewArcadeHero() {
   const palette = useResolvedPalette(rootRef);
 
   const [isMobile, setIsMobile] = useState(() => window.innerWidth < MOBILE_BP);
+  const [navH, setNavH] = useState(0);
   const [scale, setScale] = useState(() => Math.min(window.innerWidth / DESIGN_W, window.innerHeight / DESIGN_H));
 
   useEffect(() => {
     const update = () => {
+      // The site navbar is position:fixed and overlays the top; reserve its height
+      // so the full arcade cabinet sits below it instead of being clipped.
+      const el = document.querySelector('.ds-nav-shell') as HTMLElement | null;
+      const nav = el ? el.getBoundingClientRect().height : 0;
       const w = window.innerWidth;
       const h = window.innerHeight;
+      setNavH(nav);
       setIsMobile(w < MOBILE_BP);
-      setScale(Math.min(w / DESIGN_W, h / DESIGN_H));
+      setScale(Math.min(w / DESIGN_W, (h - nav) / DESIGN_H));
     };
+    update();
     window.addEventListener('resize', update);
-    return () => window.removeEventListener('resize', update);
+    // Nav height can settle after fonts / submenu render — re-measure shortly after mount.
+    const t = window.setTimeout(update, 300);
+    return () => { window.removeEventListener('resize', update); window.clearTimeout(t); };
   }, []);
 
   return (
@@ -639,7 +651,7 @@ export default function NewArcadeHero() {
         .nh2-root [stroke="var(--stroke-0, #A8F020)"] { stroke: rgb(var(--brand-secondary)); }
       `}</style>
       <PaletteCtx.Provider value={palette}>
-        {isMobile ? <MobileView /> : <DesktopView scale={scale} />}
+        {isMobile ? <MobileView navH={navH} /> : <DesktopView scale={scale} navH={navH} />}
       </PaletteCtx.Provider>
     </div>
   );

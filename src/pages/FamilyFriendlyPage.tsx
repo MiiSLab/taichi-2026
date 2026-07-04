@@ -6,14 +6,6 @@ import { typography } from '../design-system/typography';
 import { useContent } from '../context/LanguageContext';
 import { useSEO } from '../hooks/useSEO';
 
-const orbitItems = [
-	{ src: '/images/ball01.svg', className: 'family-orbit__planet--one', alt: 'Orbit ball one', style: { '--orbit-angle': '0deg' } as React.CSSProperties },
-	{ src: '/images/ball02.svg', className: 'family-orbit__planet--two', alt: 'Orbit ball two', style: { '--orbit-angle': '72deg' } as React.CSSProperties },
-	{ src: '/images/ball03.svg', className: 'family-orbit__planet--three', alt: 'Orbit ball three', style: { '--orbit-angle': '144deg' } as React.CSSProperties },
-	{ src: '/images/ball04.svg', className: 'family-orbit__planet--four', alt: 'Orbit ball four', style: { '--orbit-angle': '216deg' } as React.CSSProperties },
-	{ src: '/images/ball05.svg', className: 'family-orbit__planet--five', alt: 'Orbit ball five', style: { '--orbit-angle': '288deg' } as React.CSSProperties },
-] as const;
-
 const FamilyFriendlyPage: React.FC = () => {
 	const content = useContent();
 	const section = content.familyFriendlySection;
@@ -30,15 +22,6 @@ const FamilyFriendlyPage: React.FC = () => {
 						<h1 className={`text-center ${typography.scale.pageTitle} ds-page-title relative z-10`}>
 							Family-<br />Friendly
 						</h1>
-						<div className='family-orbit' aria-hidden='true'>
-							<div className='family-orbit__stage'>
-								{orbitItems.map((item) => (
-									<div key={item.className} className='family-orbit__planet-anchor' style={item.style}>
-										<img src={item.src} alt={item.alt} className={`family-orbit__planet ${item.className}`} />
-									</div>
-								))}
-							</div>
-						</div>
 					</div>
 				</ScrollReveal>
 			</div>
