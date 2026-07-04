@@ -1,0 +1,1 @@
+import{j as t}from"./index-BlT5i1WZ.js";import{e as o,b as r}from"./react-vendor-DQfhz_P5.js";import"./motion-DmuVWGzW.js";import"./three-DTZfIL9r.js";const p=()=>{const e=o();return r.useEffect(()=>{window.localStorage.setItem("palettePreview","1"),e("/newhome-v2-boom",{replace:!0})},[e]),t.jsx("div",{style:{minHeight:"60vh"}})};export{p as default};
