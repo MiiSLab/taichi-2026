@@ -6,11 +6,11 @@
 
 .site-theme {
 	/* Brand palette as RGB channels — single source of truth.
-	   Everything brand-coloured derives from these, so overriding them
-	   (see .palette-preview below) recolours the whole site at once. */
-	--brand-primary: 168 240 32; /* #a8f020 lime — primary */
-	--brand-primary-bright: 192 255 64; /* #c0ff40 */
-	--brand-secondary: 243 100 88; /* #f36458 coral — secondary */
+	   Everything brand-coloured derives from these. Primary = orange-red,
+	   secondary/accent = green (visual-chair new arcade palette). */
+	--brand-primary: 251 65 5; /* #fb4105 orange-red — primary */
+	--brand-primary-bright: 255 96 40; /* #ff6028 */
+	--brand-secondary: 168 240 32; /* #a8f020 green — secondary/accent */
 
 	--color-black-950: #0b0b0b;
 	--color-gray-900: #161616;
@@ -60,20 +60,6 @@
 	--motion-ease-enter: cubic-bezier(0.16, 1, 0.3, 1);
 	--motion-distance-hover: 2px;
 	--motion-distance-reveal: 28px;
-}
-
-/* ──────────────────────────────────────────────────────────────────────────
-   PALETTE PREVIEW — enabled by visiting /preview (adds .palette-preview on the
-   site shell). Override ONLY the brand channels here to recolour the whole site
-   without touching the real default above. When happy, copy these values up
-   into --brand-primary / --brand-secondary in .site-theme and delete this block
-   + the /preview route. Values are "R G B" channels (0–255), no commas.
-   ────────────────────────────────────────────────────────────────────────── */
-.site-theme.palette-preview {
-	/* 新街機 hero（visual chair）色票：主色 = 橘紅 #FB4105，輔助色 = 綠 #A8F020。 */
-	--brand-primary: 251 65 5; /* #fb4105 橘紅 — 主色（新設計） */
-	--brand-primary-bright: 255 96 40; /* #ff6028 主色亮版 */
-	--brand-secondary: 168 240 32; /* #a8f020 綠 — 輔助色（新設計） */
 }
 
 .ds-app-shell {

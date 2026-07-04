@@ -781,14 +781,7 @@ export default function ConstellationMapSection({ language }: ConstellationMapSe
 	const [viewMode, setViewMode] = useState<ViewMode>('constellation');
 	const orbitControlsRef = useRef<any>(null);
 
-	// Keep the Three.js colours in sync with the --brand-* CSS tokens. Re-runs on
-	// every render; the palette-preview toggle bumps a tick to force a re-read.
-	const [, setPaletteTick] = useState(0);
-	useEffect(() => {
-		const onPalette = () => setPaletteTick((t) => t + 1);
-		window.addEventListener('palette-preview-changed', onPalette);
-		return () => window.removeEventListener('palette-preview-changed', onPalette);
-	}, []);
+	// Keep the Three.js colours in sync with the --brand-* CSS tokens.
 	syncBrandColors();
 
 	const handleViewChange = (v: ViewMode) => {

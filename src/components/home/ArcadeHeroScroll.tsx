@@ -1,12 +1,10 @@
 import React, { useEffect, useRef, useState } from 'react';
-import ArcadeHero from './ArcadeHero';
 
 /**
- * Scroll-driven hero wrapper for the arcade visual.
- * Reuses the auto-scroll snap mechanism from ScrollCollapseSection, but the
- * transition is configurable:
+ * Scroll-driven hero wrapper for the arcade visual. Auto-scroll snap with a
+ * configurable transition:
  *   - 'fade': the (interactive) arcade fades + scales out as you scroll.
- *   - 'boom': the old BOOM circle-collapse, with the arcade as the content.
+ *   - 'boom': BOOM circle-collapse, with the arcade as the content.
  *
  * The arcade is interactive while at the top (progress ≈ 0); pointer events are
  * released during the transition so scrolling isn't blocked.
@@ -19,12 +17,12 @@ const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 1);
 
 type Props = {
 	variant: 'fade' | 'boom';
-	/** Hero rendered inside the scroll/transition shell. Defaults to the original ArcadeHero. */
-	children?: React.ReactNode;
+	/** Hero rendered inside the scroll/transition shell. */
+	children: React.ReactNode;
 };
 
 const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
-	const hero = children ?? <ArcadeHero />;
+	const hero = children;
 	const containerRef = useRef<HTMLDivElement>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const innerRef = useRef<HTMLDivElement>(null);

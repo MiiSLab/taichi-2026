@@ -11,7 +11,7 @@ import { FigmaChar1, FigmaChar2, FigmaChar3, FigmaChar5, FigmaChar6, FigmaChar8 
  * futurethingslab0314/newHeroPage_TAICHI repo as a self-contained component.
  *
  * New brand palette: ORANGE-RED (#FB4105) is the primary, GREEN (#A8F020) is the
- * accent. They are wired to the site's CSS-var tokens so /preview recolours them:
+ * accent. They are wired to the site's CSS-var brand tokens:
  *   - orange  → --brand-primary
  *   - green   → --brand-secondary
  * The hero refers to colours by their design role (`orange` / `green`) via a
@@ -23,15 +23,14 @@ import { FigmaChar1, FigmaChar2, FigmaChar3, FigmaChar5, FigmaChar6, FigmaChar8 
  *     source hex literals are left untouched (see the <style> in the root).
  *   - Green text (Tailwind `text-[#a8f020]`) was swapped to `text-secondary`.
  *   - JS-driven colours (canvas grid, pixel blocks, inline styles) resolve the
- *     tokens at runtime via getComputedStyle and re-read on
- *     `palette-preview-changed` (same pattern as ConstellationMap).
+ *     brand tokens at runtime via getComputedStyle (once on mount).
  */
 
 const DESIGN_W = 1920;
 const DESIGN_H = 1080;
 const MOBILE_BP = 1024; // px — below this renders mobile layout
 
-// ─── Runtime brand palette (reads CSS-var tokens, follows palette-preview) ─────
+// ─── Runtime brand palette (reads the --brand-* CSS-var tokens) ───────────────
 // Design roles: orange = primary token, green = secondary token.
 type Palette = { orange: string; green: string; orangeCh: string; greenCh: string };
 
@@ -54,10 +53,8 @@ const usePalette = () => useContext(PaletteCtx);
 function useResolvedPalette(rootRef: React.RefObject<HTMLElement>): Palette {
   const [pal, setPal] = useState<Palette>(() => readPalette(null));
   useEffect(() => {
-    const update = () => setPal(readPalette(rootRef.current));
-    update();
-    window.addEventListener('palette-preview-changed', update);
-    return () => window.removeEventListener('palette-preview-changed', update);
+    // Resolve the brand tokens once the root is mounted (they cascade from .site-theme).
+    setPal(readPalette(rootRef.current));
   }, [rootRef]);
   return pal;
 }
