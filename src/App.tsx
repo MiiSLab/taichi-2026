@@ -10,6 +10,8 @@ const CFPPage = lazy(() => import('./pages/CFPPage'));
 // const CompetitionPage = lazy(() => import('./pages/CompetitionPage'));
 const FamilyFriendlyPage = lazy(() => import('./pages/FamilyFriendlyPage'));
 const NewHomePage = lazy(() => import('./pages/NewHomePage'));
+const NewHomeV2Page = lazy(() => import('./pages/NewHomeV2Page'));
+const NewHomeV2BoomPage = lazy(() => import('./pages/NewHomeV2BoomPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const OrganizationPage = lazy(() => import('./pages/OrganizationPage'));
@@ -65,6 +67,8 @@ const App: React.FC = () => {
 								<Route path='/' element={<Layout />}>
 									<Route index element={<HomePage />} />
 									<Route path='newhome' element={<NewHomePage />} />
+									<Route path='newhome-v2' element={<NewHomeV2Page />} />
+									<Route path='newhome-v2-boom' element={<NewHomeV2BoomPage />} />
 									<Route path='preview' element={<PalettePreviewPage />} />
 									<Route path='news' element={<NewsPage />} />
 									<Route path='agenda' element={<AgendaPage />} />

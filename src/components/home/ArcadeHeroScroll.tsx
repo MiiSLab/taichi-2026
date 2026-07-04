@@ -17,9 +17,14 @@ const SCROLL_HEIGHT = '500vh';
 const AUTO_SCROLL_DURATION = 700;
 const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 1);
 
-type Props = { variant: 'fade' | 'boom' };
+type Props = {
+	variant: 'fade' | 'boom';
+	/** Hero rendered inside the scroll/transition shell. Defaults to the original ArcadeHero. */
+	children?: React.ReactNode;
+};
 
-const ArcadeHeroScroll: React.FC<Props> = ({ variant }) => {
+const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
+	const hero = children ?? <ArcadeHero />;
 	const containerRef = useRef<HTMLDivElement>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const innerRef = useRef<HTMLDivElement>(null);
@@ -169,7 +174,7 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant }) => {
 						style={{ position: 'fixed', inset: 0, zIndex: 40, background: '#0d0e12', clipPath: 'circle(100% at 50% 50%)', overflow: 'hidden', willChange: 'clip-path' }}
 					>
 						<div ref={innerRef} style={{ width: '100%', height: '100%', opacity: 1 }}>
-							<ArcadeHero />
+							{hero}
 						</div>
 					</div>
 				) : (
@@ -177,7 +182,7 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant }) => {
 						ref={overlayRef}
 						style={{ position: 'fixed', inset: 0, zIndex: 40, overflow: 'hidden', transformOrigin: '50% 42%', willChange: 'opacity, transform' }}
 					>
-						<ArcadeHero />
+						{hero}
 					</div>
 				))}
 		</div>

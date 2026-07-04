@@ -70,10 +70,10 @@
    + the /preview route. Values are "R G B" channels (0–255), no commas.
    ────────────────────────────────────────────────────────────────────────── */
 .site-theme.palette-preview {
-	/* 暫時 = 原本配色（等設計提供新色票再換這三個值即可）。 */
-	--brand-primary: 168 240 32; /* #a8f020 lime — 主色 */
-	--brand-primary-bright: 192 255 64; /* #c0ff40 主色亮版 */
-	--brand-secondary: 243 100 88; /* #f36458 coral — 副色 */
+	/* 新街機 hero（visual chair）色票：主色 = 橘紅 #FB4105，輔助色 = 綠 #A8F020。 */
+	--brand-primary: 251 65 5; /* #fb4105 橘紅 — 主色（新設計） */
+	--brand-primary-bright: 255 96 40; /* #ff6028 主色亮版 */
+	--brand-secondary: 168 240 32; /* #a8f020 綠 — 輔助色（新設計） */
 }
 
 .ds-app-shell {
