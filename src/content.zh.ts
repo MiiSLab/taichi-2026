@@ -442,7 +442,7 @@ export const CONTENT_ZH = {
 		coOrganizersTitle: '共同主辦',
 		organizers: [
 			{ name: '台灣人機互動學會', logo: '/logos/taichi.webp', size: 'large', className: 'px-8 py-5 rounded-3xl shadow-2xl' },
-			{ name: '國科會晶創人文計畫', logo: '/logos/NSTC_.png', size: 'large', className: 'px-8 py-5 rounded-3xl shadow-2xl' },
+			{ name: '國科會晶創人文計畫', logo: '/logos/NSTC.png', size: 'large', className: 'px-8 py-5 rounded-3xl shadow-2xl' },
 		],
 		coOrganizers: [
 			{ name: '國立臺灣科技大學', logo: '/logos/NTUST.png', size: 'small', className: 'px-6 py-4 rounded-2xl shadow-xl' },
@@ -457,6 +457,7 @@ export const CONTENT_ZH = {
 		sponsors: [
 			{ name: '美國在台協會', logo: '/logos/AIT.png', size: 'large', className: 'px-6 py-4 rounded-2xl shadow-xl' },
 			{ name: '美國創新中心', logo: '/logos/AIC.png', size: 'large', className: 'px-6 py-4 rounded-2xl shadow-xl' },
+			{ name: '國科會工程科技推展中心', logo: '/logos/ETPC.png', size: 'large', className: 'px-6 py-4 rounded-2xl shadow-xl' },
 		],
 	},
 	footer: {
