@@ -347,9 +347,10 @@ function MobileGrid() {
     let t = 0, prev = performance.now();
     function frame(now: number) {
       t += (now - prev) / 1000; prev = now;
-      // Fewer rails/rings + higher vanishing point so the tall phone viewport reads
-      // roomy like the desktop grid instead of a cramped mesh.
-      drawGrid(ctx, canvas.width, canvas.height, t, greenCh, { vRails: 6, hRails: 4, numRings: 10, vyFactor: 0.4 });
+      // Fewer rails/rings so the tall phone viewport reads roomy like desktop. The
+      // rings' left/right edges pile up against the narrow sides, so keep the ring
+      // count low; vertical rails also fan across the narrow width, so keep them few.
+      drawGrid(ctx, canvas.width, canvas.height, t, greenCh, { vRails: 3, hRails: 4, numRings: 6, vyFactor: 0.4 });
       rafRef.current = requestAnimationFrame(frame);
     }
     rafRef.current = requestAnimationFrame(frame);
