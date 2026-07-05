@@ -1,6 +1,5 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import AnnouncementsSection from '../AnnouncementsSection';
 import ConstellationMapSection from '../ConstellationMap';
 import CountdownTimer from '../CountdownTimer';
 import ScrollReveal from '../ScrollReveal';
@@ -10,9 +9,9 @@ import { useContent, useLanguage } from '../../context/LanguageContext';
 import { typography } from '../../design-system/typography';
 
 /**
- * The homepage content that lives below the hero (announcements, theme intro,
- * CFP countdown, constellation, important dates, sponsors). Shared by the
- * /newhome variants so the hero transition can be swapped independently.
+ * The homepage content that lives below the hero (theme intro, event countdown,
+ * constellation, important dates, sponsors). Kept separate from the hero so the
+ * hero transition can be swapped independently. News lives on /news only.
  */
 const HomeSections: React.FC = () => {
 	const content = useContent();
@@ -22,8 +21,6 @@ const HomeSections: React.FC = () => {
 
 	return (
 		<div className='flex w-full flex-col bg-black'>
-			<AnnouncementsSection />
-
 			<section className='relative z-[25] overflow-hidden bg-black px-5 py-16 sm:px-6 md:py-24'>
 				<WarpBackground />
 				<div className='absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/45' />
@@ -65,16 +62,12 @@ const HomeSections: React.FC = () => {
 						<div className='flex w-full flex-col items-center px-5 py-6 sm:px-6 md:px-8 md:py-8'>
 							<ScrollReveal delay={0}>
 								<p className='ds-section-kicker text-[16px] sm:text-[18px] md:text-[20px]'>
-									{language === 'zh' ? '投稿截止日期：' : 'Submission Deadline: '}
-									<span className='mr-2 line-through decoration-2 text-white/40'>2026/06/18</span>
-									<span className='mr-2 text-white'>2026/06/23 23:59 (GMT+8)</span>
-									<span className='inline-flex items-center rounded border border-secondary/60 bg-secondary/15 px-2 py-0.5 align-middle font-pixel text-[12px] font-bold tracking-[0.1em] text-secondary'>
-										{language === 'zh' ? '已延期' : 'EXTENDED'}
-									</span>
+									{language === 'zh' ? '距離活動開始：' : 'Countdown to the event: '}
+									<span className='mr-2 text-white'>2026/08/05 (GMT+8)</span>
 								</p>
 							</ScrollReveal>
 							<ScrollReveal delay={90} className='mt-6 flex w-full justify-center'>
-								<CountdownTimer targetDateStr='2026-06-23T23:59:00+08:00' variant='cfpHero' />
+								<CountdownTimer targetDateStr='2026-08-05T00:00:00+08:00' variant='cfpHero' />
 							</ScrollReveal>
 							<ScrollReveal delay={180} className='mt-8'>
 								<Link

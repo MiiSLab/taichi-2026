@@ -13,7 +13,7 @@ test('organization and sponsors source match the figma-driven layout skeleton', 
 	assert.match(organizationSource, /ds-button-secondary/);
 	assert.match(organizationSource, /justify-center/);
 	assert.match(organizationSource, /text-\[24px\]/);
-	assert.match(organizationSource, /text-\[#CCFF00\]/);
+	assert.match(organizationSource, /ds-panel-subheading text-\[24px\] leading-\[32px\] text-primary/);
 	assert.match(organizationSource, /bg-\[rgba\(0,0,0,0\.4\)\]/);
 	assert.match(organizationSource, /size-\[48px\]/);
 	assert.match(organizationSource, /aboutTitle/);

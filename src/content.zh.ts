@@ -14,6 +14,7 @@ export const CONTENT_ZH = {
 		program: 'AGENDA',
 		keynotes: 'KEYNOTES',
 		organization: 'ORGANIZATION',
+		orgSponsors: 'ORGANIZATION & SPONSORS',
 		cfp: 'CALL FOR PAPERS',
 		familyFriendly: 'FAMILY-FRIENDLY',
 		venue: 'VENUE',

@@ -29,7 +29,7 @@ const FamilyFriendlyPage: React.FC = () => {
 			<section className='px-4 pb-20 pt-20 md:px-8 md:pb-28 md:pt-24'>
 				<div className='mx-auto max-w-3xl'>
 					<ScrollReveal delay={60}>
-						<h2 className={`mb-10 ${typography.scale.sectionTitle} text-[#CCFF00]`}>
+						<h2 className={`mb-10 ${typography.scale.sectionTitle} text-primary`}>
 							{section.headline}
 						</h2>
 					</ScrollReveal>

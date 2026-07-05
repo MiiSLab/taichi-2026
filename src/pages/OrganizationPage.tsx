@@ -232,7 +232,7 @@ const SectionHeader = ({ normalizedType }: { normalizedType: string }) => {
 
 	return (
 		<div className={`mb-5 ${panelFrame.sectionDivider} border-primary text-center`}>
-			<h2 className='ds-panel-subheading text-[24px] leading-[32px] text-[#CCFF00]'>
+			<h2 className='ds-panel-subheading text-[24px] leading-[32px] text-primary'>
 				{displayTitle}
 			</h2>
 		</div>
@@ -262,7 +262,7 @@ const SmallGroupPanel = ({
 
 	return (
 		<FramePanel className='h-full' contentClassName='px-[24px] py-[28px] md:px-[42px] md:py-[42px]' showCorners={false}>
-			<h3 className='ds-panel-subheading mb-8 text-[24px] leading-[32px] text-[#CCFF00]'>
+			<h3 className='ds-panel-subheading mb-8 text-[24px] leading-[32px] text-primary'>
 				{displayTitle}
 			</h3>
 			<div className='flex flex-col gap-4'>

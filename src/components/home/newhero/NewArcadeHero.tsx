@@ -4,7 +4,6 @@ import BigBangSvg from './BigBangSvg';
 import frameImg from './assets/frame.png';
 import frameTopImg from './assets/frame-s-line-top.png';
 import frameBottomImg from './assets/frame-s-line-bottom.png';
-import { FigmaChar1, FigmaChar2, FigmaChar3, FigmaChar5, FigmaChar6, FigmaChar8 } from './FigmaChars';
 
 /**
  * Visual-chair delivered arcade hero (BIG BANG! FUTURES!), ported from the
@@ -112,46 +111,27 @@ function Bracket({ w, h }: { w: number; h: number }) {
   );
 }
 
-// ─── Shared character variant data ────────────────────────────────────────────
-type CharVariant = {
-  Char: React.ComponentType<{ style?: React.CSSProperties }>;
-  name: string;
-};
-
-const ZONE_VARIANTS: CharVariant[][] = [
-  [
-    { Char: FigmaChar1, name: 'SCOUT'     },
-    { Char: FigmaChar3, name: 'RANGER'    },
-    { Char: FigmaChar8, name: 'SHADOW'    },
-  ],
-  [
-    { Char: FigmaChar3, name: 'NAVIGATOR' },
-    { Char: FigmaChar5, name: 'CAPTAIN'   },
-    { Char: FigmaChar1, name: 'PILOT'     },
-  ],
-  [
-    { Char: FigmaChar2, name: 'INVENTOR'  },
-    { Char: FigmaChar6, name: 'TINKER'    },
-    { Char: FigmaChar8, name: 'ENGINEER'  },
-  ],
-  [
-    { Char: FigmaChar5, name: 'WARRIOR'   },
-    { Char: FigmaChar8, name: 'KNIGHT'    },
-    { Char: FigmaChar6, name: 'GUARDIAN'  },
-  ],
-  [
-    { Char: FigmaChar6, name: 'HACKER'    },
-    { Char: FigmaChar5, name: 'CIPHER'    },
-    { Char: FigmaChar3, name: 'GHOST'     },
-  ],
-  [
-    { Char: FigmaChar8, name: 'REBEL'     },
-    { Char: FigmaChar1, name: 'NOMAD'     },
-    { Char: FigmaChar5, name: 'SPARKER'   },
-  ],
+// ─── Characters (pixel sprites; the label always matches the shown image) ─────
+const CHARACTERS = [
+  { img: '/newhome/explorer.png', name: 'EXPLORER' },
+  { img: '/newhome/navigator.png', name: 'NAVIGATOR' },
+  { img: '/newhome/observer.png', name: 'OBSERVER' },
+  { img: '/newhome/maker.png', name: 'MAKER' },
+  { img: '/newhome/designer.png', name: 'DESIGNER' },
+  { img: '/newhome/engineer.png', name: 'ENGINEER' },
 ];
 
-// Three slots shown on mobile — drawn from different zone groups for variety
+type CharVariant = { img: string; name: string };
+
+// Each slot cycles starting from its own role, so at rest slot i shows CHARACTERS[i]
+// (EXPLORER…ENGINEER, left→right) and the label always matches the current sprite.
+const ZONE_VARIANTS: CharVariant[][] = CHARACTERS.map((_, i) => [
+  CHARACTERS[i],
+  CHARACTERS[(i + 1) % CHARACTERS.length],
+  CHARACTERS[(i + 2) % CHARACTERS.length],
+]);
+
+// Three slots shown on mobile — spread-out roles (Explorer / Navigator / Maker)
 const MOBILE_SLOTS = [ZONE_VARIANTS[0], ZONE_VARIANTS[1], ZONE_VARIANTS[3]];
 
 // ─── Web Audio ────────────────────────────────────────────────────────────────
@@ -247,14 +227,14 @@ function DesktopCharacterStrip({ scale }: { scale: number }) {
       {CHAR_SLOTS.map((slot, i) => {
         if (!hovering) return null;
         const isActive = i === activeZone;
-        const { Char, name } = ZONE_VARIANTS[i][isActive ? varIdx : 0];
+        const { img, name } = ZONE_VARIANTS[i][isActive ? varIdx : 0];
         const sl = slot.cx - STRIP_L - slot.w / 2;
         const st = slot.cy - STRIP_T  - slot.h / 2;
         return (
           <div key={i}>
             <div style={{ position: 'absolute', left: sl, top: st, width: slot.w, height: slot.h, background: '#000', pointerEvents: 'none' }} />
             <div style={{ position: 'absolute', left: sl, top: st, width: slot.w, height: slot.h, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: isActive ? 1 : 0.35, transition: 'opacity 0.15s', pointerEvents: 'none' }}>
-              <Char style={{ width: slot.w, height: slot.h }} />
+              <img src={img} alt={name} style={{ width: slot.w, height: slot.h, objectFit: 'contain', imageRendering: 'pixelated' }} />
               {isActive && (
                 <div style={{ position: 'absolute', inset: -24, pointerEvents: 'none' }}>
                   <Bracket w={slot.w + 48} h={slot.h + 48} />
@@ -274,10 +254,15 @@ function DesktopCharacterStrip({ scale }: { scale: number }) {
 }
 
 // ─── Shared: perspective grid canvas (draws on any size canvas) ───────────────
-function drawGrid(ctx: CanvasRenderingContext2D, W: number, H: number, t: number, gridCh: string) {
-  const vx = W / 2, vy = H * 0.46;
+type GridDensity = { vRails?: number; hRails?: number; numRings?: number; vyFactor?: number };
+
+function drawGrid(ctx: CanvasRenderingContext2D, W: number, H: number, t: number, gridCh: string, density: GridDensity = {}) {
+  // Rail counts are fixed numbers spread across W/H, so a tall/narrow phone viewport
+  // crams the same lines into far less width. Callers pass fewer rails on mobile.
+  const { vRails = 11, hRails = 7, numRings = 16, vyFactor = 0.46 } = density;
+  const vx = W / 2, vy = H * vyFactor;
   const G = gridCh;
-  const V_RAILS = 11, H_RAILS = 7, NUM_RINGS = 16, CYCLE = 10;
+  const CYCLE = 10;
 
   ctx.clearRect(0, 0, W, H);
   ctx.lineWidth = 0.7;
@@ -287,19 +272,19 @@ function drawGrid(ctx: CanvasRenderingContext2D, W: number, H: number, t: number
     ctx.beginPath(); ctx.moveTo(x1, y1); ctx.lineTo(x2, y2); ctx.stroke();
   }
 
-  for (let i = 0; i <= V_RAILS; i++) {
-    const ex = (i / V_RAILS) * W;
+  for (let i = 0; i <= vRails; i++) {
+    const ex = (i / vRails) * W;
     rail(vx, vy, ex, 0, 0.045);
     rail(vx, vy, ex, H, 0.045);
   }
-  for (let i = 0; i <= H_RAILS; i++) {
-    const ey = (i / H_RAILS) * H;
+  for (let i = 0; i <= hRails; i++) {
+    const ey = (i / hRails) * H;
     rail(vx, vy, 0, ey, 0.045);
     rail(vx, vy, W, ey, 0.045);
   }
 
-  for (let i = 0; i < NUM_RINGS; i++) {
-    const d  = ((i / NUM_RINGS) + t / CYCLE) % 1;
+  for (let i = 0; i < numRings; i++) {
+    const d  = ((i / numRings) + t / CYCLE) % 1;
     const de = 1 - Math.pow(1 - d, 2.2);
     const op = Math.pow(de, 1.4) * 0.22;
     const lw = de * 1.4 + 0.4;
@@ -362,7 +347,9 @@ function MobileGrid() {
     let t = 0, prev = performance.now();
     function frame(now: number) {
       t += (now - prev) / 1000; prev = now;
-      drawGrid(ctx, canvas.width, canvas.height, t, greenCh);
+      // Fewer rails/rings + higher vanishing point so the tall phone viewport reads
+      // roomy like the desktop grid instead of a cramped mesh.
+      drawGrid(ctx, canvas.width, canvas.height, t, greenCh, { vRails: 6, hRails: 4, numRings: 10, vyFactor: 0.4 });
       rafRef.current = requestAnimationFrame(frame);
     }
     rafRef.current = requestAnimationFrame(frame);
@@ -418,7 +405,7 @@ function MobileCarousel() {
     >
       <div style={{ display: 'flex', gap: 'clamp(1.5rem, 6vw, 3rem)', alignItems: 'flex-end' }}>
         {MOBILE_SLOTS.map((variants, i) => {
-          const { Char, name } = variants[varIdxs[i]];
+          const { img, name } = variants[varIdxs[i]];
           const isSelected = i === selected;
           return (
             <div key={i}
@@ -431,7 +418,7 @@ function MobileCarousel() {
               }}
             >
               <div style={{ position: 'relative', width: SZ, height: SZ, opacity: isSelected ? 1 : 0.35, transition: 'opacity 0.2s' }}>
-                <Char style={{ width: '100%', height: '100%' }} />
+                <img src={img} alt={name} style={{ width: '100%', height: '100%', objectFit: 'contain', imageRendering: 'pixelated' }} />
                 {isSelected && (
                   <div style={{ position: 'absolute', inset: -BPAD, pointerEvents: 'none' }}>
                     <Bracket w={SZ + BPAD * 2} h={SZ + BPAD * 2} />

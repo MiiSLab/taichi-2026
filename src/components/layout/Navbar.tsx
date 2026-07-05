@@ -52,6 +52,15 @@ type DesktopNavItem = {
 	isActive?: boolean;
 };
 
+type MobileNavItem = {
+	key: string;
+	label: string;
+	to?: string;
+	disabled?: boolean;
+	isActive?: boolean;
+	submenuKey?: 'cfp' | 'venue' | 'orgSponsors';
+};
+
 const BracketText: React.FC<{
 	label: string;
 	active?: boolean;
@@ -76,7 +85,7 @@ const DesktopLink: React.FC<DesktopNavItem> = ({ label, to, disabled, isActive }
 	const content = <BracketText label={label} active={isActive} compact />;
 
 	if (disabled || !to) {
-		return <span className='cursor-default opacity-70'>{content}</span>;
+		return <span className='cursor-not-allowed opacity-40'>{content}</span>;
 	}
 
 	return (
@@ -121,20 +130,30 @@ const MobilePinnedSubmenuLink: React.FC<{
 const Navbar: React.FC = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
-	const [mobileExpandedMenu, setMobileExpandedMenu] = useState<'cfp' | 'venue' | null>(null);
+	const [mobileExpandedMenu, setMobileExpandedMenu] = useState<'cfp' | 'venue' | 'orgSponsors' | null>(null);
 	const location = useLocation();
 	const content = useContent();
 	const { language, setLanguage } = useLanguage();
 	const isCFPPage = location.pathname.startsWith('/cfp');
 	const isVenuePage = location.pathname.startsWith('/venue');
-	const activeSubmenu = isCFPPage
-		? content.nav.cfpSubmenu.map((item) => ({ ...item, to: `/cfp${item.hash}` }))
+	const isOrgSponsorsPage = location.pathname === '/organization' || location.pathname === '/sponsorship';
+	// Submenu items are either same-page anchors (cfp / venue, carry a `hash`) or
+	// cross-page links (organization & sponsors, carry only `to`).
+	const activeSubmenu: { label: string; to: string; hash?: string }[] = isCFPPage
+		? content.nav.cfpSubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/cfp${item.hash}` }))
 		: isVenuePage
 			? content.venueSection.submenuItems.map((item) => ({ label: item.label, hash: `#${item.target}`, to: `/venue#${item.target}` }))
-			: [];
+			: isOrgSponsorsPage
+				? [
+						{ label: 'Organization', to: '/organization' },
+						{ label: 'Sponsors', to: '/sponsorship' },
+					]
+				: [];
 
-	const submenuHashes = activeSubmenu.map((item) => item.hash);
+	const submenuHashes = activeSubmenu.map((item) => item.hash).filter((h): h is string => Boolean(h));
 	const scrollSpyHash = useScrollSpy(submenuHashes);
+	// Active by scroll-spy hash (same-page anchors) or by pathname (cross-page links).
+	const isSubmenuActive = (item: { hash?: string; to: string }) => (item.hash ? scrollSpyHash === item.hash : location.pathname === item.to);
 
 	useEffect(() => {
 		const handleScroll = () => {
@@ -150,34 +169,36 @@ const Navbar: React.FC = () => {
 		setMobileExpandedMenu(null);
 	};
 
-	const desktopItems = [
+	const desktopItems: DesktopNavItem[] = [
+		{ label: content.nav.news, to: '/news', isActive: location.pathname === '/news' },
+		{ label: 'PROGRAM', disabled: true },
 		{ label: content.nav.venue, to: '/venue', isActive: location.pathname === '/venue' },
 		{ label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp') },
 		{ label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly' },
-		{ label: content.nav.organization, to: '/organization', isActive: location.pathname === '/organization' },
-		{ label: content.nav.sponsors, to: '/sponsorship', isActive: location.pathname === '/sponsorship' },
-		// { label: 'COMPETITION', to: '/competition', isActive: location.pathname === '/competition' },
-		{ label: 'VOTE', to: '/vote', isActive: location.pathname === '/vote' },
+		{ label: content.nav.orgSponsors, to: '/organization', isActive: isOrgSponsorsPage },
 	];
 
-	const mobileItems = [
-		{ key: 'venue', label: content.nav.venue, to: '/venue', isActive: location.pathname === '/venue', submenuKey: 'venue' as const },
-		{ key: 'cfp', label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp'), submenuKey: 'cfp' as const },
+	const mobileItems: MobileNavItem[] = [
+		{ key: 'news', label: content.nav.news, to: '/news', isActive: location.pathname === '/news' },
+		{ key: 'program', label: 'PROGRAM', disabled: true },
+		{ key: 'venue', label: content.nav.venue, to: '/venue', isActive: location.pathname === '/venue', submenuKey: 'venue' },
+		{ key: 'cfp', label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp'), submenuKey: 'cfp' },
 		{ key: 'family-friendly', label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly' },
-		{ key: 'organization', label: content.nav.organization, to: '/organization', isActive: location.pathname === '/organization' },
-		{ key: 'sponsorship', label: content.nav.sponsors, to: '/sponsorship', isActive: location.pathname === '/sponsorship' },
-		// { key: 'competition', label: 'COMPETITION', to: '/competition', isActive: location.pathname === '/competition' },
-		{ key: 'vote', label: 'VOTE', to: '/vote', isActive: location.pathname === '/vote' },
+		{ key: 'orgSponsors', label: content.nav.orgSponsors, to: '/organization', isActive: isOrgSponsorsPage, submenuKey: 'orgSponsors' },
 	];
 
-	const submenuByKey = {
-		cfp: content.nav.cfpSubmenu.map((item) => ({ ...item, to: `/cfp${item.hash}` })),
+	const submenuByKey: Record<'cfp' | 'venue' | 'orgSponsors', { label: string; to: string; hash?: string }[]> = {
+		cfp: content.nav.cfpSubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/cfp${item.hash}` })),
 		venue: content.venueSection.submenuItems.map((item) => ({
 			label: item.label,
 			hash: `#${item.target}`,
 			to: `/venue#${item.target}`,
 		})),
-	} as const;
+		orgSponsors: [
+			{ label: 'Organization', to: '/organization' },
+			{ label: 'Sponsors', to: '/sponsorship' },
+		],
+	};
 
 	return (
 		<>
@@ -238,10 +259,10 @@ const Navbar: React.FC = () => {
 							<div className='flex items-center justify-center gap-12 px-3'>
 								{activeSubmenu.map((item) => (
 									<DesktopSubmenuLink
-										key={item.hash}
+										key={item.to}
 										label={item.label}
 										to={item.to}
-										isActive={scrollSpyHash === item.hash}
+										isActive={isSubmenuActive(item)}
 									/>
 								))}
 							</div>
@@ -256,10 +277,10 @@ const Navbar: React.FC = () => {
 							<div className='flex min-w-max items-center justify-center gap-4'>
 								{activeSubmenu.map((item) => (
 									<MobilePinnedSubmenuLink
-										key={item.hash}
+										key={item.to}
 										label={item.label}
 										to={item.to}
-										isActive={scrollSpyHash === item.hash}
+										isActive={isSubmenuActive(item)}
 									/>
 								))}
 							</div>
@@ -274,7 +295,7 @@ const Navbar: React.FC = () => {
 						{mobileItems.map((item) => {
 							if (item.disabled || !item.to) {
 								return (
-									<span key={item.key} className='border-b border-white/10 pb-4 text-center text-2xl opacity-60'>
+									<span key={item.key} className='cursor-not-allowed border-b border-white/10 pb-4 text-center text-2xl opacity-40'>
 										{item.label}
 									</span>
 								);
@@ -298,10 +319,10 @@ const Navbar: React.FC = () => {
 											<div className='mt-4 flex w-full flex-col gap-3 border-l border-lab-lime/60 pl-4 text-lg'>
 												{submenuItems.map((submenuItem) => (
 													<Link
-														key={submenuItem.hash}
+														key={submenuItem.to}
 														to={submenuItem.to}
 														onClick={handleNav}
-														className={`ds-nav-link ${scrollSpyHash === submenuItem.hash ? 'ds-nav-link--active' : ''}`}
+														className={`ds-nav-link ${isSubmenuActive(submenuItem) ? 'ds-nav-link--active' : ''}`}
 													>
 														{getMobileSubmenuLabel(submenuItem.label)}
 													</Link>

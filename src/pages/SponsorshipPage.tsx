@@ -45,7 +45,7 @@ const SponsorshipPage: React.FC = () => {
 					{/* Intro — kept at a comfortable reading width */}
 					<div className='max-w-3xl mx-auto'>
 						<ScrollReveal delay={60}>
-							<h2 className={`mb-10 ${typography.scale.sectionTitle} text-[#CCFF00]`}>{section.headline}</h2>
+							<h2 className={`mb-10 ${typography.scale.sectionTitle} text-primary`}>{section.headline}</h2>
 						</ScrollReveal>
 
 						<ScrollReveal delay={120}>
