@@ -1,5 +1,4 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
 import ConstellationMapSection from '../ConstellationMap';
 import CountdownTimer from '../CountdownTimer';
 import ScrollReveal from '../ScrollReveal';
@@ -16,7 +15,7 @@ import { typography } from '../../design-system/typography';
 const HomeSections: React.FC = () => {
 	const content = useContent();
 	const { language } = useLanguage();
-	const homeCfpButtonLabel = language === 'zh' ? '立即投稿' : 'Submit Now';
+	const registerButtonLabel = language === 'zh' ? '立即註冊（即將開放）' : 'Registration (Coming Soon)';
 	const themeTitleParts = content.theme.title.split(/(?=Big Bang! Futures!)/);
 
 	return (
@@ -70,13 +69,15 @@ const HomeSections: React.FC = () => {
 								<CountdownTimer targetDateStr='2026-08-05T00:00:00+08:00' variant='cfpHero' />
 							</ScrollReveal>
 							<ScrollReveal delay={180} className='mt-8'>
-								<Link
-									to='/cfp'
-									className={`ds-button-submit min-w-[220px] px-5 py-4 ${typography.scale.buttonLabel} sm:min-w-[240px] sm:px-6`}
+								<button
+									type='button'
+									disabled
+									aria-disabled='true'
+									title={language === 'zh' ? '註冊尚未開放' : 'Registration not open yet'}
+									className={`ds-button-submit min-w-[220px] cursor-not-allowed px-5 py-4 opacity-40 ${typography.scale.buttonLabel} sm:min-w-[240px] sm:px-6`}
 								>
-									<span>{homeCfpButtonLabel}</span>
-									<span className='text-[24px] leading-none'>→</span>
-								</Link>
+									<span>{registerButtonLabel}</span>
+								</button>
 							</ScrollReveal>
 						</div>
 					</div>

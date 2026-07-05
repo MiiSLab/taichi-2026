@@ -8,6 +8,8 @@ import ScrollReveal from './ScrollReveal';
 
 interface AnnouncementsSectionProps {
 	limit?: number;
+	/** Hide the built-in section heading (used on /news, which has its own page title). */
+	hideHeader?: boolean;
 }
 
 /**
@@ -18,23 +20,29 @@ interface AnnouncementsSectionProps {
  * NOT the Notion-synced useData().news — announcements are few and edited in code
  * for now. Revisit Notion wiring if the volume grows. See scripts/upload-news-to-notion.mjs.
  */
-const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3 }) => {
+const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3, hideHeader = false }) => {
 	const content = useContent();
 	const items = limit ? STATIC_NEWS.slice(0, limit) : STATIC_NEWS;
 
 	if (items.length === 0) return null;
 
+	const sectionClass = hideHeader
+		? 'relative flex w-full flex-col overflow-hidden bg-black px-5 pb-20 sm:px-6 md:px-20 md:pb-24'
+		: 'relative flex min-h-[100dvh] w-full flex-col justify-center overflow-hidden bg-black px-5 pb-20 pt-28 sm:px-6 md:px-20 md:pb-24 md:pt-32';
+
 	return (
-		<section className='relative flex min-h-[100dvh] w-full flex-col justify-center overflow-hidden bg-black px-5 pb-20 pt-28 sm:px-6 md:px-20 md:pb-24 md:pt-32'>
+		<section className={sectionClass}>
 			<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.10),transparent_42%)]' />
 
 			<div className='relative z-10 mx-auto w-full max-w-[1280px]'>
-				<ScrollReveal>
-					<p className='text-center ds-section-kicker'>{content.newsSection.subtitle}</p>
-					<h2 className={`mt-3 text-center ${typography.scale.sectionTitle} text-primary`}>{content.newsSection.title}</h2>
-				</ScrollReveal>
+				{!hideHeader && (
+					<ScrollReveal>
+						<p className='text-center ds-section-kicker'>{content.newsSection.subtitle}</p>
+						<h2 className={`mt-3 text-center ${typography.scale.sectionTitle} text-primary`}>{content.newsSection.title}</h2>
+					</ScrollReveal>
+				)}
 
-				<div className={`mt-12 grid grid-cols-1 gap-6 md:mt-16 xl:gap-8 ${items.length > 1 ? 'md:grid-cols-2' : 'md:max-w-2xl md:mx-auto'}`}>
+				<div className={`grid grid-cols-1 gap-6 xl:gap-8 ${hideHeader ? '' : 'mt-12 md:mt-16'} ${items.length > 1 ? 'md:grid-cols-2' : 'md:max-w-2xl md:mx-auto'}`}>
 					{items.map((item, index) => (
 						<ScrollReveal key={item.id} delay={index * 80} className='h-full'>
 							<FramePanel className='h-full' contentClassName='flex h-full flex-col p-6 md:p-8'>
