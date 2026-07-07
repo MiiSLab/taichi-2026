@@ -125,14 +125,14 @@ const SessionAccordion = ({
 const ToggleReveal = ({ label, content, full }: { label: string; content?: string; full?: boolean }) => (
 	<details className='group/toggle'>
 		<summary
-			className={`flex h-6 cursor-pointer list-none items-center border-l border-solid border-primary pl-[15px] font-mono text-[14px] font-bold leading-[22.75px] text-white/80 ${
+			className={`flex h-6 cursor-pointer list-none items-center gap-2 border-l border-solid border-primary pl-[15px] font-mono text-[14px] font-bold leading-[22.75px] text-white/80 ${
 				full ? 'w-full bg-zinc-950/80' : 'w-fit'
 			}`}
 		>
-			<ChevronDown className='mr-2 transition-transform shrink-0 group-open/toggle:rotate-180' size={12} strokeWidth={3} />
 			{label}
+			<span className='h-0 w-0 shrink-0 border-x-[5px] border-x-transparent border-t-[6px] border-t-white/80 transition-transform group-open/toggle:rotate-180' />
 		</summary>
-		{content && <p className='mt-3 whitespace-pre-line font-sans text-[14px] leading-relaxed text-white/80'>{content}</p>}
+		{content && <p className='mt-3 whitespace-pre-line pl-[15px] font-sans text-[14px] leading-relaxed text-white/80'>{content}</p>}
 	</details>
 );
 

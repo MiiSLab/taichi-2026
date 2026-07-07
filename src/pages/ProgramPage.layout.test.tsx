@@ -44,6 +44,21 @@ test('program page wires the time/location label into both accordion and static 
 	assert.doesNotMatch(source, /label=''/);
 });
 
+test('program page indents ToggleReveal content to line up with its own label', () => {
+	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+
+	assert.match(source, /whitespace-pre-line pl-\[15px\]/);
+});
+
+test('program page shows ToggleReveal as a solid triangle placed after the label text', () => {
+	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+
+	// CSS border-triangle (no icon library dependency): a 0x0 box with transparent
+	// side borders and a solid top border renders as a filled downward triangle.
+	assert.match(source, /h-0 w-0[^']*border-x-\[5px\][^']*border-t-\[6px\][^']*group-open\/toggle:rotate-180/);
+	assert.match(source, /\{label\}\s*\n\s*<span className='h-0 w-0/);
+});
+
 test('program page nests performance/residency/food content inside the 12F night-market accordion', () => {
 	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
 

@@ -373,15 +373,33 @@ export const CONTENT_ZH = {
 					schedule: [
 						{ time: '9:20 - 9:45', label: '報到' },
 						{ time: '9:45 - 10:00', label: '開幕' },
-						// TODO: 完整簡歷待補
-						{ time: '10:00 - 11:00', label: 'Jun Rekimoto', sublabel: '東京大學名譽教授、Sony CSL 京都實驗室總監', featured: true, fullBio: '完整簡歷尚未提供，敬請期待。' },
-						// TODO: 完整簡歷待補
-						{ time: '11:05 - 12:05', label: 'Pedro Lopes', sublabel: '芝加哥大學電腦科學副教授', featured: true, fullBio: '完整簡歷尚未提供，敬請期待。' },
-						{ time: '12:05 - 13:30', label: '午餐時間' },
-						// TODO: 完整簡歷待補
-						{ time: '13:30 - 14:30', label: 'Huaishu Peng', sublabel: '馬里蘭大學電腦科學副教授', featured: true, fullBio: '完整簡歷尚未提供，敬請期待。' },
 						{
-							time: '10:00 - 11:00' /* TODO: 確認正確時間，與 Jun Rekimoto 場次重複 */,
+							time: '10:00 - 11:00',
+							label: 'Jun Rekimoto',
+							sublabel: '東京大學名譽教授、Sony CSL 京都實驗室總監',
+							featured: true,
+							fullBio:
+								'歷本純一（Jun Rekimoto）於 1996 年獲得東京工業大學資訊科學博士學位。自 1994 年加入索尼電腦科學實驗室（Sony CSL）以來，他致力於人機互動、擴增實境（AR）與人體增強領域的開創性研究。他於 1999 年創立了Interaction Laboratory，目前擔任 Sony CSL 京都實驗室總監，同時也是東京大學名譽教授。他的代表性專案包括全球首批手持式 AR 系統之一的「NaviCam」、早期的標記式 AR 平台「CyberCode」，以及奠定基礎的多點觸控技術「SmartSkin」。他近期的研究重點在於Human-AI Integration、無聲語音介面，以及Internet of Abilities, IoA。他曾榮獲多項殊榮，包括入選 ACM SIGCHI Academy，並兩度獲得 ACM UIST Lasting Impact Awards。',
+						},
+						{
+							time: '11:05 - 12:05',
+							label: 'Pedro Lopes',
+							sublabel: '芝加哥大學電腦科學副教授',
+							featured: true,
+							fullBio:
+								'Pedro Lopes 是芝加哥大學電腦科學副教授，其研究專注於將電腦介面與人體進行整合。他所研發的新型電腦技術，不僅在認知層面，更在生理層面上實現了對人體的增強。Pedro 的研究成果曾多次獲獎，包括獲得八篇 ACM CHI/UIST 最佳論文獎，並受到《紐約時報》等多家媒體的廣泛關注。此外，Pedro 擔任 CHI 2026 技術議程主席，亦為斯隆研究獎（Sloan Fellow）得主，並曾獲頒美國國家科學基金會（NSF）CAREER 獎及 IEEE VR 新銳研究獎。',
+						},
+						{ time: '12:05 - 13:30', label: '午餐時間' },
+						{
+							time: '13:30 - 14:30',
+							label: 'Huaishu Peng',
+							sublabel: '馬里蘭大學電腦科學副教授',
+							featured: true,
+							fullBio:
+								'彭懷舒（Huaishu Peng）是馬里蘭大學電腦科學副教授，同時也是Small Artifacts Lab, SMART Lab的主持人。他致力於跨領域研究，探索實體運算（tangible computing），旨在提升電子產品的可修復性、增加介面的易用性，並將科技轉化為文化表達的媒介。他的研究成果曾多次發表於 CHI、UIST 和 SIGGRAPH 等頂尖研討會，並屢獲最佳論文獎及榮譽提名獎。他的研究成果亦廣泛受到媒體報導，包括Wired、MIT Technology Review、TechCrunch及Gizmodo等。他亦是美國國家科學基金會（NSF）半導體學習推進獎（Award to Advance Semiconductor Learning）的得主。',
+						},
+						{
+							time: '14:35 - 15:35',
 							label: 'Andrea Bianchi',
 							sublabel: '韓國科學技術院（KAIST）工業設計系副教授、計算科學系兼任教授',
 							featured: true,
@@ -389,7 +407,7 @@ export const CONTENT_ZH = {
 								'Andrea Bianchi 是韓國科學技術院（KAIST）工業設計系副教授、計算科學系兼任教授，同時也是 Make Lab 的主持人。他的研究領域為人機互動（HCI），專注於開發互動系統原型工具及混合實境（MR）中的擴增身體硬體設備。在加入 KAIST 前，他曾任教於韓國成均館大學計算機科學系，並曾於紐約一家新創公司擔任電子遊戲程式設計師。Andrea 的研究成果曾發表於 ACM CHI、UIST 和 IMWUT 等頂尖國際會議，屢獲最佳論文獎與設計獎項，並廣受 Engadget、ZDNet、New Scientist、MAKE 及 Gizmodo 等媒體報導。Andrea 於 2012 年取得 KAIST 博士學位，並於 2007 年獲得紐約大學碩士學位。',
 						},
 						{ time: '15:35 - 15:40', label: '午茶時間' },
-						{ time: '10:00 - 11:00' /* TODO: 確認正確時間，與 Jun Rekimoto 場次重複 */, label: '論壇', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
+						{ time: '15:40 - 16:40', label: '論壇', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
 					],
 				},
 				{
@@ -402,16 +420,17 @@ export const CONTENT_ZH = {
 					description: '這裡不只是夜市，更是科技、人文與創意交會的現場。探索於互動展示、研究海報、Live Coding、布袋戲投影演出，以及限定夜市美食之間，解鎖屬於你的多元宇宙。',
 					gradient: false,
 					schedule: [
-						{ time: '13:30', label: '開放' },
+						{ time: '15:30', label: '開放' },
 						{ time: '17:30', label: '開幕與介紹' },
 						{ time: '17:45', label: 'ISAT若水獎頒獎' },
-						// TODO: 完整簡歷待補
 						{
 							time: '18:00',
 							label: '國立陽明交通大學｜體驗設計實驗室',
 							sublabel: '《未來布袋戲：幻相・乾坤》混合實境 × 當代舞蹈沉浸式演出',
 							featured: true,
-							fullBio: '完整簡歷尚未提供，敬請期待。',
+							fullBio: '創作團隊：許峻誠、顏瑋辰、林沂蓁\n舞者：林沂蓁、曾祥輔\n布袋戲師傅：賴泳廷',
+							workDescription:
+								'《未來布袋戲：幻相・乾坤》融合臺灣布袋戲、混合實境（MR）與當代舞蹈，由布袋戲師父口白揭開序幕，引領孫悟空與旦角穿梭於虛實之間。當戲偶脫離掌中世界，舞者透過 MR 技術、虛擬戲偶與粒子光影共舞，將操偶手勢延伸至全身動作，透過數位轉譯展現布袋戲的身體美學，打造科技與傳統交織的沉浸式未來劇場。',
 						},
 						{
 							time: '18:10',
@@ -439,8 +458,7 @@ export const CONTENT_ZH = {
 						name: 'TOPLAP NTUST',
 						description: 'TOPLAP NTUST 是一個以 Live Coding（即時編碼）為核心，結合即時影像與現場表演的電子音樂組織。延續國際 TOPLAP 與 Algorave 的精神，透過即時生成的聲音與影像，讓 Live Coding 成為一種持續演變的音樂文化與生活風格。',
 						toggleLabel: '表演順序',
-						// TODO: 實際表演順序待補
-						toggleContent: '表演順序尚未公布，敬請期待。',
+						toggleContent: '1. 丁逸\n2. 王姮皓\n3. 王琮瑋\n4. 廖翊凱\n5. 邱愛筠\n6. 劉恩妤\n7. 詹靖浩\n8. 林沛辰\n9. 賴憲澤\n10. 蔡睿珊',
 					},
 				],
 				// TODO: 語序疑似錯亂，待確認正確文案（讀起來應為「表演區結尾，歡迎現場觀眾自由登台，一起加入 Live Coding！」）
@@ -457,15 +475,15 @@ export const CONTENT_ZH = {
 						name: '米凳子',
 						description: '《米凳子》因側面神似「米」字而得名。透過圓潤的線條與紙板堆疊工法，在有限的材料中兼顧美感與支撐力，讓簡單的紙板，也能化身舒適、紮實又可愛的凳子。',
 						toggleLabel: '設計師簡介',
-						// TODO: 設計師簡介待補
-						toggleContent: '設計師簡介尚未提供，敬請期待。',
+						toggleContent:
+							'吳悅齊\n\n國立臺灣科技大學設計系大學部一年級學生，米凳子設計師。我喜歡從有趣的想法出發，相信美感吸引目光，功能留住使用者，讓設計兼具趣味與實用。',
 					},
 					{
 						name: 'ㄇ椅',
 						description: '椅子本身由四片ㄇ字型的紙板組裝而成，故取名為ㄇ椅，同時承載了台灣獨有的注音文化，發想時希望能最大程度利用紙板紋路縱向的承重，同時最低程度的破壞紙板的完整性，兩者同時達成就能保有很高的支撐力，並且有簡約質感的風格呈現，於是僅由四片結構就能組裝完成的ㄇ椅就誕生了。',
 						toggleLabel: '設計師簡介',
-						// TODO: 設計師簡介待補
-						toggleContent: '設計師簡介尚未提供，敬請期待。',
+						toggleContent:
+							'游彥澤\n\n國立臺灣科技大學設計系大學部一年級學生，ㄇ椅設計師。我是一個喜歡思考的人，比起用直覺來設計物品，我更傾向於先進行更多的思考，習慣依循某個邏輯或是方式做一系列的設計或創作。',
 					},
 				],
 			},

@@ -280,25 +280,43 @@ export const CONTENT_EN = {
 			sessions: [
 				{
 					id: 'day1-5f',
-					title: 'Big Bang! Tune the Future',
-					tagline: 'Every voice is a possible future',
+					title: 'Big Bang! Futures Stage',
+					tagline: 'Hear ideas. Shape futures.',
 					time: '09:20 - 16:40',
 					location: '5F Exhibition Hall, Syntrend Creative Park, Taipei',
 					tags: ['Keynotes', 'Panels', 'International Exchange'],
-					description: 'From keynote talks to panel discussions and research sharing, perspectives from different fields converge here. Listen, exchange, and think — and unlock more possible futures.',
+					description: 'From keynote talks and panel discussions to research presentations, discover diverse perspectives, exchange ideas, and unlock new possibilities for the future.',
 					gradient: true,
 					schedule: [
 						{ time: '9:20 - 9:45', label: 'Registration' },
 						{ time: '9:45 - 10:00', label: 'Opening' },
-						// TODO: full biography pending
-						{ time: '10:00 - 11:00', label: 'Jun Rekimoto', sublabel: 'Professor Emeritus, University of Tokyo / Director, Sony CSL Kyoto', featured: true, fullBio: 'Full biography coming soon.' },
-						// TODO: full biography pending
-						{ time: '11:05 - 12:05', label: 'Pedro Lopes', sublabel: 'Associate Professor of Computer Science, University of Chicago', featured: true, fullBio: 'Full biography coming soon.' },
-						{ time: '12:05 - 13:30', label: 'Lunch Break' },
-						// TODO: full biography pending
-						{ time: '13:30 - 14:30', label: 'Huaishu Peng', sublabel: 'Associate Professor of Computer Science, University of Maryland', featured: true, fullBio: 'Full biography coming soon.' },
 						{
-							time: '10:00 - 11:00' /* TODO: confirm correct time, duplicates Jun Rekimoto's slot */,
+							time: '10:00 - 11:00',
+							label: 'Jun Rekimoto',
+							sublabel: 'Professor Emeritus, University of Tokyo / Director, Sony CSL Kyoto',
+							featured: true,
+							fullBio:
+								'Jun Rekimoto received his Ph.D. in Information Science from the Tokyo Institute of Technology in 1996. Since joining Sony Computer Science Laboratories (Sony CSL) in 1994, he has led pioneering research in Human-Computer Interaction, augmented reality, and Human Augmentation. He founded the Interaction Laboratory in 1999 and currently directs Sony CSL Kyoto Laboratory. Rekimoto is also Professor Emeritus of the University of Tokyo. His projects include NaviCam, one of the world’s first handheld AR systems, CyberCode, an early marker-based AR platform, and SmartSkin, a foundational multitouch technology. His recent work explores Human-AI Integration, silent speech interfaces, and the Internet of Abilities (IoA). He has received numerous honors, including ACM SIGCHI Academy membership and two ACM UIST Lasting Impact Awards.',
+						},
+						{
+							time: '11:05 - 12:05',
+							label: 'Pedro Lopes',
+							sublabel: 'Associate Professor of Computer Science, University of Chicago',
+							featured: true,
+							fullBio:
+								'Pedro Lopes is an Associate Professor of Computer Science at University of Chicago, who focuses on integrating computer interfaces with the human body. His novel types of computers augment the body, not just cognitively, but physically. Pedro’s work has received several awards, such as eight ACM CHI/UIST Best Papers, and captured the interest of the public in outlets such as the New York Times, and more. Pedro is the technical program chair of CHI 2026, a Sloan fellow, and a recipient of the NSF CAREER Award and IEEE VR New Significant Researcher Award.',
+						},
+						{ time: '12:05 - 13:30', label: 'Lunch' },
+						{
+							time: '13:30 - 14:30',
+							label: 'Huaishu Peng',
+							sublabel: 'Associate Professor of Computer Science, University of Maryland',
+							featured: true,
+							fullBio:
+								'Huaishu Peng is an Associate Professor of Computer Science at the University of Maryland and director of the Small Artifacts Lab (SMART Lab). He explores tangible computing through an interdisciplinary research agenda that makes electronics more repairable, interfaces more accessible, and technology a medium for cultural expression. His work has appeared at CHI, UIST, and SIGGRAPH, earning multiple Best Paper and Honorable Mention awards, and has been featured widely in the media, including Wired, MIT Technology Review, TechCrunch, and Gizmodo. He is also a recipient of the NSF Award to Advance Semiconductor Learning.',
+						},
+						{
+							time: '14:35 - 15:35',
 							label: 'Andrea Bianchi',
 							sublabel: 'Associate Professor, Department of Industrial Design / Joint Associate Professor, School of Computing, KAIST',
 							featured: true,
@@ -306,42 +324,43 @@ export const CONTENT_EN = {
 								'Andrea Bianchi is an Associate Professor in the Department of Industrial Design and a joint Associate Professor in the School of Computing at KAIST, where he directs the Make Lab. His research focuses on human-computer interaction (HCI), with an emphasis on prototyping tools for interactive systems and augmented on-body hardware for mixed reality (MR). Before joining KAIST, he taught in the Department of Computer Science at Sungkyunkwan University in Korea and worked as a video game programmer at a startup in New York. Andrea’s research has been published at top international venues including ACM CHI, UIST, and IMWUT, earning best paper and design awards and coverage from Engadget, ZDNet, New Scientist, MAKE, and Gizmodo. He received his PhD from KAIST in 2012 and his master’s degree from New York University in 2007.',
 						},
 						{ time: '15:35 - 15:40', label: 'Coffee Break' },
-						{ time: '10:00 - 11:00' /* TODO: confirm correct time, duplicates Jun Rekimoto's slot */, label: 'Forum', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
+						{ time: '15:40 - 16:40', label: 'Panel', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
 					],
 				},
 				{
 					id: 'day1-12f',
 					title: 'Big Bang! Night Market',
-					tagline: 'Tonight, there’s more to explore than a night market',
+					tagline: 'Come for the food. Stay for the future.',
 					time: '15:30 - 20:00',
 					location: '12F Multi-purpose Hall, Syntrend Creative Park, Taipei',
 					tags: ['Demo', 'Poster', 'Performances', 'Food', 'Market'],
-					description: 'This is more than a night market — it’s where technology, humanities, and creativity meet. Explore interactive demos, research posters, live coding, budaixi projection performances, and limited-edition night-market food, and unlock your own multiverse.',
+					description: 'More than a night market, this is where technology, culture, and creativity collide. Wander through interactive demos, research posters, live coding, projection puppetry, and curated night market food to discover your own multiverse of futures.',
 					gradient: false,
 					schedule: [
-						{ time: '13:30', label: 'Doors Open' },
-						{ time: '17:30', label: 'Opening & Introduction' },
-						{ time: '17:45', label: 'ISAT Ruoshui Award Ceremony' },
-						// TODO: full biography pending
+						{ time: '15:30', label: 'Welcome' },
+						{ time: '17:30', label: 'Opening Show' },
+						{ time: '17:45', label: 'ISAT Award' },
 						{
 							time: '18:00',
 							label: 'National Yang Ming Chiao Tung University | Experience Design Lab',
 							sublabel: '"Future Budaixi: Illusion and Cosmos" — Mixed Reality × Contemporary Dance Immersive Performance',
 							featured: true,
-							fullBio: 'Full biography coming soon.',
+							fullBio: 'Team: Chun-Cheng Hsu, Wei-Chen Yen, Yi-Jen Lin\nPerformers: Yi-Jen Lin, Siang-Fu Zeng\nPuppetry Master: Yong-Ting Lai',
+							workDescription:
+								'"Future Budaixi: Illusion and Cosmos" brings together Taiwanese glove puppetry (Budaixi), mixed reality (MR), and contemporary dance in an immersive performance experience. The performance opens with a traditional narration by a Budaixi puppeteer, guiding Sun Wukong and a Dan character across the boundary between the physical and virtual worlds. As the puppets transcend the confines of the palm stage, dancers interact with MR technology, virtual puppets, and flowing particle effects, extending puppeteering gestures into full-body movement. Through this process of digital translation, the embodied aesthetics of Budaixi are reimagined, creating an immersive future theater where tradition and technology converge.',
 						},
 						{
 							time: '18:10',
-							label: 'Ho Chiao-Wei',
+							label: 'Chiao-Wei Ho',
 							sublabel: '"unix_time"',
 							featured: true,
 							fullBio:
 								'Hochiaowei Practices is an independently run creative collective: DML (Digital Medicine Lab) focuses on speculative design and new-media creation and research; TPS Press (tshut-pán-siā) promotes culturally critical, experimental design publications through independent publishing; the sound project KIKORI Collective, through live coding and the TOPLAP NTUST community, turns sound into a freely usable creative medium; and the teaching experiment SNN (School of New Now) focuses on teaching open-source-oriented creative tools and methods so that knowledge can be shared equally.',
-							workHeading: 'Opening Performance: "unix_time"',
+							workHeading: 'Opening Show: "unix_time"',
 							workDescription:
 								'"unix_time" is an electronic sound piece generated through live coding. Built from numbers, countdowns, alarms, and system notification sounds, it organizes a string of otherwise meaningless digits, live, into a sound structure that keeps closing in on an endpoint.\n\nAbstract numbers carry no event in themselves — they are simply arranged symbols. But once they begin running as a countdown, that string of symbols takes on a sense of direction. The piece doesn’t try to make the countdown stand for any specific “symbol”; instead, it treats the countdown as an empty structure. As the numbers close in on the end, what’s really being heard isn’t some definite event, but how we install an imagined future into a string of digits.',
 						},
-						{ time: '20:00', label: 'Open End' },
+						{ time: '20:00', label: 'Bye Bye' },
 					],
 				},
 			],
@@ -356,8 +375,8 @@ export const CONTENT_EN = {
 						name: 'TOPLAP NTUST',
 						description: 'TOPLAP NTUST is an electronic music collective centered on live coding, combined with real-time visuals and live performance. Carrying on the spirit of the international TOPLAP and Algorave movements, it turns live-generated sound and image into an ever-evolving music culture and lifestyle.',
 						toggleLabel: 'Performance Order',
-						// TODO: actual performance order pending
-						toggleContent: 'Performance order to be announced.',
+						toggleContent:
+							'1. Ting Yi\n2. Heng-Hao Wang\n3. Cong-Wei Wang\n4. I-Kai Liao\n5. Ai-Yun Chiu\n6. En-Yu Liu\n7. Ching-Hao Chan\n8. Pei-Chen Lin\n9. Zec Lai\n10. Ruei-Shan Tsai',
 					},
 				],
 				// TODO: word order looks garbled in the source copy — should likely read "To close the performance area, the audience is welcome to take the stage and join the live coding!"
@@ -374,15 +393,15 @@ export const CONTENT_EN = {
 						name: 'Rice Stool',
 						description: 'Named for its side profile, which resembles the Chinese character for "rice" (米). Through soft curves and a stacked-cardboard construction technique, it balances aesthetics and load-bearing strength within limited materials — turning simple cardboard into a stool that is comfortable, sturdy, and charming.',
 						toggleLabel: 'Designer Bio',
-						// TODO: designer bio pending
-						toggleContent: 'Designer bio coming soon.',
+						toggleContent:
+							'Kiki Wu\n\nFirst-year undergraduate student in the Department of Design at National Taiwan University of Science and Technology, the designer of Rice Stool.I like to start with playful ideas, believing that aesthetics attract attention, while functionality keeps people engaged. My goal is to create designs that are both delightful and practical.',
 					},
 					{
 						name: 'ㄇ Chair',
 						description: 'Assembled from four ㄇ-shaped (Zhuyin/Bopomofo) cardboard panels, this chair takes its name from and carries Taiwan’s unique Zhuyin phonetic culture. The design maximizes load-bearing capacity along the cardboard’s vertical grain while minimizing damage to its structural integrity — achieving both strong support and a minimalist aesthetic with just four pieces.',
 						toggleLabel: 'Designer Bio',
-						// TODO: designer bio pending
-						toggleContent: 'Designer bio coming soon.',
+						toggleContent:
+							'Alger Yu\n\nFirst-year undergraduate student in the Department of Design at National Taiwan University of Science and Technology, the designer of ㄇ Chair.I enjoy thinking deeply about design. Rather than relying solely on intuition, I prefer to begin with careful reflection, developing a clear logic or methodology that guides a series of designs and creative works.',
 					},
 				],
 			},
