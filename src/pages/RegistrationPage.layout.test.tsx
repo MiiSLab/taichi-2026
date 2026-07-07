@@ -1,0 +1,61 @@
+import assert from 'node:assert/strict';
+import { readFileSync } from 'node:fs';
+import test from 'node:test';
+
+test('registration page renders both pricing tables and the two registration methods', () => {
+	const source = readFileSync(new URL('./RegistrationPage.tsx', import.meta.url), 'utf8');
+
+	assert.match(source, /section\.apmarTicket/);
+	assert.match(source, /section\.taichiTicket/);
+	assert.match(source, /table\.tierNames\.map/);
+	assert.match(source, /table\.rows\.map/);
+
+	assert.match(source, /parseText\(section\.membershipNote\)/);
+	assert.match(source, /parseText\(section\.manualIntro\)/);
+	assert.match(source, /parseText\(section\.emailStepText\)/);
+
+	assert.match(source, /section\.kktixUrl === '#'/);
+	assert.match(source, /section\.kktixComingSoonLabel/);
+	assert.match(source, /href=\{section\.kktixUrl\}/);
+	assert.match(source, /section\.bankDetails\.map/);
+	assert.match(source, /href=\{section\.formUrl\}/);
+	assert.match(source, /target='_blank'/);
+	assert.match(source, /rel='noreferrer'/);
+});
+
+test('registration content defines matching pricing and registration-method fields for both languages', () => {
+	const zhSource = readFileSync(new URL('../content.zh.ts', import.meta.url), 'utf8');
+	const enSource = readFileSync(new URL('../content.en.ts', import.meta.url), 'utf8');
+
+	assert.match(zhSource, /registrationSection: \{/);
+	assert.match(zhSource, /apmarTicket: \{/);
+	assert.match(zhSource, /taichiTicket: \{/);
+	assert.match(zhSource, /kktixUrl: '#'/);
+	assert.match(zhSource, /kktixComingSoonLabel: '即將開放'/);
+	assert.match(zhSource, /manualHeading: '2\. 團體報名'/);
+	assert.match(zhSource, /manualIntro:/);
+	assert.match(zhSource, /bankDetails: \[/);
+	assert.match(zhSource, /154100091731/);
+
+	assert.match(enSource, /registrationSection: \{/);
+	assert.match(enSource, /\.\.\.CONTENT_ZH\.registrationSection/);
+	assert.match(enSource, /apmarTicket: \{/);
+	assert.match(enSource, /taichiTicket: \{/);
+	assert.match(enSource, /kktixComingSoonLabel: 'Coming Soon'/);
+	assert.match(enSource, /manualHeading: '2\. Group Registration'/);
+	assert.match(enSource, /manualIntro:/);
+	assert.match(enSource, /bankDetails: \[/);
+});
+
+test('registration page is routed but the navbar button stays unwired', () => {
+	const appSource = readFileSync(new URL('../App.tsx', import.meta.url), 'utf8');
+	const navSource = readFileSync(new URL('../components/layout/Navbar.tsx', import.meta.url), 'utf8');
+
+	assert.match(appSource, /RegistrationPage = lazy\(\(\) => import\('\.\/pages\/RegistrationPage'\)\)/);
+	assert.match(appSource, /path='registration' element=\{<RegistrationPage \/>\}/);
+
+	// The REGISTRATION nav button legitimately renders content.nav.registration as its
+	// label — only assert it has no navigation wiring (Link `to` / onClick) yet.
+	assert.doesNotMatch(navSource, /to=['"]\/?registration['"]/);
+	assert.doesNotMatch(navSource, /onClick[^}]*registration/i);
+});

@@ -10,8 +10,7 @@ test('cfp page keeps shared hero structure and typography tokens wired in', () =
 	assert.match(source, /mainTitle: language === 'zh' \? '海報論文' : 'Poster'/);
 	assert.match(source, /mainTitle: language === 'zh' \? '互動展示' : 'Interactivity and Demo'/);
 	assert.match(source, /taiwanchi26\+demo@gmail\.com/);
-	assert.match(source, /inline-block whitespace-nowrap break-normal/);
-	assert.match(source, /min-w-0 break-words \[overflow-wrap:anywhere\]/);
+	assert.match(source, /import \{ parseText, stripBullet \} from '\.\.\/utils\/textFormatting'/);
 	assert.doesNotMatch(source, /'break-all'/);
 	assert.match(source, /import FramePanel from '\.\.\/components\/FramePanel'/);
 	assert.match(source, /import \{ panelFrame \} from '\.\.\/design-system\/panel'/);
@@ -38,4 +37,13 @@ test('cfp page keeps notes and chairs inside framed panels for clear section bou
 	assert.match(source, /const ChairsPanel = \(\{ title, chairs \}: \{ title: string; chairs: string\[\] \}\) => \(\s*<FramePanel className='h-full'/s);
 	assert.match(source, /<FramePanel className='h-full min-h-\[320px\]' contentClassName='px-8 pb-8 pt-5 xl:p-8'>/);
 	assert.match(source, /<FramePanel className='h-full' contentClassName='p-8'>/);
+});
+
+test('shared textFormatting util keeps parseText link styling and stripBullet intact', () => {
+	const source = readFileSync(new URL('../utils/textFormatting.tsx', import.meta.url), 'utf8');
+
+	assert.match(source, /export const parseText/);
+	assert.match(source, /export const stripBullet/);
+	assert.match(source, /inline-block whitespace-nowrap break-normal/);
+	assert.match(source, /min-w-0 break-words \[overflow-wrap:anywhere\]/);
 });

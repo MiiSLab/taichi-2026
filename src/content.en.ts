@@ -169,6 +169,16 @@ export const CONTENT_EN = {
 		surveyDescription:
 			'If you plan to attend with family members, please fill out this short survey so we can prepare in advance.',
 		surveyButtonText: 'Open Survey Form',
+		facilitiesHeading: 'Syntrend Family-Friendly Facilities',
+		facilities: [
+			{ icon: 'toilet', label: 'Family Restrooms', floors: 'B2, 3F, 5F, 7F, 8F, 9F, 12F' },
+			{ icon: 'baby', label: 'Diaper Changing Stations', floors: 'B2, 2F-9F' },
+			{ icon: 'milk', label: 'Nursing Room', floors: '7F' },
+			{ icon: 'accessibility', label: 'Accessible Restrooms', floors: '2F, 4F, 6F, 8F, 9F' },
+			{ icon: 'droplets', label: 'Water Fountains', floors: '2F, 3F, 4F, 5F, 6F, 7F, 8F, 9F' },
+		],
+		facilitiesSourceLabel: 'Source: Syntrend Creative Park official website',
+		facilitiesSourceUrl: 'https://www.syntrend.com.tw/service',
 		outroLine: 'More family-friendly activities will be announced soon. Stay tuned!',
 	},
 	sponsorshipSection: {
@@ -521,6 +531,51 @@ export const CONTENT_EN = {
 		coOrganizersTitle: 'Co-Organizers',
 		supportingOrganizersTitle: 'Supporting Organizations',
 		sponsorsTitle: 'Sponsors',
+	},
+	registrationSection: {
+		...CONTENT_ZH.registrationSection,
+		seoTitle: 'Registration',
+		seoDescription:
+			'TAICHI 2026 registration and pricing information, including the APMAR bundle, TAICHI ticket rates, and two ways to register.',
+		pricingHeading: 'Ticket Pricing',
+		apmarTicket: {
+			...CONTENT_ZH.registrationSection.apmarTicket,
+			title: 'APMAR Bundle (APMAR + TAICHI)',
+			tierNames: ['Price'],
+			rows: [
+				{ label: 'General', values: ['5900'] },
+				{ label: 'Student', values: ['3650'] },
+			],
+		},
+		taichiTicket: {
+			...CONTENT_ZH.registrationSection.taichiTicket,
+			title: 'TAICHI Ticket',
+			tierNames: ['Early Bird (before 7/22 00:00)', 'Regular (7/22 00:01-7/28 00:00)'],
+			rows: [
+				{ label: 'General', values: ['2900', '3100'] },
+				{ label: 'Student', values: ['1400', '1750'] },
+			],
+		},
+		paperRegistrationNote: 'Each accepted paper requires at least one registrant; please provide the paper ID on the registration form.',
+		membershipNote:
+			'**TAICHI membership renewal fees apply: NT$1,000 for general members and NT$500 for student members — please add this when registering.** New members, please contact the [society](https://taiwanchi.org/memberpay/).',
+		methodsHeading: 'Two ways to register',
+		kktixHeading: '1. Register via KKTIX',
+		kktixButtonLabel: 'KKTIX Registration Link',
+		kktixComingSoonLabel: 'Coming Soon',
+		manualHeading: '2. Group Registration',
+		manualIntro:
+			'If you prefer not to use KKTIX, you may register as a group by following the steps below. For any questions, please contact [taichi2026+registration@gmail.com](mailto:taichi2026+registration@gmail.com).',
+		transferStepHeading: 'Transfer the registration fee to the following account',
+		bankDetails: [
+			'Account name: Taiwan Association for Computer-Human Interaction',
+			'Bank: Hua Nan Commercial Bank (code 008)',
+			'Account no.: 154100091731',
+		],
+		formStepHeading: 'Fill out the group registration form',
+		formButtonLabel: 'Open the Form',
+		emailStepText:
+			'Email a screenshot of the transfer receipt and the group registration form to [taichi2026+registration@gmail.com](mailto:taichi2026+registration@gmail.com)',
 	},
 	footer: {
 		...CONTENT_ZH.footer,

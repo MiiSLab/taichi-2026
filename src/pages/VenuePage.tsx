@@ -196,14 +196,14 @@ const VenuePage: React.FC = () => {
 				{venueContent.days.map(day => (
 					<article key={day.id} id={day.id} className='scroll-mt-28'>
 						<div
-							className='relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-hidden md:min-h-[680px]'
+							className='relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-hidden bg-black md:min-h-[680px]'
 							style={{
 								backgroundImage: `linear-gradient(90deg, rgba(0, 0, 0, 0.96) 0%, rgba(0, 0, 0, 0.84) 52%, rgba(0, 0, 0, 0.45) 100%), url(${day.heroImage})`,
 								backgroundPosition: 'center',
 								backgroundSize: 'cover',
 							}}
 						>
-							<div className='mx-auto flex min-h-[420px] h-full max-w-[1280px] items-center px-4 py-16 md:min-h-[680px] md:px-8 md:py-24'>
+							<div className='relative mx-auto flex min-h-[420px] h-full max-w-[1280px] items-center px-4 py-16 md:min-h-[680px] md:px-8 md:py-24'>
 								<div className='max-w-[590px]'>
 									<h2 className='ds-section-title mb-6 text-[2rem] md:text-[2.5rem] md:leading-[1.5]'>
 										{day.heroTitle}

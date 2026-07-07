@@ -253,6 +253,16 @@ export const CONTENT_ZH = {
 		surveyDescription: '若您計畫攜帶家屬前來，請填寫此調查表，協助我們提前準備。',
 		surveyButtonText: '前往調查表',
 		surveyUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSe00DvkS2zWTNY0Hfi0mKwePdPc-777Jypcxh1ulxQ7DRDcJg/viewform',
+		facilitiesHeading: '三創親子友善設施',
+		facilities: [
+			{ icon: 'toilet', label: '親子廁所', floors: 'B2、3F、5F、7F、8F、9F、12F' },
+			{ icon: 'baby', label: '尿布台', floors: 'B2、2F-9F' },
+			{ icon: 'milk', label: '哺集乳室', floors: '7F' },
+			{ icon: 'accessibility', label: '無障礙廁所', floors: '2F、4F、6F、8F、9F' },
+			{ icon: 'droplets', label: '飲水機', floors: '2F、3F、4F、5F、6F、7F、8F、9F' },
+		],
+		facilitiesSourceLabel: '資料來源：三創生活園區官方網站',
+		facilitiesSourceUrl: 'https://www.syntrend.com.tw/service',
 		outroLine: '更多活動規劃將後續公告！敬請期待！',
 	},
 	sponsorshipSection: {
@@ -575,7 +585,7 @@ export const CONTENT_ZH = {
 			{
 				id: 'venue-day-1',
 				tabLabel: '[ 8/5 ]',
-				heroImage: '/images/day1location.avif',
+				heroImage: '/images/venue_8_5_banner.png',
 				heroTitle: '8/5(三) 互動夜市 [對外公開]',
 				heroSubtitle: 'TAICHI、晶創人文、APMAR、ISAT 聯合活動',
 				highlight: { label: '地點', venue: '臺北三創生活園區 5F 和 12F', details: ['5F 國際大咖 Keynote 演講連環場', '12F 互動夜市、小吃、表演揍作伙來'], note: '詳細行程表待公告。' },
@@ -627,6 +637,47 @@ export const CONTENT_ZH = {
 			{ name: '美國創新中心', logo: '/logos/AIC.png', size: 'large', className: 'px-6 py-4 rounded-2xl shadow-xl' },
 			{ name: '國科會工程科技推展中心', logo: '/logos/ETPC.png', size: 'large', className: 'px-6 py-4 rounded-2xl shadow-xl' },
 		],
+	},
+	registrationSection: {
+		pageTitle: 'Registration',
+		seoTitle: '註冊資訊',
+		seoDescription: 'TAICHI 2026 註冊與票價資訊，包含 APMAR 套票、TAICHI 票價與兩種報名方式。',
+		pricingHeading: '票價資訊',
+		apmarTicket: {
+			title: 'APMAR 套票 (APMAR+TAICHI)',
+			tierNames: ['票價'],
+			rows: [
+				{ label: '一般票', values: ['5900'] },
+				{ label: '學生票', values: ['3650'] },
+			],
+		},
+		taichiTicket: {
+			title: 'TAICHI 票價',
+			tierNames: ['早鳥票價 (7/22 00:00前)', '一般票價 (7/22 00:01-7/28 00:00)'],
+			rows: [
+				{ label: '一般票', values: ['2900', '3100'] },
+				{ label: '學生票', values: ['1400', '1750'] },
+			],
+		},
+		paperRegistrationNote: '每篇論文至少需要一人註冊，並於報名表單中填下論文編號。',
+		membershipNote:
+			'**TAICHI會員之舊會員續會費，一般會員1000元，學生會員500元，請額外添購。** 新會員請洽[學會](https://taiwanchi.org/memberpay/)。',
+		methodsHeading: '本次註冊費採兩種方式報名',
+		kktixHeading: '1. 採 KKTIX 報名',
+		kktixButtonLabel: 'KKTIX 報名連結',
+		kktixComingSoonLabel: '即將開放',
+		kktixUrl: '#',
+		manualHeading: '2. 團體報名',
+		manualIntro:
+			'若不想使用 KKTIX 報名，亦可依下列步驟進行團體報名，任何問題請聯絡 [taichi2026+registration@gmail.com](mailto:taichi2026+registration@gmail.com)。',
+		transferStepHeading: '將報名費以轉帳或匯款方式匯入以下帳號',
+		bankDetails: ['戶名：社團法人台灣人機互動學會', '銀行：華南商業銀行（銀行代號 008）', '帳號：154100091731'],
+		formStepHeading: '填寫團體報名表',
+		formButtonLabel: '前往填寫表單',
+		formUrl:
+			'https://docs.google.com/spreadsheets/d/1j04QqFwTVqXBF5cbPYQFjxjvw9fq6tpG/edit?usp=sharing&ouid=106876117677843883459&rtpof=true&sd=true',
+		emailStepText:
+			'將轉帳畫面截圖及團體報名表郵寄至 [taichi2026+registration@gmail.com](mailto:taichi2026+registration@gmail.com)',
 	},
 	footer: {
 		title: 'TAICHI 2026 \n BIG BANG! FUTURE!',
