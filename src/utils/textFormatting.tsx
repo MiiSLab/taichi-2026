@@ -1,13 +1,14 @@
 import React from 'react';
 
-export const parseText = (text: string) => {
+const defaultLinkClassName = (href: string) =>
+	`${href.startsWith('mailto:') ? 'inline-block whitespace-nowrap break-normal' : 'min-w-0 break-words [overflow-wrap:anywhere]'} text-[#F5FF33] transition-colors hover:text-primary hover:underline`;
+
+export const parseText = (text: string, getLinkClassName: (href: string) => string = defaultLinkClassName) => {
 	const regex = /\*\*([^*]+)\*\*|__([^_]+)__|\[(.*?)\]\(((?:https?:\/\/|mailto:)[^\s)]+)\)|((?:https?:\/\/|mailto:)[^\s)]+)/g;
 	const parts = [];
 	let lastIndex = 0;
 	let match;
 	let count = 0;
-	const getLinkClassName = (href: string) =>
-		`${href.startsWith('mailto:') ? 'inline-block whitespace-nowrap break-normal' : 'min-w-0 break-words [overflow-wrap:anywhere]'} text-[#F5FF33] transition-colors hover:text-primary hover:underline`;
 
 	while ((match = regex.exec(text)) !== null) {
 		if (match.index > lastIndex) {

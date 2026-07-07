@@ -234,12 +234,12 @@ const Navbar: React.FC = () => {
 							</button>
 						</div>
 
-						<button
-							type='button'
+						<Link
+							to='/registration'
 							className={`ds-nav-pill ds-nav-link flex h-[25px] items-center px-[17px] ${typography.scale.navBracketCompact} transition-opacity hover:opacity-90`}
 						>
 							<BracketText label={content.nav.registration} compact />
-						</button>
+						</Link>
 					</div>
 
 					<button
@@ -352,9 +352,13 @@ const Navbar: React.FC = () => {
 								EN
 							</button>
 						</div>
-						<button type='button' className='ds-nav-pill ds-nav-link mt-2 w-full px-5 py-3 text-xl transition-colors hover:text-white'>
+						<Link
+							to='/registration'
+							onClick={handleNav}
+							className='ds-nav-pill ds-nav-link mt-2 w-full px-5 py-3 text-xl transition-colors hover:text-white'
+						>
 							{content.nav.registration}
-						</button>
+						</Link>
 					</div>
 				</div>
 			)}

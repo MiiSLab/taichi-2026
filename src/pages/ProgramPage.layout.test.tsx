@@ -39,8 +39,8 @@ test('program page expands schedule-row bios and intro-card toggles inline inste
 test('program page wires the time/location label into both accordion and static sessions', () => {
 	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
 
-	assert.match(source, /label=\{labels\.timeLocationLabel\}/);
-	assert.match(source, /label=\{timeLocationLabel\}/);
+	const timeLocationUses = source.match(/<TimeLocationBlock label=\{labels\.timeLocationLabel\} time=\{session\.time\} location=\{session\.location\} \/>/g) ?? [];
+	assert.equal(timeLocationUses.length, 2);
 	assert.doesNotMatch(source, /label=''/);
 });
 
@@ -108,14 +108,53 @@ test('program page adapts layout across breakpoints', () => {
 	assert.match(source, /flex flex-col gap-4 pb-6 sm:flex-row sm:gap-6 sm:pl-\[214px\]/);
 });
 
-test('program page is reachable at the /preview staging route while Navbar stays disabled', () => {
-	// WIP staging: the page is previewed at /preview; the real Navbar link and /program route
-	// are wired up once the page is finalized (see TODO in App.tsx).
+test('program page is routed at /program while the Navbar link stays disabled', () => {
+	// The route itself is live at /program, but the real Navbar link is wired up
+	// once the page is finalized (see TODO in App.tsx).
 	const appSource = readFileSync(new URL('../App.tsx', import.meta.url), 'utf8');
 	const navbarSource = readFileSync(new URL('../components/layout/Navbar.tsx', import.meta.url), 'utf8');
 
 	assert.match(appSource, /const ProgramPage = lazy\(\(\) => import\('\.\/pages\/ProgramPage'\)\)/);
-	assert.match(appSource, /<Route path='preview' element={<ProgramPage \/>} \/>/);
+	assert.match(appSource, /<Route path='program' element={<ProgramPage \/>} \/>/);
 	assert.match(navbarSource, /{ label: 'PROGRAM \(TBD\)', disabled: true }/);
 	assert.match(navbarSource, /{ key: 'program', label: 'PROGRAM \(TBD\)', disabled: true }/);
+});
+
+test('program page renders a day-dependent hero banner and an optional day2 schedule', () => {
+	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+
+	assert.match(source, /activeDay === 'day1' \? '\/images\/program_hero_bigbang\.png' : '\/images\/program_hero_bigbang2\.png'/);
+	assert.match(source, /schedule\?: readonly ProgramScheduleRow\[\]/);
+	assert.match(source, /<ScheduleTable rows=\{session\.schedule\} title=\{labels\.scheduleTitle\} photoLabel=\{labels\.photoPlaceholder\} \/>/);
+});
+
+test('program page day2 session is collapsible like day1 accordions', () => {
+	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+
+	const day2Fn = source.slice(source.indexOf('const Day2StaticSession'), source.indexOf('const ProgramPage: React.FC'));
+	assert.match(day2Fn, /<details className='border-b group border-primary'>/);
+	assert.match(day2Fn, /<summary className='flex cursor-pointer list-none/);
+	assert.match(day2Fn, /group-open:rotate-180/);
+});
+
+test('program schedule row label wraps instead of being truncated on narrow screens', () => {
+	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+
+	assert.doesNotMatch(source, /truncate font-mono text-\[14px\]/);
+});
+
+test('program page day2 content drops the ISAT session and marks TAICHI as tentative with a schedule', () => {
+	const zhSource = readFileSync(new URL('../content.zh.ts', import.meta.url), 'utf8');
+	const enSource = readFileSync(new URL('../content.en.ts', import.meta.url), 'utf8');
+
+	for (const source of [zhSource, enSource]) {
+		assert.doesNotMatch(source, /day2-isat/);
+		assert.match(source, /id: 'day2-taichi'/);
+		assert.match(source, /label: 'Paper Session I'/);
+		assert.match(source, /label: 'Paper Session IV'/);
+		assert.match(source, /label: 'Award \/ Closing \/ TAICHI 2027'/);
+	}
+
+	assert.match(zhSource, /title: 'TAICHI年度學會 「暫定」'/);
+	assert.match(enSource, /title: 'TAICHI Annual Society Meeting \(Tentative\)'/);
 });

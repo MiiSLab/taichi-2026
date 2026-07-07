@@ -10,9 +10,10 @@ test('registration page renders both pricing tables and the two registration met
 	assert.match(source, /table\.tierNames\.map/);
 	assert.match(source, /table\.rows\.map/);
 
-	assert.match(source, /parseText\(section\.membershipNote\)/);
-	assert.match(source, /parseText\(section\.manualIntro\)/);
-	assert.match(source, /parseText\(section\.emailStepText\)/);
+	assert.match(source, /parseText\(section\.membershipNote, secondaryLinkClassName\)/);
+	assert.match(source, /parseText\(section\.manualIntro, secondaryLinkClassName\)/);
+	assert.match(source, /parseText\(section\.emailStepText, secondaryLinkClassName\)/);
+	assert.match(source, /text-secondary/);
 
 	assert.match(source, /section\.kktixUrl === '#'/);
 	assert.match(source, /section\.kktixComingSoonLabel/);
@@ -47,15 +48,19 @@ test('registration content defines matching pricing and registration-method fiel
 	assert.match(enSource, /bankDetails: \[/);
 });
 
-test('registration page is routed but the navbar button stays unwired', () => {
+test('registration page is routed and linked from the navbar and homepage CTA', () => {
 	const appSource = readFileSync(new URL('../App.tsx', import.meta.url), 'utf8');
 	const navSource = readFileSync(new URL('../components/layout/Navbar.tsx', import.meta.url), 'utf8');
+	const homeSource = readFileSync(new URL('../components/home/HomeSections.tsx', import.meta.url), 'utf8');
 
 	assert.match(appSource, /RegistrationPage = lazy\(\(\) => import\('\.\/pages\/RegistrationPage'\)\)/);
 	assert.match(appSource, /path='registration' element=\{<RegistrationPage \/>\}/);
 
-	// The REGISTRATION nav button legitimately renders content.nav.registration as its
-	// label — only assert it has no navigation wiring (Link `to` / onClick) yet.
-	assert.doesNotMatch(navSource, /to=['"]\/?registration['"]/);
-	assert.doesNotMatch(navSource, /onClick[^}]*registration/i);
+	const navLinks = navSource.match(/<Link\s+to='\/registration'/g) ?? [];
+	assert.equal(navLinks.length, 2);
+
+	assert.match(homeSource, /<Link\s*\n?\s*to='\/registration'/);
+	assert.doesNotMatch(homeSource, /Coming Soon/);
+	assert.doesNotMatch(homeSource, /即將開放/);
+	assert.match(homeSource, /<span className='flex-1 text-center'>\{registerButtonLabel\}<\/span>/);
 });

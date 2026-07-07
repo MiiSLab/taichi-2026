@@ -519,8 +519,24 @@ export const CONTENT_ZH = {
 		},
 		day2: {
 			sessions: [
-				{ id: 'day2-taichi', title: 'TAICHI年度學會', time: '08:00 - 17:00', location: '國立臺北科技大學宏裕科技大樓 B1國際會議廳' },
-				{ id: 'day2-isat', title: 'ISAT年度學會', time: '08:00 - 17:00', location: '國立臺北科技大學光華館 多功能展演廳' },
+				{
+					id: 'day2-taichi',
+					title: 'TAICHI年度學會 「暫定」',
+					time: '08:00 - 17:00',
+					location: '國立臺北科技大學宏裕科技大樓 B1國際會議廳',
+					schedule: [
+						{ time: '8:15 - 8:50', label: 'Registration' },
+						{ time: '8:50 - 9:50', label: 'Paper Session I' },
+						{ time: '9:50 - 10:50', label: 'Paper Session II' },
+						{ time: '10:50 - 11:10', label: 'Coffee Break (20mins)' },
+						{ time: '11:10 - 12:10', label: '碩博士論文獎發表' },
+						{ time: '12:10 - 13:45', label: 'Lunch Break', sublabel: '會員大會' },
+						{ time: '13:45 - 14:45', label: 'Paper Session III', sublabel: '理監事會議' },
+						{ time: '14:45 - 15:45', label: 'Paper Session IV' },
+						{ time: '15:45 - 16:05', label: 'Coffee Break (20mins)' },
+						{ time: '16:05 - 16:40', label: 'Award / Closing / TAICHI 2027' },
+					],
+				},
 			],
 		},
 	},

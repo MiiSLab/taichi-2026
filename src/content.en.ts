@@ -437,8 +437,24 @@ export const CONTENT_EN = {
 		},
 		day2: {
 			sessions: [
-				{ id: 'day2-taichi', title: 'TAICHI Annual Society Meeting', time: '08:00 - 17:00', location: 'National Taipei University of Technology, Hongyu Technology Building B1 International Conference Hall' },
-				{ id: 'day2-isat', title: 'ISAT Annual Society Meeting', time: '08:00 - 17:00', location: 'National Taipei University of Technology, Guanghua Hall Multi-function Auditorium' },
+				{
+					id: 'day2-taichi',
+					title: 'TAICHI Annual Society Meeting (Tentative)',
+					time: '08:00 - 17:00',
+					location: 'National Taipei University of Technology, Hongyu Technology Building B1 International Conference Hall',
+					schedule: [
+						{ time: '8:15 - 8:50', label: 'Registration' },
+						{ time: '8:50 - 9:50', label: 'Paper Session I' },
+						{ time: '9:50 - 10:50', label: 'Paper Session II' },
+						{ time: '10:50 - 11:10', label: 'Coffee Break (20mins)' },
+						{ time: '11:10 - 12:10', label: 'Graduate Thesis Award Presentations' },
+						{ time: '12:10 - 13:45', label: 'Lunch Break', sublabel: 'General Assembly' },
+						{ time: '13:45 - 14:45', label: 'Paper Session III', sublabel: 'Board Meeting' },
+						{ time: '14:45 - 15:45', label: 'Paper Session IV' },
+						{ time: '15:45 - 16:05', label: 'Coffee Break (20mins)' },
+						{ time: '16:05 - 16:40', label: 'Award / Closing / TAICHI 2027' },
+					],
+				},
 			],
 		},
 	},

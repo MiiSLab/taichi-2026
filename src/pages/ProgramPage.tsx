@@ -25,7 +25,7 @@ type ProgramSession = {
 	schedule: ProgramScheduleRow[];
 };
 type ProgramIntroCard = { name: string; description: string; toggleLabel?: string; toggleContent?: string; longform?: boolean };
-type ProgramDay2Session = { id: string; title: string; time: string; location: string };
+type ProgramDay2Session = { id: string; title: string; time: string; location: string; schedule?: readonly ProgramScheduleRow[] };
 
 const TimeLocationBlock = ({ label, time, location }: { label: string; time: string; location: string }) => (
 	<div className='flex flex-col'>
@@ -40,7 +40,7 @@ const ScheduleRowHeader = ({ row }: { row: ProgramScheduleRow }) => (
 		<span className={`font-mono text-[14px] font-bold leading-5 ${row.featured ? 'text-primary' : 'text-white/90'}`}>{row.time}</span>
 		<div className='flex items-center justify-between min-w-0 gap-3'>
 			<div className='min-w-0'>
-				<p className={`truncate font-mono text-[14px] font-bold leading-5 ${row.featured ? 'text-primary' : 'text-white/90'}`}>{row.label}</p>
+				<p className={`font-mono text-[14px] font-bold leading-5 ${row.featured ? 'text-primary' : 'text-white/90'}`}>{row.label}</p>
 				{row.sublabel && <p className='mt-0.5 font-mono text-[14px] font-bold leading-5 text-white/90'>{row.sublabel}</p>}
 			</div>
 			{row.fullBio && <ChevronDown className='transition-transform shrink-0 text-program-green group-open/row:rotate-180' size={20} strokeWidth={3} />}
@@ -78,7 +78,7 @@ const ScheduleRow = ({ row, photoLabel }: { row: ProgramScheduleRow; photoLabel:
 	);
 };
 
-const ScheduleTable = ({ rows, title, photoLabel }: { rows: ProgramScheduleRow[]; title: string; photoLabel: string }) => (
+const ScheduleTable = ({ rows, title, photoLabel }: { rows: readonly ProgramScheduleRow[]; title: string; photoLabel: string }) => (
 	<div className='px-4 py-6 bg-zinc-950/80 sm:px-8'>
 		<p className='mb-4 font-mono text-[14px] font-bold leading-5 text-primary'>{title}</p>
 		<div className='flex flex-col'>
@@ -269,12 +269,28 @@ const FoodSection = ({
 	</ScrollReveal>
 );
 
-const Day2StaticSession = ({ session, timeLocationLabel }: { session: ProgramDay2Session; timeLocationLabel: string }) => (
+const Day2StaticSession = ({
+	session,
+	labels,
+}: {
+	session: ProgramDay2Session;
+	labels: { scheduleTitle: string; photoPlaceholder: string; timeLocationLabel: string };
+}) => (
 	<ScrollReveal>
-		<div className='flex flex-col gap-6 px-4 py-12 sm:px-8 md:px-16 md:py-20'>
-			<h3 className='font-mono text-[28px] font-bold leading-tight text-primary sm:text-[40px]'>{session.title}</h3>
-			<TimeLocationBlock label={timeLocationLabel} time={session.time} location={session.location} />
-		</div>
+		<details className='border-b group border-primary'>
+			<summary className='flex cursor-pointer list-none flex-col gap-6 px-4 pb-8 pt-12 sm:px-8 md:gap-[45px] md:px-16 md:pt-20'>
+				<div className='flex items-start justify-between gap-4'>
+					<h3 className='font-mono text-[28px] font-bold leading-tight text-primary sm:text-[40px]'>{session.title}</h3>
+					<ChevronDown className='mt-1 transition-transform shrink-0 text-primary group-open:rotate-180' size={24} strokeWidth={3} />
+				</div>
+				<TimeLocationBlock label={labels.timeLocationLabel} time={session.time} location={session.location} />
+			</summary>
+			{session.schedule && (
+				<div className='flex flex-col gap-8 px-4 pb-16 pt-6 sm:px-8 md:px-16'>
+					<ScheduleTable rows={session.schedule} title={labels.scheduleTitle} photoLabel={labels.photoPlaceholder} />
+				</div>
+			)}
+		</details>
 	</ScrollReveal>
 );
 
@@ -314,7 +330,11 @@ const ProgramPage: React.FC = () => {
 			<section className='px-4 pb-8 md:px-8'>
 				<div className='mx-auto max-w-[1280px]'>
 					<ScrollReveal delay={40}>
-						<img src='/images/program_hero_bigbang.png' alt='Big Bang! Futures!' className='w-full' />
+						<img
+							src={activeDay === 'day1' ? '/images/program_hero_bigbang.png' : '/images/program_hero_bigbang2.png'}
+							alt='Big Bang! Futures!'
+							className='w-full'
+						/>
 						<div className='flex flex-col gap-3 mt-6'>
 							<h2 className='font-mono text-[16px] font-bold leading-normal text-white sm:text-[18px]'>{section.heroCaption}</h2>
 							<p className='font-sans text-[13px] leading-relaxed text-white/70 sm:text-[14px]'>{section.heroDescription}</p>
@@ -363,7 +383,7 @@ const ProgramPage: React.FC = () => {
 				) : (
 					<div className='pb-16'>
 						{section.day2.sessions.map((sessionData) => (
-							<Day2StaticSession key={sessionData.id} session={sessionData} timeLocationLabel={section.labels.timeLocationLabel} />
+							<Day2StaticSession key={sessionData.id} session={sessionData} labels={section.labels} />
 						))}
 					</div>
 				)}

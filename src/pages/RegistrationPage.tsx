@@ -7,6 +7,9 @@ import { typography } from '../design-system/typography';
 import { useSEO } from '../hooks/useSEO';
 import { parseText } from '../utils/textFormatting';
 
+const secondaryLinkClassName = (href: string) =>
+	`${href.startsWith('mailto:') ? 'inline-block whitespace-nowrap break-normal' : 'min-w-0 break-words [overflow-wrap:anywhere]'} text-secondary transition-colors hover:text-primary hover:underline`;
+
 type TicketTable = {
 	title: string;
 	tierNames: readonly string[];
@@ -93,7 +96,7 @@ const RegistrationPage: React.FC = () => {
 					<ScrollReveal delay={150}>
 						<div className='mx-auto mt-10 max-w-3xl space-y-4'>
 							<p className={`${typography.scale.body} text-white/80`}>{section.paperRegistrationNote}</p>
-							<p className={`${typography.scale.body} text-white/90`}>{parseText(section.membershipNote)}</p>
+							<p className={`${typography.scale.body} text-white/90`}>{parseText(section.membershipNote, secondaryLinkClassName)}</p>
 						</div>
 					</ScrollReveal>
 
@@ -121,7 +124,7 @@ const RegistrationPage: React.FC = () => {
 						<div className='ds-surface-panel mt-6 px-6 py-8 md:px-10 md:py-10'>
 							<h3 className={`mb-5 ${typography.scale.cardTitle} text-white`}>{section.manualHeading}</h3>
 
-							<p className={`mb-5 ${typography.scale.body} text-white/80`}>{parseText(section.manualIntro)}</p>
+							<p className={`mb-5 ${typography.scale.body} text-white/80`}>{parseText(section.manualIntro, secondaryLinkClassName)}</p>
 
 							<div className='space-y-6'>
 								<div>
@@ -147,7 +150,7 @@ const RegistrationPage: React.FC = () => {
 									</a>
 								</div>
 
-								<p className={`${typography.scale.body} text-white/80`}>{parseText(section.emailStepText)}</p>
+								<p className={`${typography.scale.body} text-white/80`}>{parseText(section.emailStepText, secondaryLinkClassName)}</p>
 							</div>
 						</div>
 					</ScrollReveal>
