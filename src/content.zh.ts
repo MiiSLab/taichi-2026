@@ -356,8 +356,8 @@ export const CONTENT_ZH = {
 		heroDescription: 'Big Bang! Futures! 由晶創人文、TAICHI、APMAR 與 ISAT 聯合策劃，匯聚科技、人文、藝術與設計，共同解鎖未來的多重可能。',
 		labels: {
 			scheduleTitle: '完整時程表',
-			detailToggle: '詳細介紹',
 			photoPlaceholder: '照片',
+			timeLocationLabel: '時間/地點',
 		},
 		day1: {
 			sessions: [
@@ -373,27 +373,23 @@ export const CONTENT_ZH = {
 					schedule: [
 						{ time: '9:20 - 9:45', label: '報到' },
 						{ time: '9:45 - 10:00', label: '開幕' },
-						{ time: '10:00 - 11:00', label: 'Jun Rekimoto', sublabel: '東京大學名譽教授、Sony CSL 京都實驗室總監', featured: true },
-						{ time: '11:05 - 12:05', label: 'Pedro Lopes', sublabel: '芝加哥大學電腦科學副教授', featured: true },
+						// TODO: 完整簡歷待補
+						{ time: '10:00 - 11:00', label: 'Jun Rekimoto', sublabel: '東京大學名譽教授、Sony CSL 京都實驗室總監', featured: true, fullBio: '完整簡歷尚未提供，敬請期待。' },
+						// TODO: 完整簡歷待補
+						{ time: '11:05 - 12:05', label: 'Pedro Lopes', sublabel: '芝加哥大學電腦科學副教授', featured: true, fullBio: '完整簡歷尚未提供，敬請期待。' },
 						{ time: '12:05 - 13:30', label: '午餐時間' },
-						{ time: '13:30 - 14:30', label: 'Huaishu Peng', sublabel: '馬里蘭大學電腦科學副教授', featured: true },
-						{ time: '10:00 - 11:00' /* TODO: 確認正確時間，與 Jun Rekimoto 場次重複 */, label: 'Andrea Bianchi', sublabel: '韓國科學技術院（KAIST）工業設計系副教授、計算科學系兼任教授', featured: true },
-						{ time: '15:35 - 15:40', label: '午茶時間' },
-						{ time: '10:00 - 11:00' /* TODO: 確認正確時間，與 Jun Rekimoto 場次重複 */, label: '論壇', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
-					],
-					featuredCards: [
 						// TODO: 完整簡歷待補
-						{ name: 'Jun Rekimoto', role: '東京大學名譽教授、Sony CSL 京都實驗室總監', fullBio: '完整簡歷尚未提供，敬請期待。' },
-						// TODO: 完整簡歷待補
-						{ name: 'Pedro Lopes', role: '芝加哥大學電腦科學副教授', fullBio: '完整簡歷尚未提供，敬請期待。' },
-						// TODO: 完整簡歷待補
-						{ name: 'Huaishu Peng', role: '馬里蘭大學電腦科學副教授', fullBio: '完整簡歷尚未提供，敬請期待。' },
+						{ time: '13:30 - 14:30', label: 'Huaishu Peng', sublabel: '馬里蘭大學電腦科學副教授', featured: true, fullBio: '完整簡歷尚未提供，敬請期待。' },
 						{
-							name: 'Andrea Bianchi',
-							role: '韓國科學技術院（KAIST）工業設計系副教授、計算科學系兼任教授',
+							time: '10:00 - 11:00' /* TODO: 確認正確時間，與 Jun Rekimoto 場次重複 */,
+							label: 'Andrea Bianchi',
+							sublabel: '韓國科學技術院（KAIST）工業設計系副教授、計算科學系兼任教授',
+							featured: true,
 							fullBio:
 								'Andrea Bianchi 是韓國科學技術院（KAIST）工業設計系副教授、計算科學系兼任教授，同時也是 Make Lab 的主持人。他的研究領域為人機互動（HCI），專注於開發互動系統原型工具及混合實境（MR）中的擴增身體硬體設備。在加入 KAIST 前，他曾任教於韓國成均館大學計算機科學系，並曾於紐約一家新創公司擔任電子遊戲程式設計師。Andrea 的研究成果曾發表於 ACM CHI、UIST 和 IMWUT 等頂尖國際會議，屢獲最佳論文獎與設計獎項，並廣受 Engadget、ZDNet、New Scientist、MAKE 及 Gizmodo 等媒體報導。Andrea 於 2012 年取得 KAIST 博士學位，並於 2007 年獲得紐約大學碩士學位。',
 						},
+						{ time: '15:35 - 15:40', label: '午茶時間' },
+						{ time: '10:00 - 11:00' /* TODO: 確認正確時間，與 Jun Rekimoto 場次重複 */, label: '論壇', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
 					],
 				},
 				{
@@ -409,15 +405,26 @@ export const CONTENT_ZH = {
 						{ time: '13:30', label: '開放' },
 						{ time: '17:30', label: '開幕與介紹' },
 						{ time: '17:45', label: 'ISAT若水獎頒獎' },
-						{ time: '18:00', label: '國立陽明交通大學｜體驗設計實驗室', sublabel: '《未來布袋戲：幻相・乾坤》混合實境 × 當代舞蹈沉浸式演出', featured: true },
-						{ time: '18:10', label: '何樵暐', sublabel: '《unix_time》', featured: true },
+						// TODO: 完整簡歷待補
+						{
+							time: '18:00',
+							label: '國立陽明交通大學｜體驗設計實驗室',
+							sublabel: '《未來布袋戲：幻相・乾坤》混合實境 × 當代舞蹈沉浸式演出',
+							featured: true,
+							fullBio: '完整簡歷尚未提供，敬請期待。',
+						},
+						{
+							time: '18:10',
+							label: '何樵暐',
+							sublabel: '《unix_time》',
+							featured: true,
+							fullBio:
+								'何樵暐工作室Hochiaowei Practices是一個獨立運作的創作集合：其中DML（Digital Medicine Lab）聚焦於推測設計與新媒體的創作與研究；TPS Press（tshut-pán-siā）透過獨立出版推廣具文化批判性與實驗精神的設計書籍；聲音計畫 KIKORI Collective 藉由即時編碼及社群TOPLAP NTUST，使聲音成為能被自由運用的創作媒材；教學實驗 SNN（School of New Now）專注於教授開源導向的創作工具與方法，讓知識能被平等共享。',
+							workHeading: '開幕表演：《unix_time》',
+							workDescription:
+								'《unix_time》是一首以即時編碼生成的電子聲音作品。作品以數字、倒數、警示聲與系統提示音作為主要素材，將一串原本沒有特定意涵的數字，在現場組織成持續逼近終點的聲音結構。\n\n抽象的數字本身並不攜帶事件。數字只是被排列的符號；但當它們開始以倒數的形式運行，這串符號便產生了一種指向性。這件作品並不試圖讓倒數成為任何特定「象徵」，而是把倒數視為一種空的結構。當數字逐漸逼近終點，真正被聽見的不是某個明確事件，而是我們如何把想像中的未來安裝進一串數字之中。',
+						},
 						{ time: '20:00', label: '自由結束' },
-					],
-					featuredCards: [
-						// TODO: 完整簡歷待補
-						{ name: '國立陽明交通大學｜體驗設計實驗室', role: '《未來布袋戲：幻相・乾坤》混合實境 × 當代舞蹈沉浸式演出', fullBio: '完整簡歷尚未提供，敬請期待。' },
-						// TODO: 完整簡歷待補
-						{ name: '何樵暐', role: '《unix_time》', fullBio: '完整簡歷尚未提供，敬請期待。' },
 					],
 				},
 			],
@@ -432,6 +439,8 @@ export const CONTENT_ZH = {
 						name: 'TOPLAP NTUST',
 						description: 'TOPLAP NTUST 是一個以 Live Coding（即時編碼）為核心，結合即時影像與現場表演的電子音樂組織。延續國際 TOPLAP 與 Algorave 的精神，透過即時生成的聲音與影像，讓 Live Coding 成為一種持續演變的音樂文化與生活風格。',
 						toggleLabel: '表演順序',
+						// TODO: 實際表演順序待補
+						toggleContent: '表演順序尚未公布，敬請期待。',
 					},
 				],
 				// TODO: 語序疑似錯亂，待確認正確文案（讀起來應為「表演區結尾，歡迎現場觀眾自由登台，一起加入 Live Coding！」）
@@ -448,11 +457,15 @@ export const CONTENT_ZH = {
 						name: '米凳子',
 						description: '《米凳子》因側面神似「米」字而得名。透過圓潤的線條與紙板堆疊工法，在有限的材料中兼顧美感與支撐力，讓簡單的紙板，也能化身舒適、紮實又可愛的凳子。',
 						toggleLabel: '設計師簡介',
+						// TODO: 設計師簡介待補
+						toggleContent: '設計師簡介尚未提供，敬請期待。',
 					},
 					{
 						name: 'ㄇ椅',
 						description: '椅子本身由四片ㄇ字型的紙板組裝而成，故取名為ㄇ椅，同時承載了台灣獨有的注音文化，發想時希望能最大程度利用紙板紋路縱向的承重，同時最低程度的破壞紙板的完整性，兩者同時達成就能保有很高的支撐力，並且有簡約質感的風格呈現，於是僅由四片結構就能組裝完成的ㄇ椅就誕生了。',
 						toggleLabel: '設計師簡介',
+						// TODO: 設計師簡介待補
+						toggleContent: '設計師簡介尚未提供，敬請期待。',
 					},
 				],
 			},

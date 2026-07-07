@@ -273,8 +273,8 @@ export const CONTENT_EN = {
 		heroDescription: 'Big Bang! Futures! is jointly organized by the Program on Semiconductors and Humanities, TAICHI, APMAR, and ISAT — bringing together technology, humanities, art, and design to unlock the many possibilities of the future.',
 		labels: {
 			scheduleTitle: 'Full Schedule',
-			detailToggle: 'Details',
 			photoPlaceholder: 'Photo',
+			timeLocationLabel: 'Time / Location',
 		},
 		day1: {
 			sessions: [
@@ -290,27 +290,23 @@ export const CONTENT_EN = {
 					schedule: [
 						{ time: '9:20 - 9:45', label: 'Registration' },
 						{ time: '9:45 - 10:00', label: 'Opening' },
-						{ time: '10:00 - 11:00', label: 'Jun Rekimoto', sublabel: 'Professor Emeritus, University of Tokyo / Director, Sony CSL Kyoto', featured: true },
-						{ time: '11:05 - 12:05', label: 'Pedro Lopes', sublabel: 'Associate Professor of Computer Science, University of Chicago', featured: true },
+						// TODO: full biography pending
+						{ time: '10:00 - 11:00', label: 'Jun Rekimoto', sublabel: 'Professor Emeritus, University of Tokyo / Director, Sony CSL Kyoto', featured: true, fullBio: 'Full biography coming soon.' },
+						// TODO: full biography pending
+						{ time: '11:05 - 12:05', label: 'Pedro Lopes', sublabel: 'Associate Professor of Computer Science, University of Chicago', featured: true, fullBio: 'Full biography coming soon.' },
 						{ time: '12:05 - 13:30', label: 'Lunch Break' },
-						{ time: '13:30 - 14:30', label: 'Huaishu Peng', sublabel: 'Associate Professor of Computer Science, University of Maryland', featured: true },
-						{ time: '10:00 - 11:00' /* TODO: confirm correct time, duplicates Jun Rekimoto's slot */, label: 'Andrea Bianchi', sublabel: 'Associate Professor, Department of Industrial Design / Joint Associate Professor, School of Computing, KAIST', featured: true },
-						{ time: '15:35 - 15:40', label: 'Coffee Break' },
-						{ time: '10:00 - 11:00' /* TODO: confirm correct time, duplicates Jun Rekimoto's slot */, label: 'Forum', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
-					],
-					featuredCards: [
 						// TODO: full biography pending
-						{ name: 'Jun Rekimoto', role: 'Professor Emeritus, University of Tokyo / Director, Sony CSL Kyoto', fullBio: 'Full biography coming soon.' },
-						// TODO: full biography pending
-						{ name: 'Pedro Lopes', role: 'Associate Professor of Computer Science, University of Chicago', fullBio: 'Full biography coming soon.' },
-						// TODO: full biography pending
-						{ name: 'Huaishu Peng', role: 'Associate Professor of Computer Science, University of Maryland', fullBio: 'Full biography coming soon.' },
+						{ time: '13:30 - 14:30', label: 'Huaishu Peng', sublabel: 'Associate Professor of Computer Science, University of Maryland', featured: true, fullBio: 'Full biography coming soon.' },
 						{
-							name: 'Andrea Bianchi',
-							role: 'Associate Professor, Department of Industrial Design / Joint Associate Professor, School of Computing, KAIST',
+							time: '10:00 - 11:00' /* TODO: confirm correct time, duplicates Jun Rekimoto's slot */,
+							label: 'Andrea Bianchi',
+							sublabel: 'Associate Professor, Department of Industrial Design / Joint Associate Professor, School of Computing, KAIST',
+							featured: true,
 							fullBio:
 								'Andrea Bianchi is an Associate Professor in the Department of Industrial Design and a joint Associate Professor in the School of Computing at KAIST, where he directs the Make Lab. His research focuses on human-computer interaction (HCI), with an emphasis on prototyping tools for interactive systems and augmented on-body hardware for mixed reality (MR). Before joining KAIST, he taught in the Department of Computer Science at Sungkyunkwan University in Korea and worked as a video game programmer at a startup in New York. Andrea’s research has been published at top international venues including ACM CHI, UIST, and IMWUT, earning best paper and design awards and coverage from Engadget, ZDNet, New Scientist, MAKE, and Gizmodo. He received his PhD from KAIST in 2012 and his master’s degree from New York University in 2007.',
 						},
+						{ time: '15:35 - 15:40', label: 'Coffee Break' },
+						{ time: '10:00 - 11:00' /* TODO: confirm correct time, duplicates Jun Rekimoto's slot */, label: 'Forum', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
 					],
 				},
 				{
@@ -326,15 +322,26 @@ export const CONTENT_EN = {
 						{ time: '13:30', label: 'Doors Open' },
 						{ time: '17:30', label: 'Opening & Introduction' },
 						{ time: '17:45', label: 'ISAT Ruoshui Award Ceremony' },
-						{ time: '18:00', label: 'National Yang Ming Chiao Tung University | Experience Design Lab', sublabel: '"Future Budaixi: Illusion and Cosmos" — Mixed Reality × Contemporary Dance Immersive Performance', featured: true },
-						{ time: '18:10', label: 'Ho Chiao-Wei', sublabel: '"unix_time"', featured: true },
+						// TODO: full biography pending
+						{
+							time: '18:00',
+							label: 'National Yang Ming Chiao Tung University | Experience Design Lab',
+							sublabel: '"Future Budaixi: Illusion and Cosmos" — Mixed Reality × Contemporary Dance Immersive Performance',
+							featured: true,
+							fullBio: 'Full biography coming soon.',
+						},
+						{
+							time: '18:10',
+							label: 'Ho Chiao-Wei',
+							sublabel: '"unix_time"',
+							featured: true,
+							fullBio:
+								'Hochiaowei Practices is an independently run creative collective: DML (Digital Medicine Lab) focuses on speculative design and new-media creation and research; TPS Press (tshut-pán-siā) promotes culturally critical, experimental design publications through independent publishing; the sound project KIKORI Collective, through live coding and the TOPLAP NTUST community, turns sound into a freely usable creative medium; and the teaching experiment SNN (School of New Now) focuses on teaching open-source-oriented creative tools and methods so that knowledge can be shared equally.',
+							workHeading: 'Opening Performance: "unix_time"',
+							workDescription:
+								'"unix_time" is an electronic sound piece generated through live coding. Built from numbers, countdowns, alarms, and system notification sounds, it organizes a string of otherwise meaningless digits, live, into a sound structure that keeps closing in on an endpoint.\n\nAbstract numbers carry no event in themselves — they are simply arranged symbols. But once they begin running as a countdown, that string of symbols takes on a sense of direction. The piece doesn’t try to make the countdown stand for any specific “symbol”; instead, it treats the countdown as an empty structure. As the numbers close in on the end, what’s really being heard isn’t some definite event, but how we install an imagined future into a string of digits.',
+						},
 						{ time: '20:00', label: 'Open End' },
-					],
-					featuredCards: [
-						// TODO: full biography pending
-						{ name: 'National Yang Ming Chiao Tung University | Experience Design Lab', role: '"Future Budaixi: Illusion and Cosmos" — Mixed Reality × Contemporary Dance Immersive Performance', fullBio: 'Full biography coming soon.' },
-						// TODO: full biography pending
-						{ name: 'Ho Chiao-Wei', role: '"unix_time"', fullBio: 'Full biography coming soon.' },
 					],
 				},
 			],
@@ -349,6 +356,8 @@ export const CONTENT_EN = {
 						name: 'TOPLAP NTUST',
 						description: 'TOPLAP NTUST is an electronic music collective centered on live coding, combined with real-time visuals and live performance. Carrying on the spirit of the international TOPLAP and Algorave movements, it turns live-generated sound and image into an ever-evolving music culture and lifestyle.',
 						toggleLabel: 'Performance Order',
+						// TODO: actual performance order pending
+						toggleContent: 'Performance order to be announced.',
 					},
 				],
 				// TODO: word order looks garbled in the source copy — should likely read "To close the performance area, the audience is welcome to take the stage and join the live coding!"
@@ -365,11 +374,15 @@ export const CONTENT_EN = {
 						name: 'Rice Stool',
 						description: 'Named for its side profile, which resembles the Chinese character for "rice" (米). Through soft curves and a stacked-cardboard construction technique, it balances aesthetics and load-bearing strength within limited materials — turning simple cardboard into a stool that is comfortable, sturdy, and charming.',
 						toggleLabel: 'Designer Bio',
+						// TODO: designer bio pending
+						toggleContent: 'Designer bio coming soon.',
 					},
 					{
 						name: 'ㄇ Chair',
 						description: 'Assembled from four ㄇ-shaped (Zhuyin/Bopomofo) cardboard panels, this chair takes its name from and carries Taiwan’s unique Zhuyin phonetic culture. The design maximizes load-bearing capacity along the cardboard’s vertical grain while minimizing damage to its structural integrity — achieving both strong support and a minimalist aesthetic with just four pieces.',
 						toggleLabel: 'Designer Bio',
+						// TODO: designer bio pending
+						toggleContent: 'Designer bio coming soon.',
 					},
 				],
 			},
