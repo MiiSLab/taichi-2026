@@ -12,7 +12,7 @@ export const CONTENT_EN = {
 		home: 'HOME',
 		news: 'NEWS',
 		theme: 'THEME',
-		program: 'AGENDA',
+		program: 'PROGRAM',
 		keynotes: 'KEYNOTES',
 		registration: 'REGISTRATION',
 		notion: 'DB ADMIN',
@@ -262,6 +262,143 @@ export const CONTENT_EN = {
 		viewProject: 'SESSION // ',
 		agendaTba: 'Agenda to be announced.',
 		chairsLabel: 'Chairs',
+	},
+	programPageSection: {
+		title: 'PROGRAM',
+		dateTabs: [
+			{ key: 'day1', date: '8.05', day: 'WED' },
+			{ key: 'day2', date: '8.06', day: 'THU' },
+		],
+		heroCaption: 'Joint event by TAICHI, Program on Semiconductors and Humanities, APMAR, and ISAT',
+		heroDescription: 'Big Bang! Futures! is jointly organized by the Program on Semiconductors and Humanities, TAICHI, APMAR, and ISAT — bringing together technology, humanities, art, and design to unlock the many possibilities of the future.',
+		labels: {
+			scheduleTitle: 'Full Schedule',
+			detailToggle: 'Details',
+			photoPlaceholder: 'Photo',
+		},
+		day1: {
+			sessions: [
+				{
+					id: 'day1-5f',
+					title: 'Big Bang! Tune the Future',
+					tagline: 'Every voice is a possible future',
+					time: '09:20 - 16:40',
+					location: '5F Exhibition Hall, Syntrend Creative Park, Taipei',
+					tags: ['Keynotes', 'Panels', 'International Exchange'],
+					description: 'From keynote talks to panel discussions and research sharing, perspectives from different fields converge here. Listen, exchange, and think — and unlock more possible futures.',
+					gradient: true,
+					schedule: [
+						{ time: '9:20 - 9:45', label: 'Registration' },
+						{ time: '9:45 - 10:00', label: 'Opening' },
+						{ time: '10:00 - 11:00', label: 'Jun Rekimoto', sublabel: 'Professor Emeritus, University of Tokyo / Director, Sony CSL Kyoto', featured: true },
+						{ time: '11:05 - 12:05', label: 'Pedro Lopes', sublabel: 'Associate Professor of Computer Science, University of Chicago', featured: true },
+						{ time: '12:05 - 13:30', label: 'Lunch Break' },
+						{ time: '13:30 - 14:30', label: 'Huaishu Peng', sublabel: 'Associate Professor of Computer Science, University of Maryland', featured: true },
+						{ time: '10:00 - 11:00' /* TODO: confirm correct time, duplicates Jun Rekimoto's slot */, label: 'Andrea Bianchi', sublabel: 'Associate Professor, Department of Industrial Design / Joint Associate Professor, School of Computing, KAIST', featured: true },
+						{ time: '15:35 - 15:40', label: 'Coffee Break' },
+						{ time: '10:00 - 11:00' /* TODO: confirm correct time, duplicates Jun Rekimoto's slot */, label: 'Forum', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
+					],
+					featuredCards: [
+						// TODO: full biography pending
+						{ name: 'Jun Rekimoto', role: 'Professor Emeritus, University of Tokyo / Director, Sony CSL Kyoto', fullBio: 'Full biography coming soon.' },
+						// TODO: full biography pending
+						{ name: 'Pedro Lopes', role: 'Associate Professor of Computer Science, University of Chicago', fullBio: 'Full biography coming soon.' },
+						// TODO: full biography pending
+						{ name: 'Huaishu Peng', role: 'Associate Professor of Computer Science, University of Maryland', fullBio: 'Full biography coming soon.' },
+						{
+							name: 'Andrea Bianchi',
+							role: 'Associate Professor, Department of Industrial Design / Joint Associate Professor, School of Computing, KAIST',
+							fullBio:
+								'Andrea Bianchi is an Associate Professor in the Department of Industrial Design and a joint Associate Professor in the School of Computing at KAIST, where he directs the Make Lab. His research focuses on human-computer interaction (HCI), with an emphasis on prototyping tools for interactive systems and augmented on-body hardware for mixed reality (MR). Before joining KAIST, he taught in the Department of Computer Science at Sungkyunkwan University in Korea and worked as a video game programmer at a startup in New York. Andrea’s research has been published at top international venues including ACM CHI, UIST, and IMWUT, earning best paper and design awards and coverage from Engadget, ZDNet, New Scientist, MAKE, and Gizmodo. He received his PhD from KAIST in 2012 and his master’s degree from New York University in 2007.',
+						},
+					],
+				},
+				{
+					id: 'day1-12f',
+					title: 'Big Bang! Night Market',
+					tagline: 'Tonight, there’s more to explore than a night market',
+					time: '15:30 - 20:00',
+					location: '12F Multi-purpose Hall, Syntrend Creative Park, Taipei',
+					tags: ['Demo', 'Poster', 'Performances', 'Food', 'Market'],
+					description: 'This is more than a night market — it’s where technology, humanities, and creativity meet. Explore interactive demos, research posters, live coding, budaixi projection performances, and limited-edition night-market food, and unlock your own multiverse.',
+					gradient: false,
+					schedule: [
+						{ time: '13:30', label: 'Doors Open' },
+						{ time: '17:30', label: 'Opening & Introduction' },
+						{ time: '17:45', label: 'ISAT Ruoshui Award Ceremony' },
+						{ time: '18:00', label: 'National Yang Ming Chiao Tung University | Experience Design Lab', sublabel: '"Future Budaixi: Illusion and Cosmos" — Mixed Reality × Contemporary Dance Immersive Performance', featured: true },
+						{ time: '18:10', label: 'Ho Chiao-Wei', sublabel: '"unix_time"', featured: true },
+						{ time: '20:00', label: 'Open End' },
+					],
+					featuredCards: [
+						// TODO: full biography pending
+						{ name: 'National Yang Ming Chiao Tung University | Experience Design Lab', role: '"Future Budaixi: Illusion and Cosmos" — Mixed Reality × Contemporary Dance Immersive Performance', fullBio: 'Full biography coming soon.' },
+						// TODO: full biography pending
+						{ name: 'Ho Chiao-Wei', role: '"unix_time"', fullBio: 'Full biography coming soon.' },
+					],
+				},
+			],
+			performance: {
+				title: 'Performance Area',
+				cards: [
+					{
+						name: 'Vibe Coding Stage',
+						description: 'Not a DJ set, not a traditional performance — this is code brought to the stage. Creators write code live with AI and live coding, letting sound, visuals, and interaction emerge together in front of the audience. Every show is unrepeatable — each one is a Big Bang that exists only in the moment.',
+					},
+					{
+						name: 'TOPLAP NTUST',
+						description: 'TOPLAP NTUST is an electronic music collective centered on live coding, combined with real-time visuals and live performance. Carrying on the spirit of the international TOPLAP and Algorave movements, it turns live-generated sound and image into an ever-evolving music culture and lifestyle.',
+						toggleLabel: 'Performance Order',
+					},
+				],
+				// TODO: word order looks garbled in the source copy — should likely read "To close the performance area, the audience is welcome to take the stage and join the live coding!"
+				closingLine1: 'To close the performance area, the audience is welcome to take the stage,',
+				closingLine2: 'and join the live coding!',
+			},
+			residency: {
+				title: 'Cardboard Chair Showcase',
+				introTitle: 'More Than Just a Chair',
+				introInstructor: 'Instructor: Assistant Professor Cheng Yu-Ting, Department of Design',
+				introDescription: 'The cardboard chairs are a signature outcome of the first-year "Basic Design" course in the Department of Design at National Taiwan University of Science and Technology. Using only a single 100 × 200 cm sheet of corrugated cardboard — no glue or any other material — students built a weight-bearing chair through cutting, folding, and joint structures alone. The pieces on display are selected from the course and repurposed as public seating for the Big Bang! Futures rest area, bringing design out of the classroom and into the exhibition, and inviting every visitor to experience the creativity and possibility of design firsthand.',
+				cards: [
+					{
+						name: 'Rice Stool',
+						description: 'Named for its side profile, which resembles the Chinese character for "rice" (米). Through soft curves and a stacked-cardboard construction technique, it balances aesthetics and load-bearing strength within limited materials — turning simple cardboard into a stool that is comfortable, sturdy, and charming.',
+						toggleLabel: 'Designer Bio',
+					},
+					{
+						name: 'ㄇ Chair',
+						description: 'Assembled from four ㄇ-shaped (Zhuyin/Bopomofo) cardboard panels, this chair takes its name from and carries Taiwan’s unique Zhuyin phonetic culture. The design maximizes load-bearing capacity along the cardboard’s vertical grain while minimizing damage to its structural integrity — achieving both strong support and a minimalist aesthetic with just four pieces.',
+						toggleLabel: 'Designer Bio',
+					},
+				],
+			},
+			food: {
+				title: 'Food',
+				cards: [
+					{
+						name: 'CANCAN',
+						// TODO: real copy for CANCAN pending (the Figma source has unrelated placeholder text here, not reused)
+						description: '',
+					},
+					{
+						name: 'Lao Ji An Healing Herbar',
+						description: 'Founded in 1972, Lao Ji An carries on three generations of herbal-tea craft from Wanhua’s Herb Lane, continually reinterpreting Taiwanese herbal tea with new flavors. For this collaboration with Big Bang! Futures, a limited herbal blend brings local tradition together with visions of the future.',
+						longform: true,
+					},
+				],
+				promo: {
+					heading: 'Limited Edition Collab Drinks',
+					items: ['Name TBD by Lao Ji An [Alcoholic]', 'Big Bang! × Lao Ji An Herbal Tea Collab [Non-Alcoholic]'],
+				},
+			},
+		},
+		day2: {
+			sessions: [
+				{ id: 'day2-taichi', title: 'TAICHI Annual Society Meeting', time: '08:00 - 17:00', location: 'National Taipei University of Technology, Hongyu Technology Building B1 International Conference Hall' },
+				{ id: 'day2-isat', title: 'ISAT Annual Society Meeting', time: '08:00 - 17:00', location: 'National Taipei University of Technology, Guanghua Hall Multi-function Auditorium' },
+			],
+		},
 	},
 	venueSection: {
 		...CONTENT_ZH.venueSection,

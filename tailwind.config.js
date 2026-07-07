@@ -16,6 +16,7 @@ export default {
 				'lab-lime': 'rgb(var(--brand-primary) / <alpha-value>)',
 				'lab-pink': '#ff0033',
 				'lab-black': '#050505',
+				'program-green': '#29B93A',
 			},
 			boxShadow: {
 				'pili-glow': '0 0 10px rgba(255, 192, 0, 0.7), 0 0 20px rgba(255, 192, 0, 0.5)',

@@ -13,6 +13,7 @@ const NewsPage = lazy(() => import('./pages/NewsPage'));
 const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const OrganizationPage = lazy(() => import('./pages/OrganizationPage'));
 const PosterUploadPage = lazy(() => import('./pages/PosterUploadPage'));
+const ProgramPage = lazy(() => import('./pages/ProgramPage'));
 const SponsorshipPage = lazy(() => import('./pages/SponsorshipPage'));
 const VenuePage = lazy(() => import('./pages/VenuePage'));
 const VotePage = lazy(() => import('./pages/VotePage'));
@@ -64,6 +65,8 @@ const App: React.FC = () => {
 									<Route index element={<HomePage />} />
 									<Route path='news' element={<NewsPage />} />
 									<Route path='agenda' element={<AgendaPage />} />
+									{/* TODO: switch to path='program' and enable the Navbar link once the page is finalized */}
+									<Route path='preview' element={<ProgramPage />} />
 									<Route path='cfp' element={<CFPPage />} />
 									<Route path='family-friendly' element={<FamilyFriendlyPage />} />
 									<Route path='venue' element={<VenuePage />} />

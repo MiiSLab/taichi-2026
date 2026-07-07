@@ -11,7 +11,7 @@ export const CONTENT_ZH = {
 		home: 'HOME',
 		news: 'NEWS',
 		theme: 'THEME',
-		program: 'AGENDA',
+		program: 'PROGRAM',
 		keynotes: 'KEYNOTES',
 		organization: 'ORGANIZATION',
 		orgSponsors: 'ORGANIZATION & SPONSORS',
@@ -345,6 +345,143 @@ export const CONTENT_ZH = {
 		viewProject: '場次 // ',
 		agendaTba: '議程即將公布。',
 		chairsLabel: '主席',
+	},
+	programPageSection: {
+		title: 'PROGRAM',
+		dateTabs: [
+			{ key: 'day1', date: '8.05', day: 'WED' },
+			{ key: 'day2', date: '8.06', day: 'THU' },
+		],
+		heroCaption: '晶創人文, TAICHI, APMAR, ISAT 聯合活動',
+		heroDescription: 'Big Bang! Futures! 由晶創人文、TAICHI、APMAR 與 ISAT 聯合策劃，匯聚科技、人文、藝術與設計，共同解鎖未來的多重可能。',
+		labels: {
+			scheduleTitle: '完整時程表',
+			detailToggle: '詳細介紹',
+			photoPlaceholder: '照片',
+		},
+		day1: {
+			sessions: [
+				{
+					id: 'day1-5f',
+					title: 'Big Bang! 調頻未來',
+					tagline: '每一個聲音，都是一種未來',
+					time: '09:20 - 16:40',
+					location: '臺北三創生活園區 5F展演廳',
+					tags: ['Keynotes', 'Panels', 'International Exchange'],
+					description: '從主題演講、論壇對談到研究分享，不同領域的觀點在此交會。傾聽、交流、思考，解鎖更多未來的可能。',
+					gradient: true,
+					schedule: [
+						{ time: '9:20 - 9:45', label: '報到' },
+						{ time: '9:45 - 10:00', label: '開幕' },
+						{ time: '10:00 - 11:00', label: 'Jun Rekimoto', sublabel: '東京大學名譽教授、Sony CSL 京都實驗室總監', featured: true },
+						{ time: '11:05 - 12:05', label: 'Pedro Lopes', sublabel: '芝加哥大學電腦科學副教授', featured: true },
+						{ time: '12:05 - 13:30', label: '午餐時間' },
+						{ time: '13:30 - 14:30', label: 'Huaishu Peng', sublabel: '馬里蘭大學電腦科學副教授', featured: true },
+						{ time: '10:00 - 11:00' /* TODO: 確認正確時間，與 Jun Rekimoto 場次重複 */, label: 'Andrea Bianchi', sublabel: '韓國科學技術院（KAIST）工業設計系副教授、計算科學系兼任教授', featured: true },
+						{ time: '15:35 - 15:40', label: '午茶時間' },
+						{ time: '10:00 - 11:00' /* TODO: 確認正確時間，與 Jun Rekimoto 場次重複 */, label: '論壇', sublabel: 'Jun Rekimoto, Huaishu Peng, Andrea Bianchi', featured: true },
+					],
+					featuredCards: [
+						// TODO: 完整簡歷待補
+						{ name: 'Jun Rekimoto', role: '東京大學名譽教授、Sony CSL 京都實驗室總監', fullBio: '完整簡歷尚未提供，敬請期待。' },
+						// TODO: 完整簡歷待補
+						{ name: 'Pedro Lopes', role: '芝加哥大學電腦科學副教授', fullBio: '完整簡歷尚未提供，敬請期待。' },
+						// TODO: 完整簡歷待補
+						{ name: 'Huaishu Peng', role: '馬里蘭大學電腦科學副教授', fullBio: '完整簡歷尚未提供，敬請期待。' },
+						{
+							name: 'Andrea Bianchi',
+							role: '韓國科學技術院（KAIST）工業設計系副教授、計算科學系兼任教授',
+							fullBio:
+								'Andrea Bianchi 是韓國科學技術院（KAIST）工業設計系副教授、計算科學系兼任教授，同時也是 Make Lab 的主持人。他的研究領域為人機互動（HCI），專注於開發互動系統原型工具及混合實境（MR）中的擴增身體硬體設備。在加入 KAIST 前，他曾任教於韓國成均館大學計算機科學系，並曾於紐約一家新創公司擔任電子遊戲程式設計師。Andrea 的研究成果曾發表於 ACM CHI、UIST 和 IMWUT 等頂尖國際會議，屢獲最佳論文獎與設計獎項，並廣受 Engadget、ZDNet、New Scientist、MAKE 及 Gizmodo 等媒體報導。Andrea 於 2012 年取得 KAIST 博士學位，並於 2007 年獲得紐約大學碩士學位。',
+						},
+					],
+				},
+				{
+					id: 'day1-12f',
+					title: 'Big Bang! 互動夜市',
+					tagline: '今晚，逛的不只是夜市',
+					time: '15:30 - 20:00',
+					location: '臺北三創生活園區 12F多元廳',
+					tags: ['Demo', 'Poster', 'Performances', 'Food', 'Market'],
+					description: '這裡不只是夜市，更是科技、人文與創意交會的現場。探索於互動展示、研究海報、Live Coding、布袋戲投影演出，以及限定夜市美食之間，解鎖屬於你的多元宇宙。',
+					gradient: false,
+					schedule: [
+						{ time: '13:30', label: '開放' },
+						{ time: '17:30', label: '開幕與介紹' },
+						{ time: '17:45', label: 'ISAT若水獎頒獎' },
+						{ time: '18:00', label: '國立陽明交通大學｜體驗設計實驗室', sublabel: '《未來布袋戲：幻相・乾坤》混合實境 × 當代舞蹈沉浸式演出', featured: true },
+						{ time: '18:10', label: '何樵暐', sublabel: '《unix_time》', featured: true },
+						{ time: '20:00', label: '自由結束' },
+					],
+					featuredCards: [
+						// TODO: 完整簡歷待補
+						{ name: '國立陽明交通大學｜體驗設計實驗室', role: '《未來布袋戲：幻相・乾坤》混合實境 × 當代舞蹈沉浸式演出', fullBio: '完整簡歷尚未提供，敬請期待。' },
+						// TODO: 完整簡歷待補
+						{ name: '何樵暐', role: '《unix_time》', fullBio: '完整簡歷尚未提供，敬請期待。' },
+					],
+				},
+			],
+			performance: {
+				title: '表演區介紹',
+				cards: [
+					{
+						name: 'Vibe Coding 舞台',
+						description: '不是 DJ，也不是傳統演出，而是把程式碼搬上舞台。創作者透過 AI 與 Live Coding 即時編寫程式，讓聲音、影像與互動在觀眾面前同步誕生。每一次演出都無法重現，每一場都是一場只存在當下的 Big Bang。',
+					},
+					{
+						name: 'TOPLAP NTUST',
+						description: 'TOPLAP NTUST 是一個以 Live Coding（即時編碼）為核心，結合即時影像與現場表演的電子音樂組織。延續國際 TOPLAP 與 Algorave 的精神，透過即時生成的聲音與影像，讓 Live Coding 成為一種持續演變的音樂文化與生活風格。',
+						toggleLabel: '表演順序',
+					},
+				],
+				// TODO: 語序疑似錯亂，待確認正確文案（讀起來應為「表演區結尾，歡迎現場觀眾自由登台，一起加入 Live Coding！」）
+				closingLine1: '歡表演區結尾迎現場觀眾自由登台，',
+				closingLine2: '一起加入 Live Coding！',
+			},
+			residency: {
+				title: '紙箱椅作品介紹',
+				introTitle: '這裡不只是張休息椅',
+				introInstructor: '指導老師：設計系鄭宇婷 助理教授',
+				introDescription: '紙箱椅是國立臺灣科技大學設計系一年級《基本設計》課程的重要成果。學生僅能使用一張 100 × 200 公分的瓦楞紙板，不使用膠水或任何其他材料，僅透過切割、摺疊與卡榫結構完成一張可承重的椅子。展出的作品從課程成果中精選，化身為 Big Bang! Futures 休息區的公共座椅，讓設計從課堂走入展場，也邀請每位觀眾親身體驗設計的創意與可能。',
+				cards: [
+					{
+						name: '米凳子',
+						description: '《米凳子》因側面神似「米」字而得名。透過圓潤的線條與紙板堆疊工法，在有限的材料中兼顧美感與支撐力，讓簡單的紙板，也能化身舒適、紮實又可愛的凳子。',
+						toggleLabel: '設計師簡介',
+					},
+					{
+						name: 'ㄇ椅',
+						description: '椅子本身由四片ㄇ字型的紙板組裝而成，故取名為ㄇ椅，同時承載了台灣獨有的注音文化，發想時希望能最大程度利用紙板紋路縱向的承重，同時最低程度的破壞紙板的完整性，兩者同時達成就能保有很高的支撐力，並且有簡約質感的風格呈現，於是僅由四片結構就能組裝完成的ㄇ椅就誕生了。',
+						toggleLabel: '設計師簡介',
+					},
+				],
+			},
+			food: {
+				title: 'Food 介紹',
+				cards: [
+					{
+						name: 'CANCAN',
+						// TODO: CANCAN 真實文案待補（Figma 原稿此處為複製貼上的占位文字，與此攤位無關，故不沿用）
+						description: '',
+					},
+					{
+						name: '老濟安 Healing Herbar',
+						description: '創立於 1972 年的老濟安，傳承萬華青草巷三代草本文化，持續以創新風味詮釋臺灣青草茶。此次與 Big Bang! Futures 聯名合作，透過限定草本特調，讓在地傳統與未來想像交融。',
+						longform: true,
+					},
+				],
+				promo: {
+					heading: '限量聯名飲品',
+					items: ['待老濟安命名 [酒精]', 'Big Bang! 老濟安青草茶聯名款[無酒精]'],
+				},
+			},
+		},
+		day2: {
+			sessions: [
+				{ id: 'day2-taichi', title: 'TAICHI年度學會', time: '08:00 - 17:00', location: '國立臺北科技大學宏裕科技大樓 B1國際會議廳' },
+				{ id: 'day2-isat', title: 'ISAT年度學會', time: '08:00 - 17:00', location: '國立臺北科技大學光華館 多功能展演廳' },
+			],
+		},
 	},
 	venueSection: {
 		title: 'Venue',
