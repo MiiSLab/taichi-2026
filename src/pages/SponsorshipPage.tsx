@@ -41,19 +41,21 @@ const SponsorshipPage: React.FC = () => {
 
 			<section className='px-4 pb-20 pt-12 md:px-8 md:pb-28 md:pt-16'>
 				<div className='max-w-7xl mx-auto'>
-					<ScrollReveal delay={60}>
-						<h2 className={`mb-10 ${typography.scale.sectionTitle} text-primary`}>{section.headline}</h2>
-					</ScrollReveal>
+					<div className='max-w-3xl mx-auto'>
+						<ScrollReveal delay={60}>
+							<h2 className={`mb-10 ${typography.scale.sectionTitle} text-primary`}>{section.headline}</h2>
+						</ScrollReveal>
 
-					<ScrollReveal delay={120}>
-						<article className='max-w-3xl space-y-6'>
-							{section.paragraphs.map((p, i) => (
-								<p key={i} className={`${typography.scale.bodyLg} text-white/90`}>
-									{p}
-								</p>
-							))}
-						</article>
-					</ScrollReveal>
+						<ScrollReveal delay={120}>
+							<article className='space-y-6'>
+								{section.paragraphs.map((p, i) => (
+									<p key={i} className={`${typography.scale.bodyLg} text-white/90`}>
+										{p}
+									</p>
+								))}
+							</article>
+						</ScrollReveal>
+					</div>
 
 					{/* Sponsorship plans comparison table */}
 					<ScrollReveal delay={220}>
