@@ -27,14 +27,12 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3, 
 	if (items.length === 0) return null;
 
 	const sectionClass = hideHeader
-		? 'relative flex w-full flex-col overflow-hidden bg-black px-5 pb-20 sm:px-6 md:px-20 md:pb-24'
+		? 'relative flex w-full flex-col overflow-hidden bg-black px-5 pb-20 pt-12 sm:px-6 md:px-20 md:pb-24 md:pt-16'
 		: 'relative flex min-h-[100dvh] w-full flex-col justify-center overflow-hidden bg-black px-5 pb-20 pt-28 sm:px-6 md:px-20 md:pb-24 md:pt-32';
 
 	return (
 		<section className={sectionClass}>
-			<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.10),transparent_42%)]' />
-
-			<div className='relative z-10 mx-auto w-full max-w-[1280px]'>
+			<div className='relative z-10 mx-auto w-full max-w-7xl'>
 				{!hideHeader && (
 					<ScrollReveal>
 						<p className='text-center ds-section-kicker'>{content.newsSection.subtitle}</p>

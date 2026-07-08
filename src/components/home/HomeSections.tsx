@@ -25,7 +25,7 @@ const HomeSections: React.FC = () => {
 				<WarpBackground />
 				<div className='absolute inset-0 bg-gradient-to-r from-black via-black/80 to-black/45' />
 				<div className='absolute inset-x-0 bottom-0 h-32 bg-gradient-to-b from-transparent to-black' />
-				<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.15),transparent_36%),radial-gradient(circle_at_bottom,rgba(243,99,88,0.12),transparent_38%)]' />
+				<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(41,185,58,0.15),transparent_36%)]' />
 
 				<div className='relative z-10 mx-auto flex w-full max-w-[1180px] items-center justify-center'>
 					<div className='flex w-full max-w-[54rem] flex-col items-start text-left'>

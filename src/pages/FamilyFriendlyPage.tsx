@@ -23,20 +23,17 @@ const FamilyFriendlyPage: React.FC = () => {
 
 	return (
 		<div className='min-h-screen w-full bg-[#0D0D11] text-white'>
-			<div className='relative overflow-x-clip border-b border-white/10 px-6 pb-16 pt-48 md:px-20'>
+			<div className='relative w-full overflow-hidden px-6 pb-16 pt-48 md:px-20'>
 				<WarpBackground />
-				<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.16),transparent_38%),radial-gradient(circle_at_82%_18%,rgba(243,99,88,0.12),transparent_28%)]' />
 				<ScrollReveal className='relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center'>
-					<div className='family-orbit-hero'>
-						<h1 className={`text-center ${typography.scale.pageTitle} ds-page-title relative z-10`}>
-							Family-<br />Friendly
-						</h1>
-					</div>
+					<h1 className={`ds-page-title mb-6 text-center ${typography.scale.pageTitle}`}>
+						Family-<br />Friendly
+					</h1>
 				</ScrollReveal>
 			</div>
 
-			<section className='px-4 pb-20 pt-20 md:px-8 md:pb-28 md:pt-24'>
-				<div className='mx-auto max-w-3xl'>
+			<section className='px-4 pb-20 pt-12 md:px-8 md:pb-28 md:pt-16'>
+				<div className='mx-auto max-w-7xl'>
 					<ScrollReveal delay={60}>
 						<h2 className={`mb-10 ${typography.scale.sectionTitle} text-primary`}>
 							{section.headline}
@@ -44,7 +41,7 @@ const FamilyFriendlyPage: React.FC = () => {
 					</ScrollReveal>
 
 					<ScrollReveal delay={120}>
-						<article className='space-y-6'>
+						<article className='max-w-3xl space-y-6'>
 							{section.paragraphs.map((p, i) => (
 								<p key={i} className={`${typography.scale.bodyLg} text-white/90`}>
 									{p}

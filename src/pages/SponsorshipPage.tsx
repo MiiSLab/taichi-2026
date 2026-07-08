@@ -32,32 +32,28 @@ const SponsorshipPage: React.FC = () => {
 
 	return (
 		<div className='min-h-screen w-full bg-[#0D0D11] text-white'>
-			<div className='relative px-6 pt-48 pb-16 border-b overflow-x-clip border-white/10 md:px-20'>
+			<div className='relative w-full overflow-hidden px-6 pb-16 pt-48 md:px-20'>
 				<WarpBackground />
-				<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.16),transparent_38%),radial-gradient(circle_at_82%_18%,rgba(243,99,88,0.12),transparent_28%)]' />
-				<ScrollReveal className='relative z-10 flex flex-col items-center w-full mx-auto max-w-7xl'>
-					<h1 className={`text-center ${typography.scale.pageTitle} ds-page-title relative z-10`}>{section.pageTitle}</h1>
+				<ScrollReveal className='relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center'>
+					<h1 className={`ds-page-title mb-6 text-center ${typography.scale.pageTitle}`}>{section.pageTitle}</h1>
 				</ScrollReveal>
 			</div>
 
-			<section className='px-4 pt-20 pb-20 md:px-8 md:pb-28 md:pt-24'>
-				<div className='max-w-5xl mx-auto'>
-					{/* Intro — kept at a comfortable reading width */}
-					<div className='max-w-3xl mx-auto'>
-						<ScrollReveal delay={60}>
-							<h2 className={`mb-10 ${typography.scale.sectionTitle} text-primary`}>{section.headline}</h2>
-						</ScrollReveal>
+			<section className='px-4 pb-20 pt-12 md:px-8 md:pb-28 md:pt-16'>
+				<div className='max-w-7xl mx-auto'>
+					<ScrollReveal delay={60}>
+						<h2 className={`mb-10 ${typography.scale.sectionTitle} text-primary`}>{section.headline}</h2>
+					</ScrollReveal>
 
-						<ScrollReveal delay={120}>
-							<article className='space-y-6'>
-								{section.paragraphs.map((p, i) => (
-									<p key={i} className={`${typography.scale.bodyLg} text-white/90`}>
-										{p}
-									</p>
-								))}
-							</article>
-						</ScrollReveal>
-					</div>
+					<ScrollReveal delay={120}>
+						<article className='max-w-3xl space-y-6'>
+							{section.paragraphs.map((p, i) => (
+								<p key={i} className={`${typography.scale.bodyLg} text-white/90`}>
+									{p}
+								</p>
+							))}
+						</article>
+					</ScrollReveal>
 
 					{/* Sponsorship plans comparison table */}
 					<ScrollReveal delay={220}>

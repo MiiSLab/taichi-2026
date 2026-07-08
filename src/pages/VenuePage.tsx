@@ -2,6 +2,7 @@ import { ChevronUp, ExternalLink } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import FramePanel from '../components/FramePanel';
 import ScrollReveal from '../components/ScrollReveal';
+import WarpBackground from '../components/WarpBackground';
 import { panelFrame } from '../design-system/panel';
 import { typography } from '../design-system/typography';
 import { useContent, useLanguage } from '../context/LanguageContext';
@@ -40,7 +41,7 @@ const TimelineItem = ({
 			<span
 				className={`size-[15px] rounded-full border transition-all duration-300 ${
 					highlighted
-						? 'scale-[1.3] border-primary bg-primary shadow-[0_0_18px_rgba(168,240,32,0.7)]'
+						? 'scale-[1.3] border-primary bg-primary shadow-[0_0_18px_rgba(41,185,58,0.7)]'
 						: 'border-[#D9D9D9]/60 bg-[#D9D9D9]'
 				}`}
 			/>
@@ -116,7 +117,8 @@ const VenuePage: React.FC = () => {
 
 	return (
 		<section className='min-h-screen w-full bg-black text-white'>
-			<div className='relative flex w-full flex-col items-center overflow-hidden bg-black px-6 pb-24 pt-48 md:px-20'>
+			<div className='relative flex w-full flex-col items-center overflow-hidden bg-black px-6 pb-16 pt-48 md:px-20'>
+				<WarpBackground />
 				<ScrollReveal className='relative z-10 flex w-full max-w-7xl flex-col items-center'>
 						<h1 className={`ds-page-title mb-6 text-center ${typography.scale.pageTitle}`}>
 							{venueContent.title}
@@ -125,8 +127,8 @@ const VenuePage: React.FC = () => {
 			</div>
 
 			<div className='flex w-full flex-col'>
-				<section id='venue-overview' className='scroll-mt-28 bg-gradient-to-b from-black to-[#09090b] px-4 pb-20 md:px-8 md:pb-24'>
-					<div className='mx-auto flex w-full max-w-[1280px] flex-col gap-10'>
+				<section id='venue-overview' className='scroll-mt-28 bg-gradient-to-b from-black to-[#09090b] px-4 pb-20 pt-12 md:px-8 md:pb-24 md:pt-16'>
+					<div className='mx-auto flex w-full max-w-7xl flex-col gap-10'>
 						<ScrollReveal>
 							<div className='ds-surface-panel px-6 py-8 md:px-10 md:py-10'>
 								<h2 className={`mb-6 text-center ${typography.scale.sectionTitle} text-white`}>
@@ -230,7 +232,7 @@ const VenuePage: React.FC = () => {
 						</div>
 
 						<div className='bg-gradient-to-b from-black to-[#09090b] py-16 md:py-[65px]'>
-							<div className='mx-auto flex w-full max-w-[1280px] flex-col gap-10 px-4 md:gap-12 md:px-8'>
+							<div className='mx-auto flex w-full max-w-7xl flex-col gap-10 px-4 md:gap-12 md:px-8'>
 								<div className='flex flex-col gap-8'>
 									{day.venues.map((venue, index) => (
 										<ScrollReveal key={`${day.id}-${venue.title}`} delay={index * 90}>

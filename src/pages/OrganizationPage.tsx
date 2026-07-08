@@ -6,6 +6,7 @@ import FramePanel from '../components/FramePanel';
 import ScrollReveal from '../components/ScrollReveal';
 import Skeleton from '../components/Skeleton';
 import Sponsors from '../components/Sponsors';
+import WarpBackground from '../components/WarpBackground';
 import { CONFIG } from '../content';
 import { panelFrame } from '../design-system/panel';
 import { typography } from '../design-system/typography';
@@ -95,15 +96,15 @@ const MemberCard = ({
 	const isFeature = variant === 'feature';
 	const isRow = variant === 'row';
 	const frameClasses = isHero
-		? 'group flex min-h-[214px] flex-col gap-4 bg-[rgba(24,24,27,0.5)] px-[41px] py-[41px] transition-all duration-300 hover:bg-[rgba(32,32,36,0.72)] hover:shadow-[0_0_0_1px_rgba(168,240,32,0.28)] md:flex-row md:items-start md:gap-4'
+		? 'group flex min-h-[214px] flex-col gap-4 bg-[rgba(24,24,27,0.5)] px-[41px] py-[41px] transition-all duration-300 hover:bg-[rgba(32,32,36,0.72)] hover:shadow-[0_0_0_1px_rgba(251,65,5,0.28)] md:flex-row md:items-start md:gap-4'
 		: isFeature
-			? 'group flex min-h-[290px] flex-col items-center bg-[rgba(24,24,27,0.5)] px-[33px] py-[33px] text-center transition-all duration-300 hover:bg-[rgba(32,32,36,0.72)] hover:shadow-[0_0_0_1px_rgba(168,240,32,0.28)]'
-			: 'group flex min-h-[80px] flex-row items-center gap-4 rounded-[10px] bg-[rgba(0,0,0,0.4)] pl-4 pr-4 transition-colors duration-200 hover:bg-[rgba(168,240,32,0.08)]';
+			? 'group flex min-h-[290px] flex-col items-center bg-[rgba(24,24,27,0.5)] px-[33px] py-[33px] text-center transition-all duration-300 hover:bg-[rgba(32,32,36,0.72)] hover:shadow-[0_0_0_1px_rgba(251,65,5,0.28)]'
+			: 'group flex min-h-[80px] flex-row items-center gap-4 rounded-[10px] bg-[rgba(0,0,0,0.4)] pl-4 pr-4 transition-colors duration-200 hover:bg-[rgba(251,65,5,0.08)]';
 	const avatarClasses = isHero
-		? 'size-[80px] border-2 border-[rgba(168,240,32,0.3)]'
+		? 'size-[80px] border-2 border-[rgba(251,65,5,0.3)]'
 		: isFeature
-			? 'size-[96px] border-2 border-[rgba(168,240,32,0.3)]'
-			: 'size-[48px] border border-[rgba(168,240,32,0.3)]';
+			? 'size-[96px] border-2 border-[rgba(251,65,5,0.3)]'
+			: 'size-[48px] border border-[rgba(251,65,5,0.3)]';
 	const primaryNameClasses = isHero
 		? 'text-[24px] leading-[32px]'
 		: isFeature
@@ -375,6 +376,7 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 		<div className='min-h-screen w-full bg-[#0D0D11] text-white'>
 			{showPeople && (
 				<div className='relative w-full overflow-hidden px-6 pb-16 pt-48 md:px-20'>
+					<WarpBackground />
 					<ScrollReveal className='relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center'>
 						<h1 className={`ds-page-title mb-6 text-center ${typography.scale.pageTitle}`}>
 							{content.committeeSection.title}
@@ -384,8 +386,8 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 			)}
 
 			{showPeople && (
-				<section className='px-4 pb-8 md:px-8 md:pb-12'>
-					<div className='mx-auto max-w-[1280px]'>
+				<section className='px-4 pb-8 pt-12 md:px-8 md:pb-12 md:pt-16'>
+					<div className='mx-auto max-w-7xl'>
 						<ScrollReveal delay={70}>
 							<div className='ds-surface-panel px-6 py-12 text-center md:px-16 md:py-16'>
 							<div className='mx-auto flex max-w-4xl flex-col items-center gap-8 md:gap-10'>
@@ -414,7 +416,7 @@ const OrganizationPage: React.FC<OrganizationPageProps> = ({ hidePeople = false 
 
 			{showPeople && (
 				<section className='pb-24 pt-16 md:pt-20'>
-					<div className='mx-auto max-w-[1280px] px-4 md:px-8'>
+					<div className='mx-auto max-w-7xl px-4 md:px-8'>
 						{isSyncing && people.length === 0 ? (
 							<div className='space-y-40'>
 								<div className='h-8 w-56 animate-pulse rounded bg-zinc-800' />

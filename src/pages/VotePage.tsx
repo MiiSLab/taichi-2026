@@ -12,7 +12,7 @@ import { useLanguage } from '../context/LanguageContext';
 import { useSEO } from '../hooks/useSEO';
 import { mockPosters, posterImageUrl, type MockPoster } from '../data/mockPosters';
 
-const ACCENT_GREEN = '#A8F020';
+const ACCENT_GREEN = '#29B93A';
 const POSTER_IMAGE = '/images/fake poster demo.avif';
 
 
@@ -102,7 +102,7 @@ function DesktopPosterScene({
 			<ambientLight intensity={0.5} />
 			<directionalLight position={[6, 12, 8]} intensity={1.2} color='#e8ffd1' />
 			<pointLight position={[-10, 6, 8]} intensity={1} color='#76d7ff' />
-			<pointLight position={[10, -6, 6]} intensity={0.8} color='#A8F020' />
+			<pointLight position={[10, -6, 6]} intensity={0.8} color='#29B93A' />
 			<PerspectiveCamera makeDefault position={[0, 0, 20]} fov={50} />
 			<OrbitControls makeDefault enablePan={false} enableRotate enableZoom />
 			{mockPosters.map((poster, i) => (
@@ -327,7 +327,7 @@ function MobilePosterGallery({
 	};
 
 	return (
-		<section className='relative overflow-hidden border-t border-white/10 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.1),transparent_38%),#050505] px-4 pb-14 pt-8 md:hidden'>
+		<section className='relative overflow-hidden border-t border-white/10 bg-[radial-gradient(circle_at_top,rgba(41,185,58,0.1),transparent_38%),#050505] px-4 pb-14 pt-8 md:hidden'>
 			<div className='mx-auto flex w-full max-w-6xl flex-col gap-6'>
 				<div className='flex items-end justify-between gap-4'>
 					<div>
@@ -450,7 +450,6 @@ const VotePage: React.FC = () => {
 		<div className='min-h-screen w-full bg-[#050505] text-white'>
 			<div className='relative overflow-hidden border-b border-white/10 px-6 pb-16 pt-48 md:px-20'>
 				<WarpBackground />
-				<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.18),transparent_42%),radial-gradient(circle_at_80%_20%,rgba(118,215,255,0.14),transparent_26%)]' />
 				<ScrollReveal className='relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center gap-8'>
 					<h1 className={`text-center ${typography.scale.pageTitle} text-primary drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]`}>Vote</h1>
 					<div className='inline-flex items-center gap-3 border border-primary/30 bg-primary/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-primary'>

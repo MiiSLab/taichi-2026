@@ -19,7 +19,6 @@ const CompetitionPage: React.FC = () => {
 		<div className='min-h-screen w-full bg-[#0D0D11] text-white'>
 			<div className='relative overflow-hidden border-b border-white/10 px-6 pb-16 pt-48 md:px-20'>
 				<WarpBackground />
-				<div className='absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.18),transparent_42%),radial-gradient(circle_at_80%_20%,rgba(118,215,255,0.14),transparent_26%)]' />
 				<ScrollReveal className='relative z-10 mx-auto flex w-full max-w-7xl flex-col items-center gap-8'>
 					<h1 className={`text-center ${typography.scale.pageTitle} text-primary drop-shadow-[0_0_15px_rgba(0,0,0,0.8)]`}>
 						{content.competitionSection.title}
@@ -33,8 +32,8 @@ const CompetitionPage: React.FC = () => {
 				</ScrollReveal>
 			</div>
 
-			<section className='px-4 pb-8 pt-20 md:px-8 md:pb-12 md:pt-24'>
-				<div className='mx-auto max-w-[1280px]'>
+			<section className='px-4 pb-8 pt-12 md:px-8 md:pb-12 md:pt-16'>
+				<div className='mx-auto max-w-7xl'>
 					<ScrollReveal delay={90}>
 						<div className='ds-surface-panel px-6 py-12 text-center md:px-16 md:py-16'>
 							<div className='mx-auto flex max-w-4xl flex-col items-center gap-8 md:gap-10'>
