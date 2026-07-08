@@ -4,6 +4,16 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Layout.tsx scrolls to nav-submenu anchors via window.scrollTo({ behavior:
+   'smooth' }), but with no scroll-behavior fallback here, anything that
+   bypasses that JS (native hash jumps, browser quirks) snaps instantly
+   instead. Respect prefers-reduced-motion rather than forcing it always. */
+@media (prefers-reduced-motion: no-preference) {
+	html {
+		scroll-behavior: smooth;
+	}
+}
+
 .site-theme {
 	/* Brand palette as RGB channels — single source of truth.
 	   Everything brand-coloured derives from these. Primary = orange-red,
