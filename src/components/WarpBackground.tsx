@@ -16,7 +16,8 @@ const WarpBackground: React.FC = () => {
 		let starCount = 0;
 		let speedMultiplier = 1;
 		let trailAlpha = 0.15;
-		let animationFrameId: number;
+		let animationFrameId: number | null = null;
+		let isIntersecting = false;
 
 		const getResponsiveSettings = (nextWidth: number, nextHeight: number) => {
 			const areaRatio = Math.min(1, (nextWidth * nextHeight) / (1440 * 900));
@@ -122,11 +123,42 @@ const WarpBackground: React.FC = () => {
 
 			animationFrameId = requestAnimationFrame(animate);
 		}
-		animate();
+
+		// Off-screen (scrolled away) or backgrounded tabs gain nothing from a
+		// continuously-redrawing canvas, so pause the loop entirely instead of
+		// burning CPU/GPU on frames nobody sees — this canvas now runs on most
+		// pages, so idle instances add up fast, especially on mobile.
+		const startAnimation = () => {
+			if (animationFrameId === null && isIntersecting && !document.hidden) {
+				animationFrameId = requestAnimationFrame(animate);
+			}
+		};
+
+		const stopAnimation = () => {
+			if (animationFrameId !== null) {
+				cancelAnimationFrame(animationFrameId);
+				animationFrameId = null;
+			}
+		};
+
+		const intersectionObserver = new IntersectionObserver(([entry]) => {
+			isIntersecting = entry.isIntersecting;
+			if (isIntersecting) startAnimation();
+			else stopAnimation();
+		});
+		intersectionObserver.observe(canvas);
+
+		const handleVisibilityChange = () => {
+			if (document.hidden) stopAnimation();
+			else startAnimation();
+		};
+		document.addEventListener('visibilitychange', handleVisibilityChange);
 
 		return () => {
 			window.removeEventListener('resize', resize);
-			cancelAnimationFrame(animationFrameId);
+			document.removeEventListener('visibilitychange', handleVisibilityChange);
+			intersectionObserver.disconnect();
+			stopAnimation();
 		};
 	}, []);
 
