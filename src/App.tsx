@@ -27,7 +27,7 @@ const RouteFallback: React.FC = () => (
 			alignItems: 'center',
 			justifyContent: 'center',
 			fontFamily: 'monospace',
-			color: '#a8f020',
+			color: '#29b93a',
 			letterSpacing: '0.3em',
 			fontSize: '1.1rem',
 			animation: 'pulse 1s ease-in-out infinite alternate',
@@ -66,14 +66,12 @@ const App: React.FC = () => {
 									<Route index element={<HomePage />} />
 									<Route path='news' element={<NewsPage />} />
 									<Route path='agenda' element={<AgendaPage />} />
-									{/* TODO: wire up the Navbar PROGRAM link once the page is finalized */}
 									<Route path='program' element={<ProgramPage />} />
 									<Route path='cfp' element={<CFPPage />} />
 									<Route path='family-friendly' element={<FamilyFriendlyPage />} />
 									<Route path='venue' element={<VenuePage />} />
 									<Route path='organization' element={<OrganizationPage />} />
 									<Route path='sponsorship' element={<SponsorshipPage />} />
-									{/* TODO: wire up the Navbar REGISTRATION button once the page is finalized */}
 									<Route path='registration' element={<RegistrationPage />} />
 									{/* <Route path='competition' element={<CompetitionPage />} /> */}
 									<Route path='vote' element={<VotePage />} />

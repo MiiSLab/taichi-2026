@@ -368,6 +368,7 @@ export const CONTENT_ZH = {
 			scheduleTitle: '完整時程表',
 			photoPlaceholder: '照片',
 			timeLocationLabel: '時間/地點',
+			websiteButtonLabel: '活動資訊詳情',
 		},
 		day1: {
 			sessions: [
@@ -379,6 +380,7 @@ export const CONTENT_ZH = {
 					location: '臺北三創生活園區 5F展演廳',
 					tags: ['Keynotes', 'Panels', 'International Exchange'],
 					description: '從主題演講、論壇對談到研究分享，不同領域的觀點在此交會。傾聽、交流、思考，解鎖更多未來的可能。',
+					websiteUrl: 'https://dev.8f-2.cc/big-bang-futures',
 					gradient: true,
 					schedule: [
 						{ time: '9:20 - 9:45', label: '報到' },
@@ -428,6 +430,7 @@ export const CONTENT_ZH = {
 					location: '臺北三創生活園區 12F多元廳',
 					tags: ['Demo', 'Poster', 'Performances', 'Food', 'Market'],
 					description: '這裡不只是夜市，更是科技、人文與創意交會的現場。探索於互動展示、研究海報、Live Coding、布袋戲投影演出，以及限定夜市美食之間，解鎖屬於你的多元宇宙。',
+					websiteUrl: 'https://dev.8f-2.cc/big-bang-futures',
 					gradient: false,
 					schedule: [
 						{ time: '15:30', label: '開放' },

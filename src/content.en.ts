@@ -285,6 +285,7 @@ export const CONTENT_EN = {
 			scheduleTitle: 'Full Schedule',
 			photoPlaceholder: 'Photo',
 			timeLocationLabel: 'Time / Location',
+			websiteButtonLabel: 'Event Details',
 		},
 		day1: {
 			sessions: [
@@ -296,6 +297,7 @@ export const CONTENT_EN = {
 					location: '5F Exhibition Hall, Syntrend Creative Park, Taipei',
 					tags: ['Keynotes', 'Panels', 'International Exchange'],
 					description: 'From keynote talks and panel discussions to research presentations, discover diverse perspectives, exchange ideas, and unlock new possibilities for the future.',
+					websiteUrl: 'https://dev.8f-2.cc/big-bang-futures',
 					gradient: true,
 					schedule: [
 						{ time: '9:20 - 9:45', label: 'Registration' },
@@ -345,6 +347,7 @@ export const CONTENT_EN = {
 					location: '12F Multi-purpose Hall, Syntrend Creative Park, Taipei',
 					tags: ['Demo', 'Poster', 'Performances', 'Food', 'Market'],
 					description: 'More than a night market, this is where technology, culture, and creativity collide. Wander through interactive demos, research posters, live coding, projection puppetry, and curated night market food to discover your own multiverse of futures.',
+					websiteUrl: 'https://dev.8f-2.cc/big-bang-futures',
 					gradient: false,
 					schedule: [
 						{ time: '15:30', label: 'Welcome' },

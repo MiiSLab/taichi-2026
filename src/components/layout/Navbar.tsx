@@ -171,7 +171,7 @@ const Navbar: React.FC = () => {
 
 	const desktopItems: DesktopNavItem[] = [
 		{ label: content.nav.news, to: '/news', isActive: location.pathname === '/news' },
-		{ label: 'PROGRAM (TBD)', disabled: true },
+		{ label: content.nav.program, to: '/program', isActive: location.pathname === '/program' },
 		{ label: content.nav.venue, to: '/venue', isActive: location.pathname === '/venue' },
 		{ label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp') },
 		{ label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly' },
@@ -180,7 +180,7 @@ const Navbar: React.FC = () => {
 
 	const mobileItems: MobileNavItem[] = [
 		{ key: 'news', label: content.nav.news, to: '/news', isActive: location.pathname === '/news' },
-		{ key: 'program', label: 'PROGRAM (TBD)', disabled: true },
+		{ key: 'program', label: content.nav.program, to: '/program', isActive: location.pathname === '/program' },
 		{ key: 'venue', label: content.nav.venue, to: '/venue', isActive: location.pathname === '/venue', submenuKey: 'venue' },
 		{ key: 'cfp', label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp'), submenuKey: 'cfp' },
 		{ key: 'family-friendly', label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly' },
