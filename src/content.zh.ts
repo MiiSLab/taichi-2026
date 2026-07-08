@@ -662,8 +662,10 @@ export const CONTENT_ZH = {
 		seoTitle: '註冊資訊',
 		seoDescription: 'TAICHI 2026 註冊與票價資訊，包含票價與兩種報名方式。',
 		pricingHeading: '票價資訊',
+		pricingDeadlineNote: '報名截止日期：2026/07/28 00:00',
 		pricingTable: {
-			tierNames: ['票價 2026/07/28 00:00'],
+			typeHeader: '票種',
+			tierNames: ['票價'],
 			rows: [
 				{ label: '一般票', values: ['3500'] },
 				{ label: '學生票', values: ['1750'] },

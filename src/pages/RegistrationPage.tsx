@@ -11,6 +11,7 @@ const secondaryLinkClassName = (href: string) =>
 	`${href.startsWith('mailto:') ? 'inline-block whitespace-nowrap break-normal' : 'min-w-0 break-words [overflow-wrap:anywhere]'} text-secondary transition-colors hover:text-primary hover:underline`;
 
 type TicketTable = {
+	typeHeader: string;
 	tierNames: readonly string[];
 	rows: readonly { label: string; values: readonly string[] }[];
 };
@@ -27,13 +28,13 @@ const renderTierName = (tier: string) => {
 };
 
 const PricingTable = ({ table }: { table: TicketTable }) => (
-	<div className='ds-surface-panel overflow-x-auto'>
-		<table className='w-full min-w-[420px] border-collapse text-left'>
+	<div className='ds-surface-panel mx-auto max-w-md overflow-x-auto'>
+		<table className='w-full border-collapse text-center'>
 			<thead>
 				<tr className='border-b border-primary/40'>
-					<th className='p-4 ds-section-kicker' />
+					<th className='px-6 py-5 text-center font-dela text-[20px] leading-tight text-primary'>{table.typeHeader}</th>
 					{table.tierNames.map((tier) => (
-						<th key={tier} className='p-4 text-center font-dela text-[18px] leading-tight text-primary'>
+						<th key={tier} className='px-6 py-5 text-center font-dela text-[20px] leading-tight text-primary'>
 							{renderTierName(tier)}
 						</th>
 					))}
@@ -41,12 +42,12 @@ const PricingTable = ({ table }: { table: TicketTable }) => (
 			</thead>
 			<tbody>
 				{table.rows.map((row) => (
-					<tr key={row.label} className='align-top border-b border-white/10'>
-						<th scope='row' className={`whitespace-nowrap p-4 ${typography.scale.label} font-bold text-white`}>
+					<tr key={row.label} className='border-b border-white/10 last:border-b-0'>
+						<th scope='row' className='px-6 py-5 text-center align-middle text-[18px] font-bold text-white'>
 							{row.label}
 						</th>
 						{row.values.map((value, ci) => (
-							<td key={ci} className='p-4 text-center text-[13px] leading-5 text-white/80'>
+							<td key={ci} className='px-6 py-5 text-center align-middle text-[22px] font-bold text-primary'>
 								{value}
 							</td>
 						))}
@@ -80,6 +81,7 @@ const RegistrationPage: React.FC = () => {
 
 					<ScrollReveal delay={100}>
 						<PricingTable table={section.pricingTable} />
+						<p className='mt-3 text-center text-sm text-white/50'>{section.pricingDeadlineNote}</p>
 					</ScrollReveal>
 
 					<ScrollReveal delay={150}>

@@ -556,9 +556,11 @@ export const CONTENT_EN = {
 		seoTitle: 'Registration',
 		seoDescription: 'TAICHI 2026 registration and pricing information, including ticket rates and two ways to register.',
 		pricingHeading: 'Ticket Pricing',
+		pricingDeadlineNote: 'Registration deadline: 2026/07/28 00:00',
 		pricingTable: {
 			...CONTENT_ZH.registrationSection.pricingTable,
-			tierNames: ['Price (by 2026/07/28 00:00)'],
+			typeHeader: 'Ticket Type',
+			tierNames: ['Price'],
 			rows: [
 				{ label: 'General', values: ['3500'] },
 				{ label: 'Student', values: ['1750'] },

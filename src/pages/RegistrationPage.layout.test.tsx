@@ -6,6 +6,8 @@ test('registration page renders the pricing table and the two registration metho
 	const source = readFileSync(new URL('./RegistrationPage.tsx', import.meta.url), 'utf8');
 
 	assert.match(source, /section\.pricingTable/);
+	assert.match(source, /section\.pricingDeadlineNote/);
+	assert.match(source, /table\.typeHeader/);
 	assert.match(source, /table\.tierNames\.map/);
 	assert.match(source, /table\.rows\.map/);
 
@@ -28,7 +30,9 @@ test('registration content defines matching pricing and registration-method fiel
 	const enSource = readFileSync(new URL('../content.en.ts', import.meta.url), 'utf8');
 
 	assert.match(zhSource, /registrationSection: \{/);
+	assert.match(zhSource, /pricingDeadlineNote:/);
 	assert.match(zhSource, /pricingTable: \{/);
+	assert.match(zhSource, /typeHeader: '票種'/);
 	assert.match(zhSource, /kktixUrl: 'https:\/\/taiwanchi\.kktix\.cc\/events\/202608050806'/);
 	assert.match(zhSource, /kktixComingSoonLabel: '即將開放'/);
 	assert.match(zhSource, /manualHeading: '2\. 團體報名'/);
@@ -38,7 +42,9 @@ test('registration content defines matching pricing and registration-method fiel
 
 	assert.match(enSource, /registrationSection: \{/);
 	assert.match(enSource, /\.\.\.CONTENT_ZH\.registrationSection/);
+	assert.match(enSource, /pricingDeadlineNote:/);
 	assert.match(enSource, /pricingTable: \{/);
+	assert.match(enSource, /typeHeader: 'Ticket Type'/);
 	assert.match(enSource, /kktixComingSoonLabel: 'Coming Soon'/);
 	assert.match(enSource, /manualHeading: '2\. Group Registration'/);
 	assert.match(enSource, /manualIntro:/);
