@@ -246,7 +246,7 @@ function OrbitRing({
 						<div
 							className={`pointer-events-auto flex cursor-pointer flex-col items-center rounded-sm border px-3.5 py-2 text-center backdrop-blur-md transition-all duration-300 md:px-5 md:py-2.5 ${
 								isSelected
-									? 'scale-110 border-primary bg-primary/20 text-primary shadow-[0_0_20px_rgba(168,240,32,0.25)]'
+									? 'scale-110 border-primary bg-primary/20 text-primary shadow-[0_0_20px_rgba(41,185,58,0.25)]'
 									: 'border-secondary/20 bg-black/60 text-secondary hover:border-secondary/50'
 							}`}
 							style={{ maxWidth: language === 'zh' ? 168 : 232 }}
@@ -672,7 +672,7 @@ function GridView({
 						onClick={() => onSelectTheme(isSelected ? null : theme)}
 						className={`group relative flex flex-col overflow-hidden border p-5 text-left transition-all duration-300 ${
 							isSelected
-								? 'border-primary bg-primary/10 shadow-[0_0_30px_rgba(168,240,32,0.15)]'
+								? 'border-primary bg-primary/10 shadow-[0_0_30px_rgba(41,185,58,0.15)]'
 								: 'border-white/10 bg-white/[0.03] hover:border-white/25 hover:bg-white/[0.06]'
 						}`}
 						layout
@@ -755,7 +755,7 @@ function ViewToggle({
 						type='button'
 						onClick={() => onChange(m.key)}
 						className={`flex items-center gap-2 rounded-full px-4 py-2 font-mono text-[10px] uppercase tracking-[0.12em] transition-all ${
-							viewMode === m.key ? 'bg-primary text-black shadow-[0_0_15px_rgba(168,240,32,0.3)]' : 'text-white/60 hover:bg-white/[0.06] hover:text-white'
+							viewMode === m.key ? 'bg-primary text-black shadow-[0_0_15px_rgba(41,185,58,0.3)]' : 'text-white/60 hover:bg-white/[0.06] hover:text-white'
 						}`}
 					>
 						{m.icon}
@@ -858,7 +858,7 @@ export default function ConstellationMapSection({ language }: ConstellationMapSe
 	return (
 		<div id='themes' className='relative flex min-h-[100dvh] w-full flex-col items-center overflow-hidden bg-black px-4 py-24 md:px-20'>
 			{/* Background */}
-			<div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(168,240,32,0.08),transparent_34%),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:auto,100%_28px] opacity-60' />
+			<div className='pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_top,rgba(41,185,58,0.08),transparent_34%),linear-gradient(to_bottom,rgba(255,255,255,0.03)_1px,transparent_1px)] bg-[length:auto,100%_28px] opacity-60' />
 
 			{/* Title */}
 			<h3 className='relative z-10 mb-4 text-center font-dela text-[28px] tracking-[0.12em] text-primary md:text-[40px]'>

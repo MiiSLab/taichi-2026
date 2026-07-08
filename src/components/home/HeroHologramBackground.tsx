@@ -2,7 +2,7 @@ import React, { useEffect, useRef, useState } from 'react';
 import type * as THREE_NS from 'three';
 import { degradeTier, detectPerformanceTier, type PerformanceTier } from '../../utils/performanceTier';
 
-const HOLOGRAM_COLOR = '#a8f020';
+const HOLOGRAM_COLOR = '#29b93a';
 const LONG_TASK_THRESHOLD_MS = 150;
 const LONG_TASK_BUDGET = 4;
 const LONG_TASK_OBSERVE_WINDOW_MS = 5000;

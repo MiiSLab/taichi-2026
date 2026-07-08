@@ -68,7 +68,7 @@ const PosterUploadPage: React.FC = () => {
 		<div className='site-theme ds-app-shell min-h-screen overflow-x-hidden'>
 			<div className='poster-upload-shell relative isolate min-h-screen'>
 				<div className='poster-upload-grid mx-auto flex min-h-screen w-full max-w-[1040px] flex-col px-5 py-8 sm:px-8 lg:px-12 lg:py-12'>
-					<section className='poster-upload-intro flex flex-col justify-between gap-8 border border-[rgba(168,240,32,0.18)] bg-[linear-gradient(180deg,rgba(12,12,12,0.9),rgba(12,12,12,0.72))] p-6 sm:p-8'>
+					<section className='poster-upload-intro flex flex-col justify-between gap-8 border border-[rgba(41,185,58,0.18)] bg-[linear-gradient(180deg,rgba(12,12,12,0.9),rgba(12,12,12,0.72))] p-6 sm:p-8'>
 						<div className='space-y-6'>
 							<p className='ds-page-note'>POSTER SUBMISSION CONSOLE</p>
 							<div className='space-y-4'>

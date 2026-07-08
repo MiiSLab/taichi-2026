@@ -601,11 +601,11 @@ const CFPPage: React.FC = () => {
 							type='button'
 						>
 							<div className='flex flex-col items-center animate-bounce'>
-								<span className='mb-1 font-pixel text-sm uppercase tracking-[0.3em] text-primary drop-shadow-[0_0_15px_rgba(168,240,32,0.8)] transition-colors group-hover:text-white md:mb-2 md:text-xl'>
+								<span className='mb-1 font-pixel text-sm uppercase tracking-[0.3em] text-primary drop-shadow-[0_0_15px_rgba(41,185,58,0.8)] transition-colors group-hover:text-white md:mb-2 md:text-xl'>
 									{content.cfpSection.exploreMore}
 								</span>
 								<ChevronsDown
-									className='h-12 w-12 text-primary drop-shadow-[0_0_20px_rgba(168,240,32,0.8)] transition-colors group-hover:text-white md:h-16 md:w-16'
+									className='h-12 w-12 text-primary drop-shadow-[0_0_20px_rgba(41,185,58,0.8)] transition-colors group-hover:text-white md:h-16 md:w-16'
 									strokeWidth={1.5}
 								/>
 							</div>
@@ -630,7 +630,7 @@ const CFPPage: React.FC = () => {
 				<button
 					type='button'
 					onClick={scrollToTop}
-					className='fixed bottom-8 right-6 z-50 inline-flex items-center gap-2 border border-primary bg-black/85 px-4 py-3 font-pixel text-[20px] tracking-[0.08em] text-primary transition-colors hover:bg-[rgba(168,240,32,0.16)] hover:text-white'
+					className='fixed bottom-8 right-6 z-50 inline-flex items-center gap-2 border border-primary bg-black/85 px-4 py-3 font-pixel text-[20px] tracking-[0.08em] text-primary transition-colors hover:bg-[rgba(41,185,58,0.16)] hover:text-white'
 					aria-label='Back to top'
 				>
 					<ChevronUp className='size-4' strokeWidth={2.5} />

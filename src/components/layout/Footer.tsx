@@ -10,7 +10,7 @@ const Footer: React.FC = () => {
 			<div className='mx-auto flex w-full max-w-[1440px] flex-col justify-between gap-8 md:flex-row md:items-end md:gap-12'>
 				<div className='flex flex-col items-start gap-3 md:min-h-[92px] md:justify-between'>
 					<div className='ds-divider-brand mb-4 border-b pb-4'>
-						<p className='ds-section-kicker'>TAICHI 2026</p>
+						<p className='ds-footer-kicker'>TAICHI 2026</p>
 					</div>
 					<div className='ds-footer-brand text-left'>
 						<p>BIG BANG! FUTURES!</p>

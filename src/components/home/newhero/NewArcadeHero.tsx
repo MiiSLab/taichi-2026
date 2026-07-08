@@ -9,7 +9,7 @@ import frameBottomImg from './assets/frame-s-line-bottom.png';
  * Visual-chair delivered arcade hero (BIG BANG! FUTURES!), ported from the
  * futurethingslab0314/newHeroPage_TAICHI repo as a self-contained component.
  *
- * New brand palette: ORANGE-RED (#FB4105) is the primary, GREEN (#A8F020) is the
+ * New brand palette: ORANGE-RED (#FB4105) is the primary, GREEN (#29B93A) is the
  * accent. They are wired to the site's CSS-var brand tokens:
  *   - orange  → --brand-primary
  *   - green   → --brand-secondary
@@ -42,7 +42,7 @@ function readPalette(el: HTMLElement | null): Palette {
     return v && v.length ? v : fallback;
   };
   const orangeCh = toComma(read('--brand-primary', '251 65 5')); // #fb4105
-  const greenCh = toComma(read('--brand-secondary', '168 240 32')); // #a8f020
+  const greenCh = toComma(read('--brand-secondary', '41 185 58')); // #29b93a
   return { orangeCh, greenCh, orange: `rgb(${orangeCh})`, green: `rgb(${greenCh})` };
 }
 
