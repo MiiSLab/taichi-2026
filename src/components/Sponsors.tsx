@@ -88,25 +88,39 @@ const getLogoOpticalClasses = (name: string) => {
 	}
 };
 
-const LogoRow = ({ items, centered = false, delayStep = 70 }: { items: readonly LogoItem[]; centered?: boolean; delayStep?: number }) => (
-	<div className={`flex w-full flex-nowrap items-center gap-2 md:w-auto md:gap-6 ${centered ? 'justify-center' : 'justify-start'}`}>
-		{items.map((item, index) => {
-			const opticalClasses = getLogoOpticalClasses(item.name);
+const LogoRow = ({ items, centered = false, delayStep = 70 }: { items: readonly LogoItem[]; centered?: boolean; delayStep?: number }) => {
+	// 3+ logos sharing a row on narrow phones overflow the viewport (each logo's
+	// vw-based width is sized against the full viewport, not its shrinking flex
+	// share), so lay them out as a 2-column grid below the md breakpoint instead —
+	// grid tracks split the width evenly with the gap already subtracted natively,
+	// no manual width math needed. A lone trailing logo (odd count) spans both
+	// columns so it centers itself on its own row.
+	const wrapOnMobile = items.length >= 3;
+	const lastIsOdd = wrapOnMobile && items.length % 2 === 1;
 
-			return (
-				<ScrollReveal key={item.name} delay={index * delayStep}>
-					<div className={`flex flex-1 items-center justify-center md:flex-none ${getLogoFrameClasses(item.size)} ${opticalClasses.frame}`}>
-						<img
-							src={getSafePath(item.logo)}
-							alt={item.name}
-							className={`object-contain transition duration-300 hover:scale-[1.02] ${getLogoImageClasses(item.size)} ${opticalClasses.image}`}
-						/>
-					</div>
-				</ScrollReveal>
-			);
-		})}
-	</div>
-);
+	return (
+		<div
+			className={`w-full items-center gap-2 md:flex md:w-auto md:flex-nowrap md:gap-6 ${wrapOnMobile ? 'grid grid-cols-2' : 'flex flex-nowrap'} ${centered ? 'justify-center' : 'justify-start'}`}
+		>
+			{items.map((item, index) => {
+				const opticalClasses = getLogoOpticalClasses(item.name);
+				const spansRow = lastIsOdd && index === items.length - 1;
+
+				return (
+					<ScrollReveal key={item.name} delay={index * delayStep} className={spansRow ? 'col-span-2' : ''}>
+						<div className={`flex items-center justify-center md:w-auto md:flex-none ${wrapOnMobile ? '' : 'flex-1'} ${getLogoFrameClasses(item.size)} ${opticalClasses.frame}`}>
+							<img
+								src={getSafePath(item.logo)}
+								alt={item.name}
+								className={`object-contain transition duration-300 hover:scale-[1.02] ${getLogoImageClasses(item.size)} ${opticalClasses.image}`}
+							/>
+						</div>
+					</ScrollReveal>
+				);
+			})}
+		</div>
+	);
+};
 
 const Sponsors: React.FC = () => {
 	const { organizers, coOrganizers, supportingOrganizers, sponsors, mainOrganizers, coOrganizersTitle, supportingOrganizersTitle, sponsorsTitle } = useContent().sponsorsSection;

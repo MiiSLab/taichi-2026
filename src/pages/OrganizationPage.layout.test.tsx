@@ -33,7 +33,10 @@ test('organization and sponsors source match the figma-driven layout skeleton', 
 	assert.match(sponsorsSource, /台灣人機互動學會/);
 	assert.match(sponsorsSource, /國科會晶創人文計畫/);
 	assert.match(sponsorsSource, /美國創新中心/);
-	assert.match(sponsorsSource, /flex-nowrap items-center/);
+	assert.match(sponsorsSource, /items\.length >= 3/);
+	assert.match(sponsorsSource, /grid grid-cols-2/);
+	assert.match(sponsorsSource, /col-span-2/);
+	assert.match(sponsorsSource, /md:flex-nowrap/);
 	assert.match(sponsorsSource, /bg-\[#F2F2ED\]/);
 	assert.doesNotMatch(sponsorsSource, /rounded-\[28px\] border border-black\/8 bg-white\/65/);
 	assert.doesNotMatch(sponsorsSource, /className\?: string/);
