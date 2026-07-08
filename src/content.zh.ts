@@ -660,22 +660,13 @@ export const CONTENT_ZH = {
 	registrationSection: {
 		pageTitle: 'Registration',
 		seoTitle: '註冊資訊',
-		seoDescription: 'TAICHI 2026 註冊與票價資訊，包含 APMAR 套票、TAICHI 票價與兩種報名方式。',
+		seoDescription: 'TAICHI 2026 註冊與票價資訊，包含票價與兩種報名方式。',
 		pricingHeading: '票價資訊',
-		apmarTicket: {
-			title: 'APMAR 套票 (APMAR+TAICHI)',
-			tierNames: ['票價'],
+		pricingTable: {
+			tierNames: ['票價 2026/07/28 00:00'],
 			rows: [
-				{ label: '一般票', values: ['5900'] },
-				{ label: '學生票', values: ['3650'] },
-			],
-		},
-		taichiTicket: {
-			title: 'TAICHI 票價',
-			tierNames: ['早鳥票價 (7/22 00:00前)', '一般票價 (7/22 00:01-7/28 00:00)'],
-			rows: [
-				{ label: '一般票', values: ['2900', '3100'] },
-				{ label: '學生票', values: ['1400', '1750'] },
+				{ label: '一般票', values: ['3500'] },
+				{ label: '學生票', values: ['1750'] },
 			],
 		},
 		paperRegistrationNote: '每篇論文至少需要一人註冊，並於報名表單中填下論文編號。',
@@ -685,7 +676,7 @@ export const CONTENT_ZH = {
 		kktixHeading: '1. 採 KKTIX 報名',
 		kktixButtonLabel: 'KKTIX 報名連結',
 		kktixComingSoonLabel: '即將開放',
-		kktixUrl: '#',
+		kktixUrl: 'https://taiwanchi.kktix.cc/events/202608050806' as string,
 		manualHeading: '2. 團體報名',
 		manualIntro:
 			'若不想使用 KKTIX 報名，亦可依下列步驟進行團體報名，任何問題請聯絡 [taichi2026+registration@gmail.com](mailto:taichi2026+registration@gmail.com)。',

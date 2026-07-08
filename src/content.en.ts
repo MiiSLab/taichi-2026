@@ -554,25 +554,14 @@ export const CONTENT_EN = {
 	registrationSection: {
 		...CONTENT_ZH.registrationSection,
 		seoTitle: 'Registration',
-		seoDescription:
-			'TAICHI 2026 registration and pricing information, including the APMAR bundle, TAICHI ticket rates, and two ways to register.',
+		seoDescription: 'TAICHI 2026 registration and pricing information, including ticket rates and two ways to register.',
 		pricingHeading: 'Ticket Pricing',
-		apmarTicket: {
-			...CONTENT_ZH.registrationSection.apmarTicket,
-			title: 'APMAR Bundle (APMAR + TAICHI)',
-			tierNames: ['Price'],
+		pricingTable: {
+			...CONTENT_ZH.registrationSection.pricingTable,
+			tierNames: ['Price (by 2026/07/28 00:00)'],
 			rows: [
-				{ label: 'General', values: ['5900'] },
-				{ label: 'Student', values: ['3650'] },
-			],
-		},
-		taichiTicket: {
-			...CONTENT_ZH.registrationSection.taichiTicket,
-			title: 'TAICHI Ticket',
-			tierNames: ['Early Bird (before 7/22 00:00)', 'Regular (7/22 00:01-7/28 00:00)'],
-			rows: [
-				{ label: 'General', values: ['2900', '3100'] },
-				{ label: 'Student', values: ['1400', '1750'] },
+				{ label: 'General', values: ['3500'] },
+				{ label: 'Student', values: ['1750'] },
 			],
 		},
 		paperRegistrationNote: 'Each accepted paper requires at least one registrant; please provide the paper ID on the registration form.',

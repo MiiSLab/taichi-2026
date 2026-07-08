@@ -2,11 +2,10 @@ import assert from 'node:assert/strict';
 import { readFileSync } from 'node:fs';
 import test from 'node:test';
 
-test('registration page renders both pricing tables and the two registration methods', () => {
+test('registration page renders the pricing table and the two registration methods', () => {
 	const source = readFileSync(new URL('./RegistrationPage.tsx', import.meta.url), 'utf8');
 
-	assert.match(source, /section\.apmarTicket/);
-	assert.match(source, /section\.taichiTicket/);
+	assert.match(source, /section\.pricingTable/);
 	assert.match(source, /table\.tierNames\.map/);
 	assert.match(source, /table\.rows\.map/);
 
@@ -29,9 +28,8 @@ test('registration content defines matching pricing and registration-method fiel
 	const enSource = readFileSync(new URL('../content.en.ts', import.meta.url), 'utf8');
 
 	assert.match(zhSource, /registrationSection: \{/);
-	assert.match(zhSource, /apmarTicket: \{/);
-	assert.match(zhSource, /taichiTicket: \{/);
-	assert.match(zhSource, /kktixUrl: '#'/);
+	assert.match(zhSource, /pricingTable: \{/);
+	assert.match(zhSource, /kktixUrl: 'https:\/\/taiwanchi\.kktix\.cc\/events\/202608050806'/);
 	assert.match(zhSource, /kktixComingSoonLabel: '即將開放'/);
 	assert.match(zhSource, /manualHeading: '2\. 團體報名'/);
 	assert.match(zhSource, /manualIntro:/);
@@ -40,8 +38,7 @@ test('registration content defines matching pricing and registration-method fiel
 
 	assert.match(enSource, /registrationSection: \{/);
 	assert.match(enSource, /\.\.\.CONTENT_ZH\.registrationSection/);
-	assert.match(enSource, /apmarTicket: \{/);
-	assert.match(enSource, /taichiTicket: \{/);
+	assert.match(enSource, /pricingTable: \{/);
 	assert.match(enSource, /kktixComingSoonLabel: 'Coming Soon'/);
 	assert.match(enSource, /manualHeading: '2\. Group Registration'/);
 	assert.match(enSource, /manualIntro:/);

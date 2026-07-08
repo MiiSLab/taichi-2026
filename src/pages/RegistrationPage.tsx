@@ -11,7 +11,6 @@ const secondaryLinkClassName = (href: string) =>
 	`${href.startsWith('mailto:') ? 'inline-block whitespace-nowrap break-normal' : 'min-w-0 break-words [overflow-wrap:anywhere]'} text-secondary transition-colors hover:text-primary hover:underline`;
 
 type TicketTable = {
-	title: string;
 	tierNames: readonly string[];
 	rows: readonly { label: string; values: readonly string[] }[];
 };
@@ -80,16 +79,7 @@ const RegistrationPage: React.FC = () => {
 					</ScrollReveal>
 
 					<ScrollReveal delay={100}>
-						<div className='space-y-10'>
-							<div>
-								<h3 className={`mb-3 ${typography.scale.cardTitle} text-white`}>{section.apmarTicket.title}</h3>
-								<PricingTable table={section.apmarTicket} />
-							</div>
-							<div>
-								<h3 className={`mb-3 ${typography.scale.cardTitle} text-white`}>{section.taichiTicket.title}</h3>
-								<PricingTable table={section.taichiTicket} />
-							</div>
-						</div>
+						<PricingTable table={section.pricingTable} />
 					</ScrollReveal>
 
 					<ScrollReveal delay={150}>
