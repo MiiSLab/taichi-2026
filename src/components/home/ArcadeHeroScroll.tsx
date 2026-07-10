@@ -6,42 +6,46 @@ import React, { useEffect, useRef, useState } from 'react';
  * HeroLabPage.tsx) — the live homepage stays on the plain layout (see
  * HomePage.tsx).
  *
+ * Desktop and mobile intentionally behave differently:
+ *   - Desktop: a slight scroll nudge locks input (wheel/key) and drives the
+ *     whole transition itself via window.scrollTo(), so it plays as one
+ *     committed cut (see the mechanism notes below).
+ *   - Mobile: no lock, no auto-scroll. The circle-collapse is purely
+ *     scrubbed by the user's own scroll position — wherever they scroll to
+ *     is exactly how much of the transition shows. This sidesteps a
+ *     platform limitation rather than fighting it: mobile inertial/momentum
+ *     scrolling is handled by the browser compositor ahead of JS, so a
+ *     JS-driven scroll lock can never fully own the scroll position there
+ *     the way it reliably can with a desktop mouse/trackpad wheel. Since the
+ *     lock is never engaged on mobile at all, mobile is now categorically
+ *     immune to the stuck-scroll failure mode that hit production earlier.
+ *   Breakpoint matches NewArcadeHero's own MOBILE_BP (1024px) — duplicated
+ *   here rather than imported since NewArcadeHero is a delivered/ported
+ *   component this file shouldn't need to modify.
+ *
  * The arcade is interactive while at the top (progress ≈ 0); pointer events
  * are released during the transition so scrolling isn't blocked. `content`
  * renders after the hero, pulled up by `margin-top: -100vh` so it's revealed
  * right as the transition completes — same composition the original shipped
- * homepage used.
+ * homepage used, for both the desktop (500vh) and mobile (shorter) runway.
  *
- * A slight scroll nudge locks user input (wheel/touch/key) and drives the
- * whole transition itself via window.scrollTo(), so it plays as one
- * committed cut instead of something scrubbed by hand. This exact approach
- * shipped once already and caused real scroll-lock bugs in production
- * (stutter, then a full scroll block) — this rebuild keeps the same
- * mechanism (that "locked, plays itself" feel is the actual requirement) but
- * fixes the specific bugs that caused it:
- *   - "In flight" used to be tracked by a flag cleared from two places: a
- *     scroll-position check in the scroll handler, and a time-based check
- *     inside the scrollTo loop. Since the loop's own scrollTo() calls fire
- *     native `scroll` events, the position check could clear the flag while
- *     the time-based loop was still running, letting a second scroll
- *     animation start while the first was still driving scrollTo — two
- *     loops fighting over the scroll position. Fixed with a single
- *     animation-generation token: each run gets an id, every frame checks
- *     it's still current before continuing, and only that run's own
- *     start/end ever touch the "in flight" flag.
- *   - `easeOutQuint` had its exponent written as 1 (linear), not 5.
- *   - Added a watchdog: whatever goes wrong, input unlocks within
- *     duration + WATCHDOG_GRACE_MS no matter what, so a bug here can't
- *     permanently block scrolling again.
- *   - Mobile momentum (esp. iOS Safari) can keep the page moving briefly
- *     even after overflow:hidden + preventDefault() are active, since that's
- *     handled by the compositor ahead of JS — the lock alone can't fully
- *     stop it. A short correction check after unlock snaps back to the
- *     target if residual momentum carried past it. Reduces, doesn't
- *     guarantee against, a little mobile overshoot.
+ * Desktop mechanism notes (unchanged from the previous rebuild): "in flight"
+ * is tracked with a single animation-generation token (each run gets an id,
+ * every frame checks it's still current before continuing) rather than a
+ * flag cleared from two different places — that dual-clear was the actual
+ * cause of the earlier stutter/snap-to-top bugs. A watchdog guarantees input
+ * unlocks within duration + WATCHDOG_GRACE_MS no matter what goes wrong, and
+ * a short post-unlock correction check snaps back if anything (e.g. a
+ * trackpad's own momentum) carried the page past the target. `easeOutQuint`
+ * also had its exponent written as 1 (linear), not 5 — fixed.
  */
 
-const SCROLL_HEIGHT = '500vh';
+const MOBILE_BP = 1024;
+
+const DESKTOP_SCROLL_HEIGHT_VH = 500; // effective auto-scroll runway = 400vh
+const MOBILE_REVEAL_VH = 100; // physical scroll distance to scrub through fully
+const MOBILE_SCROLL_HEIGHT_VH = MOBILE_REVEAL_VH + 100; // +100vh: same buffer trick as desktop
+
 const AUTO_SCROLL_DURATION = 700;
 const WATCHDOG_GRACE_MS = 800;
 const CORRECTION_CHECK_MS = 150;
@@ -65,8 +69,20 @@ const ArcadeHeroScroll: React.FC<Props> = ({ hero, content }) => {
 	const isActiveRef = useRef(false);
 	const pendingScrollRef = useRef(false);
 	const rafIdRef = useRef<number | null>(null);
+	const isMobileRef = useRef(window.innerWidth < MOBILE_BP);
 
 	const [isActive, setIsActive] = useState(false);
+	const [isMobile, setIsMobile] = useState(() => window.innerWidth < MOBILE_BP);
+
+	useEffect(() => {
+		const update = () => {
+			const next = window.innerWidth < MOBILE_BP;
+			isMobileRef.current = next;
+			setIsMobile(next);
+		};
+		window.addEventListener('resize', update);
+		return () => window.removeEventListener('resize', update);
+	}, []);
 
 	useEffect(() => {
 		let lastY = window.scrollY;
@@ -94,24 +110,31 @@ const ArcadeHeroScroll: React.FC<Props> = ({ hero, content }) => {
 			window.removeEventListener('keydown', preventDefaultForScrollKeys as EventListener);
 		};
 
-		// Only ever called for the current animation id — see the `myId` guards
-		// at each call site. Single place that ends a run: unlocks, clears the
-		// "in flight" flag, and disarms the watchdog that would otherwise also
-		// call this.
+		// html has `scroll-behavior: smooth` (see styles.css, for anchor-link
+		// nav). window.scrollTo(x, y) with no explicit behavior inherits that,
+		// so every per-frame call below would kick off the browser's OWN ~300ms
+		// smooth-scroll and get retargeted before it finishes — the animation
+		// loop needs to be the only thing driving position, so every scrollTo it
+		// does must explicitly bypass CSS scroll-behavior.
+		const scrollToInstant = (y: number) => window.scrollTo({ top: y, left: 0, behavior: 'instant' });
+
+		// Desktop-only (see the trigger check in processScroll below). Only ever
+		// called for the current animation id — single place that ends a run:
+		// unlocks, clears the "in flight" flag, disarms the watchdog.
 		const finishAnimation = (myId: number, targetY: number) => {
 			if (animationIdRef.current !== myId) return;
-			window.scrollTo(0, targetY);
+			scrollToInstant(targetY);
 			unlockScroll();
 			isAnimatingRef.current = false;
 			if (watchdogId !== null) {
 				window.clearTimeout(watchdogId);
 				watchdogId = null;
 			}
-			// Mobile momentum (esp. iOS Safari) can still be carrying the page
-			// briefly even after unlock — one late correction if it drifted.
+			// A trackpad's own momentum can still be carrying the page briefly
+			// even after unlock — one late correction if it drifted.
 			window.setTimeout(() => {
 				if (animationIdRef.current !== myId) return;
-				if (Math.abs(window.scrollY - targetY) > 2) window.scrollTo(0, targetY);
+				if (Math.abs(window.scrollY - targetY) > 2) scrollToInstant(targetY);
 			}, CORRECTION_CHECK_MS);
 		};
 
@@ -136,7 +159,7 @@ const ArcadeHeroScroll: React.FC<Props> = ({ hero, content }) => {
 				}
 				const elapsed = timestamp - startTime;
 				const progress = Math.min(elapsed / duration, 1);
-				window.scrollTo(0, startY + distance * easeOutQuint(progress));
+				scrollToInstant(startY + distance * easeOutQuint(progress));
 				if (progress < 1) {
 					requestAnimationFrame(step);
 				} else {
@@ -171,7 +194,9 @@ const ArcadeHeroScroll: React.FC<Props> = ({ hero, content }) => {
 			const scrollStart = containerTop;
 			const scrollEnd = containerTop + containerH - exact100vh;
 
-			if (!isAnimatingRef.current) {
+			// Locked auto-scroll is desktop-only — on mobile the transition is
+			// purely scrubbed by the user's own scroll position below, no trigger.
+			if (!isAnimatingRef.current && !isMobileRef.current) {
 				if (deltaY > 0 && scrollY > scrollStart + 20 && scrollY < scrollEnd - exact100vh * 0.1) {
 					triggerCustomScroll(scrollEnd, AUTO_SCROLL_DURATION);
 				} else if (deltaY < 0 && scrollY < scrollEnd - 10 && scrollY > scrollStart + exact100vh * 0.1) {
@@ -217,7 +242,7 @@ const ArcadeHeroScroll: React.FC<Props> = ({ hero, content }) => {
 
 	return (
 		<>
-			<div ref={containerRef} style={{ height: SCROLL_HEIGHT, position: 'relative' }}>
+			<div ref={containerRef} style={{ height: `${isMobile ? MOBILE_SCROLL_HEIGHT_VH : DESKTOP_SCROLL_HEIGHT_VH}vh`, position: 'relative' }}>
 				{isActive && (
 					<div
 						ref={overlayRef}
