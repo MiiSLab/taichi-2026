@@ -5,15 +5,22 @@ import HomeSections from '../components/home/HomeSections';
 import { useSEO } from '../hooks/useSEO';
 
 /**
- * Experiment page for the arcade hero's locked auto-scroll transition (a
- * scroll nudge takes over and plays the BOOM circle-collapse itself), kept
- * off the live homepage so it can be tuned without risking normal scrolling.
- * See HomePage.tsx and ArcadeHeroScroll.tsx for why.
+ * Mirrors HomePage.tsx exactly, on an unlinked route, as a safe place to test
+ * future changes to the arcade hero transition without touching production.
  */
 const HeroLabPage: React.FC = () => {
 	useSEO('Hero Lab', 'Experiment page for the arcade hero scroll transition.');
 
-	return <ArcadeHeroScroll hero={<NewArcadeHero />} content={<HomeSections />} />;
+	return (
+		<>
+			<ArcadeHeroScroll variant='boom'>
+				<NewArcadeHero />
+			</ArcadeHeroScroll>
+			<div className='w-full' style={{ marginTop: '-100vh' }}>
+				<HomeSections />
+			</div>
+		</>
+	);
 };
 
 export default HeroLabPage;
