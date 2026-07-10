@@ -5,23 +5,15 @@ import HomeSections from '../components/home/HomeSections';
 import { useSEO } from '../hooks/useSEO';
 
 /**
- * Experiment page for tuning the arcade hero's scroll-driven transition
- * (auto-snap + BOOM circle-collapse) away from the live homepage, which now
- * uses a plain, non-scroll-hijacked layout instead. See HomePage.tsx for why.
+ * Experiment page for the arcade hero's scroll-snap transition (auto-snap on
+ * a scroll nudge + BOOM circle-collapse), kept off the live homepage so it
+ * can be tuned without risking normal scrolling. See HomePage.tsx and
+ * ArcadeHeroScroll.tsx for why.
  */
 const HeroLabPage: React.FC = () => {
 	useSEO('Hero Lab', 'Experiment page for the arcade hero scroll transition.');
 
-	return (
-		<>
-			<ArcadeHeroScroll variant='boom'>
-				<NewArcadeHero />
-			</ArcadeHeroScroll>
-			<div className='w-full' style={{ marginTop: '-100vh' }}>
-				<HomeSections />
-			</div>
-		</>
-	);
+	return <ArcadeHeroScroll variant='boom' hero={<NewArcadeHero />} content={<HomeSections />} />;
 };
 
 export default HeroLabPage;

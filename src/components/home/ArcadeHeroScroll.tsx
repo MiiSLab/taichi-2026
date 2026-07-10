@@ -1,35 +1,40 @@
 import React, { useEffect, useRef, useState } from 'react';
 
 /**
- * Scroll-driven hero wrapper for the arcade visual. Purely scroll-linked
- * transition:
+ * Scroll-snap-driven hero wrapper for the arcade visual. Used only by the
+ * /lab/arcade-hero-scroll experiment page (see HeroLabPage.tsx) — the live
+ * homepage stays on the plain, non-hijacked layout (see HomePage.tsx).
+ *
  *   - 'fade': the (interactive) arcade fades + scales out as you scroll.
  *   - 'boom': BOOM circle-collapse, with the arcade as the content.
  *
- * The arcade is interactive while at the top (progress ≈ 0); pointer events are
- * released during the transition so scrolling isn't blocked.
- * Pair with a content block pulled up by `margin-top: -100vh` so it is revealed.
+ * The arcade is interactive while at the top (progress ≈ 0); pointer events
+ * are released during the transition so scrolling isn't blocked. `content`
+ * renders immediately after as the second snap target — no manual spacer/
+ * margin math needed, the two targets just stack.
  *
- * This used to also auto-snap-complete the transition (locking native scroll
- * and driving it via a timed window.scrollTo loop) once the user nudged past a
- * threshold. That JS-driven scrollTo, the native scroll events it triggered,
- * and the wheel/touch/key blocking were all fighting over the same scroll
- * position at once, which proved too fragile — even after fixing one specific
- * race, it could still end up re-entering mid-animation and snapping back to
- * the top, blocking scroll entirely. Progress is now a direct function of
- * scroll position with no programmatic scrolling, so it can't get stuck.
+ * "Auto-completes on a slight scroll nudge" used to be hand-rolled: a JS loop
+ * driving window.scrollTo() while blocking wheel/touch/key input. That fought
+ * the browser's own scroll handling directly and could get stuck (see git
+ * history on this file from before this rewrite — two targeted patches on
+ * that mechanism still weren't enough to make it reliable). This version
+ * leaves the "snap to the nearest point once you let go" behaviour entirely
+ * to the browser via CSS scroll-snap-type, which can't race because there's
+ * no script driving the scroll position. Progress within the hero (for the
+ * circle-collapse/fade visual) is still a plain function of scroll position.
  */
 
-const SCROLL_HEIGHT = '500vh';
+const REVEAL_HEIGHT_VH = 400;
 
 type Props = {
 	variant: 'fade' | 'boom';
-	/** Hero rendered inside the scroll/transition shell. */
-	children: React.ReactNode;
+	/** Hero rendered inside the snap/transition shell (first snap target). */
+	hero: React.ReactNode;
+	/** Rendered immediately after the hero, as the second snap target. */
+	content: React.ReactNode;
 };
 
-const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
-	const hero = children;
+const ArcadeHeroScroll: React.FC<Props> = ({ variant, hero, content }) => {
 	const containerRef = useRef<HTMLDivElement>(null);
 	const overlayRef = useRef<HTMLDivElement>(null);
 	const innerRef = useRef<HTMLDivElement>(null);
@@ -39,6 +44,17 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 	const rafIdRef = useRef<number | null>(null);
 
 	const [isActive, setIsActive] = useState(false);
+
+	useEffect(() => {
+		// Scoped to this page only: on while mounted, restored on unmount so it
+		// never leaks into other routes.
+		const root = document.documentElement;
+		const previous = root.style.scrollSnapType;
+		root.style.scrollSnapType = 'y mandatory';
+		return () => {
+			root.style.scrollSnapType = previous;
+		};
+	}, []);
 
 	useEffect(() => {
 		// Per-frame visual update (no React) — keeps the transition at 60fps.
@@ -61,13 +77,9 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 			pendingScrollRef.current = false;
 			if (!containerRef.current) return;
 			const container = containerRef.current;
-			const containerTop = container.offsetTop;
-			const containerH = container.offsetHeight;
-			const exact100vh = window.innerHeight;
+			const scrollStart = container.offsetTop;
+			const scrollEnd = scrollStart + container.offsetHeight;
 			const scrollY = window.scrollY;
-
-			const scrollStart = containerTop;
-			const scrollEnd = containerTop + containerH - exact100vh;
 
 			let progress: number;
 			let nowActive: boolean;
@@ -103,26 +115,32 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 	}, [variant]);
 
 	return (
-		<div ref={containerRef} style={{ height: SCROLL_HEIGHT, position: 'relative' }}>
-			{isActive &&
-				(variant === 'boom' ? (
-					<div
-						ref={overlayRef}
-						style={{ position: 'fixed', inset: 0, zIndex: 40, background: '#0d0e12', clipPath: 'circle(100% at 50% 50%)', overflow: 'hidden', willChange: 'clip-path' }}
-					>
-						<div ref={innerRef} style={{ width: '100%', height: '100%', opacity: 1 }}>
+		<>
+			<div
+				ref={containerRef}
+				style={{ height: `${REVEAL_HEIGHT_VH}vh`, position: 'relative', scrollSnapAlign: 'start', scrollSnapStop: 'always' }}
+			>
+				{isActive &&
+					(variant === 'boom' ? (
+						<div
+							ref={overlayRef}
+							style={{ position: 'fixed', inset: 0, zIndex: 40, background: '#0d0e12', clipPath: 'circle(100% at 50% 50%)', overflow: 'hidden', willChange: 'clip-path' }}
+						>
+							<div ref={innerRef} style={{ width: '100%', height: '100%', opacity: 1 }}>
+								{hero}
+							</div>
+						</div>
+					) : (
+						<div
+							ref={overlayRef}
+							style={{ position: 'fixed', inset: 0, zIndex: 40, overflow: 'hidden', transformOrigin: '50% 42%', willChange: 'opacity, transform' }}
+						>
 							{hero}
 						</div>
-					</div>
-				) : (
-					<div
-						ref={overlayRef}
-						style={{ position: 'fixed', inset: 0, zIndex: 40, overflow: 'hidden', transformOrigin: '50% 42%', willChange: 'opacity, transform' }}
-					>
-						{hero}
-					</div>
-				))}
-		</div>
+					))}
+			</div>
+			<div style={{ scrollSnapAlign: 'start', scrollSnapStop: 'always' }}>{content}</div>
+		</>
 	);
 };
 
