@@ -1,14 +1,19 @@
 import React from 'react';
-import ArcadeHeroScroll from '../components/home/ArcadeHeroScroll';
 import NewArcadeHero from '../components/home/newhero/NewArcadeHero';
 import HomeSections from '../components/home/HomeSections';
 import { useLanguage } from '../context/LanguageContext';
 import { useSEO } from '../hooks/useSEO';
 
 /**
- * Homepage — the visual-chair arcade hero (BIG BANG! FUTURES!) inside the BOOM
- * scroll shell: it auto-snaps on scroll and collapses (circle transition) into
- * the shared content sections, which are pulled up by margin-top: -100vh.
+ * Homepage — the visual-chair arcade hero (BIG BANG! FUTURES!) rendered as a
+ * normal, plainly-scrollable block above the shared content sections.
+ *
+ * This used to sit inside a scroll-hijacking shell (ArcadeHeroScroll) that
+ * auto-snapped the page via window.scrollTo and blocked wheel/touch/key input
+ * during the transition. That mechanism proved too fragile — it could end up
+ * fighting the browser's native scroll and get stuck, blocking navigation
+ * entirely. The scroll-driven version is preserved at /lab/arcade-hero-scroll
+ * for further tuning; the live homepage stays on this plain, reliable layout.
  */
 const HomePage: React.FC = () => {
 	const { language } = useLanguage();
@@ -21,12 +26,8 @@ const HomePage: React.FC = () => {
 
 	return (
 		<>
-			<ArcadeHeroScroll variant='boom'>
-				<NewArcadeHero />
-			</ArcadeHeroScroll>
-			<div className='w-full' style={{ marginTop: '-100vh' }}>
-				<HomeSections />
-			</div>
+			<NewArcadeHero />
+			<HomeSections />
 		</>
 	);
 };
