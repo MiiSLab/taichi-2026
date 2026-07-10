@@ -13,7 +13,7 @@ import { useSEO } from '../hooks/useSEO';
 const HeroLabPage: React.FC = () => {
 	useSEO('Hero Lab', 'Experiment page for the arcade hero scroll transition.');
 
-	return <ArcadeHeroScroll variant='boom' hero={<NewArcadeHero />} content={<HomeSections />} />;
+	return <ArcadeHeroScroll hero={<NewArcadeHero />} content={<HomeSections />} />;
 };
 
 export default HeroLabPage;
