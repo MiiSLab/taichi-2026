@@ -126,8 +126,13 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 				}
 			}
 
-			if (isAutoScrolling.current === 'down' && scrollY >= scrollEnd - 10) isAutoScrolling.current = null;
-			else if (isAutoScrolling.current === 'up' && scrollY <= scrollStart + 10) isAutoScrolling.current = null;
+			// isAutoScrolling is cleared solely by triggerCustomScroll's own completion
+			// (elapsed time), not here by position — this used to also clear early
+			// whenever scrollY got within 10px of the target, which for short auto-scroll
+			// distances happened before the 700ms animation's own rAF loop finished. That
+			// left a window where the flag was clear but the old scrollTo loop was still
+			// running, letting a second triggerCustomScroll fire and fight the first one
+			// every frame (visible as a repeated stutter/snap-back on scroll).
 
 			let progress: number;
 			let nowActive: boolean;
