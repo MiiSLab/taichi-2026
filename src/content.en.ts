@@ -575,7 +575,7 @@ export const CONTENT_EN = {
 		kktixComingSoonLabel: 'Coming Soon',
 		manualHeading: '2. Group Registration',
 		manualIntro:
-			'If you prefer not to use KKTIX, you may register as a group by following the steps below. For any questions, please contact [taichi2026+registration@gmail.com](mailto:taichi2026+registration@gmail.com).',
+			'If you prefer not to use KKTIX, you may register as a group by following the steps below. For any questions, please contact [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com).',
 		transferStepHeading: 'Transfer the registration fee to the following account',
 		bankDetails: [
 			'Account name: Taiwan Association for Computer-Human Interaction',
@@ -585,7 +585,7 @@ export const CONTENT_EN = {
 		formStepHeading: 'Fill out the group registration form',
 		formButtonLabel: 'Open the Form',
 		emailStepText:
-			'Email a screenshot of the transfer receipt and the group registration form to [taichi2026+registration@gmail.com](mailto:taichi2026+registration@gmail.com)',
+			'Email a screenshot of the transfer receipt and the group registration form to [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
 	},
 	footer: {
 		...CONTENT_ZH.footer,

@@ -681,7 +681,7 @@ export const CONTENT_ZH = {
 		kktixUrl: 'https://taiwanchi.kktix.cc/events/202608050806' as string,
 		manualHeading: '2. 團體報名',
 		manualIntro:
-			'若不想使用 KKTIX 報名，亦可依下列步驟進行團體報名，任何問題請聯絡 [taichi2026+registration@gmail.com](mailto:taichi2026+registration@gmail.com)。',
+			'若不想使用 KKTIX 報名，亦可依下列步驟進行團體報名，任何問題請聯絡 [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)。',
 		transferStepHeading: '將報名費以轉帳或匯款方式匯入以下帳號',
 		bankDetails: ['戶名：社團法人台灣人機互動學會', '銀行：華南商業銀行（銀行代號 008）', '帳號：154100091731'],
 		formStepHeading: '填寫團體報名表',
@@ -689,7 +689,7 @@ export const CONTENT_ZH = {
 		formUrl:
 			'https://docs.google.com/spreadsheets/d/1j04QqFwTVqXBF5cbPYQFjxjvw9fq6tpG/edit?usp=sharing&ouid=106876117677843883459&rtpof=true&sd=true',
 		emailStepText:
-			'將轉帳畫面截圖及團體報名表郵寄至 [taichi2026+registration@gmail.com](mailto:taichi2026+registration@gmail.com)',
+			'將轉帳畫面截圖及團體報名表郵寄至 [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
 	},
 	footer: {
 		title: 'TAICHI 2026 \n BIG BANG! FUTURE!',
