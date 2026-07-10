@@ -353,8 +353,37 @@ function MobileGrid() {
       drawGrid(ctx, canvas.width, canvas.height, t, greenCh, { vRails: 3, hRails: 4, numRings: 6, vyFactor: 0.4 });
       rafRef.current = requestAnimationFrame(frame);
     }
-    rafRef.current = requestAnimationFrame(frame);
-    return () => { cancelAnimationFrame(rafRef.current); window.removeEventListener('resize', resize); };
+
+    // On mobile the hero stays mounted (no scroll-shell unmount), so pause the
+    // loop while the canvas is off-screen or the tab is hidden — same pattern
+    // as WarpBackground. rafRef.current === 0 doubles as the "stopped" flag.
+    let isIntersecting = false;
+    const start = () => {
+      if (rafRef.current === 0 && isIntersecting && !document.hidden) {
+        prev = performance.now(); // don't let `t` jump over the paused span
+        rafRef.current = requestAnimationFrame(frame);
+      }
+    };
+    const stop = () => {
+      if (rafRef.current !== 0) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = 0;
+      }
+    };
+    const io = new IntersectionObserver(([entry]) => {
+      isIntersecting = entry.isIntersecting;
+      if (isIntersecting) start(); else stop();
+    });
+    io.observe(canvas);
+    const onVisibilityChange = () => { if (document.hidden) stop(); else start(); };
+    document.addEventListener('visibilitychange', onVisibilityChange);
+
+    return () => {
+      stop();
+      io.disconnect();
+      document.removeEventListener('visibilitychange', onVisibilityChange);
+      window.removeEventListener('resize', resize);
+    };
   }, [greenCh]);
 
   return (
@@ -368,10 +397,24 @@ function MobileCarousel() {
   const { green, greenCh } = usePalette();
   const [varIdxs, setVarIdxs] = useState([0, 0, 0]);
   const [selected, setSelected] = useState(1); // centre slot default
+  const [visible, setVisible] = useState(true);
+  const rootRef = useRef<HTMLDivElement>(null);
   const audioRef = useRef<AudioContext | null>(null);
+
+  // On mobile the hero stays mounted, so tear the intervals down while the
+  // carousel is scrolled off-screen — otherwise the bracket cycle keeps
+  // beeping (once the AudioContext is unlocked) long after the hero is gone.
+  useEffect(() => {
+    const el = rootRef.current;
+    if (!el) return;
+    const io = new IntersectionObserver(([entry]) => setVisible(entry.isIntersecting));
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
 
   // Each slot cycles its own variants independently (staggered timing)
   useEffect(() => {
+    if (!visible) return;
     const timers = MOBILE_SLOTS.map((variants, i) =>
       setInterval(() => {
         setVarIdxs(prev => {
@@ -382,10 +425,11 @@ function MobileCarousel() {
       }, 1400 + i * 320)
     );
     return () => timers.forEach(clearInterval);
-  }, []);
+  }, [visible]);
 
   // Bracket auto-moves left → centre → right → left every 3 s
   useEffect(() => {
+    if (!visible) return;
     const timer = setInterval(() => {
       setSelected(s => {
         const next = (s + 1) % 3;
@@ -394,13 +438,14 @@ function MobileCarousel() {
       });
     }, 3000);
     return () => clearInterval(timer);
-  }, []);
+  }, [visible]);
 
   const SZ   = Math.min(Math.round(window.innerWidth * 0.22), 120); // char size
   const BPAD = 18;
 
   return (
     <div
+      ref={rootRef}
       style={{ width: '100%', paddingBottom: 'max(2rem, env(safe-area-inset-bottom))', display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.75rem' }}
       onPointerDownCapture={() => { void unlockAudio(audioRef); }}
     >

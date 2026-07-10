@@ -9,6 +9,8 @@ import { useSEO } from '../hooks/useSEO';
  * Homepage — the visual-chair arcade hero (BIG BANG! FUTURES!) inside the BOOM
  * scroll shell: it auto-snaps on scroll and collapses (circle transition) into
  * the shared content sections, which are pulled up by margin-top: -100vh.
+ * Both the transition and the pull-up are desktop-only (lg = 1024px, matching
+ * DESKTOP_MQ in ArcadeHeroScroll); on mobile the hero is a plain 100dvh section.
  */
 const HomePage: React.FC = () => {
 	const { language } = useLanguage();
@@ -24,7 +26,7 @@ const HomePage: React.FC = () => {
 			<ArcadeHeroScroll variant='boom'>
 				<NewArcadeHero />
 			</ArcadeHeroScroll>
-			<div className='w-full' style={{ marginTop: '-100vh' }}>
+			<div className='w-full lg:mt-[-100vh]'>
 				<HomeSections />
 			</div>
 		</>

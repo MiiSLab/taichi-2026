@@ -8,11 +8,19 @@ import React, { useEffect, useRef, useState } from 'react';
  *
  * The arcade is interactive while at the top (progress ≈ 0); pointer events are
  * released during the transition so scrolling isn't blocked.
- * Pair with a content block pulled up by `margin-top: -100vh` so it is revealed.
+ * Pair with a content block pulled up by `lg:mt-[-100vh]` so it is revealed —
+ * desktop only, to match the DESKTOP_MQ split below.
+ *
+ * Below DESKTOP_MQ the transition is skipped entirely: mobile GPUs choke on the
+ * per-frame clip-path repaint (blend-mode canvas + filtered SVG in the layer)
+ * and the JS scroll snap fights touch momentum. The hero renders as a plain
+ * in-flow 100dvh section instead, so content follows with normal scrolling.
  */
 
 const SCROLL_HEIGHT = '500vh';
 const AUTO_SCROLL_DURATION = 700;
+// Must stay in sync with MOBILE_BP (NewArcadeHero) and Tailwind `lg` — all 1024px.
+const DESKTOP_MQ = '(min-width: 1024px)';
 const easeOutQuint = (t: number) => 1 - Math.pow(1 - t, 1);
 
 type Props = {
@@ -31,10 +39,20 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 	const isActiveRef = useRef(false);
 	const pendingScrollRef = useRef(false);
 	const rafIdRef = useRef<number | null>(null);
+	const autoScrollRafRef = useRef<number | null>(null);
 
 	const [isActive, setIsActive] = useState(false);
+	const [isDesktop, setIsDesktop] = useState(() => window.matchMedia(DESKTOP_MQ).matches);
 
 	useEffect(() => {
+		const mql = window.matchMedia(DESKTOP_MQ);
+		const onChange = (e: MediaQueryListEvent) => setIsDesktop(e.matches);
+		mql.addEventListener('change', onChange);
+		return () => mql.removeEventListener('change', onChange);
+	}, []);
+
+	useEffect(() => {
+		if (!isDesktop) return;
 		let lastY = window.scrollY;
 
 		const preventDefault = (e: Event) => e.preventDefault();
@@ -74,8 +92,9 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 				const progress = Math.min(elapsed / duration, 1);
 				window.scrollTo(0, startY! + distance * easeOutQuint(progress));
 				if (progress < 1) {
-					requestAnimationFrame(step);
+					autoScrollRafRef.current = requestAnimationFrame(step);
 				} else {
+					autoScrollRafRef.current = null;
 					window.scrollTo(0, targetY);
 					unlockScroll();
 					setTimeout(() => {
@@ -83,7 +102,7 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 					}, 100);
 				}
 			};
-			requestAnimationFrame(step);
+			autoScrollRafRef.current = requestAnimationFrame(step);
 		};
 
 		// Per-frame visual update (no React) — keeps the transition at 60fps.
@@ -158,10 +177,20 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 		return () => {
 			window.removeEventListener('scroll', handleScroll);
 			if (rafIdRef.current !== null) cancelAnimationFrame(rafIdRef.current);
+			if (autoScrollRafRef.current !== null) {
+				cancelAnimationFrame(autoScrollRafRef.current);
+				autoScrollRafRef.current = null;
+			}
+			isAutoScrolling.current = null;
+			pendingScrollRef.current = false;
 			window.clearTimeout(initTimeout);
 			unlockScroll();
 		};
-	}, [variant]);
+	}, [variant, isDesktop]);
+
+	if (!isDesktop) {
+		return <div className='relative min-h-[100dvh] w-full'>{hero}</div>;
+	}
 
 	return (
 		<div ref={containerRef} style={{ height: SCROLL_HEIGHT, position: 'relative' }}>

@@ -16,7 +16,7 @@ const HeroLabPage: React.FC = () => {
 			<ArcadeHeroScroll variant='boom'>
 				<NewArcadeHero />
 			</ArcadeHeroScroll>
-			<div className='w-full' style={{ marginTop: '-100vh' }}>
+			<div className='w-full lg:mt-[-100vh]'>
 				<HomeSections />
 			</div>
 		</>
