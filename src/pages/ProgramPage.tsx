@@ -9,12 +9,14 @@ type ProgramScheduleRow = {
 	time: string;
 	label: string;
 	sublabel?: string;
+	/** 'break' = 報到/休息/午餐等非議程時段，時間表上以灰色虛線框呈現 */
+	kind?: 'break';
 	featured?: boolean;
 	fullBio?: string;
 	workHeading?: string;
 	workDescription?: string;
 };
-type TimetableEvent = { time: string; title: string; subtitle?: string; tags?: string[] };
+type TimetableEvent = { time: string; title: string; subtitle?: string; tags?: string[]; kind?: 'break' };
 type TimetableVenue = {
 	header: string;
 	/** 左欄時間區間列的來源（細粒度時程）；議程未定的場地可省略，其區塊跨既有列 */
@@ -31,7 +33,6 @@ type Day1Joint = {
 	venueBlocks: { f5: Day1VenueBlock; f12: Day1VenueBlock };
 	sessions: { id: string; time: string; schedule: readonly ProgramScheduleRow[] }[];
 };
-type ProgramIntroCard = { name: string; description: string; toggleLabel?: string; toggleContent?: string; longform?: boolean };
 type ProgramDay2Session = { id: string; title: string; time: string; location: string; schedule?: readonly ProgramScheduleRow[] };
 
 const TimeLocationBlock = ({ label, time, location }: { label: string; time: string; location: string }) => (
@@ -42,9 +43,8 @@ const TimeLocationBlock = ({ label, time, location }: { label: string; time: str
 	</div>
 );
 
-// 通用時間表：日曆式比例時間軸（calendar day view）。左側整點刻度，
-// 兩場地各是一個依實際時長等比例佔位的區塊——一眼看出 5F 白天場、
-// 12F 傍晚場與 15:30–16:40 的交疊。個別節目細節不上站（正式網站才有）。
+// 通用時間表：左欄為時間區間列（各場地細粒度時程的聯集），場地區塊跨其
+// 涵蓋的列。Day1 每場地一個大區塊（節目細節在正式網站）、Day2 逐活動成塊。
 const parseTimeRange = (time: string): [number, number] => {
 	const range = time.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
 	if (range) return [Number(range[1]) * 60 + Number(range[2]), Number(range[3]) * 60 + Number(range[4])];
@@ -104,225 +104,89 @@ const DayTimetable = ({ venues, timeHeader, title }: { venues: TimetableVenue[];
 	};
 
 	return (
-		<div className='bg-zinc-950/80 px-4 py-6 sm:px-8'>
-			<p className='mb-4 font-mono text-[14px] font-bold leading-5 text-primary'>{title}</p>
-
-			<div className='grid grid-cols-[92px_1fr_1fr] gap-x-2 sm:grid-cols-[150px_1fr_1fr] sm:gap-x-4'>
-				{/* 表頭列 */}
-				<p className='border-b-2 border-primary/40 pb-2 font-mono text-[12px] font-bold leading-5 text-white/60 sm:text-[13px]' style={{ gridColumn: 1, gridRow: 1 }}>
-					{timeHeader}
-				</p>
-				{cols.map((col, colIndex) => (
-					<p
-						key={col.header}
-						className={`border-b-2 border-primary/40 pb-2 text-center font-mono text-[12px] font-bold leading-5 sm:text-[14px] ${col.tone.text}`}
-						style={{ gridColumn: colIndex + 2, gridRow: 1 }}
-					>
-						{col.header}
+		<section>
+			{/* 標題拉到深色表格外、套頁面段落標題樣式，與表內的場地欄名（小字、場地色）拉開層級 */}
+			<h2 className='mb-6 border-b-2 border-white/20 pb-4 font-mono text-[24px] font-bold leading-8 text-white'>{title}</h2>
+			<div className='bg-zinc-950/80 px-4 py-6 sm:px-8'>
+				<div className='grid grid-cols-[60px_1fr_1fr] gap-x-2 sm:grid-cols-[150px_1fr_1fr] sm:gap-x-4'>
+					{/* 表頭列：底線用中性色，場地色只留給欄名文字與區塊 */}
+					<p className='border-b-2 border-white/25 pb-2 font-mono text-[12px] font-bold leading-5 text-white/60 sm:text-[13px]' style={{ gridColumn: 1, gridRow: 1 }}>
+						{timeHeader}
 					</p>
-				))}
+					{cols.map((col, colIndex) => (
+						<p
+							key={col.header}
+							className={`border-b-2 border-white/25 pb-2 text-center font-mono text-[12px] font-bold leading-5 sm:text-[14px] ${col.tone.text}`}
+							style={{ gridColumn: colIndex + 2, gridRow: 1 }}
+						>
+							{col.header}
+						</p>
+					))}
 
-				{/* 時間區間列 */}
-				{rows.map((row, rowIndex) => (
-					<div
-						key={`${row.start}-${row.end}`}
-						className='flex min-h-[48px] items-center border-b border-white/10 py-2 font-mono text-[12px] font-bold leading-5 text-white/90 sm:min-h-[52px] sm:text-[14px]'
-						style={{ gridColumn: 1, gridRow: rowIndex + 2 }}
-					>
-						{row.time}
-					</div>
-				))}
-
-				{/* 場地區塊：跨其涵蓋的時間列 */}
-				{cols.map((col, colIndex) =>
-					col.events.map((event, eventIndex) => {
-						const span = rowSpanFor(event.start, event.end);
-						if (!span) return null;
-						const hero = span.count >= 3;
+					{/* 時間區間列：手機起訖時間上下排（欄寬讓給議程欄），sm+ 恢復單行 */}
+					{rows.map((row, rowIndex) => {
+						const [startText, endText] = row.time.split(/\s*-\s*/);
 						return (
 							<div
-								key={`${col.header}-${event.time}-${eventIndex}`}
-								className={`my-px overflow-hidden border ${col.tone.border} ${col.tone.bg}`}
-								style={{ gridColumn: colIndex + 2, gridRow: `${span.first + 2} / ${span.last + 3}` }}
+								key={`${row.start}-${row.end}`}
+								className='flex min-h-[48px] items-center border-b border-white/10 py-2 font-mono text-[12px] font-bold text-white/90 sm:min-h-[52px] sm:text-[14px]'
+								style={{ gridColumn: 1, gridRow: rowIndex + 2 }}
 							>
-								{hero ? (
-									<div className='flex h-full flex-col items-center justify-center gap-3 px-2 py-4 text-center sm:gap-4 sm:px-4'>
-										<p className={`whitespace-pre-line font-mono text-[14px] font-bold leading-snug sm:text-[19px] ${col.tone.text}`}>{event.title}</p>
-										<p className='font-mono text-[11px] font-bold text-white/70 sm:text-[12px]'>{event.time}</p>
-										{event.tags && (
-											<div className='flex flex-wrap items-center justify-center gap-1.5 sm:gap-2'>
-												{event.tags.map((tag) => (
-													<span
-														key={tag}
-														className='border border-white/15 bg-black/40 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-white/70 sm:text-[10px]'
-													>
-														{tag}
-													</span>
-												))}
-											</div>
-										)}
-									</div>
-								) : (
-									<div className='flex h-full flex-col items-center justify-center gap-0.5 px-2 py-1 text-center sm:px-3'>
-										<p className={`font-mono text-[12px] font-bold leading-tight sm:text-[14px] ${col.tone.text}`}>{event.title}</p>
-										{event.subtitle && <p className='font-mono text-[10px] leading-tight text-white/60 sm:text-[11px]'>{event.subtitle}</p>}
-									</div>
-								)}
+								<span className='flex flex-col leading-tight sm:hidden'>
+									<span>{startText}</span>
+									{endText && <span className='text-white/55'>{endText}</span>}
+								</span>
+								<span className='hidden leading-5 sm:block'>{row.time}</span>
 							</div>
 						);
-					}),
-				)}
+					})}
+
+					{/* 場地區塊：跨其涵蓋的時間列 */}
+					{cols.map((col, colIndex) =>
+						col.events.map((event, eventIndex) => {
+							const span = rowSpanFor(event.start, event.end);
+							if (!span) return null;
+							const hero = span.count >= 3;
+							// break（報到/休息/午餐）退為灰色虛線框，正式議程保留場地色，掃讀時自然分段
+							const isBreak = event.kind === 'break';
+							return (
+								<div
+									key={`${col.header}-${event.time}-${eventIndex}`}
+									className={`my-px overflow-hidden border ${isBreak ? 'border-dashed border-white/20 bg-white/[0.03]' : `${col.tone.border} ${col.tone.bg}`}`}
+									style={{ gridColumn: colIndex + 2, gridRow: `${span.first + 2} / ${span.last + 3}` }}
+								>
+									{hero ? (
+										<div className='flex h-full flex-col items-center justify-center gap-3 px-2 py-4 text-center sm:gap-4 sm:px-4'>
+											<p className={`whitespace-pre-line font-mono text-[14px] font-bold leading-snug sm:text-[19px] ${col.tone.text}`}>{event.title}</p>
+											<p className='font-mono text-[11px] font-bold text-white/70 sm:text-[12px]'>{event.time}</p>
+											{event.tags && (
+												<div className='flex flex-wrap items-center justify-center gap-1.5 sm:gap-2'>
+													{event.tags.map((tag) => (
+														<span
+															key={tag}
+															className='border border-white/15 bg-black/40 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-white/70 sm:text-[10px]'
+														>
+															{tag}
+														</span>
+													))}
+												</div>
+											)}
+										</div>
+									) : (
+										<div className='flex h-full flex-col items-center justify-center gap-0.5 px-2 py-1 text-center sm:px-3'>
+											<p className={`font-mono text-[12px] leading-tight sm:text-[14px] ${isBreak ? 'text-white/55' : `font-bold ${col.tone.text}`}`}>{event.title}</p>
+											{event.subtitle && <p className='font-mono text-[10px] leading-tight text-white/60 sm:text-[11px]'>{event.subtitle}</p>}
+										</div>
+									)}
+								</div>
+							);
+						}),
+					)}
+				</div>
 			</div>
-		</div>
+		</section>
 	);
 };
-
-const ToggleReveal = ({ label, content, full }: { label: string; content?: string; full?: boolean }) => (
-	<details className='group/toggle'>
-		<summary
-			className={`flex h-6 cursor-pointer list-none items-center gap-2 border-l border-solid border-primary pl-[15px] font-mono text-[14px] font-bold leading-[22.75px] text-white/80 ${
-				full ? 'w-full bg-zinc-950/80' : 'w-fit'
-			}`}
-		>
-			{label}
-			<span className='h-0 w-0 shrink-0 border-x-[5px] border-x-transparent border-t-[6px] border-t-white/80 transition-transform group-open/toggle:rotate-180' />
-		</summary>
-		{content && <p className='mt-3 whitespace-pre-line pl-[15px] font-sans text-[14px] leading-relaxed text-white/80'>{content}</p>}
-	</details>
-);
-
-const SideBySideIntro = ({ title, cards, photoLabel }: { title: string; cards: ProgramIntroCard[]; photoLabel: string }) => (
-	<ScrollReveal>
-		<section className='py-12 md:py-20'>
-			<h2 className='mb-6 border-b-2 border-primary/30 pb-4 font-mono text-[24px] font-bold leading-8 text-white'>{title}</h2>
-			<div className='flex flex-col gap-6'>
-				{cards.map((card) => (
-					<div key={card.name} className='flex flex-col gap-6 sm:flex-row sm:items-center'>
-						<div className='flex h-[200px] w-full items-center justify-center bg-zinc-800 sm:h-[256px] sm:w-[320px] sm:shrink-0 md:w-[400px]'>
-							<span className='font-mono text-[16px] leading-6 text-white/50'>{photoLabel}</span>
-						</div>
-						<div className='flex flex-col gap-3.5'>
-							<p className='font-mono text-[24px] font-bold leading-none text-primary'>{card.name}</p>
-							<p className={`text-[14px] leading-normal text-white/80 ${card.longform ? 'font-sans' : 'font-mono'}`}>{card.description}</p>
-							{card.toggleLabel && <ToggleReveal label={card.toggleLabel} content={card.toggleContent} />}
-						</div>
-					</div>
-				))}
-			</div>
-		</section>
-	</ScrollReveal>
-);
-
-const PerformanceSection = ({
-	title,
-	cards,
-	photoLabel,
-	closingLine1,
-	closingLine2,
-}: {
-	title: string;
-	cards: ProgramIntroCard[];
-	photoLabel: string;
-	closingLine1: string;
-	closingLine2: string;
-}) => (
-	<>
-		<SideBySideIntro title={title} cards={cards} photoLabel={photoLabel} />
-		<ScrollReveal>
-			<p className='pb-8 text-center font-mono text-[20px] font-bold leading-normal text-primary sm:text-[24px]'>
-				{closingLine1}
-				<br />
-				{closingLine2}
-			</p>
-		</ScrollReveal>
-	</>
-);
-
-const ResidencySection = ({
-	title,
-	introTitle,
-	introInstructor,
-	introDescription,
-	cards,
-	photoLabel,
-}: {
-	title: string;
-	introTitle: string;
-	introInstructor: string;
-	introDescription: string;
-	cards: ProgramIntroCard[];
-	photoLabel: string;
-}) => (
-	<ScrollReveal>
-		<section className='py-12 md:py-20'>
-			<h2 className='mb-6 border-b-2 border-primary/30 pb-4 font-mono text-[24px] font-bold leading-8 text-white'>{title}</h2>
-			<div className='mb-8 rounded-[10px] border border-white/40 p-6 sm:p-10'>
-				<p className='mb-2 font-mono text-[24px] font-bold leading-normal text-primary'>{introTitle}</p>
-				<p className='mb-4 font-mono text-[16px] font-bold leading-normal text-white/80'>{introInstructor}</p>
-				<p className='font-mono text-[14px] leading-[22px] text-white/80'>{introDescription}</p>
-			</div>
-			<div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
-				{cards.map((card) => (
-					<div key={card.name} className='flex flex-col gap-[36px]'>
-						<div className='flex h-[256px] w-full items-center justify-center bg-zinc-800'>
-							<span className='font-mono text-[16px] leading-6 text-white/50'>{photoLabel}</span>
-						</div>
-						<div className='flex flex-col gap-3.5'>
-							<p className='font-mono text-[18px] font-bold leading-normal text-white/80'>{card.name}</p>
-							<p className='font-mono text-[14px] leading-normal text-white/80'>{card.description}</p>
-							{card.toggleLabel && <ToggleReveal label={card.toggleLabel} content={card.toggleContent} full />}
-						</div>
-					</div>
-				))}
-			</div>
-		</section>
-	</ScrollReveal>
-);
-
-const FoodSection = ({
-	title,
-	cards,
-	photoLabel,
-	promoHeading,
-	promoItems,
-}: {
-	title: string;
-	cards: ProgramIntroCard[];
-	photoLabel: string;
-	promoHeading: string;
-	promoItems: string[];
-}) => (
-	<ScrollReveal>
-		<section className='px-4 py-10 bg-gradient-to-b from-black to-zinc-950 sm:px-8'>
-			<h2 className='mb-6 border-b-2 border-primary/30 pb-4 font-mono text-[24px] font-bold leading-8 text-white'>{title}</h2>
-			<div className='flex flex-col gap-8'>
-				{cards.map((card, index) => (
-					<div key={card.name} className='flex flex-col gap-6 sm:flex-row sm:items-start'>
-						<div className='flex h-[200px] w-full items-center justify-center bg-zinc-800 sm:h-[256px] sm:w-[320px] sm:shrink-0 md:w-[400px]'>
-							<span className='font-mono text-[16px] leading-6 text-white/50'>{photoLabel}</span>
-						</div>
-						<div className='flex flex-col gap-3.5'>
-							<p className='font-mono text-[24px] font-bold leading-none text-primary'>{card.name}</p>
-							<p className={`text-[14px] leading-normal text-white ${card.longform ? 'font-sans' : 'font-mono text-white/80'}`}>{card.description}</p>
-							{index === cards.length - 1 && (
-								<div className='inline-flex w-fit flex-col gap-3.5 border-l border-solid border-primary bg-zinc-950/80 px-6 py-3'>
-									<p className='font-mono text-[14px] font-bold leading-normal text-program-green'>{promoHeading}</p>
-									<div className='flex flex-col gap-1'>
-										{promoItems.map((item) => (
-											<p key={item} className='font-mono text-[14px] leading-normal text-program-green'>
-												{item}
-											</p>
-										))}
-									</div>
-								</div>
-							)}
-						</div>
-					</div>
-				))}
-			</div>
-		</section>
-	</ScrollReveal>
-);
 
 const Day2StaticSession = ({
 	session,
@@ -364,7 +228,7 @@ const ProgramPage: React.FC = () => {
 		{
 			header: day2Info.venueHeaders.main,
 			scheduleTimes: (day2Info.sessions[0]?.schedule ?? []).map((row) => row.time),
-			events: (day2Info.sessions[0]?.schedule ?? []).map((row) => ({ time: row.time, title: row.label, subtitle: row.sublabel })),
+			events: (day2Info.sessions[0]?.schedule ?? []).map((row) => ({ time: row.time, title: row.label, subtitle: row.sublabel, kind: row.kind })),
 		},
 		{
 			header: day2Info.venueHeaders.second,
@@ -452,28 +316,6 @@ const ProgramPage: React.FC = () => {
 									<p className='font-mono text-[12px] text-white/45'>{section.labels.websitePendingLabel}</p>
 								</div>
 								<DayTimetable venues={day1Venues} timeHeader={day1.venueColumns.time} title={section.labels.scheduleTitle} />
-								<PerformanceSection
-									title={section.day1.performance.title}
-									cards={section.day1.performance.cards as unknown as ProgramIntroCard[]}
-									photoLabel={section.labels.photoPlaceholder}
-									closingLine1={section.day1.performance.closingLine1}
-									closingLine2={section.day1.performance.closingLine2}
-								/>
-								<ResidencySection
-									title={section.day1.residency.title}
-									introTitle={section.day1.residency.introTitle}
-									introInstructor={section.day1.residency.introInstructor}
-									introDescription={section.day1.residency.introDescription}
-									cards={section.day1.residency.cards as unknown as ProgramIntroCard[]}
-									photoLabel={section.labels.photoPlaceholder}
-								/>
-								<FoodSection
-									title={section.day1.food.title}
-									cards={section.day1.food.cards as unknown as ProgramIntroCard[]}
-									photoLabel={section.labels.photoPlaceholder}
-									promoHeading={section.day1.food.promo.heading}
-									promoItems={section.day1.food.promo.items as unknown as string[]}
-								/>
 							</div>
 						</ScrollReveal>
 					</div>

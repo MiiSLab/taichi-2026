@@ -18,7 +18,6 @@ test('program page uses the figma-driven dark design system', () => {
 	assert.match(source, /typography\.scale\.pageTitle/);
 	assert.doesNotMatch(source, /text-5xl font-pixel/);
 	assert.match(source, /bg-zinc-950\/80/);
-	assert.match(source, /text-program-green/);
 	assert.doesNotMatch(source, /shadow-/);
 });
 
@@ -43,8 +42,9 @@ test('program page adapts layout across breakpoints', () => {
 
 	assert.match(source, /px-6/);
 	assert.match(source, /md:px-20 md:pt-48/);
-	// timetable: time-interval column and venue-column gaps widen on sm+
-	assert.match(source, /grid-cols-\[92px_1fr_1fr\] gap-x-2 sm:grid-cols-\[150px_1fr_1fr\] sm:gap-x-4/);
+	// timetable: narrow time column on mobile (start/end stacked), widens on sm+ (single line)
+	assert.match(source, /grid-cols-\[60px_1fr_1fr\] gap-x-2 sm:grid-cols-\[150px_1fr_1fr\] sm:gap-x-4/);
+	assert.match(source, /row\.time\.split/);
 });
 
 test('program page is routed at /program and the Navbar link is wired up', () => {
@@ -88,6 +88,10 @@ test('program page day2 content drops the ISAT session and marks TAICHI as tenta
 		assert.match(source, /label: 'Paper Session I'/);
 		assert.match(source, /label: 'Paper Session IV'/);
 		assert.match(source, /label: 'Award \/ Closing \/ TAICHI 2027'/);
+		// non-session slots carry kind: 'break' so the timetable can mute them
+		assert.match(source, /label: 'Registration', kind: 'break'/);
+		assert.match(source, /label: 'Lunch Break', kind: 'break'/);
+		assert.match(source, /label: 'Coffee Break \(20mins\)', kind: 'break'/);
 	}
 
 	assert.match(zhSource, /title: 'TAICHI年度學會 「暫定」'/);
@@ -102,6 +106,15 @@ test('program page renders both days through the shared calendar-style timetable
 	assert.match(source, /const DayTimetable/);
 	assert.match(source, /const parseTimeRange/);
 	assert.match(source, /VENUE_TONES/);
+	// timetable title sits outside the dark table box as a real section heading
+	// (h2, white, neutral underline) — distinct from the small colored venue headers
+	assert.match(source, /\{title\}<\/h2>/);
+	assert.doesNotMatch(source, /\{title\}<\/p>/);
+	// header row underline is neutral, not brand red
+	assert.doesNotMatch(source, /border-b-2 border-primary/);
+	// break slots (registration/coffee/lunch) render muted + dashed, unlike sessions
+	assert.match(source, /event\.kind === 'break'/);
+	assert.match(source, /border-dashed/);
 	// time-interval rows in the left column; venue blocks span the rows they overlap
 	assert.match(source, /const rowSpanFor/);
 	assert.match(source, /gridRow: `\$\{span\.first \+ 2\} \/ \$\{span\.last \+ 3\}`/);
@@ -140,9 +153,11 @@ test('program page day1 renders one joint event with the venue-block timetable',
 	assert.doesNotMatch(source, /heroCaption/);
 	assert.doesNotMatch(source, /heroDescription/);
 
-	assert.match(source, /const PerformanceSection/);
-	assert.match(source, /const ResidencySection/);
-	assert.match(source, /const FoodSection/);
+	// the performance / residency (works) / food intro sections were removed from day1
+	assert.doesNotMatch(source, /PerformanceSection/);
+	assert.doesNotMatch(source, /ResidencySection/);
+	assert.doesNotMatch(source, /FoodSection/);
+	assert.doesNotMatch(source, /photoPlaceholder/);
 });
 
 test('program content defines the timetable venues in both languages', () => {
