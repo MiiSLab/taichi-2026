@@ -64,6 +64,10 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 			const scrollBarWidth = window.innerWidth - document.documentElement.clientWidth;
 			if (scrollBarWidth > 0 && !document.body.style.paddingRight) document.body.style.paddingRight = `${scrollBarWidth}px`;
 			document.body.style.overflow = 'hidden';
+			// The site-wide `html { scroll-behavior: smooth }` (in-page anchors) turns
+			// every per-frame scrollTo below into a restarted smooth animation — the
+			// glide crawls in stutters. Force instant scrolling for the snap's duration.
+			document.documentElement.style.scrollBehavior = 'auto';
 			window.addEventListener('wheel', preventDefault, { passive: false });
 			window.addEventListener('touchmove', preventDefault, { passive: false });
 			window.addEventListener('keydown', preventDefaultForScrollKeys as any, { passive: false });
@@ -72,6 +76,7 @@ const ArcadeHeroScroll: React.FC<Props> = ({ variant, children }) => {
 		const unlockScroll = () => {
 			document.body.style.overflow = '';
 			document.body.style.paddingRight = '';
+			document.documentElement.style.scrollBehavior = '';
 			window.removeEventListener('wheel', preventDefault);
 			window.removeEventListener('touchmove', preventDefault);
 			window.removeEventListener('keydown', preventDefaultForScrollKeys as any);
