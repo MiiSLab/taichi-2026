@@ -12,6 +12,7 @@
     "@react-three/drei": "^10.7.7",
     "@react-three/fiber": "^9.5.0",
     "lucide-react": "^0.554.0",
+    "qrcode": "^1.5.4",
     "motion": "^12.38.0",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
@@ -20,6 +21,7 @@
   },
   "devDependencies": {
     "@types/node": "^22.14.0",
+    "@types/qrcode": "^1.5.5",
     "@types/react": "^19.2.8",
     "@vitejs/plugin-react": "^5.1.2",
     "autoprefixer": "^10.5.0",

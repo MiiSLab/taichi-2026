@@ -15,6 +15,7 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const OrganizationPage = lazy(() => import('./pages/OrganizationPage'));
 const PosterUploadPage = lazy(() => import('./pages/PosterUploadPage'));
 const ProgramPage = lazy(() => import('./pages/ProgramPage'));
+const QPage = lazy(() => import('./pages/QPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
 const SponsorshipPage = lazy(() => import('./pages/SponsorshipPage'));
 const VenuePage = lazy(() => import('./pages/VenuePage'));
@@ -77,6 +78,7 @@ const App: React.FC = () => {
 									<Route path='registration' element={<RegistrationPage />} />
 									{/* <Route path='competition' element={<CompetitionPage />} /> */}
 									<Route path='vote' element={<VotePage />} />
+									<Route path='q' element={<QPage />} />
 									<Route path='*' element={<NotFoundPage />} />
 								</Route>
 								<Route path='poster-upload' element={<PosterUploadPage />} />

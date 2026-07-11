@@ -1,5 +1,12 @@
 /// <reference types="vite/client" />
 
+// Merged into vite/client's ImportMetaEnv (declaration merging)
+interface ImportMetaEnv {
+	readonly VITE_SUPABASE_URL?: string;
+	readonly VITE_SUPABASE_ANON_KEY?: string;
+	readonly VITE_NOTION_PROXY_URL?: string;
+}
+
 interface TrackItem {
 	id: string;
 	title: string;
