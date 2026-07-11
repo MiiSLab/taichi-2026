@@ -18,36 +18,17 @@ test('program page uses the figma-driven dark design system', () => {
 	assert.match(source, /typography\.scale\.pageTitle/);
 	assert.doesNotMatch(source, /text-5xl font-pixel/);
 	assert.match(source, /bg-zinc-950\/80/);
-	assert.match(source, /border-zinc-800/);
 	assert.match(source, /text-program-green/);
-	assert.match(source, /rounded-\[14px\]/);
 	assert.doesNotMatch(source, /shadow-/);
 });
 
-test('program page keeps schedule-row bios expanding inline via a named accordion group', () => {
+test('program page wires the time/location label into both the day1 joint block and day2 static sessions', () => {
 	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
 
-	assert.doesNotMatch(source, /FeaturedCardRow/);
-	assert.doesNotMatch(source, /featuredCards/);
-	assert.match(source, /row\.fullBio/);
-	assert.match(source, /row\.workHeading/);
-	assert.match(source, /row\.workDescription/);
-	assert.match(source, /<details className='border-b group\/row border-zinc-800'>/);
-	assert.match(source, /group-open\/row:rotate-180/);
-});
-
-test('program page wires the time/location label into both day1 partner cards and day2 static sessions', () => {
-	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
-
-	const timeLocationUses = source.match(/<TimeLocationBlock label=\{labels\.timeLocationLabel\} time=\{session\.time\} location=\{session\.location\} \/>/g) ?? [];
+	const timeLocationUses = source.match(/<TimeLocationBlock label=\{(?:section\.)?labels\.timeLocationLabel\}/g) ?? [];
 	assert.equal(timeLocationUses.length, 2);
+	assert.match(source, /time=\{day1\.time\} location=\{day1\.location\}/);
 	assert.doesNotMatch(source, /label=''/);
-});
-
-test('program page schedule-row expand chevron rotates and is visually bold', () => {
-	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
-
-	assert.match(source, /group-open\/row:rotate-180' size=\{20\} strokeWidth=\{3\}/);
 });
 
 test('program page keeps bottom spacing before the footer on both day1 and day2 views', () => {
@@ -62,8 +43,8 @@ test('program page adapts layout across breakpoints', () => {
 
 	assert.match(source, /px-6/);
 	assert.match(source, /md:px-20 md:pt-48/);
-	assert.match(source, /grid-cols-\[72px_1fr\] items-center gap-3 py-3 sm:grid-cols-\[202px_1fr\]/);
-	assert.match(source, /flex flex-col gap-4 pb-6 sm:flex-row sm:gap-6 sm:pl-\[214px\]/);
+	// timetable: time-interval column and venue-column gaps widen on sm+
+	assert.match(source, /grid-cols-\[92px_1fr_1fr\] gap-x-2 sm:grid-cols-\[150px_1fr_1fr\] sm:gap-x-4/);
 });
 
 test('program page is routed at /program and the Navbar link is wired up', () => {
@@ -76,17 +57,18 @@ test('program page is routed at /program and the Navbar link is wired up', () =>
 	assert.match(navbarSource, /{ key: 'program', label: content\.nav\.program, to: '\/program', isActive: location\.pathname === '\/program' }/);
 });
 
-test('program page renders a day-dependent hero banner and an optional day2 schedule', () => {
+test('program page mounts both day banners so switching days swaps instantly', () => {
+	// Both <img> stay in the DOM (hidden one still downloads) — no visible
+	// loading delay when toggling day1/day2.
 	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
 
-	assert.match(source, /activeDay === 'day1' \? '\/images\/program_hero_bigbang\.png' : '\/images\/program_hero_bigbang2\.png'/);
-	assert.match(source, /schedule\?: readonly ProgramScheduleRow\[\]/);
-	assert.match(source, /<ScheduleTable rows=\{session\.schedule\} title=\{labels\.scheduleTitle\} photoLabel=\{labels\.photoPlaceholder\} \/>/);
+	assert.match(source, /src='\/images\/program_hero_bigbang\.png'/);
+	assert.match(source, /src='\/images\/program_hero_bigbang2\.png'/);
+	assert.match(source, /activeDay === 'day1' \? 'w-full' : 'hidden'/);
+	assert.match(source, /activeDay === 'day2' \? 'w-full' : 'hidden'/);
 });
 
 test('program page day2 session renders plainly, not as a collapsible accordion', () => {
-	// Day2 currently has only one session, so it is temporarily shown fully expanded
-	// with no collapse affordance (see the removed <details>/<summary> treatment).
 	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
 
 	const day2Fn = source.slice(source.indexOf('const Day2StaticSession'), source.indexOf('const ProgramPage: React.FC'));
@@ -94,12 +76,6 @@ test('program page day2 session renders plainly, not as a collapsible accordion'
 	assert.doesNotMatch(day2Fn, /<summary/);
 	assert.doesNotMatch(day2Fn, /ChevronDown/);
 	assert.match(day2Fn, /<div className='flex flex-col gap-6 px-4 py-12 sm:px-8 md:px-16 md:py-20'>/);
-});
-
-test('program schedule row label wraps instead of being truncated on narrow screens', () => {
-	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
-
-	assert.doesNotMatch(source, /truncate font-mono text-\[14px\]/);
 });
 
 test('program page day2 content drops the ISAT session and marks TAICHI as tentative with a schedule', () => {
@@ -118,22 +94,76 @@ test('program page day2 content drops the ISAT session and marks TAICHI as tenta
 	assert.match(enSource, /title: 'TAICHI Annual Society Meeting \(Tentative\)'/);
 });
 
-test('program page day1 sessions render as expandable accordions with the full inline schedule', () => {
-	// Restored per visual-chair request: day1 shows the complete session info
-	// inline (schedule + performance/residency/food sections), no external link.
+test('program page renders both days through the shared calendar-style timetable', () => {
+	// One generic DayTimetable: day1 = one hero block per venue (simplified),
+	// day2 = every event as its own proportional block, incl. the second venue.
 	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
 
-	const day1Fn = source.slice(source.indexOf('const SessionAccordion'), source.indexOf('const ToggleReveal'));
-	assert.match(day1Fn, /<details/);
-	assert.match(day1Fn, /<summary/);
-	assert.match(day1Fn, /<ScheduleTable rows=\{session\.schedule\}/);
-	assert.doesNotMatch(day1Fn, /websiteUrl/);
-	assert.doesNotMatch(source, /ExternalLink/);
+	assert.match(source, /const DayTimetable/);
+	assert.match(source, /const parseTimeRange/);
+	assert.match(source, /VENUE_TONES/);
+	// time-interval rows in the left column; venue blocks span the rows they overlap
+	assert.match(source, /const rowSpanFor/);
+	assert.match(source, /gridRow: `\$\{span\.first \+ 2\} \/ \$\{span\.last \+ 3\}`/);
+	assert.match(source, /scheduleTimes/);
+	// both days feed the same component
+	assert.match(source, /venues=\{day1Venues\}/);
+	assert.match(source, /venues=\{day2Venues\}/);
+	assert.match(source, /day2Info\.venueHeaders\.main/);
+	assert.match(source, /day2Info\.secondVenue/);
+	// legacy per-row schedule list is gone
+	assert.doesNotMatch(source, /ScheduleTable/);
+	assert.doesNotMatch(source, /group-open\/row/);
+});
 
-	assert.match(source, /const ToggleReveal/);
-	assert.match(source, /const SideBySideIntro/);
+test('program page day1 renders one joint event with the venue-block timetable', () => {
+	// Per visual chair: day1 is a single joint event (晶創人文/TAICHI/APMAR/ISAT).
+	// The Big Bang! Futures site link stays disabled until the site ships.
+	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+
+	assert.match(source, /'day1-5f'/);
+	assert.match(source, /'day1-12f'/);
+	assert.match(source, /day1\.venueColumns/);
+	assert.match(source, /day1\.venueBlocks/);
+	// multi-line block titles (未來演講\nFuture Stage etc.)
+	assert.match(source, /whitespace-pre-line/);
+	assert.match(source, /\{day1\.title\}/);
+	assert.match(source, /\{day1\.description\}/);
+
+	// disabled website entry (no live link), with the pending note
+	assert.match(source, /websitePendingLabel/);
+	assert.doesNotMatch(source, /websiteUrl/);
+	assert.doesNotMatch(source, /ExternalLink/);
+	assert.doesNotMatch(source, /SessionAccordion/);
+
+	// joint title/description live in the day1 block, not under the hero image
+	assert.doesNotMatch(source, /heroCaption/);
+	assert.doesNotMatch(source, /heroDescription/);
+
 	assert.match(source, /const PerformanceSection/);
 	assert.match(source, /const ResidencySection/);
 	assert.match(source, /const FoodSection/);
-	assert.match(source, /session\.id === 'day1-12f'/);
+});
+
+test('program content defines the timetable venues in both languages', () => {
+	const zhSource = readFileSync(new URL('../content.zh.ts', import.meta.url), 'utf8');
+	const enSource = readFileSync(new URL('../content.en.ts', import.meta.url), 'utf8');
+
+	for (const source of [zhSource, enSource]) {
+		assert.match(source, /venueColumns/);
+		assert.match(source, /venueBlocks/);
+		assert.match(source, /websitePendingLabel/);
+		// bilingual brand strings, identical across languages
+		assert.match(source, /title: '未來演講\\nFuture Stage'/);
+		assert.match(source, /title: '互動夜市\\nBig Bang!\\nNight Market!'/);
+		// day2 second venue placeholder until the classroom agenda is confirmed
+		assert.match(source, /venueHeaders/);
+		assert.match(source, /secondVenue/);
+		assert.doesNotMatch(source, /heroCaption/);
+		assert.doesNotMatch(source, /heroDescription/);
+	}
+	assert.match(zhSource, /title: '晶創人文, TAICHI, APMAR, ISAT 聯合活動'/);
+	assert.match(zhSource, /f5: '5F展演廳'/);
+	assert.match(zhSource, /f12: '12F多元廳'/);
+	assert.match(zhSource, /main: '國際會議廳'/);
 });

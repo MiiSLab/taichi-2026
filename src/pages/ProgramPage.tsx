@@ -1,4 +1,3 @@
-import { ChevronDown } from 'lucide-react';
 import React, { useState } from 'react';
 import ScrollReveal from '../components/ScrollReveal';
 import WarpBackground from '../components/WarpBackground';
@@ -15,16 +14,22 @@ type ProgramScheduleRow = {
 	workHeading?: string;
 	workDescription?: string;
 };
-type ProgramSession = {
-	id: string;
+type TimetableEvent = { time: string; title: string; subtitle?: string; tags?: string[] };
+type TimetableVenue = {
+	header: string;
+	/** 左欄時間區間列的來源（細粒度時程）；議程未定的場地可省略，其區塊跨既有列 */
+	scheduleTimes?: string[];
+	events: TimetableEvent[];
+};
+type Day1VenueBlock = { title: string; tags: string[] };
+type Day1Joint = {
 	title: string;
-	tagline: string;
+	description: string;
 	time: string;
 	location: string;
-	tags: string[];
-	description: string;
-	gradient: boolean;
-	schedule: ProgramScheduleRow[];
+	venueColumns: { time: string; f5: string; f12: string };
+	venueBlocks: { f5: Day1VenueBlock; f12: Day1VenueBlock };
+	sessions: { id: string; time: string; schedule: readonly ProgramScheduleRow[] }[];
 };
 type ProgramIntroCard = { name: string; description: string; toggleLabel?: string; toggleContent?: string; longform?: boolean };
 type ProgramDay2Session = { id: string; title: string; time: string; location: string; schedule?: readonly ProgramScheduleRow[] };
@@ -37,92 +42,140 @@ const TimeLocationBlock = ({ label, time, location }: { label: string; time: str
 	</div>
 );
 
-const ScheduleRowHeader = ({ row }: { row: ProgramScheduleRow }) => (
-	<div className='grid min-h-[57px] grid-cols-[72px_1fr] items-center gap-3 py-3 sm:grid-cols-[202px_1fr]'>
-		<span className={`font-mono text-[14px] font-bold leading-5 ${row.featured ? 'text-primary' : 'text-white/90'}`}>{row.time}</span>
-		<div className='flex items-center justify-between min-w-0 gap-3'>
-			<div className='min-w-0'>
-				<p className={`font-mono text-[14px] font-bold leading-5 ${row.featured ? 'text-primary' : 'text-white/90'}`}>{row.label}</p>
-				{row.sublabel && <p className='mt-0.5 font-mono text-[14px] font-bold leading-5 text-white/90'>{row.sublabel}</p>}
-			</div>
-			{row.fullBio && <ChevronDown className='transition-transform shrink-0 text-program-green group-open/row:rotate-180' size={20} strokeWidth={3} />}
-		</div>
-	</div>
-);
-
-const ScheduleRow = ({ row, photoLabel }: { row: ProgramScheduleRow; photoLabel: string }) => {
-	if (!row.fullBio) {
-		return (
-			<div className='border-b border-zinc-800'>
-				<ScheduleRowHeader row={row} />
-			</div>
-		);
+// 通用時間表：日曆式比例時間軸（calendar day view）。左側整點刻度，
+// 兩場地各是一個依實際時長等比例佔位的區塊——一眼看出 5F 白天場、
+// 12F 傍晚場與 15:30–16:40 的交疊。個別節目細節不上站（正式網站才有）。
+const parseTimeRange = (time: string): [number, number] => {
+	const range = time.match(/(\d{1,2}):(\d{2})\s*-\s*(\d{1,2}):(\d{2})/);
+	if (range) return [Number(range[1]) * 60 + Number(range[2]), Number(range[3]) * 60 + Number(range[4])];
+	// 單點時間（如 Day1 12F 的「15:30」）視為零長度區間
+	const point = time.match(/(\d{1,2}):(\d{2})/);
+	if (point) {
+		const minutes = Number(point[1]) * 60 + Number(point[2]);
+		return [minutes, minutes];
 	}
-
-	return (
-		<details className='border-b group/row border-zinc-800'>
-			<summary className='list-none cursor-pointer'>
-				<ScheduleRowHeader row={row} />
-			</summary>
-			<div className='flex flex-col gap-4 pb-6 sm:flex-row sm:gap-6 sm:pl-[214px]'>
-				<div className='flex h-[194px] w-full items-center justify-center rounded-[14px] bg-zinc-950/80 p-[24px] sm:w-[289px] sm:shrink-0'>
-					<div className='flex items-center justify-center w-full h-full bg-zinc-800'>
-						<span className='font-mono text-[16px] leading-6 text-white/50'>{photoLabel}</span>
-					</div>
-				</div>
-				<div className='flex flex-col flex-1 gap-3'>
-					<p className='whitespace-pre-line font-sans text-[14px] leading-relaxed text-white'>{row.fullBio}</p>
-					{row.workHeading && <p className='font-mono text-[14px] font-bold leading-5 text-primary'>{row.workHeading}</p>}
-					{row.workDescription && <p className='whitespace-pre-line font-sans text-[14px] leading-relaxed text-white'>{row.workDescription}</p>}
-				</div>
-			</div>
-		</details>
-	);
+	return [0, 0];
 };
 
-const ScheduleTable = ({ rows, title, photoLabel }: { rows: readonly ProgramScheduleRow[]; title: string; photoLabel: string }) => (
-	<div className='px-4 py-6 bg-zinc-950/80 sm:px-8'>
-		<p className='mb-4 font-mono text-[14px] font-bold leading-5 text-primary'>{title}</p>
-		<div className='flex flex-col'>
-			{rows.map((row, index) => (
-				<ScheduleRow key={`${row.time}-${index}`} row={row} photoLabel={photoLabel} />
-			))}
-		</div>
-	</div>
-);
+// 場地色彩編碼：第 1 場地品牌主色（橘紅）、第 2 場地副色（綠），平行掃讀更快
+const VENUE_TONES = [
+	{ border: 'border-primary/45', bg: 'bg-primary/10', text: 'text-primary', line: 'border-primary/35' },
+	{ border: 'border-secondary/45', bg: 'bg-secondary/10', text: 'text-secondary', line: 'border-secondary/35' },
+] as const;
 
-const SessionAccordion = ({
-	session,
-	labels,
-	children,
-}: {
-	session: ProgramSession;
-	labels: { scheduleTitle: string; photoPlaceholder: string; timeLocationLabel: string };
-	children?: React.ReactNode;
-}) => (
-	<ScrollReveal>
-		<details className='border-b group border-primary'>
-			<summary className='flex cursor-pointer list-none flex-col gap-6 px-4 pb-8 pt-12 sm:px-8 md:gap-[45px] md:px-16 md:pt-20'>
-				<div className='flex flex-col gap-2 md:gap-[7px]'>
-					<h3 className='font-mono text-[28px] font-bold leading-tight text-primary sm:text-[40px]'>{session.title}</h3>
-					<p className='font-mono text-[18px] leading-normal text-program-green sm:text-[24px]'>{session.tagline}</p>
-				</div>
-				<TimeLocationBlock label={labels.timeLocationLabel} time={session.time} location={session.location} />
-				<div className='flex items-start justify-between gap-4'>
-					<div className='flex flex-col gap-3'>
-						<p className='font-mono text-[16px] font-bold leading-normal text-white sm:text-[18px]'>[ {session.tags.join(' • ')} ]</p>
-						<p className='font-mono text-[14px] font-bold leading-normal text-white/90'>{session.description}</p>
+const DayTimetable = ({ venues, timeHeader, title }: { venues: TimetableVenue[]; timeHeader: string; title: string }) => {
+	const cols = venues.map((venue, index) => ({
+		header: venue.header,
+		tone: VENUE_TONES[index % VENUE_TONES.length],
+		scheduleTimes: venue.scheduleTimes,
+		events: venue.events.map((event) => {
+			const [start, end] = parseTimeRange(event.time);
+			return { ...event, start, end };
+		}),
+	}));
+
+	// 左欄「時間區間」列：所有場地細粒度時程的聯集，依開始時間排序。
+	// 沒提供細粒度時程的場地（如議程未定的教室）不貢獻列，其區塊跨既有列。
+	const rowTimes = cols.flatMap((col) => col.scheduleTimes ?? []);
+	const fallbackTimes = rowTimes.length ? rowTimes : cols.flatMap((col) => col.events.map((event) => event.time));
+	const seenRows = new Set<string>();
+	const rows = fallbackTimes
+		.map((time) => {
+			const [start, end] = parseTimeRange(time);
+			return { time, start, end };
+		})
+		.filter((row) => {
+			const key = `${row.start}-${row.end}`;
+			if (seenRows.has(key)) return false;
+			seenRows.add(key);
+			return true;
+		})
+		.sort((a, b) => a.start - b.start || a.end - b.end);
+
+	// 區塊跨列：涵蓋所有與其時間範圍重疊的列（單點列落在範圍內也算）
+	const rowSpanFor = (start: number, end: number) => {
+		const hit = rows
+			.map((row, index) => ({ row, index }))
+			.filter(({ row }) =>
+				row.start === row.end ? row.start >= start && row.start <= end : row.start < end && row.end > start,
+			);
+		if (!hit.length) return null;
+		return { first: hit[0].index, last: hit[hit.length - 1].index, count: hit.length };
+	};
+
+	return (
+		<div className='bg-zinc-950/80 px-4 py-6 sm:px-8'>
+			<p className='mb-4 font-mono text-[14px] font-bold leading-5 text-primary'>{title}</p>
+
+			<div className='grid grid-cols-[92px_1fr_1fr] gap-x-2 sm:grid-cols-[150px_1fr_1fr] sm:gap-x-4'>
+				{/* 表頭列 */}
+				<p className='border-b-2 border-primary/40 pb-2 font-mono text-[12px] font-bold leading-5 text-white/60 sm:text-[13px]' style={{ gridColumn: 1, gridRow: 1 }}>
+					{timeHeader}
+				</p>
+				{cols.map((col, colIndex) => (
+					<p
+						key={col.header}
+						className={`border-b-2 border-primary/40 pb-2 text-center font-mono text-[12px] font-bold leading-5 sm:text-[14px] ${col.tone.text}`}
+						style={{ gridColumn: colIndex + 2, gridRow: 1 }}
+					>
+						{col.header}
+					</p>
+				))}
+
+				{/* 時間區間列 */}
+				{rows.map((row, rowIndex) => (
+					<div
+						key={`${row.start}-${row.end}`}
+						className='flex min-h-[48px] items-center border-b border-white/10 py-2 font-mono text-[12px] font-bold leading-5 text-white/90 sm:min-h-[52px] sm:text-[14px]'
+						style={{ gridColumn: 1, gridRow: rowIndex + 2 }}
+					>
+						{row.time}
 					</div>
-					<ChevronDown className='mt-1 transition-transform shrink-0 text-primary group-open:rotate-180' size={24} strokeWidth={3} />
-				</div>
-			</summary>
-			<div className={`flex flex-col gap-8 px-4 pb-16 pt-6 sm:px-8 md:px-16 ${session.gradient ? 'bg-gradient-to-b from-black to-zinc-950' : ''}`}>
-				<ScheduleTable rows={session.schedule} title={labels.scheduleTitle} photoLabel={labels.photoPlaceholder} />
-				{children}
+				))}
+
+				{/* 場地區塊：跨其涵蓋的時間列 */}
+				{cols.map((col, colIndex) =>
+					col.events.map((event, eventIndex) => {
+						const span = rowSpanFor(event.start, event.end);
+						if (!span) return null;
+						const hero = span.count >= 3;
+						return (
+							<div
+								key={`${col.header}-${event.time}-${eventIndex}`}
+								className={`my-px overflow-hidden border ${col.tone.border} ${col.tone.bg}`}
+								style={{ gridColumn: colIndex + 2, gridRow: `${span.first + 2} / ${span.last + 3}` }}
+							>
+								{hero ? (
+									<div className='flex h-full flex-col items-center justify-center gap-3 px-2 py-4 text-center sm:gap-4 sm:px-4'>
+										<p className={`whitespace-pre-line font-mono text-[14px] font-bold leading-snug sm:text-[19px] ${col.tone.text}`}>{event.title}</p>
+										<p className='font-mono text-[11px] font-bold text-white/70 sm:text-[12px]'>{event.time}</p>
+										{event.tags && (
+											<div className='flex flex-wrap items-center justify-center gap-1.5 sm:gap-2'>
+												{event.tags.map((tag) => (
+													<span
+														key={tag}
+														className='border border-white/15 bg-black/40 px-2 py-0.5 font-mono text-[9px] uppercase tracking-[0.12em] text-white/70 sm:text-[10px]'
+													>
+														{tag}
+													</span>
+												))}
+											</div>
+										)}
+									</div>
+								) : (
+									<div className='flex h-full flex-col items-center justify-center gap-0.5 px-2 py-1 text-center sm:px-3'>
+										<p className={`font-mono text-[12px] font-bold leading-tight sm:text-[14px] ${col.tone.text}`}>{event.title}</p>
+										{event.subtitle && <p className='font-mono text-[10px] leading-tight text-white/60 sm:text-[11px]'>{event.subtitle}</p>}
+									</div>
+								)}
+							</div>
+						);
+					}),
+				)}
 			</div>
-		</details>
-	</ScrollReveal>
-);
+		</div>
+	);
+};
 
 const ToggleReveal = ({ label, content, full }: { label: string; content?: string; full?: boolean }) => (
 	<details className='group/toggle'>
@@ -276,13 +329,12 @@ const Day2StaticSession = ({
 	labels,
 }: {
 	session: ProgramDay2Session;
-	labels: { scheduleTitle: string; photoPlaceholder: string; timeLocationLabel: string };
+	labels: { timeLocationLabel: string };
 }) => (
 	<ScrollReveal>
 		<div className='flex flex-col gap-6 px-4 py-12 sm:px-8 md:px-16 md:py-20'>
 			<h3 className='font-mono text-[28px] font-bold leading-tight text-primary sm:text-[40px]'>{session.title}</h3>
 			<TimeLocationBlock label={labels.timeLocationLabel} time={session.time} location={session.location} />
-			{session.schedule && <ScheduleTable rows={session.schedule} title={labels.scheduleTitle} photoLabel={labels.photoPlaceholder} />}
 		</div>
 	</ScrollReveal>
 );
@@ -291,6 +343,36 @@ const ProgramPage: React.FC = () => {
 	const content = useContent();
 	const { language } = useLanguage();
 	const section = content.programPageSection;
+	const day1 = section.day1 as unknown as Day1Joint;
+	// Day1 = 每場地一個大區塊的簡化版；Day2 = 每個活動各自成塊（同一套時間表格式）
+	const day1Venues: TimetableVenue[] = (['f5', 'f12'] as const).map((venue) => {
+		const session = day1.sessions.find((s) => s.id === (venue === 'f5' ? 'day1-5f' : 'day1-12f'));
+		return {
+			header: day1.venueColumns[venue],
+			// 細部節目只貢獻時間區間列，內容以場地大區塊呈現（細節在正式網站）
+			scheduleTimes: (session?.schedule ?? []).map((row) => row.time),
+			events: [{ time: session?.time ?? '', title: day1.venueBlocks[venue].title, tags: day1.venueBlocks[venue].tags }],
+		};
+	});
+
+	const day2Info = section.day2 as unknown as {
+		venueHeaders: { main: string; second: string };
+		secondVenue: { events: TimetableEvent[] };
+		sessions: ProgramDay2Session[];
+	};
+	const day2Venues: TimetableVenue[] = [
+		{
+			header: day2Info.venueHeaders.main,
+			scheduleTimes: (day2Info.sessions[0]?.schedule ?? []).map((row) => row.time),
+			events: (day2Info.sessions[0]?.schedule ?? []).map((row) => ({ time: row.time, title: row.label, subtitle: row.sublabel })),
+		},
+		{
+			header: day2Info.venueHeaders.second,
+			// 教室的活動是細粒度時段，直接貢獻時間區間列（例如主廳沒事的午餐時段）
+			scheduleTimes: day2Info.secondVenue.events.map((event) => event.time),
+			events: day2Info.secondVenue.events,
+		},
+	];
 	const [activeDay, setActiveDay] = useState<'day1' | 'day2'>('day1');
 
 	useSEO(
@@ -324,15 +406,17 @@ const ProgramPage: React.FC = () => {
 			<section className='px-4 pb-8 md:px-8'>
 				<div className='mx-auto max-w-[1280px]'>
 					<ScrollReveal delay={40}>
+						{/* 兩張 banner 都掛進 DOM（隱藏的照樣預先下載），切換日期時零延遲 */}
 						<img
-							src={activeDay === 'day1' ? '/images/program_hero_bigbang.png' : '/images/program_hero_bigbang2.png'}
+							src='/images/program_hero_bigbang.png'
 							alt='Big Bang! Futures!'
-							className='w-full'
+							className={activeDay === 'day1' ? 'w-full' : 'hidden'}
 						/>
-						<div className='flex flex-col gap-3 mt-6'>
-							<h2 className='font-mono text-[16px] font-bold leading-normal text-white sm:text-[18px]'>{section.heroCaption}</h2>
-							<p className='font-sans text-[13px] leading-relaxed text-white/70 sm:text-[14px]'>{section.heroDescription}</p>
-						</div>
+						<img
+							src='/images/program_hero_bigbang2.png'
+							alt='Big Bang! Futures!'
+							className={activeDay === 'day2' ? 'w-full' : 'hidden'}
+						/>
 					</ScrollReveal>
 				</div>
 			</section>
@@ -340,45 +424,69 @@ const ProgramPage: React.FC = () => {
 			<div className='mx-auto max-w-[1280px]'>
 				{activeDay === 'day1' ? (
 					<div className='pb-16'>
-						{section.day1.sessions.map((sessionData) => {
-							const session = sessionData as unknown as ProgramSession;
-							return (
-								<SessionAccordion key={session.id} session={session} labels={section.labels}>
-									{session.id === 'day1-12f' && (
-										<>
-											<PerformanceSection
-												title={section.day1.performance.title}
-												cards={section.day1.performance.cards as unknown as ProgramIntroCard[]}
-												photoLabel={section.labels.photoPlaceholder}
-												closingLine1={section.day1.performance.closingLine1}
-												closingLine2={section.day1.performance.closingLine2}
-											/>
-											<ResidencySection
-												title={section.day1.residency.title}
-												introTitle={section.day1.residency.introTitle}
-												introInstructor={section.day1.residency.introInstructor}
-												introDescription={section.day1.residency.introDescription}
-												cards={section.day1.residency.cards as unknown as ProgramIntroCard[]}
-												photoLabel={section.labels.photoPlaceholder}
-											/>
-											<FoodSection
-												title={section.day1.food.title}
-												cards={section.day1.food.cards as unknown as ProgramIntroCard[]}
-												photoLabel={section.labels.photoPlaceholder}
-												promoHeading={section.day1.food.promo.heading}
-												promoItems={section.day1.food.promo.items as unknown as string[]}
-											/>
-										</>
-									)}
-								</SessionAccordion>
-							);
-						})}
+						<ScrollReveal>
+							<div className='flex flex-col gap-6 px-4 py-12 sm:px-8 md:gap-[45px] md:px-16 md:py-20'>
+								<div className='flex flex-col gap-3'>
+									<h3 className='font-mono text-[28px] font-bold leading-tight text-primary sm:text-[40px]'>{day1.title}</h3>
+									<p className='max-w-4xl font-sans text-[14px] leading-relaxed text-white/80 sm:text-[15px]'>{day1.description}</p>
+								</div>
+								<TimeLocationBlock label={section.labels.timeLocationLabel} time={day1.time} location={day1.location} />
+								{/* 類型 tags 依場地拆開，顏色對應時間表的場地色（5F 主色 / 12F 副色） */}
+								<div className='flex flex-col gap-2'>
+									{(['f5', 'f12'] as const).map((venue) => (
+										<p key={venue} className='font-mono text-[14px] font-bold leading-normal sm:text-[16px]'>
+											<span className={venue === 'f5' ? 'text-primary' : 'text-secondary'}>{day1.venueColumns[venue]}</span>
+											<span className='ms-3 text-white'>[ {day1.venueBlocks[venue].tags.join(' • ')} ]</span>
+										</p>
+									))}
+								</div>
+								{/* Big Bang! Futures 官網還在 prototype — 先 disable，正式部署後換回 <a href> */}
+								<div className='flex flex-col gap-2'>
+									<button
+										type='button'
+										disabled
+										className='inline-flex w-fit cursor-not-allowed items-center gap-2 border border-white/20 bg-white/5 px-6 py-3 font-mono text-[16px] font-bold text-white/35 sm:text-[18px]'
+									>
+										{section.labels.websiteButtonLabel}
+									</button>
+									<p className='font-mono text-[12px] text-white/45'>{section.labels.websitePendingLabel}</p>
+								</div>
+								<DayTimetable venues={day1Venues} timeHeader={day1.venueColumns.time} title={section.labels.scheduleTitle} />
+								<PerformanceSection
+									title={section.day1.performance.title}
+									cards={section.day1.performance.cards as unknown as ProgramIntroCard[]}
+									photoLabel={section.labels.photoPlaceholder}
+									closingLine1={section.day1.performance.closingLine1}
+									closingLine2={section.day1.performance.closingLine2}
+								/>
+								<ResidencySection
+									title={section.day1.residency.title}
+									introTitle={section.day1.residency.introTitle}
+									introInstructor={section.day1.residency.introInstructor}
+									introDescription={section.day1.residency.introDescription}
+									cards={section.day1.residency.cards as unknown as ProgramIntroCard[]}
+									photoLabel={section.labels.photoPlaceholder}
+								/>
+								<FoodSection
+									title={section.day1.food.title}
+									cards={section.day1.food.cards as unknown as ProgramIntroCard[]}
+									photoLabel={section.labels.photoPlaceholder}
+									promoHeading={section.day1.food.promo.heading}
+									promoItems={section.day1.food.promo.items as unknown as string[]}
+								/>
+							</div>
+						</ScrollReveal>
 					</div>
 				) : (
 					<div className='pb-16'>
 						{section.day2.sessions.map((sessionData) => (
 							<Day2StaticSession key={sessionData.id} session={sessionData} labels={section.labels} />
 						))}
+						<div className='px-4 sm:px-8 md:px-16'>
+							<ScrollReveal>
+								<DayTimetable venues={day2Venues} timeHeader={day1.venueColumns.time} title={section.labels.scheduleTitle} />
+							</ScrollReveal>
+						</div>
 					</div>
 				)}
 			</div>

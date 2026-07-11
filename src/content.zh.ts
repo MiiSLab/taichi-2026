@@ -362,15 +362,26 @@ export const CONTENT_ZH = {
 			{ key: 'day1', date: '8.05', day: 'WED' },
 			{ key: 'day2', date: '8.06', day: 'THU' },
 		],
-		heroCaption: '晶創人文, TAICHI, APMAR, ISAT 聯合活動',
-		heroDescription: 'Big Bang! Futures! 由晶創人文、TAICHI、APMAR 與 ISAT 聯合策劃，匯聚科技、人文、藝術與設計，共同解鎖未來的多重可能。',
 		labels: {
 			scheduleTitle: '完整時程表',
 			photoPlaceholder: '照片',
 			timeLocationLabel: '時間/地點',
 			websiteButtonLabel: '活動資訊詳情',
+			websitePendingLabel: '活動網站即將上線',
 		},
 		day1: {
+			// Day1 是「晶創人文 × TAICHI × APMAR × ISAT」單一聯合活動（標題與敘述原掛在 hero 圖下、兩天都顯示，現在只屬於 Day1）
+			title: '晶創人文, TAICHI, APMAR, ISAT 聯合活動',
+			description: 'Big Bang! Futures! 由晶創人文、TAICHI、APMAR 與 ISAT 聯合策劃，匯聚科技、人文、藝術與設計，共同解鎖未來的多重可能。',
+			time: '09:20 - 20:00',
+			location: '臺北三創生活園區 5F展演廳・12F多元廳',
+			// 時間表：左側整點刻度 + 兩場地依時長等比例佔位的區塊（細節不上站，正式網站才有）
+			venueColumns: { time: '時間', f5: '5F展演廳', f12: '12F多元廳' },
+			// 區塊顯示名稱為跨語言相同的雙語品牌字（\n 換行）
+			venueBlocks: {
+				f5: { title: '未來演講\nFuture Stage', tags: ['Keynotes', 'Panels', 'International Exchange'] },
+				f12: { title: '互動夜市\nBig Bang!\nNight Market!', tags: ['Demo', 'Poster', 'Performances', 'Food', 'Market'] },
+			},
 			sessions: [
 				{
 					id: 'day1-5f',
@@ -521,6 +532,14 @@ export const CONTENT_ZH = {
 			},
 		},
 		day2: {
+			// 第二場地（教室）目前確定兩場：午餐時段會員大會、下午理監事會議
+			venueHeaders: { main: '國際會議廳', second: '教室' },
+			secondVenue: {
+				events: [
+					{ time: '12:10 - 13:45', title: '會員大會' },
+					{ time: '13:45 - 14:45', title: '理監事會議' },
+				],
+			},
 			sessions: [
 				{
 					id: 'day2-taichi',
@@ -533,8 +552,8 @@ export const CONTENT_ZH = {
 						{ time: '9:50 - 10:50', label: 'Paper Session II' },
 						{ time: '10:50 - 11:10', label: 'Coffee Break (20mins)' },
 						{ time: '11:10 - 12:10', label: '碩博士論文獎發表' },
-						{ time: '12:10 - 13:45', label: 'Lunch Break', sublabel: '會員大會' },
-						{ time: '13:45 - 14:45', label: 'Paper Session III', sublabel: '理監事會議' },
+						{ time: '12:10 - 13:45', label: 'Lunch Break' },
+						{ time: '13:45 - 14:45', label: 'Paper Session III' },
 						{ time: '14:45 - 15:45', label: 'Paper Session IV' },
 						{ time: '15:45 - 16:05', label: 'Coffee Break (20mins)' },
 						{ time: '16:05 - 16:40', label: 'Award / Closing / TAICHI 2027' },
@@ -605,7 +624,8 @@ export const CONTENT_ZH = {
 				id: 'venue-day-1',
 				tabLabel: '[ 8/5 ]',
 				heroImage: '/images/venue_8_5_banner.png',
-				heroTitle: '8/5(三) 互動夜市 [對外公開]',
+				heroTitle: '8/5(三) 互動夜市',
+				heroBadge: '對外公開',
 				heroSubtitle: 'TAICHI、晶創人文、APMAR、ISAT 聯合活動',
 				highlight: { label: '地點', venue: '臺北三創生活園區 5F 和 12F', details: ['5F 國際大咖 Keynote 演講連環場', '12F 互動夜市、小吃、表演揍作伙來'], note: '詳細行程表待公告。' },
 				venues: [

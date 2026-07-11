@@ -279,15 +279,26 @@ export const CONTENT_EN = {
 			{ key: 'day1', date: '8.05', day: 'WED' },
 			{ key: 'day2', date: '8.06', day: 'THU' },
 		],
-		heroCaption: 'Joint event by TAICHI, Program on Semiconductors and Humanities, APMAR, and ISAT',
-		heroDescription: 'Big Bang! Futures! is jointly organized by the Program on Semiconductors and Humanities, TAICHI, APMAR, and ISAT — bringing together technology, humanities, art, and design to unlock the many possibilities of the future.',
 		labels: {
 			scheduleTitle: 'Full Schedule',
 			photoPlaceholder: 'Photo',
 			timeLocationLabel: 'Time / Location',
 			websiteButtonLabel: 'Event Details',
+			websitePendingLabel: 'Event website coming soon',
 		},
 		day1: {
+			// Day1 is a single joint event (title/description used to hang under the hero image on both days; now Day1-only)
+			title: 'Joint event by TAICHI, Program on Semiconductors and Humanities, APMAR, and ISAT',
+			description: 'Big Bang! Futures! is jointly organized by the Program on Semiconductors and Humanities, TAICHI, APMAR, and ISAT — bringing together technology, humanities, art, and design to unlock the many possibilities of the future.',
+			time: '09:20 - 20:00',
+			location: '5F Exhibition Hall & 12F Multi-purpose Hall, Syntrend Creative Park, Taipei',
+			// Timetable: hourly axis + venue blocks sized proportionally to their duration (details live on the official site)
+			venueColumns: { time: 'Time', f5: '5F Exhibition Hall', f12: '12F Multi-purpose Hall' },
+			// Block display names are bilingual brand strings, identical across languages (\n = line break)
+			venueBlocks: {
+				f5: { title: '未來演講\nFuture Stage', tags: ['Keynotes', 'Panels', 'International Exchange'] },
+				f12: { title: '互動夜市\nBig Bang!\nNight Market!', tags: ['Demo', 'Poster', 'Performances', 'Food', 'Market'] },
+			},
 			sessions: [
 				{
 					id: 'day1-5f',
@@ -439,6 +450,14 @@ export const CONTENT_EN = {
 			},
 		},
 		day2: {
+			// Second venue (classroom) name TBD; two confirmed sessions: general assembly over lunch, board meeting after
+			venueHeaders: { main: 'International Conference Hall', second: 'Classroom (TBD)' },
+			secondVenue: {
+				events: [
+					{ time: '12:10 - 13:45', title: 'General Assembly' },
+					{ time: '13:45 - 14:45', title: 'Board Meeting' },
+				],
+			},
 			sessions: [
 				{
 					id: 'day2-taichi',
@@ -451,8 +470,8 @@ export const CONTENT_EN = {
 						{ time: '9:50 - 10:50', label: 'Paper Session II' },
 						{ time: '10:50 - 11:10', label: 'Coffee Break (20mins)' },
 						{ time: '11:10 - 12:10', label: 'Graduate Thesis Award Presentations' },
-						{ time: '12:10 - 13:45', label: 'Lunch Break', sublabel: 'General Assembly' },
-						{ time: '13:45 - 14:45', label: 'Paper Session III', sublabel: 'Board Meeting' },
+						{ time: '12:10 - 13:45', label: 'Lunch Break' },
+						{ time: '13:45 - 14:45', label: 'Paper Session III' },
 						{ time: '14:45 - 15:45', label: 'Paper Session IV' },
 						{ time: '15:45 - 16:05', label: 'Coffee Break (20mins)' },
 						{ time: '16:05 - 16:40', label: 'Award / Closing / TAICHI 2027' },
@@ -514,7 +533,8 @@ export const CONTENT_EN = {
 		days: [
 			{
 				...CONTENT_ZH.venueSection.days[0],
-				heroTitle: '8/5(Wed): Night Market [Open Public]',
+				heroTitle: '8/5(Wed): Night Market',
+				heroBadge: 'OPEN TO PUBLIC',
 				heroSubtitle: 'Joint event by TAICHI, Program on Semiconductors and Humanities, APMAR, and ISAT',
 				highlight: {
 					label: 'Venue',

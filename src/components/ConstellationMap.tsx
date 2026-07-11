@@ -89,9 +89,12 @@ const THEME_DESCRIPTIONS: Record<string, { en: string[]; cn: string[] }> = {
 // synced from the --brand-* tokens at runtime (syncBrandColors, called from
 // ConstellationMapSection). Primary = highlights / radar, secondary = orbit
 // lines & stars. Fallbacks match the original palette.
-let NEON_GREEN = '#39FF14'; // → brand primary
-let ACCENT_GREEN = '#A8F020'; // → brand primary
-let SECONDARY_COLOR = '#f36458'; // → brand secondary
+// Fallbacks mirror the current .site-theme tokens so a pre-mount render
+// (direct page load, before .site-theme is in the DOM) still shows the
+// right palette instead of the legacy greens.
+let NEON_GREEN = '#fb4105'; // → brand primary
+let ACCENT_GREEN = '#fb4105'; // → brand primary
+let SECONDARY_COLOR = '#29b93a'; // → brand secondary
 const DARK_BG = '#050505';
 
 function rgbFromVar(name: string, fallback: string): string {
@@ -103,9 +106,9 @@ function rgbFromVar(name: string, fallback: string): string {
 }
 
 function syncBrandColors() {
-	NEON_GREEN = rgbFromVar('--brand-primary', '#39FF14');
-	ACCENT_GREEN = rgbFromVar('--brand-primary', '#A8F020');
-	SECONDARY_COLOR = rgbFromVar('--brand-secondary', '#f36458');
+	NEON_GREEN = rgbFromVar('--brand-primary', '#fb4105');
+	ACCENT_GREEN = rgbFromVar('--brand-primary', '#fb4105');
+	SECONDARY_COLOR = rgbFromVar('--brand-secondary', '#29b93a');
 }
 const INTER_FONT = 'https://fonts.gstatic.com/s/inter/v12/UcCO3FwrK3iLTeHuS_fvQtMwCp50KnMw2boKoduKmMEVuLyfAZ9hjp-Ek-_EeA.woff';
 
@@ -783,6 +786,16 @@ export default function ConstellationMapSection({ language }: ConstellationMapSe
 
 	// Keep the Three.js colours in sync with the --brand-* CSS tokens.
 	syncBrandColors();
+
+	// On a direct page load the first render happens before .site-theme is in
+	// the DOM, so the sync above falls back. Desktop mount effects all bail out
+	// (states already match), so nothing re-renders with the resolved tokens —
+	// force one re-render after mount.
+	const [, bumpBrandSync] = useState(0);
+	useEffect(() => {
+		syncBrandColors();
+		bumpBrandSync((n) => n + 1);
+	}, []);
 
 	const handleViewChange = (v: ViewMode) => {
 		setSelectedTheme(v === 'radar' ? (currentTheme) => currentTheme ?? THEMES[0] : null);

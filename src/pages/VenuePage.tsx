@@ -209,6 +209,11 @@ const VenuePage: React.FC = () => {
 								<div className='max-w-[590px]'>
 									<h2 className='ds-section-title mb-6 text-[2rem] md:text-[2.5rem] md:leading-[1.5]'>
 										{day.heroTitle}
+										{(day as { heroBadge?: string }).heroBadge ? (
+											<span className='ms-3 inline-flex translate-y-[-0.2em] items-center rounded bg-secondary/15 px-2 py-0.5 align-middle font-pixel text-[16px] font-bold tracking-[0.1em] text-secondary'>
+												{(day as { heroBadge?: string }).heroBadge}
+											</span>
+										) : null}
 									</h2>
 									<p className='mb-10 font-mono text-base font-bold text-primary md:text-[1.55rem] md:leading-9'>
 										{day.heroSubtitle}
