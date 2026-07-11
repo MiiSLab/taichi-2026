@@ -1,7 +1,9 @@
-import { ChevronDown, ExternalLink } from 'lucide-react';
+import { ChevronDown } from 'lucide-react';
 import React, { useState } from 'react';
 import ScrollReveal from '../components/ScrollReveal';
+import WarpBackground from '../components/WarpBackground';
 import { useContent, useLanguage } from '../context/LanguageContext';
+import { typography } from '../design-system/typography';
 import { useSEO } from '../hooks/useSEO';
 
 type ProgramScheduleRow = {
@@ -13,7 +15,7 @@ type ProgramScheduleRow = {
 	workHeading?: string;
 	workDescription?: string;
 };
-type Day1Session = {
+type ProgramSession = {
 	id: string;
 	title: string;
 	tagline: string;
@@ -21,8 +23,10 @@ type Day1Session = {
 	location: string;
 	tags: string[];
 	description: string;
-	websiteUrl: string;
+	gradient: boolean;
+	schedule: ProgramScheduleRow[];
 };
+type ProgramIntroCard = { name: string; description: string; toggleLabel?: string; toggleContent?: string; longform?: boolean };
 type ProgramDay2Session = { id: string; title: string; time: string; location: string; schedule?: readonly ProgramScheduleRow[] };
 
 const TimeLocationBlock = ({ label, time, location }: { label: string; time: string; location: string }) => (
@@ -87,34 +91,183 @@ const ScheduleTable = ({ rows, title, photoLabel }: { rows: readonly ProgramSche
 	</div>
 );
 
-const Day1PartnerCard = ({
+const SessionAccordion = ({
 	session,
 	labels,
+	children,
 }: {
-	session: Day1Session;
-	labels: { timeLocationLabel: string; websiteButtonLabel: string };
+	session: ProgramSession;
+	labels: { scheduleTitle: string; photoPlaceholder: string; timeLocationLabel: string };
+	children?: React.ReactNode;
 }) => (
 	<ScrollReveal>
-		<div className='flex flex-col gap-6 border-b border-primary px-4 pb-12 pt-12 sm:px-8 md:gap-[45px] md:px-16 md:pt-20'>
-			<div className='flex flex-col gap-2 md:gap-[7px]'>
-				<h3 className='font-mono text-[28px] font-bold leading-tight text-primary sm:text-[40px]'>{session.title}</h3>
-				<p className='font-mono text-[18px] leading-normal text-program-green sm:text-[24px]'>{session.tagline}</p>
+		<details className='border-b group border-primary'>
+			<summary className='flex cursor-pointer list-none flex-col gap-6 px-4 pb-8 pt-12 sm:px-8 md:gap-[45px] md:px-16 md:pt-20'>
+				<div className='flex flex-col gap-2 md:gap-[7px]'>
+					<h3 className='font-mono text-[28px] font-bold leading-tight text-primary sm:text-[40px]'>{session.title}</h3>
+					<p className='font-mono text-[18px] leading-normal text-program-green sm:text-[24px]'>{session.tagline}</p>
+				</div>
+				<TimeLocationBlock label={labels.timeLocationLabel} time={session.time} location={session.location} />
+				<div className='flex items-start justify-between gap-4'>
+					<div className='flex flex-col gap-3'>
+						<p className='font-mono text-[16px] font-bold leading-normal text-white sm:text-[18px]'>[ {session.tags.join(' • ')} ]</p>
+						<p className='font-mono text-[14px] font-bold leading-normal text-white/90'>{session.description}</p>
+					</div>
+					<ChevronDown className='mt-1 transition-transform shrink-0 text-primary group-open:rotate-180' size={24} strokeWidth={3} />
+				</div>
+			</summary>
+			<div className={`flex flex-col gap-8 px-4 pb-16 pt-6 sm:px-8 md:px-16 ${session.gradient ? 'bg-gradient-to-b from-black to-zinc-950' : ''}`}>
+				<ScheduleTable rows={session.schedule} title={labels.scheduleTitle} photoLabel={labels.photoPlaceholder} />
+				{children}
 			</div>
-			<TimeLocationBlock label={labels.timeLocationLabel} time={session.time} location={session.location} />
-			<div className='flex flex-col gap-3'>
-				<p className='font-mono text-[16px] font-bold leading-normal text-white sm:text-[18px]'>[ {session.tags.join(' • ')} ]</p>
-				<p className='font-mono text-[14px] font-bold leading-normal text-white/90'>{session.description}</p>
+		</details>
+	</ScrollReveal>
+);
+
+const ToggleReveal = ({ label, content, full }: { label: string; content?: string; full?: boolean }) => (
+	<details className='group/toggle'>
+		<summary
+			className={`flex h-6 cursor-pointer list-none items-center gap-2 border-l border-solid border-primary pl-[15px] font-mono text-[14px] font-bold leading-[22.75px] text-white/80 ${
+				full ? 'w-full bg-zinc-950/80' : 'w-fit'
+			}`}
+		>
+			{label}
+			<span className='h-0 w-0 shrink-0 border-x-[5px] border-x-transparent border-t-[6px] border-t-white/80 transition-transform group-open/toggle:rotate-180' />
+		</summary>
+		{content && <p className='mt-3 whitespace-pre-line pl-[15px] font-sans text-[14px] leading-relaxed text-white/80'>{content}</p>}
+	</details>
+);
+
+const SideBySideIntro = ({ title, cards, photoLabel }: { title: string; cards: ProgramIntroCard[]; photoLabel: string }) => (
+	<ScrollReveal>
+		<section className='py-12 md:py-20'>
+			<h2 className='mb-6 border-b-2 border-primary/30 pb-4 font-mono text-[24px] font-bold leading-8 text-white'>{title}</h2>
+			<div className='flex flex-col gap-6'>
+				{cards.map((card) => (
+					<div key={card.name} className='flex flex-col gap-6 sm:flex-row sm:items-center'>
+						<div className='flex h-[200px] w-full items-center justify-center bg-zinc-800 sm:h-[256px] sm:w-[320px] sm:shrink-0 md:w-[400px]'>
+							<span className='font-mono text-[16px] leading-6 text-white/50'>{photoLabel}</span>
+						</div>
+						<div className='flex flex-col gap-3.5'>
+							<p className='font-mono text-[24px] font-bold leading-none text-primary'>{card.name}</p>
+							<p className={`text-[14px] leading-normal text-white/80 ${card.longform ? 'font-sans' : 'font-mono'}`}>{card.description}</p>
+							{card.toggleLabel && <ToggleReveal label={card.toggleLabel} content={card.toggleContent} />}
+						</div>
+					</div>
+				))}
 			</div>
-			<a
-				href={session.websiteUrl}
-				target='_blank'
-				rel='noreferrer'
-				className='inline-flex w-fit items-center gap-2 border border-primary px-6 py-3 font-mono text-[16px] font-bold text-primary transition-colors hover:bg-primary hover:text-black sm:text-[18px]'
-			>
-				{labels.websiteButtonLabel}
-				<ExternalLink size={18} strokeWidth={2.5} />
-			</a>
-		</div>
+		</section>
+	</ScrollReveal>
+);
+
+const PerformanceSection = ({
+	title,
+	cards,
+	photoLabel,
+	closingLine1,
+	closingLine2,
+}: {
+	title: string;
+	cards: ProgramIntroCard[];
+	photoLabel: string;
+	closingLine1: string;
+	closingLine2: string;
+}) => (
+	<>
+		<SideBySideIntro title={title} cards={cards} photoLabel={photoLabel} />
+		<ScrollReveal>
+			<p className='pb-8 text-center font-mono text-[20px] font-bold leading-normal text-primary sm:text-[24px]'>
+				{closingLine1}
+				<br />
+				{closingLine2}
+			</p>
+		</ScrollReveal>
+	</>
+);
+
+const ResidencySection = ({
+	title,
+	introTitle,
+	introInstructor,
+	introDescription,
+	cards,
+	photoLabel,
+}: {
+	title: string;
+	introTitle: string;
+	introInstructor: string;
+	introDescription: string;
+	cards: ProgramIntroCard[];
+	photoLabel: string;
+}) => (
+	<ScrollReveal>
+		<section className='py-12 md:py-20'>
+			<h2 className='mb-6 border-b-2 border-primary/30 pb-4 font-mono text-[24px] font-bold leading-8 text-white'>{title}</h2>
+			<div className='mb-8 rounded-[10px] border border-white/40 p-6 sm:p-10'>
+				<p className='mb-2 font-mono text-[24px] font-bold leading-normal text-primary'>{introTitle}</p>
+				<p className='mb-4 font-mono text-[16px] font-bold leading-normal text-white/80'>{introInstructor}</p>
+				<p className='font-mono text-[14px] leading-[22px] text-white/80'>{introDescription}</p>
+			</div>
+			<div className='grid grid-cols-1 gap-8 md:grid-cols-2'>
+				{cards.map((card) => (
+					<div key={card.name} className='flex flex-col gap-[36px]'>
+						<div className='flex h-[256px] w-full items-center justify-center bg-zinc-800'>
+							<span className='font-mono text-[16px] leading-6 text-white/50'>{photoLabel}</span>
+						</div>
+						<div className='flex flex-col gap-3.5'>
+							<p className='font-mono text-[18px] font-bold leading-normal text-white/80'>{card.name}</p>
+							<p className='font-mono text-[14px] leading-normal text-white/80'>{card.description}</p>
+							{card.toggleLabel && <ToggleReveal label={card.toggleLabel} content={card.toggleContent} full />}
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
+	</ScrollReveal>
+);
+
+const FoodSection = ({
+	title,
+	cards,
+	photoLabel,
+	promoHeading,
+	promoItems,
+}: {
+	title: string;
+	cards: ProgramIntroCard[];
+	photoLabel: string;
+	promoHeading: string;
+	promoItems: string[];
+}) => (
+	<ScrollReveal>
+		<section className='px-4 py-10 bg-gradient-to-b from-black to-zinc-950 sm:px-8'>
+			<h2 className='mb-6 border-b-2 border-primary/30 pb-4 font-mono text-[24px] font-bold leading-8 text-white'>{title}</h2>
+			<div className='flex flex-col gap-8'>
+				{cards.map((card, index) => (
+					<div key={card.name} className='flex flex-col gap-6 sm:flex-row sm:items-start'>
+						<div className='flex h-[200px] w-full items-center justify-center bg-zinc-800 sm:h-[256px] sm:w-[320px] sm:shrink-0 md:w-[400px]'>
+							<span className='font-mono text-[16px] leading-6 text-white/50'>{photoLabel}</span>
+						</div>
+						<div className='flex flex-col gap-3.5'>
+							<p className='font-mono text-[24px] font-bold leading-none text-primary'>{card.name}</p>
+							<p className={`text-[14px] leading-normal text-white ${card.longform ? 'font-sans' : 'font-mono text-white/80'}`}>{card.description}</p>
+							{index === cards.length - 1 && (
+								<div className='inline-flex w-fit flex-col gap-3.5 border-l border-solid border-primary bg-zinc-950/80 px-6 py-3'>
+									<p className='font-mono text-[14px] font-bold leading-normal text-program-green'>{promoHeading}</p>
+									<div className='flex flex-col gap-1'>
+										{promoItems.map((item) => (
+											<p key={item} className='font-mono text-[14px] leading-normal text-program-green'>
+												{item}
+											</p>
+										))}
+									</div>
+								</div>
+							)}
+						</div>
+					</div>
+				))}
+			</div>
+		</section>
 	</ScrollReveal>
 );
 
@@ -148,8 +301,9 @@ const ProgramPage: React.FC = () => {
 	return (
 		<div className='w-full min-h-screen text-white bg-black'>
 			<div className='relative w-full px-6 pt-40 pb-8 overflow-hidden md:px-20 md:pt-48'>
-				<ScrollReveal className='mx-auto flex w-full max-w-[1280px] flex-col items-center gap-12 md:gap-[85px]'>
-					<h1 className='text-5xl font-pixel text-primary sm:text-6xl md:text-7xl'>{section.title}</h1>
+				<WarpBackground />
+				<ScrollReveal className='relative z-10 mx-auto flex w-full max-w-[1280px] flex-col items-center gap-12 md:gap-[85px]'>
+					<h1 className={`ds-page-title text-center ${typography.scale.pageTitle}`}>{section.title}</h1>
 					<div className='flex w-full max-w-2xl'>
 						{section.dateTabs.map((tab) => (
 							<button
@@ -187,8 +341,37 @@ const ProgramPage: React.FC = () => {
 				{activeDay === 'day1' ? (
 					<div className='pb-16'>
 						{section.day1.sessions.map((sessionData) => {
-							const session = sessionData as unknown as Day1Session;
-							return <Day1PartnerCard key={session.id} session={session} labels={section.labels} />;
+							const session = sessionData as unknown as ProgramSession;
+							return (
+								<SessionAccordion key={session.id} session={session} labels={section.labels}>
+									{session.id === 'day1-12f' && (
+										<>
+											<PerformanceSection
+												title={section.day1.performance.title}
+												cards={section.day1.performance.cards as unknown as ProgramIntroCard[]}
+												photoLabel={section.labels.photoPlaceholder}
+												closingLine1={section.day1.performance.closingLine1}
+												closingLine2={section.day1.performance.closingLine2}
+											/>
+											<ResidencySection
+												title={section.day1.residency.title}
+												introTitle={section.day1.residency.introTitle}
+												introInstructor={section.day1.residency.introInstructor}
+												introDescription={section.day1.residency.introDescription}
+												cards={section.day1.residency.cards as unknown as ProgramIntroCard[]}
+												photoLabel={section.labels.photoPlaceholder}
+											/>
+											<FoodSection
+												title={section.day1.food.title}
+												cards={section.day1.food.cards as unknown as ProgramIntroCard[]}
+												photoLabel={section.labels.photoPlaceholder}
+												promoHeading={section.day1.food.promo.heading}
+												promoItems={section.day1.food.promo.items as unknown as string[]}
+											/>
+										</>
+									)}
+								</SessionAccordion>
+							);
 						})}
 					</div>
 				) : (

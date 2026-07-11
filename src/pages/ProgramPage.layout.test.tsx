@@ -12,8 +12,11 @@ test('program page uses the figma-driven dark design system', () => {
 	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
 
 	assert.match(source, /content\.programPageSection/);
-	assert.match(source, /font-pixel/);
-	assert.match(source, /text-5xl/);
+	// Page title uses the sitewide standard (ds-page-title + typography.scale.pageTitle),
+	// not the old bespoke font-pixel sizing.
+	assert.match(source, /ds-page-title/);
+	assert.match(source, /typography\.scale\.pageTitle/);
+	assert.doesNotMatch(source, /text-5xl font-pixel/);
 	assert.match(source, /bg-zinc-950\/80/);
 	assert.match(source, /border-zinc-800/);
 	assert.match(source, /text-program-green/);
@@ -115,31 +118,22 @@ test('program page day2 content drops the ISAT session and marks TAICHI as tenta
 	assert.match(enSource, /title: 'TAICHI Annual Society Meeting \(Tentative\)'/);
 });
 
-test('program page day1 sessions render as non-expandable partner cards linking out to the joint event site', () => {
+test('program page day1 sessions render as expandable accordions with the full inline schedule', () => {
+	// Restored per visual-chair request: day1 shows the complete session info
+	// inline (schedule + performance/residency/food sections), no external link.
 	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
 
-	const day1Fn = source.slice(source.indexOf('const Day1PartnerCard'), source.indexOf('const Day2StaticSession'));
-	assert.doesNotMatch(day1Fn, /<details/);
-	assert.doesNotMatch(day1Fn, /<summary/);
-	assert.match(day1Fn, /href=\{session\.websiteUrl\}/);
-	assert.match(day1Fn, /target='_blank'/);
-	assert.match(day1Fn, /rel='noreferrer'/);
-	assert.match(day1Fn, /ExternalLink/);
+	const day1Fn = source.slice(source.indexOf('const SessionAccordion'), source.indexOf('const ToggleReveal'));
+	assert.match(day1Fn, /<details/);
+	assert.match(day1Fn, /<summary/);
+	assert.match(day1Fn, /<ScheduleTable rows=\{session\.schedule\}/);
+	assert.doesNotMatch(day1Fn, /websiteUrl/);
+	assert.doesNotMatch(source, /ExternalLink/);
 
-	assert.doesNotMatch(source, /const SessionAccordion/);
-	assert.doesNotMatch(source, /const ToggleReveal/);
-	assert.doesNotMatch(source, /const SideBySideIntro/);
-	assert.doesNotMatch(source, /const PerformanceSection/);
-	assert.doesNotMatch(source, /const ResidencySection/);
-	assert.doesNotMatch(source, /const FoodSection/);
-});
-
-test('program day1 content points both sessions at the same joint event website', () => {
-	const zhSource = readFileSync(new URL('../content.zh.ts', import.meta.url), 'utf8');
-	const enSource = readFileSync(new URL('../content.en.ts', import.meta.url), 'utf8');
-
-	for (const source of [zhSource, enSource]) {
-		const urls = source.match(/websiteUrl: 'https:\/\/dev\.8f-2\.cc\/big-bang-futures'/g) ?? [];
-		assert.equal(urls.length, 2);
-	}
+	assert.match(source, /const ToggleReveal/);
+	assert.match(source, /const SideBySideIntro/);
+	assert.match(source, /const PerformanceSection/);
+	assert.match(source, /const ResidencySection/);
+	assert.match(source, /const FoodSection/);
+	assert.match(source, /session\.id === 'day1-12f'/);
 });
