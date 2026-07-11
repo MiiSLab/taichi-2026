@@ -17,6 +17,8 @@ import {
 	getPosters,
 	getVoteState,
 	getVotedPosterIds,
+	getVotedPosterIdsFromServer,
+	addVotedPosterId,
 	type VoteState,
 } from '../services/votingService';
 
@@ -616,6 +618,26 @@ const VotePage: React.FC = () => {
 
 	// 換海報時清掉上一次投票的錯誤訊息
 	useEffect(() => setVoteError(null), [selectedPosterId]);
+
+	// 已投狀態以伺服器為準（votes 公開可讀）：換裝置時 localStorage 是空的，
+	// 若只靠鏡射，第二台裝置會顯示成沒投過
+	useEffect(() => {
+		if (!token) return;
+		let cancelled = false;
+		getVotedPosterIdsFromServer(token)
+			.then((ids) => {
+				if (cancelled) return;
+				ids.forEach((id) => addVotedPosterId(token, id)); // 回填本機鏡射
+				setVotedIds(getVotedPosterIds(token));
+				setServerVotesUsed(ids.length);
+			})
+			.catch(() => {
+				/* 查不到就先信 localStorage，cast_vote 伺服器端仍會擋 */
+			});
+		return () => {
+			cancelled = true;
+		};
+	}, [token]);
 
 	const tallyMap = useMemo(() => {
 		const map = new Map<string, number>();

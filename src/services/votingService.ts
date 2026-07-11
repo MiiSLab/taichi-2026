@@ -64,6 +64,17 @@ export async function getVoteState(): Promise<VoteState | null> {
 	return restRpc<VoteState | null>('vote_state');
 }
 
+/**
+ * This token's votes as recorded server-side (votes is publicly readable).
+ * Fetched on page load so已投 state follows the person across devices —
+ * localStorage alone would let a second device render as if未投.
+ */
+export async function getVotedPosterIdsFromServer(token: string): Promise<string[]> {
+	if (!isSupabaseConfigured || !token) return [];
+	const rows = await restGet<{ poster_id: string }[]>(`votes?select=poster_id&token=eq.${encodeURIComponent(token)}`);
+	return rows.map((row) => row.poster_id);
+}
+
 export async function castVote(token: string, posterId: string): Promise<CastVoteResult> {
 	if (!isSupabaseConfigured) return { ok: false, error: 'not_configured', message: voteErrorMessage('not_configured') };
 	let result: { ok: boolean; error?: string; votes_used?: number };
