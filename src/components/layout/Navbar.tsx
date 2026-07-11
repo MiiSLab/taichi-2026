@@ -71,11 +71,12 @@ const BracketText: React.FC<{
 	const bracketColor = active ? 'text-white/40' : 'text-transparent';
 	const textSize = compact ? typography.scale.navBracketCompact : typography.scale.navBracket;
 	const bracketSize = compact ? 'w-[7px]' : 'w-[10px]';
+	const labelPad = compact ? 'px-1.5 2xl:px-2' : 'px-2';
 
 	return (
 		<span className={`inline-flex items-center uppercase ${textSize} ${className}`}>
 			<span className={`${bracketColor} ${bracketSize}`}>[</span>
-			<span className={`px-2 ${baseColor}`}>{label}</span>
+			<span className={`${labelPad} ${baseColor}`}>{label}</span>
 			<span className={`${bracketColor} ${bracketSize}`}>]</span>
 		</span>
 	);
@@ -202,21 +203,22 @@ const Navbar: React.FC = () => {
 
 	return (
 		<>
+			{/* 1280–1536 (xl–2xl) 桌機橫排放不下原始間距，此區間縮小 padding/gap/字級（見 typography navBracket*），2xl 恢復 */}
 			<nav
-				className={`ds-nav-shell fixed left-0 right-0 top-0 z-50 border-b border-solid border-white/10 px-4 pt-4 pb-px transition-all duration-300 md:px-[59px] ${isScrolled ? 'shadow-[0_8px_30px_rgba(0,0,0,0.35)]' : ''}`}
+				className={`ds-nav-shell fixed left-0 right-0 top-0 z-50 border-b border-solid border-white/10 px-4 pt-4 pb-px transition-all duration-300 md:px-[59px] xl:px-8 2xl:px-[59px] ${isScrolled ? 'shadow-[0_8px_30px_rgba(0,0,0,0.35)]' : ''}`}
 			>
 				<div className='flex min-h-[45px] items-center justify-between gap-6'>
 					<Link to='/' className='shrink-0 transition-opacity hover:opacity-85' onClick={() => { handleNav(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
 						<BracketText label={content.nav.logo} active className='whitespace-nowrap' />
 					</Link>
 
-					<div className='hidden xl:flex items-center gap-6 whitespace-nowrap'>
+					<div className='hidden xl:flex items-center gap-2.5 whitespace-nowrap 2xl:gap-6'>
 						{desktopItems.map((item) => (
 							<DesktopLink key={item.label} {...item} />
 						))}
 					</div>
 
-					<div className='hidden xl:flex h-[45px] items-center gap-4'>
+					<div className='hidden xl:flex h-[45px] items-center gap-3 2xl:gap-4'>
 						<div className='ds-nav-segmented'>
 							<button
 								type='button'
@@ -236,7 +238,7 @@ const Navbar: React.FC = () => {
 
 						<Link
 							to='/registration'
-							className={`ds-nav-pill ds-nav-link flex h-[25px] items-center px-[17px] ${typography.scale.navBracketCompact} transition-opacity hover:opacity-90`}
+							className={`ds-nav-pill ds-nav-link flex h-[25px] items-center px-2.5 2xl:px-[17px] ${typography.scale.navBracketCompact} transition-opacity hover:opacity-90`}
 						>
 							<BracketText label={content.nav.registration} compact />
 						</Link>

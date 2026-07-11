@@ -21,8 +21,10 @@ export const typography = {
 		cardTitle: 'font-sans text-[28px] font-semibold leading-[1.35] md:text-[30px]',
 		buttonLabel: 'text-[16px] font-bold tracking-[0.02em] sm:text-[18px]',
 		buttonLabelMono: 'font-mono text-[18px] font-bold tracking-[0.025em]',
-		navBracket: 'font-pixel text-[24px] leading-9 uppercase',
-		navBracketCompact: 'font-pixel text-[18px] leading-[27px] uppercase',
+		// navbar 完整橫排在 xl (1280px) 出現，但全部項目要 ~1500px 才裝得下單行；
+		// 1280–1536 區間縮小字級與間距（見 Navbar.tsx 同註解），2xl 恢復原尺寸
+		navBracket: 'font-pixel text-[24px] leading-9 uppercase xl:text-[20px] xl:leading-8 2xl:text-[24px] 2xl:leading-9',
+		navBracketCompact: 'font-pixel text-[15px] leading-6 uppercase 2xl:text-[18px] 2xl:leading-[27px]',
 		navPinned: 'font-pixel text-[13px] uppercase tracking-[0.08em]',
 	},
 	pattern: {
