@@ -55,7 +55,7 @@ const FramePanel = ({
 			{showCorners && variant === 'figmaContainer' ? (
 				<div className={cornerClassName}>
 					<FigmaTopLeftMarker />
-					<FigmaBottomRightMarker />
+					{/* <FigmaBottomRightMarker /> */}
 				</div>
 			) : null}
 			<div className={contentClassName}>{children}</div>
