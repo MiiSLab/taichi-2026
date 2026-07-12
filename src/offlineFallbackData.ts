@@ -426,6 +426,30 @@ export const OFFLINE_SESSIONS: SessionItem[] = [
 
 export const OFFLINE_NEWS: NewsItem[] = [
 	{
+		id: 'offline-news-sv-results',
+		title: '學生志工錄取名單出爐',
+		subtitle: 'Student Volunteer 錄取公告',
+		content:
+			'經過團隊審慎評選，第 12 屆台灣人機互動研討會的「學生志工」錄取名單正式出爐 💥☄️⚡\n\n📬 錄取者注意事項：\n- 錄取結果與後續詳細事項，將於今日後陸續寄送至各位報名時填寫的電子信箱。請務必前往收件匣（包含垃圾郵件匣）確認，並依照信中說明完成相關手續 🤜 🤛\n- 請錄取夥伴預留 8/4-8/6 的時間，參與行前說明、場地佈置以及研討會當日的支援工作 🤟\n\n📧 若有任何問題，歡迎來信詢問：taiwanchi26+sv@gmail.com',
+		date: '2026/07/12',
+		createdTime: '2026/07/12',
+		place: 'Online',
+		image: '/images/home_bg.png',
+		link: '',
+		linkLabel: '查看錄取名單',
+		modal: {
+			title: '學生志工錄取名單',
+			// 半匿名：中間字以 ○ 遮罩
+			names: [
+				'賴○綸', '林○臻', '游○儀', '黃○淇', '林○嬡',
+				'李○璋', '李○萱', '魏○儀', '徐○維', '蔡○庠',
+				'曾○呈', '蔡○鈞', '蔡○宏', '陳○蓉', '盧○儒',
+				'黃○文', '林○均', '林○辰', '陳○潼', '張○婷',
+			],
+			note: '名單以半匿名方式顯示，完整錄取資訊以通知信為準；有疑問請來信 taiwanchi26+sv@gmail.com。',
+		},
+	},
+	{
 		id: 'offline-news-cfp-extend',
 		title: 'Call for Papers 投稿延期至 6/23',
 		subtitle: '投稿截止日期延長',
@@ -450,5 +474,6 @@ export const OFFLINE_NEWS: NewsItem[] = [
 		image: '/images/home_bg.png',
 		link: 'https://forms.gle/2WNEyuApxP8yRgLV9',
 		linkLabel: '前往報名表單',
+		closedLabel: '報名已截止',
 	},
 ];

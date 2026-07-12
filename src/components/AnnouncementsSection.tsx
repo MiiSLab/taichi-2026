@@ -1,5 +1,5 @@
-import { ArrowUpRight } from 'lucide-react';
-import React from 'react';
+import { ArrowUpRight, X } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { NEWS as STATIC_NEWS } from '../content';
 import { useContent } from '../context/LanguageContext';
 import { typography } from '../design-system/typography';
@@ -23,6 +23,15 @@ interface AnnouncementsSectionProps {
 const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3, hideHeader = false }) => {
 	const content = useContent();
 	const items = limit ? STATIC_NEWS.slice(0, limit) : STATIC_NEWS;
+	// 站內名單視窗（modal 欄位的公告，如錄取名單）
+	const [modalItem, setModalItem] = useState<NewsItem | null>(null);
+
+	useEffect(() => {
+		document.body.style.overflow = modalItem ? 'hidden' : '';
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [modalItem]);
 
 	if (items.length === 0) return null;
 
@@ -32,7 +41,7 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3, 
 
 	return (
 		<section className={sectionClass}>
-			<div className='relative z-10 mx-auto w-full max-w-7xl'>
+			<div className='relative z-10 w-full mx-auto max-w-7xl'>
 				{!hideHeader && (
 					<ScrollReveal>
 						<p className='text-center ds-section-kicker'>{content.newsSection.subtitle}</p>
@@ -43,7 +52,12 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3, 
 				<div className={`grid grid-cols-1 gap-6 xl:gap-8 ${hideHeader ? '' : 'mt-12 md:mt-16'} ${items.length > 1 ? 'md:grid-cols-2' : 'md:max-w-2xl md:mx-auto'}`}>
 					{items.map((item, index) => (
 						<ScrollReveal key={item.id} delay={index * 80} className='h-full'>
-							<FramePanel className='h-full' contentClassName='flex h-full flex-col p-6 md:p-8'>
+							{/* 黑底放 60% 黑的 FramePanel 幾乎沒區隔——區隔主要靠內層淡色漸層面，
+							邊框壓到極淡（純白太搶），hover 才轉主色 */}
+							<FramePanel
+								className='h-full transition-colors border border-white/10 hover:border-primary/45'
+								contentClassName='flex h-full flex-col bg-gradient-to-b from-zinc-900/70 to-zinc-950/40 p-6 md:p-8'
+							>
 								<div className='flex items-start justify-between gap-4'>
 									{item.subtitle ? (
 										<span className={`${typography.scale.sectionEyebrow} text-primary`}>{item.subtitle}</span>
@@ -67,7 +81,24 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3, 
 										))}
 								</div>
 
-								{item.link ? (
+								{item.closedLabel ? (
+									<button
+										type='button'
+										disabled
+										className='mt-auto inline-flex w-fit cursor-not-allowed items-center gap-2 rounded border border-white/15 bg-white/5 px-5 py-2.5 font-pixel text-[14px] tracking-[0.08em] text-white/40'
+									>
+										{item.closedLabel}
+									</button>
+								) : item.modal ? (
+									<button
+										type='button'
+										onClick={() => setModalItem(item)}
+										className='group/btn mt-auto inline-flex w-fit items-center gap-2 rounded border border-primary/60 bg-primary/10 px-5 py-2.5 font-pixel text-[14px] tracking-[0.08em] text-primary transition-colors hover:bg-primary hover:text-black'
+									>
+										{item.linkLabel || content.newsSection.readMore}
+										<ArrowUpRight className='size-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5' strokeWidth={2.5} />
+									</button>
+								) : item.link ? (
 									<a
 										href={item.link}
 										target='_blank'
@@ -83,6 +114,41 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3, 
 					))}
 				</div>
 			</div>
+
+			{/* 名單視窗：半匿名名單以格狀呈現，點背景或 X 關閉 */}
+			{modalItem?.modal ? (
+				<div
+					className='fixed inset-0 z-[60] flex items-center justify-center bg-black/80 p-4 backdrop-blur-md'
+					onClick={() => setModalItem(null)}
+				>
+					<div
+						className='relative max-h-[85vh] w-full max-w-lg overflow-y-auto border border-primary/40 bg-[rgba(9,9,11,0.97)] p-6 md:p-8'
+						onClick={(event) => event.stopPropagation()}
+					>
+						<button
+							type='button'
+							onClick={() => setModalItem(null)}
+							aria-label='Close'
+							className='absolute p-2 transition-colors border rounded-full right-4 top-4 border-white/12 bg-black/45 text-white/70 hover:border-primary/40 hover:text-white'
+						>
+							<X size={18} />
+						</button>
+						{modalItem.subtitle ? <p className='ds-section-kicker'>{modalItem.subtitle}</p> : null}
+						<h3 className='mt-2 font-dela text-[22px] leading-snug text-primary md:text-[24px]'>{modalItem.modal.title}</h3>
+						<div className='mt-6 grid grid-cols-2 gap-x-3 gap-y-2.5 sm:grid-cols-3'>
+							{modalItem.modal.names.map((name, index) => (
+								<p
+									key={`${name}-${index}`}
+									className='border border-white/10 bg-white/[0.04] px-3 py-2 text-center font-mono text-[15px] tracking-[0.08em] text-white/90'
+								>
+									{name}
+								</p>
+							))}
+						</div>
+						{modalItem.modal.note ? <p className={`mt-6 ${typography.scale.micro} text-white/50`}>{modalItem.modal.note}</p> : null}
+					</div>
+				</div>
+			) : null}
 		</section>
 	);
 };

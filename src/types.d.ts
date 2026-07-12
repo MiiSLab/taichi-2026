@@ -73,6 +73,10 @@ declare interface NewsItem {
 	image: string; // From Headphoto
 	link: string; // From Link
 	linkLabel?: string; // Optional CTA label for the link button (static announcements)
+	/** 設定後連結按鈕改為 disabled 並顯示此文字（如「報名已截止」），原文與連結資料保留 */
+	closedLabel?: string;
+	/** 設定後按鈕改開站內視窗顯示名單（如錄取名單，半匿名），不外連 */
+	modal?: { title: string; names: readonly string[]; note?: string };
 }
 
 declare interface PublicationItem {
