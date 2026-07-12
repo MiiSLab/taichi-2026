@@ -474,6 +474,5 @@ export const OFFLINE_NEWS: NewsItem[] = [
 		image: '/images/home_bg.png',
 		link: 'https://forms.gle/2WNEyuApxP8yRgLV9',
 		linkLabel: '前往報名表單',
-		closedLabel: '報名已截止',
 	},
 ];
