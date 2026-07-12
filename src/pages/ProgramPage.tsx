@@ -1,4 +1,6 @@
-import React, { useState } from 'react';
+import { ExternalLink } from 'lucide-react';
+import React, { useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import WarpBackground from '../components/WarpBackground';
 import { useContent, useLanguage } from '../context/LanguageContext';
@@ -29,6 +31,7 @@ type Day1Joint = {
 	description: string;
 	time: string;
 	location: string;
+	websiteUrl: string;
 	venueColumns: { time: string; f5: string; f12: string };
 	venueBlocks: { f5: Day1VenueBlock; f12: Day1VenueBlock };
 	sessions: { id: string; time: string; schedule: readonly ProgramScheduleRow[] }[];
@@ -237,7 +240,17 @@ const ProgramPage: React.FC = () => {
 			events: day2Info.secondVenue.events,
 		},
 	];
-	const [activeDay, setActiveDay] = useState<'day1' | 'day2'>('day1');
+	// 分頁由網址 hash 驅動（#day1 / #day2）：navbar 子選單與 /venue 的「詳細行程」
+	// 按鈕都能直接指定日期；沒有 hash 時預設 day1
+	const location = useLocation();
+	const navigate = useNavigate();
+	const activeDay: 'day1' | 'day2' = location.hash === '#day2' ? 'day2' : 'day1';
+
+	// 帶 hash 進場（如 venue 的詳細行程按鈕）：頁面上沒有對應 id 的元素，
+	// Layout 的 hash 捲動找不到目標也不會歸零，這裡補捲回頁頂
+	useEffect(() => {
+		if (window.location.hash) window.scrollTo(0, 0);
+	}, []);
 
 	useSEO(
 		language === 'zh' ? 'Program 議程' : 'Program',
@@ -255,7 +268,7 @@ const ProgramPage: React.FC = () => {
 							<button
 								key={tab.key}
 								type='button'
-								onClick={() => setActiveDay(tab.key as 'day1' | 'day2')}
+								onClick={() => navigate(`#${tab.key}`)}
 								className={`flex-1 border-2 py-3 font-mono text-xl font-bold transition-colors sm:text-2xl ${
 									activeDay === tab.key ? 'border-primary bg-primary text-black' : 'border-primary/40 text-white/60 hover:text-white/80'
 								}`}
@@ -304,17 +317,15 @@ const ProgramPage: React.FC = () => {
 										</p>
 									))}
 								</div>
-								{/* Big Bang! Futures 官網還在 prototype — 先 disable，正式部署後換回 <a href> */}
-								<div className='flex flex-col gap-2'>
-									<button
-										type='button'
-										disabled
-										className='inline-flex w-fit cursor-not-allowed items-center gap-2 border border-white/20 bg-white/5 px-6 py-3 font-mono text-[16px] font-bold text-white/35 sm:text-[18px]'
-									>
-										{section.labels.websiteButtonLabel}
-									</button>
-									<p className='font-mono text-[12px] text-white/45'>{section.labels.websitePendingLabel}</p>
-								</div>
+								<a
+									href={day1.websiteUrl}
+									target='_blank'
+									rel='noopener noreferrer'
+									className='inline-flex w-fit items-center gap-2 border border-primary bg-primary/15 px-6 py-3 font-mono text-[16px] font-bold text-primary transition-colors hover:bg-primary/25 sm:text-[18px]'
+								>
+									{section.labels.websiteButtonLabel}
+									<ExternalLink size={18} />
+								</a>
 								<DayTimetable venues={day1Venues} timeHeader={day1.venueColumns.time} title={section.labels.scheduleTitle} />
 							</div>
 						</ScrollReveal>

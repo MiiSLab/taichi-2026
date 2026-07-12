@@ -137,24 +137,32 @@ const Navbar: React.FC = () => {
 	const { language, setLanguage } = useLanguage();
 	const isCFPPage = location.pathname.startsWith('/cfp');
 	const isVenuePage = location.pathname.startsWith('/venue');
+	const isProgramPage = location.pathname === '/program';
 	const isOrgSponsorsPage = location.pathname === '/organization' || location.pathname === '/sponsorship';
-	// Submenu items are either same-page anchors (cfp / venue, carry a `hash`) or
-	// cross-page links (organization & sponsors, carry only `to`).
+	// Submenu items are either same-page anchors (cfp / venue, carry a `hash`),
+	// cross-page links (organization & sponsors, carry only `to`), or day tabs
+	// (program — hash drives the page's active tab, no scroll target).
 	const activeSubmenu: { label: string; to: string; hash?: string }[] = isCFPPage
 		? content.nav.cfpSubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/cfp${item.hash}` }))
 		: isVenuePage
 			? content.venueSection.submenuItems.map((item) => ({ label: item.label, hash: `#${item.target}`, to: `/venue#${item.target}` }))
-			: isOrgSponsorsPage
-				? [
-						{ label: 'Organization', to: '/organization' },
-						{ label: 'Sponsors', to: '/sponsorship' },
-					]
-				: [];
+			: isProgramPage
+				? content.programPageSection.dateTabs.map((tab) => ({ label: `${tab.date} ${tab.day}`, hash: `#${tab.key}`, to: `/program#${tab.key}` }))
+				: isOrgSponsorsPage
+					? [
+							{ label: 'Organization', to: '/organization' },
+							{ label: 'Sponsors', to: '/sponsorship' },
+						]
+					: [];
 
 	const submenuHashes = activeSubmenu.map((item) => item.hash).filter((h): h is string => Boolean(h));
-	const scrollSpyHash = useScrollSpy(submenuHashes);
-	// Active by scroll-spy hash (same-page anchors) or by pathname (cross-page links).
-	const isSubmenuActive = (item: { hash?: string; to: string }) => (item.hash ? scrollSpyHash === item.hash : location.pathname === item.to);
+	const scrollSpyHash = useScrollSpy(isProgramPage ? [] : submenuHashes);
+	// Active by scroll-spy hash (same-page anchors), by pathname (cross-page links),
+	// or by the raw hash (program day tabs — no hash defaults to day1).
+	const isSubmenuActive = (item: { hash?: string; to: string }) => {
+		if (isProgramPage) return (location.hash || '#day1') === item.hash;
+		return item.hash ? scrollSpyHash === item.hash : location.pathname === item.to;
+	};
 
 	useEffect(() => {
 		const handleScroll = () => {

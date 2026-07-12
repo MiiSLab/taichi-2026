@@ -1,5 +1,6 @@
-import { ChevronUp, ExternalLink } from 'lucide-react';
+import { CalendarDays, ChevronUp } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import FramePanel from '../components/FramePanel';
 import ScrollReveal from '../components/ScrollReveal';
 import WarpBackground from '../components/WarpBackground';
@@ -229,7 +230,14 @@ const VenuePage: React.FC = () => {
 													<p key={detail}>{detail}</p>
 												))}
 											</div>
-											<p className='mt-6 font-mono text-sm leading-6 text-white/90 md:text-base'>{day.highlight.note}</p>
+											{/* 詳細行程改連到 /program 對應日期（hash 指定分頁），不再放「待公告」文字 */}
+											<Link
+												to={day.highlight.scheduleTo}
+												className='mt-6 inline-flex items-center gap-2 border border-primary bg-primary/15 px-5 py-2.5 font-mono text-sm font-bold text-primary transition-colors hover:bg-primary/25'
+											>
+												<CalendarDays size={16} />
+												{day.highlight.scheduleLabel}
+											</Link>
 										</FramePanel>
 									</ScrollReveal>
 								</div>

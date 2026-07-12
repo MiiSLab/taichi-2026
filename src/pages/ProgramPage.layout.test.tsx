@@ -55,6 +55,14 @@ test('program page is routed at /program and the Navbar link is wired up', () =>
 	assert.match(appSource, /<Route path='program' element={<ProgramPage \/>} \/>/);
 	assert.match(navbarSource, /{ label: content\.nav\.program, to: '\/program', isActive: location\.pathname === '\/program' }/);
 	assert.match(navbarSource, /{ key: 'program', label: content\.nav\.program, to: '\/program', isActive: location\.pathname === '\/program' }/);
+
+	// day tabs surface as a pinned navbar submenu (like /venue) and are hash-driven,
+	// so /program#day2 deep-links (navbar submenu + venue schedule buttons) work
+	const programSource = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+	assert.match(navbarSource, /isProgramPage/);
+	assert.match(navbarSource, /content\.programPageSection\.dateTabs\.map/);
+	assert.match(programSource, /location\.hash === '#day2' \? 'day2' : 'day1'/);
+	assert.doesNotMatch(programSource, /useState<'day1' \| 'day2'>/);
 });
 
 test('program page mounts both day banners so switching days swaps instantly', () => {
@@ -91,7 +99,7 @@ test('program page day2 content drops the ISAT session and marks TAICHI as tenta
 		// non-session slots carry kind: 'break' so the timetable can mute them
 		assert.match(source, /label: 'Registration', kind: 'break'/);
 		assert.match(source, /label: 'Lunch Break', kind: 'break'/);
-		assert.match(source, /label: 'Coffee Break \(20mins\)', kind: 'break'/);
+		assert.match(source, /label: 'Coffee Break', kind: 'break'/);
 	}
 
 	assert.match(zhSource, /title: 'TAICHI年度學會 「暫定」'/);
@@ -143,10 +151,10 @@ test('program page day1 renders one joint event with the venue-block timetable',
 	assert.match(source, /\{day1\.title\}/);
 	assert.match(source, /\{day1\.description\}/);
 
-	// disabled website entry (no live link), with the pending note
-	assert.match(source, /websitePendingLabel/);
-	assert.doesNotMatch(source, /websiteUrl/);
-	assert.doesNotMatch(source, /ExternalLink/);
+	// live event site link (official URL shipped — no more disabled button / pending note)
+	assert.match(source, /href=\{day1\.websiteUrl\}/);
+	assert.match(source, /ExternalLink/);
+	assert.doesNotMatch(source, /websitePendingLabel/);
 	assert.doesNotMatch(source, /SessionAccordion/);
 
 	// joint title/description live in the day1 block, not under the hero image
@@ -167,7 +175,9 @@ test('program content defines the timetable venues in both languages', () => {
 	for (const source of [zhSource, enSource]) {
 		assert.match(source, /venueColumns/);
 		assert.match(source, /venueBlocks/);
-		assert.match(source, /websitePendingLabel/);
+		// official day1 event site is live — pending label removed from labels
+		assert.match(source, /websiteUrl: 'https:\/\/humanities-ic\.tw\/'/);
+		assert.doesNotMatch(source, /websitePendingLabel/);
 		// bilingual brand strings, identical across languages
 		assert.match(source, /title: '未來演講\\nFuture Stage'/);
 		assert.match(source, /title: '互動夜市\\nBig Bang!\\nNight Market!'/);

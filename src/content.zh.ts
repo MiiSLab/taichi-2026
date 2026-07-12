@@ -367,7 +367,6 @@ export const CONTENT_ZH = {
 			photoPlaceholder: '照片',
 			timeLocationLabel: '時間/地點',
 			websiteButtonLabel: '活動資訊詳情',
-			websitePendingLabel: '活動網站即將上線',
 		},
 		day1: {
 			// Day1 是「晶創人文 × TAICHI × APMAR × ISAT」單一聯合活動（標題與敘述原掛在 hero 圖下、兩天都顯示，現在只屬於 Day1）
@@ -375,6 +374,7 @@ export const CONTENT_ZH = {
 			description: 'Big Bang! Futures! 由晶創人文、TAICHI、APMAR 與 ISAT 聯合策劃，匯聚科技、人文、藝術與設計，共同解鎖未來的多重可能。',
 			time: '09:20 - 20:00',
 			location: '臺北三創生活園區 5F展演廳・12F多元廳',
+			websiteUrl: 'https://humanities-ic.tw/',
 			// 時間表：左側整點刻度 + 兩場地依時長等比例佔位的區塊（細節不上站，正式網站才有）
 			venueColumns: { time: '時間', f5: '5F展演廳', f12: '12F多元廳' },
 			// 區塊顯示名稱為跨語言相同的雙語品牌字（\n 換行）
@@ -391,7 +391,7 @@ export const CONTENT_ZH = {
 					location: '臺北三創生活園區 5F展演廳',
 					tags: ['Keynotes', 'Panels', 'International Exchange'],
 					description: '從主題演講、論壇對談到研究分享，不同領域的觀點在此交會。傾聽、交流、思考，解鎖更多未來的可能。',
-					websiteUrl: 'https://dev.8f-2.cc/big-bang-futures',
+					websiteUrl: 'https://humanities-ic.tw/',
 					gradient: true,
 					schedule: [
 						{ time: '9:20 - 9:45', label: '報到' },
@@ -441,7 +441,7 @@ export const CONTENT_ZH = {
 					location: '臺北三創生活園區 12F多元廳',
 					tags: ['Demo', 'Poster', 'Performances', 'Food', 'Market'],
 					description: '這裡不只是夜市，更是科技、人文與創意交會的現場。探索於互動展示、研究海報、Live Coding、布袋戲投影演出，以及限定夜市美食之間，解鎖屬於你的多元宇宙。',
-					websiteUrl: 'https://dev.8f-2.cc/big-bang-futures',
+					websiteUrl: 'https://humanities-ic.tw/',
 					gradient: false,
 					schedule: [
 						{ time: '15:30', label: '開放' },
@@ -533,7 +533,7 @@ export const CONTENT_ZH = {
 		},
 		day2: {
 			// 第二場地（教室）目前確定兩場：午餐時段會員大會、下午理監事會議
-			venueHeaders: { main: '國際會議廳', second: '教室' },
+			venueHeaders: { main: '國際會議廳', second: '教室(待定)' },
 			secondVenue: {
 				events: [
 					{ time: '12:10 - 13:45', title: '會員大會' },
@@ -628,7 +628,7 @@ export const CONTENT_ZH = {
 				heroTitle: '8/5(三) 互動夜市',
 				heroBadge: '對外公開',
 				heroSubtitle: 'TAICHI、晶創人文、APMAR、ISAT 聯合活動',
-				highlight: { label: '地點', venue: '臺北三創生活園區 5F 和 12F', details: ['5F 國際大咖 Keynote 演講連環場', '12F 互動夜市、小吃、表演揍作伙來'], note: '詳細行程表待公告。' },
+				highlight: { label: '地點', venue: '臺北三創生活園區 5F 和 12F', details: ['5F 國際大咖 Keynote 演講連環場', '12F 互動夜市、小吃、表演揍作伙來'], scheduleLabel: '詳細行程', scheduleTo: '/program#day1' },
 				venues: [
 					{ title: '5F 展演廳 [三創生活園區]', subtitle: 'Syntrend Creative Park, Taipei', addressLabel: '地址', addressZh: '100013 臺北市中正區市民大道三段 2 號', addressEn: 'No. 2, Sec. 3, Civic Blvd., Zhongzheng Dist., Taipei City 100013', venueLabel: '會議場地', venueName: '5F 廳提供 keynote 與論壇，滿滿大咖國際演講。', photoImage: '/images/day1_5F.jpg', mapLink: 'https://maps.app.goo.gl/yYLTdcVH5rSMevEF8', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.6633085538724!2d121.52874377537685!3d25.04549777780891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97b582d5a73%3A0x9b1e56ab48807d62!2z5LiJ5Ym155Sf5rS75ZyS5Y2A!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw' },
 					{ title: '12F 多元廳 [三創生活園區]', subtitle: 'Syntrend Creative Park, Taipei', addressLabel: '地址', addressZh: '100013 臺北市中正區市民大道三段 2 號', addressEn: 'No. 2, Sec. 3, Civic Blvd., Zhongzheng Dist., Taipei City 100013', venueLabel: '會議場地', venueName: '互動夜市、小吃、表演。', photoImage: '/images/day1_12F.jpg', mapLink: 'https://maps.app.goo.gl/yYLTdcVH5rSMevEF8', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.6633085538724!2d121.52874377537685!3d25.04549777780891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97b582d5a73%3A0x9b1e56ab48807d62!2z5LiJ5Ym155Sf5rS75ZyS5Y2A!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw' },
@@ -644,9 +644,9 @@ export const CONTENT_ZH = {
 				heroImage: '/images/day2location.avif',
 				heroTitle: '8/6(四) 年度研討會',
 				heroSubtitle: 'TAICHI 年度學會研討會',
-				highlight: { label: '地點', venue: '國立臺北科技大學 科研大樓', details: ['論文發表與論壇講座'], note: '詳細議程與場地配置將陸續公告。' },
+				highlight: { label: '地點', venue: '國立臺北科技大學 宏裕科技大樓', details: ['論文發表與論壇講座'], scheduleLabel: '詳細行程', scheduleTo: '/program#day2' },
 				venues: [
-					{ title: '國際會議廳 [國立臺北科技大學 科研大樓]', subtitle: 'National Taipei University of Technology, Taipei', addressLabel: '地址', addressZh: '10608 臺北市大安區忠孝東路三段 1 號', addressEn: "No. 1, Sec. 3, Zhongxiao E. Rd., Da'an Dist., Taipei City 10608", venueLabel: '會議場地', venueName: '論文發表、講座。', photoImage: '/images/day2_X.avif', mapLink: 'https://maps.app.goo.gl/p97U3oZnXoUvrXmo7', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.6783181717664!2d121.53284755506823!3d25.043802836933057!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97d255598df%3A0x47ea748e8f3f53aa!2z5ZyL56uL6Ie65YyX56eR5oqA5aSn5a24!5e0!3m2!1szh-TW!2stw!4v1772020528494!5m2!1szh-TW!2stw' },
+					{ title: 'B1 國際會議廳 [宏裕科技大樓]', subtitle: 'National Taipei University of Technology, Taipei', addressLabel: '地址', addressZh: '10608 臺北市大安區忠孝東路三段 1 號', addressEn: "No. 1, Sec. 3, Zhongxiao E. Rd., Da'an Dist., Taipei City 10608", venueLabel: '會議場地', venueName: '論文發表、講座。', photoImage: '/images/day2_X.avif', mapLink: 'https://maps.app.goo.gl/g8wWbGHas45ytuQU7', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.6783181717664!2d121.5338784!3d25.0440642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97cd4962b0b%3A0x75144e30dbb37ee6!2z5a6P6KOV56eR5oqA5aSn5qiT!5e0!3m2!1szh-TW!2stw!4v1772020528494!5m2!1szh-TW!2stw' },
 				],
 				travelPanels: [
 					{ title: '大眾運輸', items: [{ title: '捷運 MRT', lines: ['板南線 / 忠孝新生站 4 號出口，步行約 5 分鐘', '文湖線 / 忠孝復興站轉乘，步行或公車前往'] }, { title: '高鐵 HSR / 台鐵 TRA', lines: ['台北車站下車後轉乘捷運板南線至忠孝新生站'] }, { title: '公車 Bus', lines: ['正義郵局、臺北科技大學周邊站牌，多條路線可達'] }] },

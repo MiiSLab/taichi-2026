@@ -284,7 +284,6 @@ export const CONTENT_EN = {
 			photoPlaceholder: 'Photo',
 			timeLocationLabel: 'Time / Location',
 			websiteButtonLabel: 'Event Details',
-			websitePendingLabel: 'Event website coming soon',
 		},
 		day1: {
 			// Day1 is a single joint event (title/description used to hang under the hero image on both days; now Day1-only)
@@ -292,6 +291,7 @@ export const CONTENT_EN = {
 			description: 'Big Bang! Futures! is jointly organized by the Program on Semiconductors and Humanities, TAICHI, APMAR, and ISAT — bringing together technology, humanities, art, and design to unlock the many possibilities of the future.',
 			time: '09:20 - 20:00',
 			location: '5F Exhibition Hall & 12F Multi-purpose Hall, Syntrend Creative Park, Taipei',
+			websiteUrl: 'https://humanities-ic.tw/',
 			// Timetable: hourly axis + venue blocks sized proportionally to their duration (details live on the official site)
 			venueColumns: { time: 'Time', f5: '5F Exhibition Hall', f12: '12F Multi-purpose Hall' },
 			// Block display names are bilingual brand strings, identical across languages (\n = line break)
@@ -308,7 +308,7 @@ export const CONTENT_EN = {
 					location: '5F Exhibition Hall, Syntrend Creative Park, Taipei',
 					tags: ['Keynotes', 'Panels', 'International Exchange'],
 					description: 'From keynote talks and panel discussions to research presentations, discover diverse perspectives, exchange ideas, and unlock new possibilities for the future.',
-					websiteUrl: 'https://dev.8f-2.cc/big-bang-futures',
+					websiteUrl: 'https://humanities-ic.tw/',
 					gradient: true,
 					schedule: [
 						{ time: '9:20 - 9:45', label: 'Registration' },
@@ -358,7 +358,7 @@ export const CONTENT_EN = {
 					location: '12F Multi-purpose Hall, Syntrend Creative Park, Taipei',
 					tags: ['Demo', 'Poster', 'Performances', 'Food', 'Market'],
 					description: 'More than a night market, this is where technology, culture, and creativity collide. Wander through interactive demos, research posters, live coding, projection puppetry, and curated night market food to discover your own multiverse of futures.',
-					websiteUrl: 'https://dev.8f-2.cc/big-bang-futures',
+					websiteUrl: 'https://humanities-ic.tw/',
 					gradient: false,
 					schedule: [
 						{ time: '15:30', label: 'Welcome' },
@@ -541,7 +541,8 @@ export const CONTENT_EN = {
 					label: 'Venue',
 					venue: 'Syntrend Creative Park, 5F and 12F',
 					details: ['5F international keynote talks', '12F interactive night market, snacks, and Live Coding performances'],
-					note: 'Detailed schedule will be announced soon.',
+					scheduleLabel: 'Full Schedule',
+					scheduleTo: '/program#day1',
 				},
 				venues: [
 					{ ...CONTENT_ZH.venueSection.days[0].venues[0], title: '5F CLAPPER STUDIO [Syntrend Creative Park]', addressLabel: 'Address', venueLabel: 'Venue', venueName: '5F CLAPPER STUDIO hosts international keynote talks.' },
@@ -556,8 +557,8 @@ export const CONTENT_EN = {
 				...CONTENT_ZH.venueSection.days[1],
 				heroTitle: '8/6(Thu): Annual Conference',
 				heroSubtitle: 'TAICHI annual conference',
-				highlight: { label: 'Venue', venue: 'NTUT, Pioneer International R&D Building', details: ['Paper presentations and forum sessions'], note: 'Detailed agenda and room allocation will be announced soon.' },
-				venues: [{ ...CONTENT_ZH.venueSection.days[1].venues[0], title: 'International Conference Hall [Pioneer International R&D Building, NTUT]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Paper presentations and talks.' }],
+				highlight: { label: 'Venue', venue: 'NTUT Hongyu Technology Building', details: ['Paper presentations and forum sessions'], scheduleLabel: 'Full Schedule', scheduleTo: '/program#day2' },
+				venues: [{ ...CONTENT_ZH.venueSection.days[1].venues[0], title: 'B1 International Conference Hall [Hongyu Technology Building]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Paper presentations and talks.' }],
 				travelPanels: [
 					{ title: 'Public Transportation', items: [{ title: 'MRT', lines: ['Bannan Line / Zhongxiao Xinsheng Station Exit 4, about a 5-minute walk', 'Transfer from Wenhu Line at Zhongxiao Fuxing and continue on foot or by bus'] }, { title: 'HSR / TRA', lines: ['From Taipei Main Station, transfer to the Bannan Line and exit at Zhongxiao Xinsheng'] }, { title: 'Bus', lines: ['Multiple routes stop near Zhengyi Post Office and NTUT'] }] },
 					{ title: 'Driving', items: [{ title: 'Parking', lines: ['Parking lots around NTUT', 'Jianguo elevated roadway parking', 'Street parking near the campus'] }], calloutTitle: 'Recommendation', callout: 'Parking near the campus is limited. Consider arriving early or taking the MRT.' },
