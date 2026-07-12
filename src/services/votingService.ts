@@ -5,15 +5,17 @@ import { isSupabaseConfigured, restGet, restRpc } from './supabaseRest';
  *
  * Backend lives in the check-in project's Supabase (Taichi_check_in/supabase/
  * schema.sql — single source of truth):
- *   - posters:      public select
- *   - vote_state(): window status + live tallies (polled every ~10s)
+ *   - posters:      public select; two categories ('poster' | 'demo')
+ *   - vote_state(): window status + tallies (polled; UI only shows tallies to
+ *                   program staff via the ?ct flag — hidden from voters)
  *   - cast_vote():  all real constraints live server-side (token validity,
- *                   can_vote, time window, ≤3 votes, no duplicate poster)
+ *                   can_vote, time window, ≤3 votes per category, no duplicate)
  *
  * localStorage only mirrors "which posters this token voted for" so the UI can
  * restore已投 state after reload — it is NOT a security boundary.
  */
 
+/** Per category (poster / demo), not total. */
 export const MAX_VOTES = 3;
 
 export type Poster = {
@@ -21,8 +23,8 @@ export type Poster = {
 	title: string;
 	author: string | null;
 	theme: string | null;
-	image_url: string | null;
 	conference: string | null;
+	category: string | null; // 'poster' | 'demo'（舊資料可能為 null → 視為 poster）
 };
 
 export type VoteTally = { poster_id: string; votes: number };
@@ -44,7 +46,7 @@ const VOTE_ERROR_MESSAGES: Record<string, string> = {
 	not_open: '投票尚未開放',
 	closed: '投票已截止',
 	invalid_poster: '找不到這張海報，請重新整理頁面',
-	max_votes: `已用完 ${MAX_VOTES} 票`,
+	max_votes: `此類別的 ${MAX_VOTES} 票已用完`,
 	duplicate_poster: '已投過這張海報',
 	not_configured: '投票系統尚未設定完成，請稍後再試',
 	network: '連線失敗，請確認網路後再試',
@@ -52,10 +54,30 @@ const VOTE_ERROR_MESSAGES: Record<string, string> = {
 
 export const voteErrorMessage = (code: string): string => VOTE_ERROR_MESSAGES[code] ?? `投票失敗（${code}）`;
 
-/** All posters, loaded once (the list rarely changes during the event). */
+export type LookupPassResult =
+	| { ok: true; token: string; name: string | null; ticket_type: string | null }
+	| { ok: false; error: string };
+
+/**
+ * Name + contact self-service pass lookup for /q (lookup_pass RPC).
+ * Contact is email or mobile number — the server treats values containing '@'
+ * as email, anything else as a phone number (normalized via norm_phone, so
+ * 0921…/+886…/81-90-…/(+81)80-… input formats all match). Both fields must
+ * match server-side; only token/name/ticket_type come back.
+ */
+export async function lookupPass(name: string, contact: string): Promise<LookupPassResult> {
+	if (!isSupabaseConfigured) return { ok: false, error: 'not_configured' };
+	try {
+		return await restRpc<LookupPassResult>('lookup_pass', { p_name: name, p_contact: contact });
+	} catch {
+		return { ok: false, error: 'network' };
+	}
+}
+
+/** All entries (posters + demos), loaded once (the list rarely changes during the event). */
 export async function getPosters(): Promise<Poster[]> {
 	if (!isSupabaseConfigured) return [];
-	return restGet<Poster[]>('posters?select=id,title,author,theme,image_url,conference&order=id');
+	return restGet<Poster[]>('posters?select=id,title,author,theme,conference,category&order=id');
 }
 
 /** Window status + live tallies — poll this, and refetch right after casting. */
