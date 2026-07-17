@@ -2,8 +2,7 @@ import React, { createContext, useCallback, useContext, useEffect, useRef, useSt
 import NewHeroPage from './NewHeroPage';
 import BigBangSvg from './BigBangSvg';
 import frameImg from './assets/frame.png';
-import frameTopImg from './assets/frame-s-line-top.png';
-import frameBottomImg from './assets/frame-s-line-bottom.png';
+import frameMobileImg from './assets/frame-s.png';
 
 /**
  * Visual-chair delivered arcade hero (BIG BANG! FUTURES!), ported from the
@@ -75,7 +74,10 @@ function BigBangAnimated() {
   return (
     <div style={{
       position: 'relative',
-      width: 'min(90vw, 520px)',
+      // The mobile bezel's side rails eat ~5.6% of the width each, leaving an
+      // ~88% opening. Keep the title inside that opening (was 90vw, which the new
+      // full-frame rails clipped on both ends of BIG BANG! / FUTURES!).
+      width: 'min(80vw, 520px)',
       filter: `drop-shadow(0 0 18px rgba(${orangeCh}, 0.45))`,
     }}>
       {/* BIG BANG! — top half of SVG, revealed first */}
@@ -236,8 +238,11 @@ function DesktopCharacterStrip({ scale }: { scale: number }) {
             <div style={{ position: 'absolute', left: sl, top: st, width: slot.w, height: slot.h, display: 'flex', alignItems: 'center', justifyContent: 'center', opacity: isActive ? 1 : 0.35, transition: 'opacity 0.15s', pointerEvents: 'none' }}>
               <img src={img} alt={name} style={{ width: slot.w, height: slot.h, objectFit: 'contain', imageRendering: 'pixelated' }} />
               {isActive && (
-                <div style={{ position: 'absolute', inset: -24, pointerEvents: 'none' }}>
-                  <Bracket w={slot.w + 48} h={slot.h + 48} />
+                // Tighter than the mobile bracket: the outermost slots sit closest
+                // to the new cabinet's side rails, so keep the selector hugging the
+                // sprite (inset -12) to bank extra clearance from the frame.
+                <div style={{ position: 'absolute', inset: -12, pointerEvents: 'none' }}>
+                  <Bracket w={slot.w + 24} h={slot.h + 24} />
                 </div>
               )}
             </div>
@@ -500,18 +505,15 @@ function MobileView({ navH }: { navH: number }) {
       {/* Animated grid — behind everything */}
       <MobileGrid />
 
-      {/* Top frame strip — pinned just below the fixed navbar */}
+      {/* Full cabinet bezel, spanning everything below the fixed navbar. Stretched
+          (`fill`) rather than `cover`: the art is 1081×1921 and a phone viewport is
+          proportionally narrower, so `cover` would crop away the whole 61px side
+          rail. Stretching squeezes the bezel ~12% horizontally on a 390px viewport,
+          which doesn't read on this artwork. */}
       <img
-        src={frameTopImg}
+        src={frameMobileImg}
         alt=''
-        style={{ position: 'absolute', top: navH, left: 0, width: '100%', height: 'auto', pointerEvents: 'none', zIndex: 30 }}
-      />
-
-      {/* Bottom frame strip — pinned to bottom of viewport */}
-      <img
-        src={frameBottomImg}
-        alt=''
-        style={{ position: 'absolute', bottom: 0, left: 0, width: '100%', height: 'auto', pointerEvents: 'none', zIndex: 30 }}
+        style={{ position: 'absolute', top: navH, left: 0, width: '100%', height: `calc(100% - ${navH}px)`, objectFit: 'fill', pointerEvents: 'none', zIndex: 30 }}
       />
 
       {/* Content block */}
@@ -616,10 +618,14 @@ function DesktopView({ scale, navH }: { scale: number; navH: number }) {
       <div style={{ position: 'relative', width: '100%', height: '100dvh', overflow: 'hidden' }}>
         {/* Everything sits in the region below the fixed navbar so the cabinet isn't clipped. */}
         <div style={{ position: 'absolute', top: navH, left: 0, right: 0, bottom: 0, overflow: 'hidden' }}>
+          {/* Stretched (`fill`), not `cover`: the new bezel is 1920×960 (2:1), wider
+              than a laptop's below-navbar box (~1.7:1), so `cover` would crop both
+              side rails clean off. Stretching keeps all four rails; the ~13%
+              horizontal squeeze doesn't read on this industrial frame. */}
           <img
             src={frameImg}
             alt=''
-            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'cover', pointerEvents: 'none', zIndex: 30 }}
+            style={{ position: 'absolute', inset: 0, width: '100%', height: '100%', objectFit: 'fill', pointerEvents: 'none', zIndex: 30 }}
           />
           <div style={{
             position: 'absolute',

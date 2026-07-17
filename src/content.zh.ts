@@ -641,7 +641,7 @@ export const CONTENT_ZH = {
 			{
 				id: 'venue-day-2',
 				tabLabel: '[ 8/6 ]',
-				heroImage: '/images/day2location.avif',
+				heroImage: '/images/venue_8_6_banner.png',
 				heroTitle: '8/6(四) 年度研討會',
 				heroSubtitle: 'TAICHI 年度學會研討會',
 				highlight: { label: '地點', venue: '國立臺北科技大學 宏裕科技大樓', details: ['論文發表與論壇講座'], scheduleLabel: '詳細行程', scheduleTo: '/program#day2' },
