@@ -1,8 +1,8 @@
 import { Menu, X } from 'lucide-react';
 import React, { useCallback, useEffect, useRef, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
-import { typography } from '../../design-system/typography';
 import { useContent, useLanguage } from '../../context/LanguageContext';
+import { typography } from '../../design-system/typography';
 
 /* ── Scroll-spy hook ──────────────────────────────────────────── */
 function useScrollSpy(hashes: string[]) {
@@ -76,7 +76,7 @@ const BracketText: React.FC<{
 	return (
 		<span className={`inline-flex items-center uppercase ${textSize} ${className}`}>
 			<span className={`${bracketColor} ${bracketSize}`}>[</span>
-			<span className={`${labelPad} ${baseColor}`}>{label}</span>
+			<span className={`${labelPad} ${baseColor} font-['Source_Code_Pro',monospace]`}>{label}</span>
 			<span className={`${bracketColor} ${bracketSize}`}>]</span>
 		</span>
 	);
@@ -103,7 +103,7 @@ const DesktopSubmenuLink: React.FC<{
 }> = ({ label, to, isActive }) => (
 	<Link
 		to={to}
-		className={`${typography.scale.navBracketCompact} ds-nav-link transition-colors ${isActive ? 'ds-nav-link--active' : 'hover:text-white'}`}
+		className={`${typography.scale.navBracketCompact} font-['Source_Code_Pro',monospace] ds-nav-link transition-colors ${isActive ? 'ds-nav-link--active' : 'hover:text-white'}`}
 	>
 		{label}
 	</Link>
@@ -216,8 +216,9 @@ const Navbar: React.FC = () => {
 				className={`ds-nav-shell fixed left-0 right-0 top-0 z-50 border-b border-solid border-white/10 px-4 pt-4 pb-px transition-all duration-300 md:px-[59px] xl:px-8 2xl:px-[59px] ${isScrolled ? 'shadow-[0_8px_30px_rgba(0,0,0,0.35)]' : ''}`}
 			>
 				<div className='flex min-h-[45px] items-center justify-between gap-6'>
-					<Link to='/' className='shrink-0 transition-opacity hover:opacity-85' onClick={() => { handleNav(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
-						<BracketText label={content.nav.logo} active className='whitespace-nowrap' />
+					<Link to='/' className='transition-opacity shrink-0 hover:opacity-85' onClick={() => { handleNav(); window.scrollTo({ top: 0, behavior: 'smooth' }); }}>
+						{/* Logo: Press Start 2P (font-arcade), orange, no brackets — visual-chair design. Small px because the arcade face is wide. */}
+							<span className="font-['Press_Start_2P',_'VT323',monospace] text-primary whitespace-nowrap uppercase leading-none text-[13px] xl:text-[12px] 2xl:text-[14px]">{content.nav.logo}</span>
 					</Link>
 
 					<div className='hidden xl:flex items-center gap-2.5 whitespace-nowrap 2xl:gap-6'>
@@ -227,18 +228,21 @@ const Navbar: React.FC = () => {
 					</div>
 
 					<div className='hidden xl:flex h-[45px] items-center gap-3 2xl:gap-4'>
-						<div className='ds-nav-segmented'>
+						{/* h-[25px] matches the registration pill so the two boxes line up;
+						    the buttons fill that height (h-full + leading-none) instead of
+						    the leading-6 line-box pushing the container taller. */}
+						<div className='ds-nav-segmented h-[30px]'>
 							<button
 								type='button'
 								onClick={() => setLanguage('zh')}
-								className={`ds-nav-segment min-w-[2.75rem] font-pixel text-[14px] leading-6 ${language === 'zh' ? 'ds-nav-segment--active' : ''}`}
+								className={`ds-nav-segment h-full min-w-[2.75rem] font-pixel text-[14px] leading-none ${language === 'zh' ? 'ds-nav-segment--active' : ''}`}
 							>
 								中
 							</button>
 							<button
 								type='button'
 								onClick={() => setLanguage('en')}
-								className={`ds-nav-segment min-w-[3rem] font-pixel text-[16px] leading-6 ${language === 'en' ? 'ds-nav-segment--active' : ''}`}
+								className={`ds-nav-segment h-full min-w-[3rem] font-['Source_Code_Pro',monospace] text-[16px] leading-none ${language === 'en' ? 'ds-nav-segment--active' : ''}`}
 							>
 								EN
 							</button>
@@ -246,14 +250,14 @@ const Navbar: React.FC = () => {
 
 						<Link
 							to='/registration'
-							className={`ds-nav-pill ds-nav-link flex h-[25px] items-center px-2.5 2xl:px-[17px] ${typography.scale.navBracketCompact} transition-opacity hover:opacity-90`}
+							className={`ds-nav-pill ds-nav-link flex h-[30px] items-center px-2.5 2xl:px-[17px] ${typography.scale.navBracketCompact} transition-opacity hover:opacity-90`}
 						>
 							<BracketText label={content.nav.registration} compact />
 						</Link>
 					</div>
 
 					<button
-						className='xl:hidden rounded-md p-2 text-white transition-colors hover:bg-white/5'
+						className='p-2 text-white transition-colors rounded-md xl:hidden hover:bg-white/5'
 						onClick={() => setIsMenuOpen(!isMenuOpen)}
 						aria-label='Toggle menu'
 						aria-expanded={isMenuOpen}
@@ -263,7 +267,7 @@ const Navbar: React.FC = () => {
 				</div>
 
 				{activeSubmenu.length > 0 ? (
-					<div className='ds-nav-submenu hidden xl:flex justify-center pt-4 pb-3'>
+					<div className='justify-center hidden pt-4 pb-3 ds-nav-submenu xl:flex'>
 						<div className={`inline-flex items-center whitespace-nowrap ${typography.scale.navBracketCompact}`}>
 							<span className='w-[7px] text-white/40'>[</span>
 							<div className='flex items-center justify-center gap-12 px-3'>
@@ -284,7 +288,7 @@ const Navbar: React.FC = () => {
 				{activeSubmenu.length > 0 && !isMenuOpen ? (
 					<div className='xl:hidden ds-nav-submenu'>
 						<div className='overflow-x-auto px-4 py-3 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden'>
-							<div className='flex min-w-max items-center justify-center gap-4'>
+							<div className='flex items-center justify-center gap-4 min-w-max'>
 								{activeSubmenu.map((item) => (
 									<MobilePinnedSubmenuLink
 										key={item.to}
@@ -301,11 +305,11 @@ const Navbar: React.FC = () => {
 
 			{isMenuOpen && (
 				<div className='ds-nav-drawer fixed inset-0 z-[48] overflow-y-auto px-5 pb-8 pt-24 text-white'>
-					<div className='mx-auto flex w-full max-w-[28rem] flex-col items-stretch gap-5 font-pixel'>
+					<div className="mx-auto flex w-full max-w-[28rem] flex-col items-stretch gap-5 font-['Source_Code_Pro',monospace]">
 						{mobileItems.map((item) => {
 							if (item.disabled || !item.to) {
 								return (
-									<span key={item.key} className='cursor-not-allowed border-b border-white/10 pb-4 text-center text-2xl opacity-40'>
+									<span key={item.key} className='pb-4 text-2xl text-center border-b cursor-not-allowed border-white/10 opacity-40'>
 										{item.label}
 									</span>
 								);
@@ -316,7 +320,7 @@ const Navbar: React.FC = () => {
 								const submenuItems = submenuByKey[item.submenuKey];
 
 								return (
-									<div key={item.key} className='flex w-full flex-col items-stretch border-b border-white/10 pb-4'>
+									<div key={item.key} className='flex flex-col items-stretch w-full pb-4 border-b border-white/10'>
 										<button
 											type='button'
 											onClick={() => setMobileExpandedMenu(isExpanded ? null : item.submenuKey)}
@@ -326,7 +330,7 @@ const Navbar: React.FC = () => {
 											<span className='text-lg'>{isExpanded ? '−' : '+'}</span>
 										</button>
 										{isExpanded ? (
-											<div className='mt-4 flex w-full flex-col gap-3 border-l border-lab-lime/60 pl-4 text-lg'>
+											<div className='flex flex-col w-full gap-3 pl-4 mt-4 text-lg border-l border-lab-lime/60'>
 												{submenuItems.map((submenuItem) => (
 													<Link
 														key={submenuItem.to}
@@ -354,8 +358,8 @@ const Navbar: React.FC = () => {
 								</Link>
 							);
 						})}
-						<div className='ds-nav-segmented mt-2 w-full'>
-							<button type='button' onClick={() => setLanguage('zh')} className={`ds-nav-segment flex-1 py-3 text-lg ${language === 'zh' ? 'ds-nav-segment--active' : ''}`}>
+						<div className='w-full mt-2 ds-nav-segmented'>
+							<button type='button' onClick={() => setLanguage('zh')} className={`ds-nav-segment flex-1 py-3 text-lg font-pixel ${language === 'zh' ? 'ds-nav-segment--active' : ''}`}>
 								中
 							</button>
 							<button type='button' onClick={() => setLanguage('en')} className={`ds-nav-segment flex-1 py-3 text-lg ${language === 'en' ? 'ds-nav-segment--active' : ''}`}>
@@ -365,7 +369,7 @@ const Navbar: React.FC = () => {
 						<Link
 							to='/registration'
 							onClick={handleNav}
-							className='ds-nav-pill ds-nav-link mt-2 w-full px-5 py-3 text-xl transition-colors hover:text-white'
+							className='w-full px-5 py-3 mt-2 text-xl transition-colors ds-nav-pill ds-nav-link hover:text-white'
 						>
 							{content.nav.registration}
 						</Link>

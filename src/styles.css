@@ -243,8 +243,10 @@
 
 .ds-nav-link {
 	color: rgba(255, 255, 255, 0.62);
-	font-family: var(--font-ui);
-	letter-spacing: 0.08em;
+	/* visual-chair: nav link labels are Source Code Pro; brackets [] and 中 keep
+	   their own fonts (they're separate spans without this class). */
+	font-family: 'Source Code Pro', var(--font-ui), monospace;
+	letter-spacing: 0.02em;
 	transition:
 		color var(--motion-duration-fast) var(--motion-ease-enter),
 		opacity var(--motion-duration-fast) var(--motion-ease-enter),
@@ -256,33 +258,32 @@
 }
 
 .ds-nav-link--active {
-	color: var(--color-accent-warm-500);
-	text-shadow: 0 0 18px rgb(var(--brand-secondary) / 0.3);
+	color: rgb(var(--brand-primary));
+	text-shadow: 0 0 18px rgb(var(--brand-primary) / 0.3);
 }
 
 .ds-nav-submenu {
 	border-top: 1px solid var(--border-subtle);
 }
 
+/* visual-chair navbar: orange (#fb4105) hairline, square corners (no pill radius) */
 .ds-nav-pill {
-	border: 1px solid rgb(var(--brand-secondary) / 0.3);
-	border-radius: var(--radius-pill);
+	border: 1px solid rgb(var(--brand-primary) / 0.4);
 	background: rgba(255, 255, 255, 0.02);
 }
 
 .ds-nav-pill--active {
-	background: var(--color-accent-warm-500);
+	background: rgb(var(--brand-primary));
 	color: var(--text-on-light);
 }
 
 .ds-nav-segmented {
 	display: inline-flex;
 	align-items: center;
-	gap: 0.25rem;
-	border: 1px solid rgb(var(--brand-secondary) / 0.3);
-	border-radius: var(--radius-pill);
+	gap: 0;
+	border: 1px solid rgb(var(--brand-primary) / 0.4);
 	background: rgba(255, 255, 255, 0.02);
-	padding: 0.1875rem;
+	padding: 1px;
 }
 
 .hero-intro-scroll-shell {
@@ -594,7 +595,6 @@
 	display: inline-flex;
 	align-items: center;
 	justify-content: center;
-	border-radius: calc(var(--radius-pill) - 4px);
 	padding: 0.125rem 0.875rem;
 	color: rgba(255, 255, 255, 0.62);
 	transition:
@@ -610,9 +610,9 @@
 }
 
 .ds-nav-segment--active {
-	background: var(--color-accent-warm-500);
+	background: rgb(var(--brand-primary));
 	color: var(--text-on-light);
-	box-shadow: 0 0 24px rgb(var(--brand-secondary) / 0.3);
+	box-shadow: 0 0 24px rgb(var(--brand-primary) / 0.3);
 }
 
 .ds-nav-drawer {

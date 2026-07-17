@@ -121,6 +121,14 @@
 				font-style: normal;
 				font-display: swap;
 			}
+			@font-face {
+				/* Navbar logo (TAICHI 2026) — subset to Basic Latin (see public/fonts) */
+				font-family: 'Press Start 2P';
+				src: url('/fonts/press-start-2p-latin.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
+			}
 
 			body {
 				margin: 0;
@@ -160,6 +168,7 @@
 		<!-- Preload above-the-fold hero assets so first paint kicks off the network earlier -->
 		<link rel="preload" as="font" type="font/woff2" href="/fonts/noto-sans-tc-subset.woff2" crossorigin />
 		<link rel="preload" as="font" type="font/woff2" href="/fonts/ibm-plex-sans-latin.woff2" crossorigin />
+		<link rel="preload" as="font" type="font/woff2" href="/fonts/press-start-2p-latin.woff2" crossorigin />
 		<link rel="preload" as="image" type="image/avif" href="/images/home_bg.avif" fetchpriority="high" />
 		<link rel="preload" as="image" type="image/avif" href="/images/home_bg_TAICHI.avif" fetchpriority="high" />
 		<link rel="preload" as="image" type="image/png" href="/images/home_date.png" fetchpriority="high" />
