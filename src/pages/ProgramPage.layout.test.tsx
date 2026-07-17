@@ -70,8 +70,8 @@ test('program page mounts both day banners so switching days swaps instantly', (
 	// loading delay when toggling day1/day2.
 	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
 
-	assert.match(source, /src='\/images\/program_hero_bigbang\.png'/);
-	assert.match(source, /src='\/images\/program_hero_bigbang2\.png'/);
+	assert.match(source, /src='\/images\/program_hero_bigbang\.avif'/);
+	assert.match(source, /src='\/images\/program_hero_bigbang2\.avif'/);
 	assert.match(source, /activeDay === 'day1' \? 'w-full' : 'hidden'/);
 	assert.match(source, /activeDay === 'day2' \? 'w-full' : 'hidden'/);
 });

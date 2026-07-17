@@ -285,12 +285,12 @@ const ProgramPage: React.FC = () => {
 					<ScrollReveal delay={40}>
 						{/* 兩張 banner 都掛進 DOM（隱藏的照樣預先下載），切換日期時零延遲 */}
 						<img
-							src='/images/program_hero_bigbang.png'
+							src='/images/program_hero_bigbang.avif'
 							alt='Big Bang! Futures!'
 							className={activeDay === 'day1' ? 'w-full' : 'hidden'}
 						/>
 						<img
-							src='/images/program_hero_bigbang2.png'
+							src='/images/program_hero_bigbang2.avif'
 							alt='Big Bang! Futures!'
 							className={activeDay === 'day2' ? 'w-full' : 'hidden'}
 						/>
