@@ -26,7 +26,7 @@ test('poster upload page source includes the required fields and standalone inte
 	assert.match(source, /selectedImage/);
 	assert.match(source, /URL\.createObjectURL/);
 	assert.match(source, /mockSubmitted/);
-	assert.match(source, /上傳海報投票系統/);
+	assert.match(source, /海報上傳/);
 	assert.match(source, /POSTER SUBMISSION CONSOLE/);
 	assert.match(source, /Poster ID/);
 	assert.match(source, /Theme \/ Category/);

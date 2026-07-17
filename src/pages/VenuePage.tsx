@@ -70,7 +70,7 @@ const VenuePage: React.FC = () => {
 	];
 
 	useSEO(
-		language === 'zh' ? '場地資訊 VENUE' : 'Venue',
+		language === 'zh' ? '場地資訊' : 'Venue',
 		language === 'zh'
 			? 'TAICHI 2026 場地資訊：三創生活園區與國立臺北科技大學。'
 			: 'TAICHI 2026 venue information for Syntrend Creative Park and National Taipei University of Technology.',

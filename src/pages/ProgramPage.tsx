@@ -253,7 +253,7 @@ const ProgramPage: React.FC = () => {
 	}, []);
 
 	useSEO(
-		language === 'zh' ? 'Program 議程' : 'Program',
+		language === 'zh' ? '議程' : 'Program',
 		language === 'zh' ? 'TAICHI 2026 完整議程與活動安排。' : 'TAICHI 2026 full program and event schedule.',
 	);
 

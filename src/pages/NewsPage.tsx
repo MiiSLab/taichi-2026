@@ -3,7 +3,7 @@ import AnnouncementsSection from '../components/AnnouncementsSection';
 import ScrollReveal from '../components/ScrollReveal';
 import WarpBackground from '../components/WarpBackground';
 import { typography } from '../design-system/typography';
-import { useContent } from '../context/LanguageContext';
+import { useContent, useLanguage } from '../context/LanguageContext';
 import { useSEO } from '../hooks/useSEO';
 
 /**
@@ -12,7 +12,8 @@ import { useSEO } from '../hooks/useSEO';
  */
 const NewsPage: React.FC = () => {
 	const content = useContent();
-	useSEO(content.newsSection.title, content.newsSection.subtitle);
+	const { language } = useLanguage();
+	useSEO(language === 'zh' ? '最新消息' : 'News', content.newsSection.subtitle);
 
 	return (
 		<div className='min-h-screen w-full bg-black text-white'>

@@ -4,7 +4,7 @@ import React from 'react';
 import ScrollReveal from '../components/ScrollReveal';
 import WarpBackground from '../components/WarpBackground';
 import { typography } from '../design-system/typography';
-import { useContent } from '../context/LanguageContext';
+import { useContent, useLanguage } from '../context/LanguageContext';
 import { useSEO } from '../hooks/useSEO';
 
 const FACILITY_ICONS = {
@@ -18,8 +18,9 @@ const FACILITY_ICONS = {
 const FamilyFriendlyPage: React.FC = () => {
 	const content = useContent();
 	const section = content.familyFriendlySection;
+	const { language } = useLanguage();
 
-	useSEO(section.seoTitle, section.seoDescription);
+	useSEO(language === 'zh' ? '親子友善' : 'Family-Friendly', section.seoDescription);
 
 	return (
 		<div className='min-h-screen w-full bg-[#0D0D11] text-white'>

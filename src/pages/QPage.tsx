@@ -4,6 +4,7 @@ import QRCode from 'qrcode';
 import { AlertTriangle, Search, Vote } from 'lucide-react';
 
 import { typography } from '../design-system/typography';
+import { useLanguage } from '../context/LanguageContext';
 import { useSEO } from '../hooks/useSEO';
 import { getVoteState, isSupabaseConfigured, lookupPass } from '../services/votingService';
 
@@ -27,7 +28,8 @@ const formatWindowTime = (iso: string | null): string | null => {
 };
 
 const QPage: React.FC = () => {
-	useSEO('數位通行證', 'TAICHI 2026 參與者數位通行證：報到與海報投票入口。');
+	const { language } = useLanguage();
+	useSEO(language === 'zh' ? '數位通行證' : 'Digital Pass', 'TAICHI 2026 參與者數位通行證：報到與海報投票入口。');
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const token = searchParams.get('t') ?? '';

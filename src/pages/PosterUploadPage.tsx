@@ -2,6 +2,7 @@ import React, { ChangeEvent, FormEvent, useEffect, useMemo, useState } from 'rea
 import { ImagePlus, CheckCircle2 } from 'lucide-react';
 
 import { typography } from '../design-system/typography';
+import { useLanguage } from '../context/LanguageContext';
 import { useSEO } from '../hooks/useSEO';
 
 const POSTER_THEMES = [
@@ -21,10 +22,11 @@ const POSTER_THEMES = [
 type ThemeId = (typeof POSTER_THEMES)[number]['id'];
 
 const PosterUploadPage: React.FC = () => {
-	useSEO({
-		title: '上傳海報投票系統 | TAICHI 2026',
-		description: 'TAICHI 2026 獨立海報上傳頁面，提供海報標題、作者、摘要、主題、Poster ID 與圖片上傳原型。',
-	});
+	const { language } = useLanguage();
+	useSEO(
+		language === 'zh' ? '海報上傳' : 'Poster Upload',
+		'TAICHI 2026 獨立海報上傳頁面，提供海報標題、作者、摘要、主題、Poster ID 與圖片上傳原型。',
+	);
 
 	const [posterId, setPosterId] = useState('');
 	const [title, setTitle] = useState('');
