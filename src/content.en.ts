@@ -577,7 +577,7 @@ export const CONTENT_EN = {
 		...CONTENT_ZH.registrationSection,
 		seoTitle: 'Registration',
 		seoDescription: 'TAICHI 2026 registration and pricing information, including ticket rates and two ways to register.',
-		pricingHeading: 'Ticket Pricing',
+		pricingHeading: 'TAICHI 2026 Ticket Pricing',
 		pricingDeadlineNote: 'Registration deadline: 2026/07/28 00:00',
 		pricingTable: {
 			...CONTENT_ZH.registrationSection.pricingTable,
@@ -591,7 +591,7 @@ export const CONTENT_EN = {
 		paperRegistrationNote: 'Each accepted paper requires at least one registrant; please provide the paper ID on the registration form.',
 		membershipNote:
 			'**TAICHI membership renewal fees apply: NT$1,000 for general members and NT$500 for student members — please add this when registering.** New members, please contact the [society](https://taiwanchi.org/memberpay/).',
-		methodsHeading: 'Three ways to register',
+		methodsHeading: 'How to register for TAICHI',
 		kktixHeading: '1. Register via KKTIX',
 		kktixButtonLabel: 'KKTIX Registration Link',
 		kktixComingSoonLabel: 'Coming Soon',
@@ -607,13 +607,21 @@ export const CONTENT_EN = {
 		formStepHeading: 'Fill out the group registration form',
 		formButtonLabel: 'Open the Form',
 		emailStepText:
-			'Email a screenshot of the transfer receipt and the group registration form to [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
-		apmarHeading: '3. Register for APMAR to attend TAICHI 2026 for free',
+			'After registering, email a screenshot of the transfer receipt and the group registration form to [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
+		apmarPricingHeading: 'APMAR 2026 Ticket Pricing',
 		apmarIntro:
-			'APMAR 2026 also takes place on Aug 3–4. Registering for APMAR grants free admission to TAICHI 2026. To register as a group, please fill out the form below.',
-		apmarFormButtonLabel: 'Open the Group Form',
-		apmarEmailText:
-			'Email a screenshot of the transfer receipt and the group registration form to [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
+			'APMAR 2026 will be held on Aug 3–4. Registering for APMAR grants free admission to TAICHI 2026.',
+		apmarPricingTable: {
+			...CONTENT_ZH.registrationSection.apmarPricingTable,
+			typeHeader: 'Ticket Type',
+			tierNames: ['Price'],
+			rows: [
+				{ label: 'General', values: ['6200'] },
+				{ label: 'Student', values: ['4400'] },
+			],
+		},
+		apmarPricingDeadlineNote: 'Registration deadline: 2026/08/02 00:00',
+		apmarMethodsHeading: 'How to register for APMAR',
 	},
 	footer: {
 		...CONTENT_ZH.footer,

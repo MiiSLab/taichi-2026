@@ -146,22 +146,67 @@ const RegistrationPage: React.FC = () => {
 						</div>
 					</ScrollReveal>
 
-					<ScrollReveal delay={320}>
+					<ScrollReveal delay={60}>
+						<h2 className={`mb-8 mt-24 ${typography.scale.sectionTitle} text-primary`}>{section.apmarPricingHeading}</h2>
+					</ScrollReveal>
+
+					<ScrollReveal delay={100}>
+						<p className={`mx-auto mb-8 max-w-3xl ${typography.scale.body} text-white/80`}>{section.apmarIntro}</p>
+						<PricingTable table={section.apmarPricingTable} />
+						<p className='mt-3 text-center text-sm text-white/50'>{section.apmarPricingDeadlineNote}</p>
+					</ScrollReveal>
+
+					<ScrollReveal delay={200}>
+						<h2 className={`mb-8 mt-16 ${typography.scale.sectionTitle} text-primary`}>{section.apmarMethodsHeading}</h2>
+					</ScrollReveal>
+
+					<ScrollReveal delay={240}>
+						<div className='ds-surface-panel px-6 py-8 md:px-10 md:py-10'>
+							<h3 className={`mb-5 ${typography.scale.cardTitle} text-white`}>{section.kktixHeading}</h3>
+							{section.kktixUrl === '#' ? (
+								<span className='ds-button-submit pointer-events-none cursor-not-allowed px-8 text-[18px] leading-[28px] opacity-40 grayscale'>
+									<span>{section.kktixComingSoonLabel}</span>
+								</span>
+							) : (
+								<a href={section.kktixUrl} className='ds-button-submit px-8 text-[18px] leading-[28px]'>
+									<span>{section.kktixButtonLabel}</span>
+									<span className='text-[24px] leading-none'>→</span>
+								</a>
+							)}
+						</div>
+					</ScrollReveal>
+
+					<ScrollReveal delay={280}>
 						<div className='ds-surface-panel mt-6 px-6 py-8 md:px-10 md:py-10'>
-							<h3 className={`mb-5 ${typography.scale.cardTitle} text-white`}>{section.apmarHeading}</h3>
-							<p className={`mb-5 ${typography.scale.body} text-white/80`}>{section.apmarIntro}</p>
+							<h3 className={`mb-5 ${typography.scale.cardTitle} text-white`}>{section.manualHeading}</h3>
+
+							<p className={`mb-5 ${typography.scale.body} text-white/80`}>{parseText(section.manualIntro, secondaryLinkClassName)}</p>
+
 							<div className='space-y-6'>
 								<div>
+									<p className={`mb-3 ${typography.scale.body} font-bold text-white`}>{section.transferStepHeading}</p>
+									<div className='space-y-1 rounded-[10px] border-l-4 border-primary bg-black/40 px-6 py-5'>
+										{section.bankDetails.map((line) => (
+											<p key={line} className={`${typography.scale.body} text-white/80`}>
+												{line}
+											</p>
+										))}
+									</div>
+								</div>
+
+								<div>
+									<p className={`mb-3 ${typography.scale.body} font-bold text-white`}>{section.formStepHeading}</p>
 									<a
 										href={section.apmarFormUrl}
 										target='_blank'
 										rel='noreferrer'
 										className='ds-button-secondary min-h-[46px] px-8 text-[16px]'
 									>
-										{section.apmarFormButtonLabel} →
+										{section.formButtonLabel} →
 									</a>
 								</div>
-								<p className={`${typography.scale.body} text-white/80`}>{parseText(section.apmarEmailText, secondaryLinkClassName)}</p>
+
+								<p className={`${typography.scale.body} text-white/80`}>{parseText(section.emailStepText, secondaryLinkClassName)}</p>
 							</div>
 						</div>
 					</ScrollReveal>

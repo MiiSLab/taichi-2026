@@ -682,7 +682,7 @@ export const CONTENT_ZH = {
 		pageTitle: 'Registration',
 		seoTitle: '註冊資訊',
 		seoDescription: 'TAICHI 2026 註冊與票價資訊，包含票價與兩種報名方式。',
-		pricingHeading: '票價資訊',
+		pricingHeading: 'TAICHI 2026 票價',
 		pricingDeadlineNote: '報名截止日期：2026/07/28 00:00',
 		pricingTable: {
 			typeHeader: '票種',
@@ -695,7 +695,7 @@ export const CONTENT_ZH = {
 		paperRegistrationNote: '每篇論文至少需要一人註冊，並於報名表單中填下論文編號。',
 		membershipNote:
 			'**TAICHI會員之舊會員續會費，一般會員1000元，學生會員500元，請額外添購。** 新會員請洽[學會](https://taiwanchi.org/memberpay/)。',
-		methodsHeading: '本次報名採三種方式',
+		methodsHeading: 'TAICHI 報名方式',
 		kktixHeading: '1. 採 KKTIX 報名',
 		kktixButtonLabel: 'KKTIX 報名連結',
 		kktixComingSoonLabel: '即將開放',
@@ -710,15 +710,22 @@ export const CONTENT_ZH = {
 		formUrl:
 			'https://docs.google.com/spreadsheets/d/1j04QqFwTVqXBF5cbPYQFjxjvw9fq6tpG/edit?usp=sharing&ouid=106876117677843883459&rtpof=true&sd=true',
 		emailStepText:
-			'將轉帳畫面截圖及團體報名表郵寄至 [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
-		apmarHeading: '3. 報名 APMAR 免費參加 TAICHI 2026',
+			'報名完後請將轉帳畫面截圖及團體報名表郵寄至 [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
+		apmarPricingHeading: 'APMAR 2026 票價',
 		apmarIntro:
-			'8/3–8/4 還有 APMAR 2026，只要報名 APMAR，即可免費參加 TAICHI 2026。如果想要一起團報，請填寫下方表單。',
-		apmarFormButtonLabel: '前往填寫團報表單',
+			'APMAR 2026 將於 8/3–8/4 舉行，凡報名 APMAR 即可免費參加 TAICHI 2026。',
+		apmarPricingTable: {
+			typeHeader: '票種',
+			tierNames: ['票價'],
+			rows: [
+				{ label: '一般票', values: ['6200'] },
+				{ label: '學生票', values: ['4400'] },
+			],
+		},
+		apmarPricingDeadlineNote: '報名截止日期：2026/08/02 00:00',
+		apmarMethodsHeading: 'APMAR 報名方式',
 		apmarFormUrl:
 			'https://docs.google.com/spreadsheets/d/1CNS7ht36e_Pdk0DJ1JD8CZXZpATxRaLq/edit?usp=sharing&ouid=104307639501745074365&rtpof=true&sd=true',
-		apmarEmailText:
-			'將轉帳畫面截圖及團體報名表郵寄至 [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
 	},
 	footer: {
 		title: 'TAICHI 2026 \n BIG BANG! FUTURE!',
