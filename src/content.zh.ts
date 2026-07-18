@@ -695,7 +695,7 @@ export const CONTENT_ZH = {
 		paperRegistrationNote: '每篇論文至少需要一人註冊，並於報名表單中填下論文編號。',
 		membershipNote:
 			'**TAICHI會員之舊會員續會費，一般會員1000元，學生會員500元，請額外添購。** 新會員請洽[學會](https://taiwanchi.org/memberpay/)。',
-		methodsHeading: '本次註冊費採兩種方式報名',
+		methodsHeading: '本次報名採三種方式',
 		kktixHeading: '1. 採 KKTIX 報名',
 		kktixButtonLabel: 'KKTIX 報名連結',
 		kktixComingSoonLabel: '即將開放',
@@ -710,6 +710,14 @@ export const CONTENT_ZH = {
 		formUrl:
 			'https://docs.google.com/spreadsheets/d/1j04QqFwTVqXBF5cbPYQFjxjvw9fq6tpG/edit?usp=sharing&ouid=106876117677843883459&rtpof=true&sd=true',
 		emailStepText:
+			'將轉帳畫面截圖及團體報名表郵寄至 [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
+		apmarHeading: '3. 報名 APMAR 免費參加 TAICHI 2026',
+		apmarIntro:
+			'8/3–8/4 還有 APMAR 2026，只要報名 APMAR，即可免費參加 TAICHI 2026。如果想要一起團報，請填寫下方表單。',
+		apmarFormButtonLabel: '前往填寫團報表單',
+		apmarFormUrl:
+			'https://docs.google.com/spreadsheets/d/1CNS7ht36e_Pdk0DJ1JD8CZXZpATxRaLq/edit?usp=sharing&ouid=104307639501745074365&rtpof=true&sd=true',
+		apmarEmailText:
 			'將轉帳畫面截圖及團體報名表郵寄至 [taiwanchi26+registration@gmail.com](mailto:taiwanchi26+registration@gmail.com)',
 	},
 	footer: {

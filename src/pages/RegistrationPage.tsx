@@ -145,6 +145,26 @@ const RegistrationPage: React.FC = () => {
 							</div>
 						</div>
 					</ScrollReveal>
+
+					<ScrollReveal delay={320}>
+						<div className='ds-surface-panel mt-6 px-6 py-8 md:px-10 md:py-10'>
+							<h3 className={`mb-5 ${typography.scale.cardTitle} text-white`}>{section.apmarHeading}</h3>
+							<p className={`mb-5 ${typography.scale.body} text-white/80`}>{section.apmarIntro}</p>
+							<div className='space-y-6'>
+								<div>
+									<a
+										href={section.apmarFormUrl}
+										target='_blank'
+										rel='noreferrer'
+										className='ds-button-secondary min-h-[46px] px-8 text-[16px]'
+									>
+										{section.apmarFormButtonLabel} →
+									</a>
+								</div>
+								<p className={`${typography.scale.body} text-white/80`}>{parseText(section.apmarEmailText, secondaryLinkClassName)}</p>
+							</div>
+						</div>
+					</ScrollReveal>
 				</div>
 			</section>
 		</div>
