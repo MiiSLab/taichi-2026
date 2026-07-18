@@ -36,14 +36,14 @@
 		<meta name="twitter:image" content="https://taichi2026.taiwanchi.org/og-preview.png" />
 
 		<!-- Favicon 集合：實體檔案放在站台根目錄，讓搜尋引擎能正常抓取 -->
-		<!-- ?v=3 busts the (very sticky) favicon cache after the green/transparent redesign -->
-		<link rel="icon" href="/favicon.ico?v=3" sizes="any" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=3" />
-		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=3" />
-		<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=3" />
-		<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png?v=3" />
+		<!-- Favicon caches are very sticky — bump ?v= whenever the icon artwork changes -->
+		<link rel="icon" href="/favicon.ico?v=4" sizes="any" />
+		<link rel="icon" type="image/svg+xml" href="/favicon.svg?v=4" />
+		<link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png?v=4" />
+		<link rel="icon" type="image/png" sizes="192x192" href="/favicon-192.png?v=4" />
+		<link rel="apple-touch-icon" sizes="180x180" href="/favicon-180.png?v=4" />
 		<link rel="manifest" href="/site.webmanifest" />
-		<meta name="theme-color" content="#29b93a" />
+		<meta name="theme-color" content="#fb4105" />
 		<!-- Source Code Pro：新街機 hero（/newhome-v2*）字型，Google Fonts 外部載入 -->
 		<link rel="preconnect" href="https://fonts.googleapis.com" />
 		<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -121,6 +121,14 @@
 				font-style: normal;
 				font-display: swap;
 			}
+			@font-face {
+				/* Navbar logo (TAICHI 2026) — subset to Basic Latin (see public/fonts) */
+				font-family: 'Press Start 2P';
+				src: url('/fonts/press-start-2p-latin.woff2') format('woff2');
+				font-weight: 400;
+				font-style: normal;
+				font-display: swap;
+			}
 
 			body {
 				margin: 0;
@@ -147,9 +155,9 @@
 		<!-- Preload above-the-fold hero assets so first paint kicks off the network earlier -->
 		<link rel="preload" as="font" type="font/woff2" href="/fonts/noto-sans-tc-subset.woff2" crossorigin />
 		<link rel="preload" as="font" type="font/woff2" href="/fonts/ibm-plex-sans-latin.woff2" crossorigin />
+		<link rel="preload" as="font" type="font/woff2" href="/fonts/press-start-2p-latin.woff2" crossorigin />
 		<link rel="preload" as="image" type="image/avif" href="/images/home_bg.avif" fetchpriority="high" />
 		<link rel="preload" as="image" type="image/avif" href="/images/home_bg_TAICHI.avif" fetchpriority="high" />
-		<link rel="preload" as="image" type="image/png" href="/images/home_date.png" fetchpriority="high" />
 		<script>
 			// Restore the intended path after redirect from 404.html
 			(function () {
@@ -176,11 +184,11 @@
 				}
 			}
 		</script>
-		<script type="module" crossorigin src="/assets/index-CHebGGZL.js"></script>
+		<script type="module" crossorigin src="/assets/index-Bs5taM5H.js"></script>
 		<link rel="modulepreload" crossorigin href="/assets/react-vendor-DQfhz_P5.js">
 		<link rel="modulepreload" crossorigin href="/assets/motion-DmuVWGzW.js">
 		<link rel="modulepreload" crossorigin href="/assets/three-Dmuu9UMl.js">
-		<link rel="stylesheet" crossorigin href="/assets/index-PU4O3WSz.css">
+		<link rel="stylesheet" crossorigin href="/assets/index-5RZ1jQwO.css">
 	</head>
 	<body>
 		<!-- Font loading overlay: hides FOUC until web fonts are ready -->
