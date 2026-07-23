@@ -99,7 +99,7 @@ test('program page day2 content drops the ISAT session and marks TAICHI as tenta
 		// non-session slots carry kind: 'break' so the timetable can mute them
 		assert.match(source, /label: 'Registration', kind: 'break'/);
 		assert.match(source, /label: 'Lunch Break', kind: 'break'/);
-		assert.match(source, /label: 'Coffee Break', kind: 'break'/);
+		assert.match(source, /label: 'Poster session', sublabel: '\(Coffee break\)', kind: 'break'/);
 	}
 
 	assert.match(zhSource, /title: 'TAICHI年度學會 「暫定」'/);
