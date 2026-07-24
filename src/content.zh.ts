@@ -655,6 +655,275 @@ export const CONTENT_ZH = {
 			},
 		],
 	},
+	venueV2Section: {
+		title: 'Venue',
+		subtitle: '活動行程',
+		submenuItems: [
+			{ label: 'Overview', target: 'venue-overview' },
+			{ label: '8/5', target: 'venue-day-1' },
+			{ label: '8/6', target: 'venue-day-2' },
+		],
+		dayButtons: [{ label: '[ 8/5 ]', target: 'venue-day-1' }, { label: '[ 8/6 ]', target: 'venue-day-2' }],
+		openMap: '開啟地圖',
+		topButton: 'TOP',
+		overview: {
+			title: 'Overview',
+			intro:
+				'本屆 TAICHI 為一系列跨域大型活動的一部分（2026/08/03–08/06），與臺灣晶創人文計畫、國際亞洲區 APMAR、以及科技藝術學會 ISAT 共同串聯，打造橫跨學術、展演與公共參與的整體場域。8/3 至 8/4 由 APMAR 率先展開活動，8/5 四個單位共同對外開放，進行國際 keynote、互動市集與表演，8/6 則進入 TAICHI 研討會議程。',
+			events: {
+				preEvent: {
+					date: '2026/08/03–04 [APMAR]',
+					description: [
+						'APMAR 將於 8/3 與 8/4 率先展開，以藝術研究、跨域實作與國際交流為核心，串接本屆 TAICHI 系列活動的前導內容。',
+						'這裡可查看 APMAR 活動資訊與官網，了解完整議程與主辦內容。',
+					],
+					buttonLabel: '進入 APMAR 活動網站',
+					buttonType: 'external',
+					href: 'https://sites.google.com/view/apmar2026/',
+					image: '/images/overview-02.jpg',
+				},
+				day1: {
+					date: '2026/08/05 [TAICHI × 晶創人文 × APMAR × ISAT]',
+					description: [
+						'8/5 將於三創生活園區舉辦四單位聯合開放日，包含國際 keynote、互動夜市、展演與公眾參與活動。',
+						'點擊下方按鈕可直接前往 8/5 的場地與活動資訊。',
+					],
+					buttonLabel: '查看 8/5 場地資訊',
+					buttonType: 'section',
+					target: 'venue-day-1',
+					image: '/images/overview-03.jpg',
+				},
+				day2: {
+					date: '2026/08/06 [TAICHI]',
+					description: [
+						'8/6 於國立臺北科技大學進行 TAICHI 年度研討會，聚焦論文發表、論壇與學術交流。',
+						'點擊下方按鈕可直接前往 8/6 的場地與活動資訊。',
+					],
+					buttonLabel: '查看 8/6 場地資訊',
+					buttonType: 'section',
+					target: 'venue-day-2',
+					image: '/images/overview-04.jpg',
+				},
+			},
+			timeline: [
+				{ label: '8/3', sublabel: 'APMAR', key: 'preEvent' },
+				{ label: '8/4', sublabel: 'APMAR', key: 'preEvent' },
+				{ label: '8/5', sublabel: 'TAICHI, 晶創人文 / APMAR, ISAT', key: 'day1' },
+				{ label: '8/6', sublabel: 'TAICHI', key: 'day2' },
+			],
+		},
+		days: [
+			{
+				id: 'venue-day-1',
+				tabLabel: '[ 8/5 ]',
+				heroImage: '/images/venue_8_5_banner.avif',
+				heroTitle: '8/5(三) 互動夜市',
+				heroBadge: '對外公開',
+				heroSubtitle: 'TAICHI、晶創人文、APMAR、ISAT 聯合活動',
+				highlight: { label: '地點', venue: '臺北三創生活園區 5F 和 12F', details: ['5F 國際大咖 Keynote 演講連環場', '12F 互動夜市、小吃、表演揍作伙來'], scheduleLabel: '詳細行程', scheduleTo: '/program#day1' },
+				venues: [
+					{ title: '5F 展演廳 [三創生活園區]', subtitle: 'Syntrend Creative Park, Taipei', addressLabel: '地址', addressZh: '100013 臺北市中正區市民大道三段 2 號', addressEn: 'No. 2, Sec. 3, Civic Blvd., Zhongzheng Dist., Taipei City 100013', venueLabel: '會議場地', venueName: '5F 廳提供 keynote 與論壇，滿滿大咖國際演講。', hours: '09:20 - 16:40', entryNote: '11:00前入口與手扶梯尚未開放，請由下方「南瓜門進場指引」搭電梯上 5F。', photoImage: '/images/day1_5F.jpg', mapLink: 'https://maps.app.goo.gl/yYLTdcVH5rSMevEF8', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.6633085538724!2d121.52874377537685!3d25.04549777780891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97b582d5a73%3A0x9b1e56ab48807d62!2z5LiJ5Ym155Sf5rS75ZyS5Y2A!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw' },
+					{ title: '12F 多元廳 [三創生活園區]', subtitle: 'Syntrend Creative Park, Taipei', addressLabel: '地址', addressZh: '100013 臺北市中正區市民大道三段 2 號', addressEn: 'No. 2, Sec. 3, Civic Blvd., Zhongzheng Dist., Taipei City 100013', venueLabel: '會議場地', venueName: '互動夜市、小吃、表演。', hours: '15:30 - 20:00', photoImage: '/images/day1_12F.jpg', mapLink: 'https://maps.app.goo.gl/yYLTdcVH5rSMevEF8', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.6633085538724!2d121.52874377537685!3d25.04549777780891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97b582d5a73%3A0x9b1e56ab48807d62!2z5LiJ5Ym155Sf5rS75ZyS5Y2A!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw' },
+				],
+				entryGuide: {
+					title: '南瓜門進場指引',
+					badge: '11:00 前',
+					before: { timeLabel: '11:00 前入場', text: '請從「南瓜門」進場，依地面上的「南瓜藍色指標」抵達入口，直接搭電梯至 5F。', mapLabel: '南瓜門定位', mapLink: 'https://maps.app.goo.gl/ajxnm5Duzy5CQN4b8' },
+					after: { timeLabel: '11:00 後入場', text: '可從三創生活園區各大門口進入 5F 與 12F 會場。' },
+					sticker: { image: '/images/pumpkin-ground-marker.png', alt: '地面南瓜藍色指標' },
+					locators: [
+						{ image: '/images/transit_syntrend_scene.png', caption: '南瓜門實景', alt: '三創門口鏡面南瓜雕塑與入口實景' },
+						{ image: '/images/transit_syntrend_map.png', caption: '周邊位置圖', alt: '三創生活園區周邊道路與南瓜門位置圖' },
+					],
+					routeMap: { image: '/images/transit_syntrend_route.png', caption: '電梯位置動線', alt: '三創園區室內動線圖，標示南瓜門入口與電梯位置' },
+					videos: [
+						{ label: '往左找南瓜', src: '/videos/pumpkin-left.mp4' },
+						{ label: '往右找南瓜', src: '/videos/pumpkin-right.mp4' },
+					],
+				},
+				travelPanels: [
+					{
+						title: '大眾運輸',
+						items: [
+							{ title: '捷運 MRT', lines: ['中和新蘆線或板南線「忠孝新生站」1 號出口，步行約 5 分鐘抵達。'] },
+							{ title: '公車 BUS', stops: [
+								{ name: '八德路「台北科技大學站」', routes: ['205', '257', '276'] },
+								{ name: '市民大道「光華商場站」', routes: ['669'] },
+								{ name: '新生北路「光華商場站」', routes: ['72', '109', '214', '214直', '222', '226', '280', '280直', '290', '505', '642', '643', '665', '668', '675', '676', '680'] },
+							] },
+						],
+					},
+					{
+						title: '自行開車',
+						items: [
+							{ title: '市民大道高架（往西）', lines: ['於市民大道三段與建國南路出口下匝道，繼續直行於市民大道二段迴轉道轉至市民大道三段，直行過金山北路口抵達。'] },
+							{ title: '市民大道高架（往東）', lines: ['於市民大道三段與金山北路出口下匝道，繼續直行過金山北路交叉口抵達。'] },
+							{ title: '新生高架（往南）', lines: ['於新生北路一段與長安東路二段口出口下匝道，沿新生北路靠右連接金山北路往南方向，於迴轉道轉至金山北路往北方向，直行至市民大道路口抵達。'] },
+						],
+					},
+					{
+						title: '停車場',
+						wide: true,
+						image: { src: '/images/transit_syntrend_parking.png', alt: '三創停車場入口位置地圖', caption: '三創停車場入口（金山北路 / 新生高架橋下）' },
+						items: [
+							{ title: '城市車旅 台北三創生活園區停車場（新生高架下方）', lines: ['地址：100 臺北市中正區金山北路 23-77 號'], rates: [{ label: '汽車', value: '平日 30 元 / 半小時（當日最高 200 元）' }, { label: '機車', value: '每次 20 元' }], notes: ['全程以半小時計費，入場前 10 分鐘內免費。', '憑身心障礙證件至 B3 停管中心可享四小時免費，第五小時起可用館內消費折抵。', '自動繳費機支援現金、悠遊卡及感應式信用卡。'] },
+						],
+						links: [
+							{ label: '停車場定位', href: 'https://maps.app.goo.gl/rQtA9WjDgtkUs6S59' },
+							{ label: '三創交通資訊', href: 'https://www.syntrend.com.tw/traffic.html' },
+						],
+					},
+				],
+			},
+			{
+				id: 'venue-day-2',
+				tabLabel: '[ 8/6 ]',
+				heroImage: '/images/venue_8_6_banner.avif',
+				heroTitle: '8/6(四) 年度研討會',
+				heroSubtitle: 'TAICHI 年度學會研討會',
+				highlight: { label: '地點', venue: '國立臺北科技大學 宏裕科技大樓', details: ['論文發表與論壇講座'], scheduleLabel: '詳細行程', scheduleTo: '/program#day2' },
+				venues: [
+					{ title: 'B1 國際會議廳 [宏裕科技大樓]', subtitle: 'National Taipei University of Technology, Taipei', addressLabel: '地址', addressZh: '10608 臺北市大安區忠孝東路三段 1 號', addressEn: "No. 1, Sec. 3, Zhongxiao E. Rd., Da'an Dist., Taipei City 10608", venueLabel: '會議場地', venueName: '論文發表、講座。', photoImage: '/images/day2_X.avif', mapLink: 'https://maps.app.goo.gl/g8wWbGHas45ytuQU7', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.6783181717664!2d121.5338784!3d25.0440642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97cd4962b0b%3A0x75144e30dbb37ee6!2z5a6P6KOV56eR5oqA5aSn5qiT!5e0!3m2!1szh-TW!2stw!4v1772020528494!5m2!1szh-TW!2stw' },
+				],
+				campusMap: {
+					title: '校園位置圖 · 宏裕科技研究大樓',
+					image: '/images/transit_ntut_campus.png',
+					caption: '橘色標示為宏裕科技研究大樓，可由捷運忠孝新生站 4 號出口或校門進入。',
+					alt: '國立臺北科技大學校園平面圖，橘色標示宏裕科技研究大樓位置',
+				},
+				travelPanels: [
+					{
+						title: '大眾運輸',
+						items: [
+							{ title: '捷運 MRT', lines: ['藍線【板南土城線】或橘線【中和新蘆線】「忠孝新生站」4 號出口，步行至台北科技大學。'] },
+							{ title: '公車 BUS', stops: [
+								{ name: '台北科技大學站', routes: ['212', '212直達車', '232', '262', '299', '605'] },
+								{ name: '忠孝新生路口站', routes: ['72', '109', '115', '214', '222', '226', '280', '290', '505', '642', '665', '668', '672', '松江新生幹線'] },
+							] },
+							{ title: '火車 TRA', lines: ['台北火車站轉乘捷運【板南線】至「忠孝新生站」，4 號出口台北科技大學。'] },
+							{ title: '高鐵 HSR', lines: ['高鐵台北站轉乘捷運【板南線】至「忠孝新生站」，4 號出口台北科技大學。'] },
+						],
+					},
+					{
+						title: '自行開車',
+						items: [
+							{ title: '國道一號', lines: ['於建國北路 / 松江路交流道下（靠左走建國北路高架橋），於忠孝東路出口下（循右線右轉忠孝東路），續行約 100 公尺即達本校。'] },
+							{ title: '國道三號', lines: ['於新店交流道接木柵交流道下辛亥路轉建國南路，直走至忠孝東路口即達本校。'] },
+						],
+					},
+				],
+			},
+		],
+	},
+	transitSection: {
+		title: 'TRANSIT',
+		seoTitle: '交通資訊',
+		seoDescription: 'TAICHI 2026 交通與進場指引：8/5 三創生活園區、8/6 國立臺北科技大學。',
+		dateTabs: [
+			{ key: 'day1', date: '8.05', day: 'WED' },
+			{ key: 'day2', date: '8.06', day: 'THU' },
+		],
+		openMapLabel: '在 Google Maps 開啟',
+		mapPlaceholder: '[ Google Map 位置 ]',
+		videoPlaceholder: '影片即將上線',
+		days: [
+			{
+				id: 'day1',
+				heroImage: '/images/venue_8_5_banner.avif',
+				heroTitle: '8/5(三) 互動夜市',
+				heroBadge: '對外公開',
+				heroSubtitle: 'TAICHI、晶創人文、APMAR、ISAT 聯合活動',
+				highlight: { label: '地點', venue: '臺北三創生活園區 5F 和 12F', details: ['5F 國際大咖 Keynote 演講連環場', '12F 互動夜市、小吃、表演揍作伙來'], scheduleLabel: '詳細行程', scheduleTo: '/program#day1' },
+				sectionTitle: '08/05 交通方式',
+				venue: {
+					title: '08/05 場地',
+					name: '台北三創生活園區',
+					addressLabel: '地址',
+					address: '100013 臺北市中正區市民大道三段 2 號',
+					schedule: ['09:20 - 16:40　5F 展演廳（電梯與手扶梯皆可到）', '15:30 - 20:00　12F 多元廳（電梯可到）'],
+					mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.6633085538724!2d121.52874377537685!3d25.04549777780891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97b582d5a73%3A0x9b1e56ab48807d62!2z5LiJ5Ym155Sf5rS75ZyS5Y2A!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw',
+					mapLink: 'https://maps.app.goo.gl/yYLTdcVH5rSMevEF8',
+				},
+				entryGuide: {
+					title: '南瓜門',
+					steps: ['11:00 前，入場參與者請從「南瓜門」進場，按照地面上的「南瓜藍色指標」可抵達入口，直接進入搭電梯至 5F。', '11:00 後入場，可從三創生活園區各大門口進入 5F 與 12F 會場。'],
+					mapEmbedSrc: null,
+					mapLink: 'https://maps.app.goo.gl/NnrDGMokotBaiY4V9',
+				},
+				areaMap: { image: '/images/transit_syntrend_area.png', alt: '南瓜門定位與三創園區周邊地圖' },
+				routeMap: { image: '/images/transit_syntrend_route.png', alt: '三創園區進場動線圖', subtitles: ['從左找南瓜', '從右找南瓜'] },
+				videos: [{ label: '往左找南瓜', src: '/videos/往左找南瓜.mp4' }, { label: '往右找南瓜', src: '/videos/往右找南瓜.mp4' }],
+				travelPanels: [
+					{
+						title: '大眾交通',
+						items: [
+							{ title: '捷運 MRT', lines: ['捷運中和新蘆線或板南線，於「忠孝新生站」1 號出口出站，步行約 5 分鐘抵達。'] },
+							{ title: '公車 BUS', lines: ['八德路「台北科技大學站」│205、257、276', '市民大道「光華商場站」│669', '新生北路「光華商場站」│72、109、214、214 直、222、226、280、280 直、290、505、642、643、665、668、675、676、680'] },
+						],
+					},
+					{
+						title: '自行開車',
+						items: [
+							{ title: '市民大道高架道路（往西）', lines: ['於市民大道三段與建國南路出口下匝道，繼續直行於市民大道二段迴轉道轉至市民大道三段，直行過金山北路口抵達。'] },
+							{ title: '市民大道高架道路（往東）', lines: ['於市民大道三段與金山北路出口下匝道，繼續直行過金山北路交叉口抵達。'] },
+							{ title: '新生高架（往南）', lines: ['於新生北路一段與長安東路二段口出口下匝道，沿新生北路靠右連接金山北路往南方向，於迴轉道轉至金山北路往北方向，直行至市民大道路口抵達。'] },
+						],
+					},
+					{
+						title: '停車場資訊',
+						items: [
+							{ title: '城市車旅 台北三創生活園區停車場（新生高架下方）', lines: ['地址：100 臺北市中正區金山北路 23-77 號', '汽車：平日 30 元 / 半小時（當日最高 200 元）', '機車：每次 20 元', '本場全程以半小時計費，入場前 10 分鐘內免費。', '憑身心障礙證件至 B3 停管中心可享四小時免費，第五個小時起可以用館內消費折抵。', '自動繳費機可使用現金、悠遊卡及感應式信用卡支付。'] },
+						],
+						link: { label: '三創交通資訊', href: 'https://www.syntrend.com.tw/traffic.html' },
+						map: { mapLink: 'https://maps.app.goo.gl/dsFiCupwnS3ZPDQYA' },
+					},
+				],
+			},
+			{
+				id: 'day2',
+				heroImage: '/images/venue_8_6_banner.avif',
+				heroTitle: '8/6(四) 年度研討會',
+				heroSubtitle: 'TAICHI 年度學會研討會',
+				highlight: { label: '地點', venue: '國立臺北科技大學 宏裕科技大樓', details: ['論文發表與論壇講座'], scheduleLabel: '詳細行程', scheduleTo: '/program#day2' },
+				sectionTitle: '08/06 交通方式',
+				venue: {
+					title: '08/06 場地',
+					name: '國立臺北科技大學',
+					addressLabel: '地址',
+					address: '10608 臺北市大安區忠孝東路三段 1 號',
+					schedule: ['宏裕科技研究大樓'],
+					mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.6783181717664!2d121.5338784!3d25.0440642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97cd4962b0b%3A0x75144e30dbb37ee6!2z5a6P6KOV56eR5oqA5aSn5qiT!5e0!3m2!1szh-TW!2stw!4v1772020528494!5m2!1szh-TW!2stw',
+					mapLink: 'https://maps.app.goo.gl/g8wWbGHas45ytuQU7',
+				},
+				entryGuide: {
+					title: '宏裕科技研究大樓',
+					steps: ['研討會於宏裕科技研究大樓舉行，可由學校正門或捷運忠孝新生站 4 號出口進入校園，沿校園指標前往。'],
+					mapEmbedSrc: null,
+					mapLink: null,
+				},
+				routeMap: { image: '/images/transit_ntut_campus.png', alt: '國立臺北科技大學校園地圖', subtitles: [] },
+				videos: [],
+				travelPanels: [
+					{
+						title: '大眾交通',
+						items: [
+							{ title: '捷運 MRT', lines: ['藍線【板南土城線】忠孝新生站，或橘線【中和新蘆線】忠孝新生站，4 號出口即達台北科技大學。'] },
+							{ title: '公車 BUS', lines: ['台北科技大學站：212、212 直達車、232、262、299、605', '忠孝新生路口站：72、109、115、214、222、226、280、290、505、642、665、668、672、松江新生幹線'] },
+							{ title: '火車 TRA', lines: ['由台北火車站轉乘捷運【板南線】至忠孝新生站，4 號出口台北科技大學。'] },
+							{ title: '高鐵 HSR', lines: ['由高鐵台北站轉乘捷運【板南線】至忠孝新生站，4 號出口台北科技大學。'] },
+						],
+					},
+					{
+						title: '自行開車',
+						items: [
+							{ title: '國道一號', lines: ['於建國北路／松江路交流道下（靠左走建國北路高架橋），於忠孝東路出口下（循右線右轉忠孝東路），續行約 100 公尺即達本校。'] },
+							{ title: '國道三號', lines: ['於新店交流道接木柵交流道下辛亥路，轉建國南路直走至忠孝東路口即達本校。'] },
+						],
+					},
+				],
+			},
+		],
+	},
 	sponsorsSection: {
 		mainOrganizers: '主辦單位',
 		coOrganizersTitle: '共同主辦',

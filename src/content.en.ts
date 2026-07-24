@@ -566,6 +566,257 @@ export const CONTENT_EN = {
 			},
 		],
 	},
+	venueV2Section: {
+		...CONTENT_ZH.venueV2Section,
+		subtitle: 'VENUE PLAN',
+		openMap: 'OPEN MAP',
+		overview: {
+			title: 'Overview',
+			intro:
+				'TAICHI 2026 is part of a larger cross-disciplinary event series running from 2026/08/03 to 2026/08/06, co-organized with the Program on Semiconductors and Humanities, APMAR, and ISAT. Together, these events shape one connected field spanning research, exhibition, performance, and public participation. APMAR begins on 8/3 and 8/4, the four organizations jointly open to the public on 8/5, and TAICHI continues with the conference program on 8/6.',
+			events: {
+				preEvent: {
+					date: '2026/08/03–04 [APMAR]',
+					description: [
+						'APMAR opens the series on 8/3 and 8/4 with a program centered on artistic research, interdisciplinary practice, and international exchange.',
+						'Use the link below to view the official APMAR program and website.',
+					],
+					buttonLabel: 'Open APMAR Website',
+					buttonType: 'external',
+					href: 'https://sites.google.com/view/apmar2026/',
+					image: '/images/overview-02.jpg',
+				},
+				day1: {
+					date: '2026/08/05 [TAICHI × Semiconductors and Humanities × APMAR × ISAT]',
+					description: [
+						'On 8/5, Syntrend Creative Park hosts the joint public day featuring international keynotes, an interactive night market, performances, and open participation.',
+						'Use the button below to jump to the 8/5 venue details.',
+					],
+					buttonLabel: 'View 8/5 Venue Details',
+					buttonType: 'section',
+					target: 'venue-day-1',
+					image: '/images/overview-03.jpg',
+				},
+				day2: {
+					date: '2026/08/06 [TAICHI]',
+					description: [
+						'On 8/6, National Taipei University of Technology hosts the TAICHI annual conference with paper presentations, forums, and academic exchange.',
+						'Use the button below to jump to the 8/6 venue details.',
+					],
+					buttonLabel: 'View 8/6 Venue Details',
+					buttonType: 'section',
+					target: 'venue-day-2',
+					image: '/images/overview-04.jpg',
+				},
+			},
+			timeline: [
+				{ label: '8/3', sublabel: 'APMAR', key: 'preEvent' },
+				{ label: '8/4', sublabel: 'APMAR', key: 'preEvent' },
+				{ label: '8/5', sublabel: 'TAICHI, Semiconductors and Humanities / APMAR, ISAT', key: 'day1' },
+				{ label: '8/6', sublabel: 'TAICHI', key: 'day2' },
+			],
+		},
+		days: [
+			{
+				...CONTENT_ZH.venueV2Section.days[0],
+				heroTitle: '8/5(Wed): Night Market',
+				heroBadge: 'OPEN TO PUBLIC',
+				heroSubtitle: 'Joint event by TAICHI, Program on Semiconductors and Humanities, APMAR, and ISAT',
+				highlight: {
+					label: 'Venue',
+					venue: 'Syntrend Creative Park, 5F and 12F',
+					details: ['5F international keynote talks', '12F interactive night market, snacks, and Live Coding performances'],
+					scheduleLabel: 'Full Schedule',
+					scheduleTo: '/program#day1',
+				},
+				venues: [
+					{ ...CONTENT_ZH.venueV2Section.days[0].venues[0], title: '5F CLAPPER STUDIO [Syntrend Creative Park]', addressLabel: 'Address', venueLabel: 'Venue', venueName: '5F CLAPPER STUDIO hosts international keynote talks.', hours: '09:20 - 16:40', entryNote: 'Before 11:00 the general entrances and escalators are not open yet — please enter via the Pumpkin Gate Entry Guide below and take the elevator up to 5F.' },
+					{ ...CONTENT_ZH.venueV2Section.days[0].venues[1], title: '12F SYNTREND SHOW [Syntrend Creative Park]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Interactive night market, snacks, and Live Coding performances.', hours: '15:30 - 20:00' },
+				],
+				entryGuide: {
+					title: 'Pumpkin Gate Entry Guide',
+					badge: 'Before 11:00',
+					before: { timeLabel: 'Arriving before 11:00', text: 'Enter via the "Pumpkin Gate", follow the blue pumpkin floor markers to the entrance, and take the elevator directly to 5F.', mapLabel: 'Pumpkin Gate location', mapLink: 'https://maps.app.goo.gl/ajxnm5Duzy5CQN4b8' },
+					after: { timeLabel: 'Arriving after 11:00', text: 'Enter the 5F and 12F venues through any main entrance of Syntrend Creative Park.' },
+					sticker: { image: '/images/pumpkin-ground-marker.png', alt: 'Green pumpkin floor marker' },
+					locators: [
+						{ image: '/images/transit_syntrend_scene.png', caption: 'Pumpkin Gate', alt: 'Mirror pumpkin sculpture and entrance at Syntrend Creative Park' },
+						{ image: '/images/transit_syntrend_map.png', caption: 'Area map', alt: 'Syntrend Creative Park area map with Pumpkin Gate location' },
+					],
+					routeMap: { image: '/images/transit_syntrend_route.png', caption: 'Elevator route', alt: 'Indoor route map showing the Pumpkin Gate entrance and elevator location' },
+					videos: [
+						{ label: 'Route from the left', src: '/videos/pumpkin-left.mp4' },
+						{ label: 'Route from the right', src: '/videos/pumpkin-right.mp4' },
+					],
+				},
+				travelPanels: [
+					{
+						title: 'Public Transportation',
+						items: [
+							{ title: 'MRT', lines: ['Zhonghe-Xinlu Line or Bannan Line, Zhongxiao Xinsheng Station Exit 1, about a 5-minute walk.'] },
+							{ title: 'Bus', stops: [
+								{ name: 'Bade Rd. "Taipei Tech Station"', routes: ['205', '257', '276'] },
+								{ name: 'Civic Blvd. "Guanghua Market Station"', routes: ['669'] },
+								{ name: 'Xinsheng N. Rd. "Guanghua Market Station"', routes: ['72', '109', '214', '214 Exp.', '222', '226', '280', '280 Exp.', '290', '505', '642', '643', '665', '668', '675', '676', '680'] },
+							] },
+						],
+					},
+					{
+						title: 'Driving',
+						items: [
+							{ title: 'Civic Blvd. Expressway (westbound)', lines: ['Exit at Civic Blvd. Sec. 3 / Jianguo S. Rd., continue and use the U-turn on Civic Blvd. Sec. 2 back to Sec. 3, then pass the Jinshan N. Rd. intersection to arrive.'] },
+							{ title: 'Civic Blvd. Expressway (eastbound)', lines: ['Exit at Civic Blvd. Sec. 3 / Jinshan N. Rd., continue past the Jinshan N. Rd. intersection to arrive.'] },
+							{ title: 'Xinsheng Expressway (southbound)', lines: ["Exit at Xinsheng N. Rd. Sec. 1 / Chang'an E. Rd. Sec. 2, keep right along Xinsheng N. Rd. onto Jinshan N. Rd. southbound, U-turn to Jinshan N. Rd. northbound, then continue to the Civic Blvd. intersection."] },
+						],
+					},
+					{
+						title: 'Parking',
+						wide: true,
+						image: { src: '/images/transit_syntrend_parking.png', alt: 'Map of the Syntrend parking lot entrance', caption: 'Syntrend parking entrance (Jinshan N. Rd. / under Xinsheng Expressway)' },
+						items: [
+							{ title: 'CityParking Syntrend Lot (under Xinsheng Expressway)', lines: ['Address: No. 23-77, Jinshan N. Rd., Zhongzheng Dist., Taipei 100'], rates: [{ label: 'Car', value: 'NT$30 / 30 min on weekdays (max NT$200/day)' }, { label: 'Scooter', value: 'NT$20 per entry' }], notes: ['Billed per 30 minutes; free within the first 10 minutes.', 'Disability ID holders get 4 hours free at the B3 parking office; from the 5th hour, in-mall purchases can be applied.', 'Payment machines accept cash, EasyCard, and contactless credit cards.'] },
+						],
+						links: [
+							{ label: 'Parking location', href: 'https://maps.app.goo.gl/rQtA9WjDgtkUs6S59' },
+							{ label: 'Syntrend transport info', href: 'https://www.syntrend.com.tw/traffic.html' },
+						],
+					},
+				],
+			},
+			{
+				...CONTENT_ZH.venueV2Section.days[1],
+				heroTitle: '8/6(Thu): Annual Conference',
+				heroSubtitle: 'TAICHI annual conference',
+				highlight: { label: 'Venue', venue: 'NTUT Hongyu Technology Building', details: ['Paper presentations and forum sessions'], scheduleLabel: 'Full Schedule', scheduleTo: '/program#day2' },
+				venues: [{ ...CONTENT_ZH.venueV2Section.days[1].venues[0], title: 'B1 International Conference Hall [Hongyu Technology Building]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Paper presentations and talks.' }],
+				campusMap: {
+					title: 'Campus Map · Hongyu Technology Building',
+					image: '/images/transit_ntut_campus.png',
+					caption: 'The building highlighted in orange is the Hongyu Technology Building; enter via MRT Zhongxiao Xinsheng Station Exit 4 or the campus gate.',
+					alt: 'NTUT campus map with the Hongyu Technology Building highlighted in orange',
+				},
+				travelPanels: [
+					{
+						title: 'Public Transportation',
+						items: [
+							{ title: 'MRT', lines: ['Bannan Line or Zhonghe-Xinlu Line, Zhongxiao Xinsheng Station Exit 4, walk to Taipei Tech.'] },
+							{ title: 'Bus', stops: [
+								{ name: 'Taipei Tech Station', routes: ['212', '212 Exp.', '232', '262', '299', '605'] },
+								{ name: 'Zhongxiao Xinsheng Intersection', routes: ['72', '109', '115', '214', '222', '226', '280', '290', '505', '642', '665', '668', '672', 'Songjiang-Xinsheng Trunk'] },
+							] },
+							{ title: 'Train (TRA)', lines: ['From Taipei Main Station, transfer to the MRT Bannan Line to Zhongxiao Xinsheng Station Exit 4 for Taipei Tech.'] },
+							{ title: 'HSR', lines: ['From HSR Taipei Station, transfer to the MRT Bannan Line to Zhongxiao Xinsheng Station Exit 4 for Taipei Tech.'] },
+						],
+					},
+					{
+						title: 'Driving',
+						items: [
+							{ title: 'National Highway 1', lines: ['Exit at the Jianguo N. Rd. / Songjiang Rd. interchange (keep left onto the Jianguo N. Rd. elevated road), exit at Zhongxiao E. Rd. (keep right, turn right onto Zhongxiao E. Rd.), continue about 100 m to the campus.'] },
+							{ title: 'National Highway 3', lines: ['Take the Xindian interchange to the Muzha interchange, exit onto Xinhai Rd., turn onto Jianguo S. Rd., and continue to the Zhongxiao E. Rd. intersection to reach the campus.'] },
+						],
+					},
+				],
+			},
+		],
+	},
+	transitSection: {
+		...CONTENT_ZH.transitSection,
+		seoTitle: 'Transit',
+		seoDescription: 'TAICHI 2026 transit and arrival guide: Syntrend Creative Park (8/5) and National Taipei University of Technology (8/6).',
+		openMapLabel: 'Open in Google Maps',
+		mapPlaceholder: '[ Google Map ]',
+		videoPlaceholder: 'Video coming soon',
+		days: [
+			{
+				...CONTENT_ZH.transitSection.days[0],
+				heroTitle: '8/5(Wed): Night Market',
+				heroBadge: 'OPEN TO PUBLIC',
+				heroSubtitle: 'Joint event by TAICHI, Program on Semiconductors and Humanities, APMAR, and ISAT',
+				highlight: { label: 'Venue', venue: 'Syntrend Creative Park, 5F and 12F', details: ['5F international keynote talks', '12F interactive night market, snacks, and Live Coding performances'], scheduleLabel: 'Full Schedule', scheduleTo: '/program#day1' },
+				sectionTitle: '08/05 Getting There',
+				venue: {
+					...CONTENT_ZH.transitSection.days[0].venue,
+					title: '08/05 Venue',
+					name: 'Syntrend Creative Park',
+					addressLabel: 'Address',
+					address: 'No. 2, Sec. 3, Civic Blvd., Zhongzheng Dist., Taipei City 100013',
+					schedule: ['09:20 - 16:40　5F Exhibition Hall (elevator & escalator)', '15:30 - 20:00　12F Multi-purpose Hall (elevator only)'],
+				},
+				entryGuide: {
+					...CONTENT_ZH.transitSection.days[0].entryGuide,
+					title: 'The Pumpkin Gate',
+					steps: ['Before 11:00, please enter through the “Pumpkin Gate”, follow the blue pumpkin markers on the ground to the entrance, and take the elevator directly up to 5F.', 'After 11:00, you may enter the 5F and 12F venues through any Syntrend Creative Park entrance.'],
+				},
+				areaMap: { ...CONTENT_ZH.transitSection.days[0].areaMap, alt: 'Pumpkin Gate location and Syntrend Creative Park area map' },
+				routeMap: { ...CONTENT_ZH.transitSection.days[0].routeMap, alt: 'Syntrend Creative Park arrival route map', subtitles: ['Pumpkin on the left', 'Pumpkin on the right'] },
+				videos: [{ label: 'Find the pumpkin (left)', src: '/videos/往左找南瓜.mp4' }, { label: 'Find the pumpkin (right)', src: '/videos/往右找南瓜.mp4' }],
+				travelPanels: [
+					{
+						title: 'Public Transportation',
+						items: [
+							{ title: 'MRT', lines: ['Take the Zhonghe-Xinlu Line or Bannan Line to Zhongxiao Xinsheng Station, leave via Exit 1, and walk about 5 minutes.'] },
+							{ title: 'Bus', lines: ['Bade Rd. “Taipei Tech Station” │ 205, 257, 276', 'Civic Blvd. “Guanghua Market Station” │ 669', 'Xinsheng N. Rd. “Guanghua Market Station” │ 72, 109, 214, 214 Express, 222, 226, 280, 280 Express, 290, 505, 642, 643, 665, 668, 675, 676, 680'] },
+						],
+					},
+					{
+						title: 'Driving',
+						items: [
+							{ title: 'Civic Blvd. Expressway (westbound)', lines: ['Take the Sec. 3 Civic Blvd. / Jianguo S. Rd. exit, continue to the Sec. 2 Civic Blvd. U-turn back onto Sec. 3, and drive past the Jinshan N. Rd. intersection to arrive.'] },
+							{ title: 'Civic Blvd. Expressway (eastbound)', lines: ['Take the Sec. 3 Civic Blvd. / Jinshan N. Rd. exit and continue past the Jinshan N. Rd. intersection to arrive.'] },
+							{ title: 'Xinsheng Expressway (southbound)', lines: ['Take the Sec. 1 Xinsheng N. Rd. / Sec. 2 Chang’an E. Rd. exit, keep right along Xinsheng N. Rd. onto Jinshan N. Rd. southbound, U-turn to Jinshan N. Rd. northbound, and continue to the Civic Blvd. intersection.'] },
+						],
+					},
+					{
+						title: 'Parking',
+						items: [
+							{ title: 'CityParking – Syntrend Creative Park Lot (under the Xinsheng elevated road)', lines: ['Address: No. 23-77, Jinshan N. Rd., Zhongzheng Dist., Taipei City 100', 'Car: NT$30 / 30 min on weekdays (NT$200 daily max)', 'Motorcycle: NT$20 per entry', 'Billed per half hour; free within the first 10 minutes.', 'With a disability ID, enjoy 4 hours free at the B3 parking office; from the 5th hour, in-mall purchases can offset fees.', 'Auto-pay machines accept cash, EasyCard, and contactless credit cards.'] },
+						],
+						link: { label: 'Syntrend Traffic Info', href: 'https://www.syntrend.com.tw/traffic.html' },
+						map: { mapLink: 'https://maps.app.goo.gl/dsFiCupwnS3ZPDQYA' },
+					},
+				],
+			},
+			{
+				...CONTENT_ZH.transitSection.days[1],
+				heroTitle: '8/6(Thu): Annual Conference',
+				heroSubtitle: 'TAICHI annual conference',
+				highlight: { label: 'Venue', venue: 'NTUT Hongyu Technology Building', details: ['Paper presentations and forum sessions'], scheduleLabel: 'Full Schedule', scheduleTo: '/program#day2' },
+				sectionTitle: '08/06 Getting There',
+				venue: {
+					...CONTENT_ZH.transitSection.days[1].venue,
+					title: '08/06 Venue',
+					name: 'National Taipei University of Technology',
+					addressLabel: 'Address',
+					address: "No. 1, Sec. 3, Zhongxiao E. Rd., Da'an Dist., Taipei City 10608",
+					schedule: ['Hongyu Technology Research Building'],
+				},
+				entryGuide: {
+					...CONTENT_ZH.transitSection.days[1].entryGuide,
+					title: 'Hongyu Technology Research Building',
+					steps: ['The conference is held in the Hongyu Technology Research Building. Enter the campus via the main gate or Zhongxiao Xinsheng Station Exit 4 and follow the campus signage.'],
+				},
+				routeMap: { ...CONTENT_ZH.transitSection.days[1].routeMap, alt: 'NTUT campus map' },
+				travelPanels: [
+					{
+						title: 'Public Transportation',
+						items: [
+							{ title: 'MRT', lines: ['Bannan (Blue) Line or Zhonghe-Xinlu (Orange) Line to Zhongxiao Xinsheng Station; Exit 4 reaches Taipei Tech.'] },
+							{ title: 'Bus', lines: ['Taipei Tech Station: 212, 212 Express, 232, 262, 299, 605', 'Zhongxiao Xinsheng Intersection: 72, 109, 115, 214, 222, 226, 280, 290, 505, 642, 665, 668, 672, Songjiang-Xinsheng Trunk'] },
+							{ title: 'Train (TRA)', lines: ['From Taipei Main Station, transfer to the MRT Bannan Line to Zhongxiao Xinsheng Station, Exit 4 for Taipei Tech.'] },
+							{ title: 'HSR', lines: ['From HSR Taipei Station, transfer to the MRT Bannan Line to Zhongxiao Xinsheng Station, Exit 4 for Taipei Tech.'] },
+						],
+					},
+					{
+						title: 'Driving',
+						items: [
+							{ title: 'National Freeway 1', lines: ['Exit at the Jianguo N. Rd. / Songjiang Rd. interchange (keep left onto the Jianguo N. Rd. viaduct), take the Zhongxiao E. Rd. exit (turn right onto Zhongxiao E. Rd.), and continue about 100 m to the campus.'] },
+							{ title: 'National Freeway 3', lines: ['At the Xindian interchange connect to the Muzha interchange, exit onto Xinhai Rd., turn onto Jianguo S. Rd., and continue to the Zhongxiao E. Rd. intersection to reach the campus.'] },
+						],
+					},
+				],
+			},
+		],
+	},
 	sponsorsSection: {
 		...CONTENT_ZH.sponsorsSection,
 		mainOrganizers: 'Main Organizers',

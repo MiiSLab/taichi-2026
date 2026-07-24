@@ -18,7 +18,9 @@ const ProgramPage = lazy(() => import('./pages/ProgramPage'));
 const QPage = lazy(() => import('./pages/QPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
 const SponsorshipPage = lazy(() => import('./pages/SponsorshipPage'));
+const TransitPage = lazy(() => import('./pages/TransitPage'));
 const VenuePage = lazy(() => import('./pages/VenuePage'));
+const VenueV2Page = lazy(() => import('./pages/VenueV2Page'));
 const VotePage = lazy(() => import('./pages/VotePage'));
 
 const RouteFallback: React.FC = () => (
@@ -73,6 +75,8 @@ const App: React.FC = () => {
 									<Route path='family-friendly' element={<FamilyFriendlyPage />} />
 									<Route path='lab/arcade-hero-scroll' element={<HeroLabPage />} />
 									<Route path='venue' element={<VenuePage />} />
+									<Route path='venue-v2' element={<VenueV2Page />} />
+									<Route path='transit' element={<TransitPage />} />
 									<Route path='organization' element={<OrganizationPage />} />
 									<Route path='sponsorship' element={<SponsorshipPage />} />
 									<Route path='registration' element={<RegistrationPage />} />
