@@ -630,10 +630,15 @@ export const CONTENT_EN = {
 					scheduleLabel: 'Full Schedule',
 					scheduleTo: '/program#day1',
 				},
-				venues: [
-					{ ...CONTENT_ZH.venueV2Section.days[0].venues[0], title: '5F CLAPPER STUDIO [Syntrend Creative Park]', addressLabel: 'Address', venueLabel: 'Venue', venueName: '5F CLAPPER STUDIO hosts international keynote talks.', hours: '09:20 - 16:40', entryNote: 'Before 11:00 the general entrances and escalators are not open yet — please enter via the Pumpkin Gate Entry Guide below and take the elevator up to 5F.' },
-					{ ...CONTENT_ZH.venueV2Section.days[0].venues[1], title: '12F SYNTREND SHOW [Syntrend Creative Park]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Interactive night market, snacks, and Live Coding performances.', hours: '15:30 - 20:00' },
-				],
+				venue: {
+					...CONTENT_ZH.venueV2Section.days[0].venue,
+					sectionTitle: 'Getting Here',
+					name: 'Syntrend Creative Park',
+					addressLabel: 'Address',
+					address: 'No. 2, Sec. 3, Civic Blvd., Zhongzheng Dist., Taipei City 100013',
+					schedule: ['09:20 - 16:40　5F Exhibition Hall (elevator & escalator)', '15:30 - 20:00　12F Multi-purpose Hall (elevator only)'],
+					entryNote: 'Before 11:00 the general entrances and escalators are not open yet — please enter via the Pumpkin Gate Entry Guide below and take the elevator up to 5F.',
+				},
 				entryGuide: {
 					title: 'Pumpkin Gate Entry Guide',
 					badge: 'Before 11:00',
@@ -689,7 +694,14 @@ export const CONTENT_EN = {
 				heroTitle: '8/6(Thu): Annual Conference',
 				heroSubtitle: 'TAICHI annual conference',
 				highlight: { label: 'Venue', venue: 'NTUT Hongyu Technology Building', details: ['Paper presentations and forum sessions'], scheduleLabel: 'Full Schedule', scheduleTo: '/program#day2' },
-				venues: [{ ...CONTENT_ZH.venueV2Section.days[1].venues[0], title: 'B1 International Conference Hall [Hongyu Technology Building]', addressLabel: 'Address', venueLabel: 'Venue', venueName: 'Paper presentations and talks.' }],
+				venue: {
+					...CONTENT_ZH.venueV2Section.days[1].venue,
+					sectionTitle: 'Getting Here',
+					name: 'National Taipei University of Technology',
+					addressLabel: 'Address',
+					address: "No. 1, Sec. 3, Zhongxiao E. Rd., Da'an Dist., Taipei City 10608",
+					schedule: ['Hongyu Technology Research Building'],
+				},
 				campusMap: {
 					title: 'Campus Map · Hongyu Technology Building',
 					image: '/images/transit_ntut_campus.png',

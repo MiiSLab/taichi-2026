@@ -56,6 +56,16 @@ type V2EntryGuide = {
 };
 type V2CampusMap = { title: string; image: string; caption: string; alt: string };
 type V2Highlight = { label: string; venue: string; details: readonly string[]; scheduleLabel: string; scheduleTo: string };
+type V2VenueInfo = {
+	sectionTitle: string;
+	name: string;
+	addressLabel: string;
+	address: string;
+	schedule: readonly string[];
+	entryNote?: string;
+	mapEmbedSrc: string;
+	mapLink: string;
+};
 type V2Day = {
 	id: string;
 	tabLabel: string;
@@ -64,7 +74,7 @@ type V2Day = {
 	heroBadge?: string;
 	heroSubtitle: string;
 	highlight: V2Highlight;
-	venues: readonly V2Venue[];
+	venue: V2VenueInfo;
 	entryGuide?: V2EntryGuide;
 	campusMap?: V2CampusMap;
 	travelPanels: readonly V2TravelPanel[];
@@ -289,6 +299,13 @@ const EntryGuide = ({ guide, language }: { guide: V2EntryGuide; language: string
 					) : null}
 				</div>
 			</div>
+			<div className='mt-4 rounded-[10px] border-l-4 border-white/25 bg-black/40 px-6 py-5'>
+				<div className='mb-2 flex items-center gap-2 font-mono text-sm font-bold text-white/80'>
+					<Clock size={15} />
+					{guide.after.timeLabel}
+				</div>
+				<p className={`${typography.scale.body} text-white/75`}>{guide.after.text}</p>
+			</div>
 			<div className='mt-10'>
 				<h4 className='mb-4 font-mono text-sm font-bold uppercase tracking-[0.15em] text-secondary'>{locateLabel}</h4>
 				<div className='grid gap-4 sm:grid-cols-2'>
@@ -463,51 +480,43 @@ const VenueV2Page: React.FC = () => {
 
 						<div className='bg-gradient-to-b from-black to-[#09090b] py-16 md:py-[65px]'>
 							<div className='flex flex-col w-full gap-10 px-4 mx-auto max-w-7xl md:gap-12 md:px-8'>
-								<div className='flex flex-col gap-8'>
-									{day.venues.map((venue, index) => (
-										<ScrollReveal key={`${day.id}-${venue.title}`} delay={index * 90}>
-											<div className='grid gap-6 xl:grid-cols-[minmax(0,592px)_minmax(0,592px)] xl:justify-between xl:gap-8'>
-												<FramePanel className='min-h-[420px] bg-[rgba(9,9,11,0.8)] md:min-h-[475px]' contentClassName='relative flex h-full min-h-[420px] flex-col md:min-h-[475px]' cornerSize={16}>
-													<div className={`${panelFrame.sectionDivider} px-6 py-6 md:px-10 md:pb-[18px] md:pt-10`}>
-														<h3 className='font-mono text-[24px] font-bold leading-8 text-white'>{venue.title}</h3>
-													</div>
-													<div className={`px-6 pt-5 ${typography.scale.body} text-white/80 md:px-10 md:pt-6`}>
-														<p>{venue.venueName}</p>
-														<p>{venue.addressLabel}：{language === 'en' ? venue.addressEn : venue.addressZh}</p>
-														{venue.hours ? <p className='mt-1 text-white/80'>{language === 'en' ? 'Event hours: ' : '活動時間：'}{venue.hours}</p> : null}
-														{venue.entryNote ? (
-															<div className='mt-3 flex items-start gap-2 rounded-[8px] border border-primary bg-primary/10 px-3 py-2'>
-																<AlertTriangle size={16} className='mt-0.5 shrink-0 text-primary' />
-																<span className='font-mono text-[13px] font-bold leading-5 text-primary'>{venue.entryNote}</span>
-															</div>
-														) : null}
-													</div>
-													<div className={`mx-4 mb-4 mt-5 h-[280px] bg-[rgba(9,9,11,0.8)] p-4 md:absolute md:inset-x-4 md:bottom-4 ${venue.entryNote ? 'md:top-[300px]' : venue.hours ? 'md:top-[220px]' : 'md:top-[196px]'} md:mx-0 md:mb-0 md:mt-0 md:h-auto md:p-6`}>
-														<div className='relative h-full overflow-hidden bg-[#27272a]'>
-															{venue.mapEmbedSrc ? (
-																<iframe
-																	className='absolute inset-0 w-full h-full border-0'
-																	src={venue.mapEmbedSrc}
-																	title={venue.title}
-																	loading='lazy'
-																	referrerPolicy='no-referrer-when-downgrade'
-																/>
-															) : (
-																<div className='flex items-center justify-center h-full px-6 font-mono text-sm text-center text-white/50'>[Google Maps 位置]</div>
-															)}
-														</div>
-													</div>
-												</FramePanel>
-
-												<div className='relative min-h-[320px] md:min-h-[475px]'>
-													<div className='absolute inset-4 overflow-hidden md:inset-[26px]'>
-														<img src={venue.photoImage} alt={venue.title} className='object-cover w-full h-full opacity-80' />
-													</div>
+								<ScrollReveal>
+									<FramePanel className='bg-[rgba(9,9,11,0.8)]' contentClassName='px-6 py-6 md:px-10 md:py-10' cornerSize={16}>
+										<div className='grid gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,540px)] lg:items-start'>
+											<div>
+												<div className='flex flex-wrap items-center gap-x-3 gap-y-2'>
+													<h3 className='font-mono text-[24px] font-bold leading-8 text-white'>{day.venue.sectionTitle}</h3>
+													<span className='inline-flex items-center rounded bg-secondary/15 px-2.5 py-1 font-mono text-sm font-bold text-secondary'>{day.venue.name}</span>
 												</div>
+												<div className={`mt-4 space-y-1 ${typography.scale.body} text-white/80`}>
+													<p>{day.venue.addressLabel}：{day.venue.address}</p>
+													{day.venue.schedule.map((line) => (
+														<p key={line}>{line}</p>
+													))}
+												</div>
+												{day.venue.entryNote ? (
+													<div className='mt-4 flex items-start gap-2 rounded-[8px] border border-primary bg-primary/10 px-3 py-2'>
+														<AlertTriangle size={16} className='mt-0.5 shrink-0 text-primary' />
+														<span className='font-mono text-[13px] font-bold leading-5 text-primary'>{day.venue.entryNote}</span>
+													</div>
+												) : null}
 											</div>
-										</ScrollReveal>
-									))}
-								</div>
+											<div className='relative aspect-[4/3] w-full overflow-hidden rounded-[8px] bg-[#27272a] lg:aspect-[16/10]'>
+												{day.venue.mapEmbedSrc ? (
+													<iframe
+														className='absolute inset-0 w-full h-full border-0'
+														src={day.venue.mapEmbedSrc}
+														title={day.venue.name}
+														loading='lazy'
+														referrerPolicy='no-referrer-when-downgrade'
+													/>
+												) : (
+													<div className='flex items-center justify-center h-full px-6 font-mono text-sm text-center text-white/50'>[Google Maps 位置]</div>
+												)}
+											</div>
+										</div>
+									</FramePanel>
+								</ScrollReveal>
 
 								{day.entryGuide ? (
 									<ScrollReveal>

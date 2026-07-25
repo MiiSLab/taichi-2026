@@ -722,10 +722,16 @@ export const CONTENT_ZH = {
 				heroBadge: '對外公開',
 				heroSubtitle: 'TAICHI、晶創人文、APMAR、ISAT 聯合活動',
 				highlight: { label: '地點', venue: '臺北三創生活園區 5F 和 12F', details: ['5F 國際大咖 Keynote 演講連環場', '12F 互動夜市、小吃、表演揍作伙來'], scheduleLabel: '詳細行程', scheduleTo: '/program#day1' },
-				venues: [
-					{ title: '5F 展演廳 [三創生活園區]', subtitle: 'Syntrend Creative Park, Taipei', addressLabel: '地址', addressZh: '100013 臺北市中正區市民大道三段 2 號', addressEn: 'No. 2, Sec. 3, Civic Blvd., Zhongzheng Dist., Taipei City 100013', venueLabel: '會議場地', venueName: '5F 廳提供 keynote 與論壇，滿滿大咖國際演講。', hours: '09:20 - 16:40', entryNote: '11:00前入口與手扶梯尚未開放，請由下方「南瓜門進場指引」搭電梯上 5F。', photoImage: '/images/day1_5F.jpg', mapLink: 'https://maps.app.goo.gl/yYLTdcVH5rSMevEF8', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.6633085538724!2d121.52874377537685!3d25.04549777780891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97b582d5a73%3A0x9b1e56ab48807d62!2z5LiJ5Ym155Sf5rS75ZyS5Y2A!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw' },
-					{ title: '12F 多元廳 [三創生活園區]', subtitle: 'Syntrend Creative Park, Taipei', addressLabel: '地址', addressZh: '100013 臺北市中正區市民大道三段 2 號', addressEn: 'No. 2, Sec. 3, Civic Blvd., Zhongzheng Dist., Taipei City 100013', venueLabel: '會議場地', venueName: '互動夜市、小吃、表演。', hours: '15:30 - 20:00', photoImage: '/images/day1_12F.jpg', mapLink: 'https://maps.app.goo.gl/yYLTdcVH5rSMevEF8', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.6633085538724!2d121.52874377537685!3d25.04549777780891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97b582d5a73%3A0x9b1e56ab48807d62!2z5LiJ5Ym155Sf5rS75ZyS5Y2A!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw' },
-				],
+				venue: {
+					sectionTitle: '交通方式',
+					name: '台北三創生活園區',
+					addressLabel: '地址',
+					address: '100013 臺北市中正區市民大道三段 2 號',
+					schedule: ['09:20 - 16:40　5F 展演廳（電梯與手扶梯皆可到）', '15:30 - 20:00　12F 多元廳（電梯可到）'],
+					entryNote: '11:00前入口與手扶梯尚未開放，請由下方「南瓜門進場指引」搭電梯上 5F。',
+					mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3614.6633085538724!2d121.52874377537685!3d25.04549777780891!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97b582d5a73%3A0x9b1e56ab48807d62!2z5LiJ5Ym155Sf5rS75ZyS5Y2A!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw',
+					mapLink: 'https://maps.app.goo.gl/yYLTdcVH5rSMevEF8',
+				},
 				entryGuide: {
 					title: '南瓜門進場指引',
 					badge: '11:00 前',
@@ -783,9 +789,15 @@ export const CONTENT_ZH = {
 				heroTitle: '8/6(四) 年度研討會',
 				heroSubtitle: 'TAICHI 年度學會研討會',
 				highlight: { label: '地點', venue: '國立臺北科技大學 宏裕科技大樓', details: ['論文發表與論壇講座'], scheduleLabel: '詳細行程', scheduleTo: '/program#day2' },
-				venues: [
-					{ title: 'B1 國際會議廳 [宏裕科技大樓]', subtitle: 'National Taipei University of Technology, Taipei', addressLabel: '地址', addressZh: '10608 臺北市大安區忠孝東路三段 1 號', addressEn: "No. 1, Sec. 3, Zhongxiao E. Rd., Da'an Dist., Taipei City 10608", venueLabel: '會議場地', venueName: '論文發表、講座。', photoImage: '/images/day2_X.avif', mapLink: 'https://maps.app.goo.gl/g8wWbGHas45ytuQU7', mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.6783181717664!2d121.5338784!3d25.0440642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97cd4962b0b%3A0x75144e30dbb37ee6!2z5a6P6KOV56eR5oqA5aSn5qiT!5e0!3m2!1szh-TW!2stw!4v1772020528494!5m2!1szh-TW!2stw' },
-				],
+				venue: {
+					sectionTitle: '交通方式',
+					name: '國立臺北科技大學',
+					addressLabel: '地址',
+					address: '10608 臺北市大安區忠孝東路三段 1 號',
+					schedule: ['宏裕科技研究大樓'],
+					mapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d903.6783181717664!2d121.5338784!3d25.0440642!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a97cd4962b0b%3A0x75144e30dbb37ee6!2z5a6P6KOV56eR5oqA5aSn5qiT!5e0!3m2!1szh-TW!2stw!4v1772020528494!5m2!1szh-TW!2stw',
+					mapLink: 'https://maps.app.goo.gl/g8wWbGHas45ytuQU7',
+				},
 				campusMap: {
 					title: '校園位置圖 · 宏裕科技研究大樓',
 					image: '/images/transit_ntut_campus.png',
