@@ -235,8 +235,8 @@ const ProgramPage: React.FC = () => {
 		},
 		{
 			header: day2Info.venueHeaders.second,
-			// 教室的活動是細粒度時段，直接貢獻時間區間列（例如主廳沒事的午餐時段）
-			scheduleTimes: day2Info.secondVenue.events.map((event) => event.time),
+			// 教室是跨主議程多個時段的粗粒度區塊，不貢獻時間列、改跨既有列（見上方 rowTimes 註解）
+			scheduleTimes: undefined,
 			events: day2Info.secondVenue.events,
 		},
 	];

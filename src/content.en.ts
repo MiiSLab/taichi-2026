@@ -450,12 +450,11 @@ export const CONTENT_EN = {
 			},
 		},
 		day2: {
-			// Second venue (classroom) name TBD; two confirmed sessions: general assembly over lunch, board meeting after
-			venueHeaders: { main: 'International Conference Hall', second: 'Classroom (TBD)' },
+			// Second venue confirmed: 6th Teaching Building Room 427; the three afternoon meetings run together as one block
+			venueHeaders: { main: 'International Conference Hall', second: '6th Teaching Building, Room 427' },
 			secondVenue: {
 				events: [
-					{ time: '12:10 - 13:45', title: 'General Assembly' },
-					{ time: '13:45 - 14:45', title: 'Board Meeting' },
+					{ time: '12:00 - 14:20', title: 'General Assembly + Board Meeting + ACM SIGCHI Taipei Chapter Election Meeting' },
 				],
 			},
 			sessions: [
@@ -466,16 +465,18 @@ export const CONTENT_EN = {
 					location: 'National Taipei University of Technology, Hongyu Technology Building B1 International Conference Hall',
 					// kind: 'break' = non-session slots (registration/breaks/lunch), rendered as muted dashed blocks
 					schedule: [
-						{ time: '8:15 - 8:50', label: 'Registration', kind: 'break' },
-						{ time: '8:50 - 9:50', label: 'Paper Session I' },
-						{ time: '9:50 - 10:50', label: 'Paper Session II' },
-						{ time: '10:50 - 11:10', label: 'Poster session', sublabel: '(Coffee break)', kind: 'break' },
-						{ time: '11:10 - 12:10', label: 'Graduate Thesis Award Presentations' },
-						{ time: '12:10 - 13:45', label: 'Lunch Break', kind: 'break' },
-						{ time: '13:45 - 14:45', label: 'Paper Session III' },
-						{ time: '14:45 - 15:45', label: 'Paper Session IV' },
-						{ time: '15:45 - 16:05', label: 'Poster session', sublabel: '(Coffee break)', kind: 'break' },
-						{ time: '16:05 - 16:40', label: 'Award / Closing / TAICHI 2027' },
+						{ time: '08:30 - 09:00', label: 'Registration', kind: 'break' },
+						{ time: '09:00 - 09:50', label: 'Paper Session I' },
+						{ time: '09:50 - 10:00', label: 'Break', kind: 'break' },
+						{ time: '10:00 - 10:50', label: 'Paper Session II' },
+						{ time: '10:50 - 11:10', label: 'Poster session', sublabel: '(Coffee Break)', kind: 'break' },
+						{ time: '11:10 - 12:00', label: 'Graduate Thesis Award Presentations' },
+						{ time: '12:00 - 13:30', label: 'Lunch Break', kind: 'break' },
+						{ time: '13:30 - 14:20', label: 'Paper Session III' },
+						{ time: '14:20 - 14:30', label: 'Break', kind: 'break' },
+						{ time: '14:30 - 15:20', label: 'Paper Session IV' },
+						{ time: '15:20 - 15:40', label: 'Poster session', sublabel: '(Coffee Break)', kind: 'break' },
+						{ time: '15:40 - 16:20', label: 'Award / Closing / TAICHI 2027' },
 					],
 				},
 			],

@@ -532,12 +532,11 @@ export const CONTENT_ZH = {
 			},
 		},
 		day2: {
-			// 第二場地（教室）目前確定兩場：午餐時段會員大會、下午理監事會議
-			venueHeaders: { main: '國際會議廳', second: '教室(待定)' },
+			// 第二場地（教室）確認為第六教學大樓 427；午後三場會議合併為同一時段進行
+			venueHeaders: { main: '國際會議廳', second: '第六教學大樓 427' },
 			secondVenue: {
 				events: [
-					{ time: '12:10 - 13:45', title: '會員大會' },
-					{ time: '13:45 - 14:45', title: '理監事會議' },
+					{ time: '12:00 - 14:20', title: '會員大會 + 理監事會議 + ACM SIGCHI Taipei Chapter Election Meeting' },
 				],
 			},
 			sessions: [
@@ -548,16 +547,18 @@ export const CONTENT_ZH = {
 					location: '國立臺北科技大學宏裕科技大樓 B1國際會議廳',
 					// kind: 'break' = 非議程時段（報到/休息/午餐），時間表以灰色虛線框呈現
 					schedule: [
-						{ time: '8:15 - 8:50', label: 'Registration', kind: 'break' },
-						{ time: '8:50 - 9:50', label: 'Paper Session I' },
-						{ time: '9:50 - 10:50', label: 'Paper Session II' },
-						{ time: '10:50 - 11:10', label: 'Poster session', sublabel: '(Coffee break)', kind: 'break' },
-						{ time: '11:10 - 12:10', label: '碩博士論文獎發表' },
-						{ time: '12:10 - 13:45', label: 'Lunch Break', kind: 'break' },
-						{ time: '13:45 - 14:45', label: 'Paper Session III' },
-						{ time: '14:45 - 15:45', label: 'Paper Session IV' },
-						{ time: '15:45 - 16:05', label: 'Poster session', sublabel: '(Coffee break)', kind: 'break' },
-						{ time: '16:05 - 16:40', label: 'Award / Closing / TAICHI 2027' },
+						{ time: '08:30 - 09:00', label: 'Registration', kind: 'break' },
+						{ time: '09:00 - 09:50', label: 'Paper Session I' },
+						{ time: '09:50 - 10:00', label: 'Break', kind: 'break' },
+						{ time: '10:00 - 10:50', label: 'Paper Session II' },
+						{ time: '10:50 - 11:10', label: 'Poster session', sublabel: '(Coffee Break)', kind: 'break' },
+						{ time: '11:10 - 12:00', label: '碩博士論文獎發表' },
+						{ time: '12:00 - 13:30', label: 'Lunch Break', kind: 'break' },
+						{ time: '13:30 - 14:20', label: 'Paper Session III' },
+						{ time: '14:20 - 14:30', label: 'Break', kind: 'break' },
+						{ time: '14:30 - 15:20', label: 'Paper Session IV' },
+						{ time: '15:20 - 15:40', label: 'Poster session', sublabel: '(Coffee Break)', kind: 'break' },
+						{ time: '15:40 - 16:20', label: 'Award / Closing / TAICHI 2027' },
 					],
 				},
 			],
