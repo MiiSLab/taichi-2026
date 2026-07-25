@@ -488,11 +488,20 @@ const VenueV2Page: React.FC = () => {
 													<h3 className='font-mono text-[24px] font-bold leading-8 text-white'>{day.venue.sectionTitle}</h3>
 													<span className='inline-flex items-center rounded bg-secondary/15 px-2.5 py-1 font-mono text-sm font-bold text-secondary'>{day.venue.name}</span>
 												</div>
-												<div className={`mt-4 space-y-1 ${typography.scale.body} text-white/80`}>
+												<div className={`mt-4 ${typography.scale.body} text-white/80`}>
 													<p>{day.venue.addressLabel}：{day.venue.address}</p>
-													{day.venue.schedule.map((line) => (
-														<p key={line}>{line}</p>
-													))}
+													<div className='mt-4 space-y-4'>
+														{day.venue.schedule.map((item) => {
+															const [time, ...rest] = item.split('　');
+															const place = rest.join('　');
+															return (
+																<div key={item} className='space-y-0.5'>
+																	<p>{time}</p>
+																	{place ? <p className='text-white/70'>{place}</p> : null}
+																</div>
+															);
+														})}
+													</div>
 												</div>
 												{day.venue.entryNote ? (
 													<div className='mt-4 flex items-start gap-2 rounded-[8px] border border-primary bg-primary/10 px-3 py-2'>
