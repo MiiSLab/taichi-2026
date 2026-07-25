@@ -301,7 +301,7 @@ const EntryGuide = ({ guide, language }: { guide: V2EntryGuide; language: string
 						</figure>
 					))}
 				</div>
-				<div className='mt-5 flex justify-center'>
+				<div className='flex justify-center mt-5'>
 					<LinkButton href={guide.before.mapLink} label={guide.before.mapLabel} />
 				</div>
 			</div>
