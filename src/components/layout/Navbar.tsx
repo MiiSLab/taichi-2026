@@ -145,7 +145,7 @@ const Navbar: React.FC = () => {
 	const activeSubmenu: { label: string; to: string; hash?: string }[] = isCFPPage
 		? content.nav.cfpSubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/cfp${item.hash}` }))
 		: isVenuePage
-			? content.venueSection.submenuItems.map((item) => ({ label: item.label, hash: `#${item.target}`, to: `/venue#${item.target}` }))
+			? content.venueV2Section.days.map((day, index) => ({ label: day.tabLabel, hash: `#day${index + 1}`, to: `/venue#day${index + 1}` }))
 			: isProgramPage
 				? content.programPageSection.dateTabs.map((tab) => ({ label: `${tab.date} ${tab.day}`, hash: `#${tab.key}`, to: `/program#${tab.key}` }))
 				: isOrgSponsorsPage
@@ -156,11 +156,11 @@ const Navbar: React.FC = () => {
 					: [];
 
 	const submenuHashes = activeSubmenu.map((item) => item.hash).filter((h): h is string => Boolean(h));
-	const scrollSpyHash = useScrollSpy(isProgramPage ? [] : submenuHashes);
+	const scrollSpyHash = useScrollSpy(isProgramPage || isVenuePage ? [] : submenuHashes);
 	// Active by scroll-spy hash (same-page anchors), by pathname (cross-page links),
 	// or by the raw hash (program day tabs — no hash defaults to day1).
 	const isSubmenuActive = (item: { hash?: string; to: string }) => {
-		if (isProgramPage) return (location.hash || '#day1') === item.hash;
+		if (isProgramPage || isVenuePage) return (location.hash || '#day1') === item.hash;
 		return item.hash ? scrollSpyHash === item.hash : location.pathname === item.to;
 	};
 
@@ -198,11 +198,7 @@ const Navbar: React.FC = () => {
 
 	const submenuByKey: Record<'cfp' | 'venue' | 'orgSponsors', { label: string; to: string; hash?: string }[]> = {
 		cfp: content.nav.cfpSubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/cfp${item.hash}` })),
-		venue: content.venueSection.submenuItems.map((item) => ({
-			label: item.label,
-			hash: `#${item.target}`,
-			to: `/venue#${item.target}`,
-		})),
+		venue: content.venueV2Section.days.map((day, index) => ({ label: day.tabLabel, hash: `#day${index + 1}`, to: `/venue#day${index + 1}` })),
 		orgSponsors: [
 			{ label: 'Organization', to: '/organization' },
 			{ label: 'Sponsors', to: '/sponsorship' },

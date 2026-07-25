@@ -1,7 +1,7 @@
 import { AlertTriangle, CalendarDays, ChevronLeft, ChevronRight, ChevronUp, Clock, ExternalLink, X } from 'lucide-react';
 import React, { useEffect, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
-import { Link } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import FramePanel from '../components/FramePanel';
 import ScrollReveal from '../components/ScrollReveal';
 import WarpBackground from '../components/WarpBackground';
@@ -367,57 +367,31 @@ const VenueV2Page: React.FC = () => {
 	const content = useContent();
 	const { language } = useLanguage();
 	const venueContent = content.venueV2Section as unknown as VenueV2Section;
-	const [hoveredTimelineKey, setHoveredTimelineKey] = useState<string | null>(null);
 	const [showBackToTop, setShowBackToTop] = useState(false);
-	const mobileTimeline = [
-		{ label: '8/3-4', sublabel: 'APMAR', key: 'preEvent' as const },
-		{ label: '8/5', sublabel: 'TAICHI\n晶創人文\nAPMAR\nISAT', key: 'day1' as const },
-		{ label: '8/6', sublabel: 'TAICHI', key: 'day2' as const },
-	];
+	const location = useLocation();
+	const navigate = useNavigate();
+	const activeIndex = location.hash === '#day2' ? 1 : 0;
+	const activeDayData = venueContent.days[activeIndex] ?? venueContent.days[0];
 
 	useSEO(
-		language === 'zh' ? '場地資訊 V2' : 'Venue V2',
+		language === 'zh' ? '場地資訊' : 'Venue',
 		language === 'zh'
 			? 'TAICHI 2026 場地與交通資訊：三創生活園區南瓜門進場指引與國立臺北科技大學。'
 			: 'TAICHI 2026 venue and transit information: Pumpkin Gate entry guide at Syntrend Creative Park and NTUT.',
 	);
 
 	useEffect(() => {
-		const handleScroll = () => {
-			const scrolledPastHeader = window.scrollY > 120;
-			const jumpedToSection = ['#venue-overview', '#venue-day-1', '#venue-day-2'].includes(window.location.hash);
-			setShowBackToTop(scrolledPastHeader || jumpedToSection);
-		};
-
+		const handleScroll = () => setShowBackToTop(window.scrollY > 120);
 		handleScroll();
 		window.addEventListener('scroll', handleScroll, { passive: true });
-		window.addEventListener('hashchange', handleScroll);
-
-		return () => {
-			window.removeEventListener('scroll', handleScroll);
-			window.removeEventListener('hashchange', handleScroll);
-		};
+		return () => window.removeEventListener('scroll', handleScroll);
 	}, []);
 
-	const scrollToSection = (target: string) => {
-		document.getElementById(target)?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-		window.history.replaceState(null, '', `#${target}`);
-	};
-
-	const handleTimelineClick = (key: 'preEvent' | 'day1' | 'day2') => {
-		if (key === 'preEvent') {
-			window.open('https://sites.google.com/view/apmar2026/', '_blank', 'noopener,noreferrer');
-		} else if (key === 'day1') {
-			scrollToSection('venue-day-1');
-		} else if (key === 'day2') {
-			scrollToSection('venue-day-2');
-		}
-	};
+	useEffect(() => {
+		window.scrollTo(0, 0);
+	}, [activeIndex]);
 
 	const scrollToTop = () => {
-		if (window.location.hash) {
-			window.history.replaceState(null, '', window.location.pathname + window.location.search);
-		}
 		setShowBackToTop(false);
 		window.scrollTo({ top: 0, behavior: 'smooth' });
 	};
@@ -428,70 +402,23 @@ const VenueV2Page: React.FC = () => {
 				<WarpBackground />
 				<ScrollReveal className='relative z-10 flex flex-col items-center w-full max-w-7xl'>
 					<h1 className={`ds-page-title mb-6 text-center ${typography.scale.pageTitle}`}>{venueContent.title}</h1>
+					<div className='flex w-full max-w-2xl'>
+						{venueContent.days.map((day, index) => (
+							<button
+								key={day.id}
+								type='button'
+								onClick={() => navigate(`#day${index + 1}`)}
+								className={`flex-1 border-2 py-3 font-mono text-xl font-bold transition-colors sm:text-2xl ${activeIndex === index ? 'border-primary bg-primary text-black' : 'border-primary/40 text-white/60 hover:text-white/80'}`}
+							>
+								{day.tabLabel}
+							</button>
+						))}
+					</div>
 				</ScrollReveal>
 			</div>
 
 			<div className='flex flex-col w-full'>
-				<section id='venue-overview' className='scroll-mt-28 bg-gradient-to-b from-black to-[#09090b] px-4 pb-20 pt-12 md:px-8 md:pb-24 md:pt-16'>
-					<div className='flex flex-col w-full gap-10 mx-auto max-w-7xl'>
-						<ScrollReveal>
-							<div className='px-6 py-8 ds-surface-panel md:px-10 md:py-10'>
-								<h2 className={`mb-6 text-center ${typography.scale.sectionTitle} text-white`}>{venueContent.overview.title}</h2>
-								<p className={`mx-auto max-w-[740px] ${typography.scale.body} text-white/80`}>{venueContent.overview.intro}</p>
-
-								<div className='relative mx-auto mt-12 w-full max-w-[980px] pb-2 pt-6 md:mt-14'>
-									<div className='mx-auto w-full max-w-[340px] md:hidden'>
-										<div className='relative'>
-											<div className='absolute left-[7.5%] right-[7.5%] top-[43px] h-px bg-white/30' />
-											<div className='grid items-start grid-cols-3'>
-												{mobileTimeline.map((item) => (
-													<TimelineItem
-														key={`${item.label}-${item.sublabel}`}
-														label={item.label}
-														sublabel={item.sublabel}
-														highlighted={hoveredTimelineKey === item.key}
-														widthClass='w-full'
-														onHover={() => setHoveredTimelineKey(item.key)}
-														onSelect={() => handleTimelineClick(item.key)}
-													/>
-												))}
-											</div>
-										</div>
-									</div>
-
-									<div className='relative mx-auto hidden w-full max-w-[958px] md:block'>
-										<div className='absolute left-[24.5px] top-[43px] h-px w-[875.5px] bg-white/30' />
-										<div
-											className='absolute left-[24.5px] top-[43px] h-px bg-primary transition-all duration-300'
-											style={{ width: hoveredTimelineKey === 'preEvent' ? '250px' : '0px' }}
-										/>
-
-										<div className='flex items-start justify-between'>
-											{venueContent.overview.timeline.map((item, index) => {
-												const highlighted = hoveredTimelineKey === item.key;
-												const widthClass = index === 0 || index === 1 ? 'w-[49px]' : index === 2 ? 'w-[141px]' : 'w-[116px]';
-
-												return (
-													<TimelineItem
-														key={`${item.label}-${item.sublabel}`}
-														label={item.label}
-														sublabel={item.sublabel}
-														highlighted={highlighted}
-														widthClass={widthClass}
-														onHover={() => setHoveredTimelineKey(item.key)}
-														onSelect={() => handleTimelineClick(item.key)}
-													/>
-												);
-											})}
-										</div>
-									</div>
-								</div>
-							</div>
-						</ScrollReveal>
-					</div>
-				</section>
-
-				{venueContent.days.map((day) => (
+				{[activeDayData].map((day) => (
 					<article key={day.id} id={day.id} className='scroll-mt-28'>
 						<div
 							className='relative left-1/2 right-1/2 -ml-[50vw] -mr-[50vw] w-screen overflow-hidden bg-black md:min-h-[680px]'

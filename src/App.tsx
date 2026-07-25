@@ -74,7 +74,7 @@ const App: React.FC = () => {
 									<Route path='cfp' element={<CFPPage />} />
 									<Route path='family-friendly' element={<FamilyFriendlyPage />} />
 									<Route path='lab/arcade-hero-scroll' element={<HeroLabPage />} />
-									<Route path='venue' element={<VenuePage />} />
+									<Route path='venue' element={<VenueV2Page />} />
 									<Route path='venue-v2' element={<VenueV2Page />} />
 									<Route path='transit' element={<TransitPage />} />
 									<Route path='organization' element={<OrganizationPage />} />
