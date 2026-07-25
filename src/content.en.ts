@@ -569,7 +569,7 @@ export const CONTENT_EN = {
 	},
 	venueV2Section: {
 		...CONTENT_ZH.venueV2Section,
-		subtitle: 'VENUE PLAN',
+		subtitle: 'TRANSIT PLAN',
 		openMap: 'OPEN MAP',
 		overview: {
 			title: 'Overview',
@@ -641,9 +641,10 @@ export const CONTENT_EN = {
 				},
 				entryGuide: {
 					title: 'Pumpkin Gate Entry Guide',
-					badge: 'Before 11:00',
-					before: { timeLabel: 'Arriving before 11:00', text: 'Enter via the "Pumpkin Gate", follow the blue pumpkin floor markers to the entrance, and take the elevator directly to 5F.', mapLabel: 'Pumpkin Gate location', mapLink: 'https://maps.app.goo.gl/ajxnm5Duzy5CQN4b8' },
+					// badge: 'Before 11:00',
+					before: { timeLabel: 'Arriving before 11:00', text: 'Enter via the "Pumpkin Gate", follow the blue pumpkin floor markers to the entrance, and take the elevator directly to 5F.' },
 					after: { timeLabel: 'Arriving after 11:00', text: 'Enter the 5F and 12F venues through any main entrance of Syntrend Creative Park.' },
+					gateMapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600.1116542769362!2d121.5310313!3d25.0456191!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a90012baaa2b%3A0x5c9a4c36e5dc7582!2z5Y2X55Oc6ZaA!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw',
 					sticker: { image: '/images/pumpkin-ground-marker.png', alt: 'Green pumpkin floor marker' },
 					locators: [
 						{ image: '/images/transit_syntrend_scene.png', caption: 'Pumpkin Gate', alt: 'Mirror pumpkin sculpture and entrance at Syntrend Creative Park' },
@@ -707,6 +708,11 @@ export const CONTENT_EN = {
 					image: '/images/transit_ntut_campus.png',
 					caption: 'The building highlighted in orange is the Hongyu Technology Building; enter via MRT Zhongxiao Xinsheng Station Exit 4 or the campus gate.',
 					alt: 'NTUT campus map with the Hongyu Technology Building highlighted in orange',
+					photo: {
+						image: '/images/ntut_hongyu_entrance.png',
+						caption: 'Entrance to the International Conference Hall, Hongyu Technology Building — follow the orange arrow.',
+						alt: 'Entrance of the Hongyu Technology Building International Conference Hall with an orange arrow pointing to the doorway',
+					},
 				},
 				travelPanels: [
 					{

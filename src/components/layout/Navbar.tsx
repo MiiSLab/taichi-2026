@@ -136,7 +136,7 @@ const Navbar: React.FC = () => {
 	const content = useContent();
 	const { language, setLanguage } = useLanguage();
 	const isCFPPage = location.pathname.startsWith('/cfp');
-	const isVenuePage = location.pathname.startsWith('/venue');
+	const isTransitPage = location.pathname.startsWith('/transit');
 	const isProgramPage = location.pathname === '/program';
 	const isOrgSponsorsPage = location.pathname === '/organization' || location.pathname === '/sponsorship';
 	// Submenu items are either same-page anchors (cfp / venue, carry a `hash`),
@@ -144,8 +144,8 @@ const Navbar: React.FC = () => {
 	// (program — hash drives the page's active tab, no scroll target).
 	const activeSubmenu: { label: string; to: string; hash?: string }[] = isCFPPage
 		? content.nav.cfpSubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/cfp${item.hash}` }))
-		: isVenuePage
-			? content.venueV2Section.days.map((day, index) => ({ label: day.tabLabel, hash: `#day${index + 1}`, to: `/venue#day${index + 1}` }))
+		: isTransitPage
+			? content.venueV2Section.days.map((day, index) => ({ label: day.tabLabel, hash: `#day${index + 1}`, to: `/transit#day${index + 1}` }))
 			: isProgramPage
 				? content.programPageSection.dateTabs.map((tab) => ({ label: `${tab.date} ${tab.day}`, hash: `#${tab.key}`, to: `/program#${tab.key}` }))
 				: isOrgSponsorsPage
@@ -156,11 +156,11 @@ const Navbar: React.FC = () => {
 					: [];
 
 	const submenuHashes = activeSubmenu.map((item) => item.hash).filter((h): h is string => Boolean(h));
-	const scrollSpyHash = useScrollSpy(isProgramPage || isVenuePage ? [] : submenuHashes);
+	const scrollSpyHash = useScrollSpy(isProgramPage || isTransitPage ? [] : submenuHashes);
 	// Active by scroll-spy hash (same-page anchors), by pathname (cross-page links),
 	// or by the raw hash (program day tabs — no hash defaults to day1).
 	const isSubmenuActive = (item: { hash?: string; to: string }) => {
-		if (isProgramPage || isVenuePage) return (location.hash || '#day1') === item.hash;
+		if (isProgramPage || isTransitPage) return (location.hash || '#day1') === item.hash;
 		return item.hash ? scrollSpyHash === item.hash : location.pathname === item.to;
 	};
 
@@ -181,7 +181,7 @@ const Navbar: React.FC = () => {
 	const desktopItems: DesktopNavItem[] = [
 		{ label: content.nav.news, to: '/news', isActive: location.pathname === '/news' },
 		{ label: content.nav.program, to: '/program', isActive: location.pathname === '/program' },
-		{ label: content.nav.venue, to: '/venue', isActive: location.pathname === '/venue' },
+		{ label: content.nav.venue, to: '/transit', isActive: location.pathname === '/transit' },
 		{ label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp') },
 		{ label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly' },
 		{ label: content.nav.orgSponsors, to: '/organization', isActive: isOrgSponsorsPage },
@@ -190,7 +190,7 @@ const Navbar: React.FC = () => {
 	const mobileItems: MobileNavItem[] = [
 		{ key: 'news', label: content.nav.news, to: '/news', isActive: location.pathname === '/news' },
 		{ key: 'program', label: content.nav.program, to: '/program', isActive: location.pathname === '/program' },
-		{ key: 'venue', label: content.nav.venue, to: '/venue', isActive: location.pathname === '/venue', submenuKey: 'venue' },
+		{ key: 'venue', label: content.nav.venue, to: '/transit', isActive: location.pathname === '/transit', submenuKey: 'venue' },
 		{ key: 'cfp', label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp'), submenuKey: 'cfp' },
 		{ key: 'family-friendly', label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly' },
 		{ key: 'orgSponsors', label: content.nav.orgSponsors, to: '/organization', isActive: isOrgSponsorsPage, submenuKey: 'orgSponsors' },
@@ -198,7 +198,7 @@ const Navbar: React.FC = () => {
 
 	const submenuByKey: Record<'cfp' | 'venue' | 'orgSponsors', { label: string; to: string; hash?: string }[]> = {
 		cfp: content.nav.cfpSubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/cfp${item.hash}` })),
-		venue: content.venueV2Section.days.map((day, index) => ({ label: day.tabLabel, hash: `#day${index + 1}`, to: `/venue#day${index + 1}` })),
+		venue: content.venueV2Section.days.map((day, index) => ({ label: day.tabLabel, hash: `#day${index + 1}`, to: `/transit#day${index + 1}` })),
 		orgSponsors: [
 			{ label: 'Organization', to: '/organization' },
 			{ label: 'Sponsors', to: '/sponsorship' },

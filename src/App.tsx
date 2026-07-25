@@ -1,5 +1,5 @@
 import React, { Suspense, lazy, useEffect } from 'react';
-import { BrowserRouter, Route, Routes, useNavigate } from 'react-router-dom';
+import { BrowserRouter, Navigate, Route, Routes, useLocation, useNavigate } from 'react-router-dom';
 import Layout from './components/layout/Layout';
 import { DataProvider } from './context/DataContext';
 import { LanguageProvider } from './context/LanguageContext';
@@ -18,7 +18,6 @@ const ProgramPage = lazy(() => import('./pages/ProgramPage'));
 const QPage = lazy(() => import('./pages/QPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
 const SponsorshipPage = lazy(() => import('./pages/SponsorshipPage'));
-const TransitPage = lazy(() => import('./pages/TransitPage'));
 const VenuePage = lazy(() => import('./pages/VenuePage'));
 const VenueV2Page = lazy(() => import('./pages/VenueV2Page'));
 const VotePage = lazy(() => import('./pages/VotePage'));
@@ -40,6 +39,14 @@ const RouteFallback: React.FC = () => (
 		LOADING…
 	</div>
 );
+
+// The venue page is now served at /transit; the former /venue and /venue-v2
+// URLs redirect there, preserving the day hash (#day1 / #day2) so old links
+// land on the right tab.
+const VenueRedirect: React.FC = () => {
+	const { hash } = useLocation();
+	return <Navigate to={`/transit${hash}`} replace />;
+};
 
 // Component to handle 404 redirects
 const RedirectHandler: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -74,9 +81,9 @@ const App: React.FC = () => {
 									<Route path='cfp' element={<CFPPage />} />
 									<Route path='family-friendly' element={<FamilyFriendlyPage />} />
 									<Route path='lab/arcade-hero-scroll' element={<HeroLabPage />} />
-									<Route path='venue' element={<VenueV2Page />} />
-									<Route path='venue-v2' element={<VenueV2Page />} />
-									<Route path='transit' element={<TransitPage />} />
+									<Route path='transit' element={<VenueV2Page />} />
+									<Route path='venue' element={<VenueRedirect />} />
+									<Route path='venue-v2' element={<VenueRedirect />} />
 									<Route path='organization' element={<OrganizationPage />} />
 									<Route path='sponsorship' element={<SponsorshipPage />} />
 									<Route path='registration' element={<RegistrationPage />} />

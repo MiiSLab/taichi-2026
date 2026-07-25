@@ -17,7 +17,7 @@ export const CONTENT_ZH = {
 		orgSponsors: 'ORGANIZATION & SPONSORS',
 		cfp: 'CALL FOR PAPERS',
 		familyFriendly: 'FAMILY-FRIENDLY',
-		venue: 'VENUE',
+		venue: 'TRANSIT',
 		sponsors: 'SPONSORS',
 		registration: 'REGISTRATION',
 		notion: 'DB ADMIN',
@@ -657,7 +657,7 @@ export const CONTENT_ZH = {
 		],
 	},
 	venueV2Section: {
-		title: 'Venue',
+		title: 'Transit',
 		subtitle: '活動行程',
 		submenuItems: [
 			{ label: 'Overview', target: 'venue-overview' },
@@ -716,7 +716,7 @@ export const CONTENT_ZH = {
 		days: [
 			{
 				id: 'venue-day-1',
-				tabLabel: '[ 8/5 ]',
+				tabLabel: '8.05 WED',
 				heroImage: '/images/venue_8_5_banner.avif',
 				heroTitle: '8/5(三) 互動夜市',
 				heroBadge: '對外公開',
@@ -734,9 +734,10 @@ export const CONTENT_ZH = {
 				},
 				entryGuide: {
 					title: '南瓜門進場指引',
-					badge: '11:00 前',
-					before: { timeLabel: '11:00 前入場', text: '請從「南瓜門」進場，依地面上的「南瓜藍色指標」抵達入口，直接搭電梯至 5F。', mapLabel: '南瓜門定位', mapLink: 'https://maps.app.goo.gl/ajxnm5Duzy5CQN4b8' },
+					// badge: '11:00前',
+					before: { timeLabel: '11:00 前入場', text: '請從「南瓜門」進場，依地面上的「南瓜藍色指標」抵達入口，直接搭電梯至 5F。' },
 					after: { timeLabel: '11:00 後入場', text: '可從三創生活園區各大門口進入 5F 與 12F 會場。' },
+					gateMapEmbedSrc: 'https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d600.1116542769362!2d121.5310313!3d25.0456191!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3442a90012baaa2b%3A0x5c9a4c36e5dc7582!2z5Y2X55Oc6ZaA!5e0!3m2!1szh-TW!2stw!4v1772020903779!5m2!1szh-TW!2stw',
 					sticker: { image: '/images/pumpkin-ground-marker.png', alt: '地面南瓜藍色指標' },
 					locators: [
 						{ image: '/images/transit_syntrend_scene.png', caption: '南瓜門實景', alt: '三創門口鏡面南瓜雕塑與入口實景' },
@@ -784,7 +785,7 @@ export const CONTENT_ZH = {
 			},
 			{
 				id: 'venue-day-2',
-				tabLabel: '[ 8/6 ]',
+				tabLabel: '8.06 THU',
 				heroImage: '/images/venue_8_6_banner.avif',
 				heroTitle: '8/6(四) 年度研討會',
 				heroSubtitle: 'TAICHI 年度學會研討會',
@@ -803,6 +804,11 @@ export const CONTENT_ZH = {
 					image: '/images/transit_ntut_campus.png',
 					caption: '橘色標示為宏裕科技研究大樓，可由捷運忠孝新生站 4 號出口或校門進入。',
 					alt: '國立臺北科技大學校園平面圖，橘色標示宏裕科技研究大樓位置',
+					photo: {
+						image: '/images/ntut_hongyu_entrance.png',
+						caption: '宏裕科技大樓「國際會議廳」入口，循橘色箭頭進入。',
+						alt: '宏裕科技大樓國際會議廳入口實景，橘色箭頭指向入口',
+					},
 				},
 				travelPanels: [
 					{

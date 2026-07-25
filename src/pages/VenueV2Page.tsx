@@ -47,14 +47,15 @@ type V2Venue = {
 type V2EntryGuide = {
 	title: string;
 	badge: string;
-	before: { timeLabel: string; text: string; mapLabel: string; mapLink: string };
+	before: { timeLabel: string; text: string };
 	after: { timeLabel: string; text: string };
+	gateMapEmbedSrc: string;
 	sticker: { image: string; alt: string };
 	locators: readonly { image: string; caption: string; alt: string }[];
 	routeMap?: { image: string; caption: string; alt: string };
 	videos: readonly { label: string; src: string }[];
 };
-type V2CampusMap = { title: string; image: string; caption: string; alt: string };
+type V2CampusMap = { title: string; image: string; caption: string; alt: string; photo: { image: string; caption: string; alt: string } };
 type V2Highlight = { label: string; venue: string; details: readonly string[]; scheduleLabel: string; scheduleTo: string };
 type V2VenueInfo = {
 	sectionTitle: string;
@@ -271,12 +272,11 @@ const EntryGuide = ({ guide, language }: { guide: V2EntryGuide; language: string
 	const nextLabel = language === 'en' ? 'Next video' : '下一支影片';
 	const locateLabel = language === 'en' ? 'On-site orientation' : '現場定位';
 	const videoLabel = language === 'en' ? 'Walking route videos' : '路線影片';
-	const scene = guide.locators[0];
-	const locateImages = [...guide.locators.slice(1), ...(guide.routeMap ? [guide.routeMap] : [])];
+	const locateImages = [...guide.locators, ...(guide.routeMap ? [guide.routeMap] : [])];
 	return (
 		<OrientationPanel title={guide.title} badge={guide.badge}>
 			<div className='rounded-[10px] border-l-4 border-primary bg-black/40 px-6 py-5'>
-				<div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-center'>
+				<div className='grid gap-6 lg:grid-cols-[minmax(0,1fr)_minmax(0,360px)] lg:items-stretch'>
 					<div>
 						<div className='flex items-center gap-2 mb-3 font-mono text-sm font-bold text-primary'>
 							<Clock size={15} />
@@ -291,12 +291,15 @@ const EntryGuide = ({ guide, language }: { guide: V2EntryGuide; language: string
 							</div>
 						</div>
 					</div>
-					{scene ? (
-						<figure className='flex flex-col gap-2'>
-							<ZoomableImage src={scene.image} alt={scene.alt} className='w-full rounded-[8px] border border-white/10' />
-							<figcaption className='font-mono text-xs text-center text-white/60'>{scene.caption}</figcaption>
-						</figure>
-					) : null}
+					<div className='relative aspect-[4/3] w-full overflow-hidden rounded-[8px] border border-white/10 bg-[#27272a] lg:aspect-auto lg:h-full lg:min-h-[220px]'>
+						<iframe
+							className='absolute inset-0 h-full w-full border-0'
+							src={guide.gateMapEmbedSrc}
+							title={guide.title}
+							loading='lazy'
+							referrerPolicy='no-referrer-when-downgrade'
+						/>
+					</div>
 				</div>
 			</div>
 			<div className='mt-4 rounded-[10px] border-l-4 border-white/25 bg-black/40 px-6 py-5'>
@@ -318,9 +321,6 @@ const EntryGuide = ({ guide, language }: { guide: V2EntryGuide; language: string
 						</figure>
 					))}
 				</div>
-				<div className='flex justify-center mt-5'>
-					<LinkButton href={guide.before.mapLink} label={guide.before.mapLabel} />
-				</div>
 			</div>
 			<div className='mt-10'>
 				<h4 className='mb-4 font-mono text-sm font-bold uppercase tracking-[0.15em] text-secondary'>{videoLabel}</h4>
@@ -330,14 +330,26 @@ const EntryGuide = ({ guide, language }: { guide: V2EntryGuide; language: string
 	);
 };
 
-const CampusMap = ({ map }: { map: V2CampusMap }) => (
-	<OrientationPanel title={map.title}>
-		<div className='mx-auto max-w-2xl overflow-hidden rounded-[8px] bg-black p-2 md:p-4'>
-			<ZoomableImage src={map.image} alt={map.alt} className='object-contain w-full h-auto mx-auto' />
-		</div>
-		<p className='mt-3 font-mono text-sm text-white/60'>{map.caption}</p>
-	</OrientationPanel>
-);
+const CampusMap = ({ map }: { map: V2CampusMap }) => {
+	const figures = [
+		{ image: map.image, caption: map.caption, alt: map.alt },
+		{ image: map.photo.image, caption: map.photo.caption, alt: map.photo.alt },
+	];
+	return (
+		<OrientationPanel title={map.title}>
+			<div className='grid gap-4 md:grid-cols-2 md:items-stretch'>
+				{figures.map((figure) => (
+					<figure key={figure.image} className='flex h-full flex-col overflow-hidden rounded-[8px] border border-white/10 bg-black'>
+						<div className='flex h-[300px] items-center justify-center bg-black/50 p-3 md:h-[360px]'>
+							<ZoomableImage src={figure.image} alt={figure.alt} className='object-contain max-w-full max-h-full' />
+						</div>
+						<figcaption className='px-3 py-3 font-mono text-sm leading-5 text-center border-t border-white/10 text-white/60'>{figure.caption}</figcaption>
+					</figure>
+				))}
+			</div>
+		</OrientationPanel>
+	);
+};
 
 const RouteChips = ({ stops }: { stops: readonly V2Stop[] }) => (
 	<div className='space-y-3'>
@@ -391,7 +403,7 @@ const VenueV2Page: React.FC = () => {
 	const activeDayData = venueContent.days[activeIndex] ?? venueContent.days[0];
 
 	useSEO(
-		language === 'zh' ? '場地資訊' : 'Venue',
+		language === 'zh' ? '交通資訊' : 'Transit',
 		language === 'zh'
 			? 'TAICHI 2026 場地與交通資訊：三創生活園區南瓜門進場指引與國立臺北科技大學。'
 			: 'TAICHI 2026 venue and transit information: Pumpkin Gate entry guide at Syntrend Creative Park and NTUT.',
