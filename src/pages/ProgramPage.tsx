@@ -1,5 +1,5 @@
-import { ExternalLink } from 'lucide-react';
-import React, { useEffect } from 'react';
+import { ChevronDown, ExternalLink } from 'lucide-react';
+import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import WarpBackground from '../components/WarpBackground';
@@ -18,7 +18,7 @@ type ProgramScheduleRow = {
 	workHeading?: string;
 	workDescription?: string;
 };
-type TimetableEvent = { time: string; title: string; subtitle?: string; tags?: string[]; kind?: 'break' };
+type TimetableEvent = { time: string; title: string; subtitle?: string; tags?: string[]; kind?: 'break'; targetKey?: string };
 type TimetableVenue = {
 	header: string;
 	/** 左欄時間區間列的來源（細粒度時程）；議程未定的場地可省略，其區塊跨既有列 */
@@ -37,6 +37,16 @@ type Day1Joint = {
 	sessions: { id: string; time: string; schedule: readonly ProgramScheduleRow[] }[];
 };
 type ProgramDay2Session = { id: string; title: string; time: string; location: string; schedule?: readonly ProgramScheduleRow[] };
+
+// 發表名單（paper/poster/demo）：paper 依 Session 分組（groups），poster/demo 為平坦名單（items）
+type ProgramListItem = { id?: string; time?: string; title: string; authors: string; award?: string };
+type ProgramListGroup = { title?: string; time?: string; items: readonly ProgramListItem[] };
+type ProgramListCategory = { heading: string; slot: string; items?: readonly ProgramListItem[]; groups?: readonly ProgramListGroup[] };
+type ProgramLists = {
+	labels: { sectionTitle: string; idCol: string; titleCol: string; authorCol: string; note: string };
+	day1: { demo: ProgramListCategory; poster: ProgramListCategory };
+	day2: { paper: ProgramListCategory; poster: ProgramListCategory };
+};
 
 const TimeLocationBlock = ({ label, time, location }: { label: string; time: string; location: string }) => (
 	<div className='flex flex-col'>
@@ -66,7 +76,7 @@ const VENUE_TONES = [
 	{ border: 'border-secondary/45', bg: 'bg-secondary/10', text: 'text-secondary', line: 'border-secondary/35' },
 ] as const;
 
-const DayTimetable = ({ venues, timeHeader, title }: { venues: TimetableVenue[]; timeHeader: string; title: string }) => {
+const DayTimetable = ({ venues, timeHeader, title, onEventActivate }: { venues: TimetableVenue[]; timeHeader: string; title: string; onEventActivate?: (key: string) => void }) => {
 	const cols = venues.map((venue, index) => ({
 		header: venue.header,
 		tone: VENUE_TONES[index % VENUE_TONES.length],
@@ -152,12 +162,28 @@ const DayTimetable = ({ venues, timeHeader, title }: { venues: TimetableVenue[];
 							const hero = span.count >= 3;
 							// break（報到/休息/午餐）退為灰色虛線框，正式議程保留場地色，掃讀時自然分段
 							const isBreak = event.kind === 'break';
+								// 有 targetKey 的時段可點擊 → 展開並捲到下方對應議程列
+								const clickable = Boolean(event.targetKey && onEventActivate);
 							return (
 								<div
 									key={`${col.header}-${event.time}-${eventIndex}`}
-									className={`my-px overflow-hidden border ${isBreak ? 'border-dashed border-white/20 bg-white/[0.03]' : `${col.tone.border} ${col.tone.bg}`}`}
+									className={`my-px overflow-hidden border ${isBreak ? 'border-dashed border-white/20 bg-white/[0.03]' : `${col.tone.border} ${col.tone.bg}`} ${clickable ? 'relative cursor-pointer transition-[filter] hover:brightness-125' : ''}`}
 									style={{ gridColumn: colIndex + 2, gridRow: `${span.first + 2} / ${span.last + 3}` }}
+										{...(clickable
+											? {
+													role: 'button' as const,
+													tabIndex: 0,
+													onClick: () => onEventActivate?.(event.targetKey as string),
+													onKeyDown: (keyEvent: React.KeyboardEvent) => {
+														if (keyEvent.key === 'Enter' || keyEvent.key === ' ') {
+															keyEvent.preventDefault();
+															onEventActivate?.(event.targetKey as string);
+														}
+													},
+												}
+											: {})}
 								>
+									{clickable && <ChevronDown size={12} className='pointer-events-none absolute right-1 top-1 text-white/45' />}
 									{hero ? (
 										<div className='flex h-full flex-col items-center justify-center gap-3 px-2 py-4 text-center sm:gap-4 sm:px-4'>
 											<p className={`whitespace-pre-line font-mono text-[14px] font-bold leading-snug sm:text-[19px] ${col.tone.text}`}>{event.title}</p>
@@ -206,19 +232,136 @@ const Day2StaticSession = ({
 	</ScrollReveal>
 );
 
+// 名單改為「可展開議程」：每個發表時段一列，標題列自帶時間（免上下對照時程表），點擊展開名字
+type AgendaKind = 'Paper' | 'Poster' | 'Demo';
+type AgendaEntry = { key: string; kind: AgendaKind; title: string; theme?: string; meta?: string; items: readonly ProgramListItem[] };
+
+// 依 kind 上色：Paper 主色、Poster 副色、Demo 中性白
+const KIND_TONE: Record<AgendaKind, { text: string; border: string; chip: string }> = {
+	Paper: { text: 'text-primary', border: 'border-primary/45', chip: 'border-primary/40 bg-primary/10 text-primary' },
+	Poster: { text: 'text-secondary', border: 'border-secondary/45', chip: 'border-secondary/40 bg-secondary/10 text-secondary' },
+	Demo: { text: 'text-white', border: 'border-white/40', chip: 'border-white/30 bg-white/10 text-white/80' },
+};
+
+// category → 議程列：paper 依 groups（Session）逐列；poster/demo 為單一列（整份名單）
+const buildEntries = (category: ProgramListCategory, kind: AgendaKind, keyPrefix: string): AgendaEntry[] => {
+	if (category.groups) {
+		return category.groups.map((group, index) => {
+			const [title, ...rest] = (group.title ?? category.heading).split(' · ');
+			return { key: `${keyPrefix}-${index}`, kind, title, theme: rest.join(' · ') || undefined, meta: group.time ?? category.slot, items: group.items };
+		});
+	}
+	return [{ key: keyPrefix, kind, title: category.heading, meta: category.slot, items: category.items ?? [] }];
+};
+
+const ProgramListRow = ({ item, tone }: { item: ProgramListItem; tone: { text: string } }) => (
+	<div className='flex flex-col gap-1 border-b border-white/10 py-3 last:border-b-0 sm:grid sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] sm:items-baseline sm:gap-x-4 sm:py-3'>
+		<span className='font-sans text-[14px] leading-relaxed text-white/90 sm:text-[15px]'>
+			{item.time && <span className='mb-1 block font-mono text-[12px] leading-5 text-white/45'>{item.time}</span>}
+			{item.title}
+			{item.award && <span className={`ms-2 whitespace-nowrap font-mono text-[11px] sm:text-[12px] ${tone.text}`}>· {item.award}</span>}
+		</span>
+		<span className='font-sans text-[13px] leading-snug text-white/55 sm:text-[14px]'>{item.authors}</span>
+	</div>
+);
+
+// 單一可展開議程列：標題列（chip + 標題 + 主題 + 時間 + 件數 + 箭頭），展開後為名單表格
+const AgendaItem = ({ entry, labels, open, onToggle }: { entry: AgendaEntry; labels: ProgramLists['labels']; open: boolean; onToggle: () => void }) => {
+	const tone = KIND_TONE[entry.kind];
+	return (
+		<section id={`agenda-${entry.key}`} className={`scroll-mt-28 border bg-zinc-950/60 transition-colors ${open ? tone.border : 'border-white/[0.12]'}`}>
+			<button
+				type='button'
+				onClick={onToggle}
+				aria-expanded={open}
+				className='flex w-full items-center gap-3 px-4 py-4 text-left transition-colors hover:bg-white/[0.03] sm:px-5'
+			>
+				<span className={`shrink-0 border px-2 py-0.5 font-mono text-[11px] font-bold uppercase tracking-[0.1em] ${tone.chip}`}>{entry.kind}</span>
+				<span className='flex min-w-0 flex-1 flex-col gap-0.5 sm:flex-row sm:flex-wrap sm:items-baseline sm:gap-x-3'>
+					<span className='font-mono text-[16px] font-bold leading-6 text-white sm:text-[18px]'>{entry.title}</span>
+					{entry.theme && <span className='font-sans text-[13px] leading-5 text-white/60 sm:text-[14px]'>{entry.theme}</span>}
+				</span>
+				{entry.meta && <span className='hidden shrink-0 font-mono text-[13px] text-white/50 lg:block'>{entry.meta}</span>}
+				<span className={`shrink-0 font-mono text-[13px] font-bold ${tone.text}`}>{entry.items.length}</span>
+				<ChevronDown size={20} className={`shrink-0 text-white/50 transition-transform ${open ? 'rotate-180' : ''}`} />
+			</button>
+			{open && (
+				<div className='px-4 pb-4 sm:px-5'>
+					{entry.meta && <p className='mb-3 font-mono text-[12px] text-white/45 lg:hidden'>{entry.meta}</p>}
+					<div className={`border-t ${tone.border}`}>
+						{/* 桌機顯示欄名列；手機改堆疊、省略欄名 */}
+						<div className='hidden grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-x-4 border-b border-white/15 pb-2 pt-3 sm:grid'>
+							<span className='font-mono text-[12px] font-bold uppercase tracking-[0.08em] text-white/40'>{labels.titleCol}</span>
+							<span className='font-mono text-[12px] font-bold uppercase tracking-[0.08em] text-white/40'>{labels.authorCol}</span>
+						</div>
+						{entry.items.map((item, index) => (
+							<ProgramListRow key={`${item.id ?? item.time ?? ''}-${index}`} item={item} tone={tone} />
+						))}
+					</div>
+				</div>
+			)}
+		</section>
+	);
+};
+
+const ProgramAgenda = ({
+	entries,
+	labels,
+	openKeys,
+	onToggle,
+	onToggleAll,
+}: {
+	entries: AgendaEntry[];
+	labels: ProgramLists['labels'];
+	openKeys: Set<string>;
+	onToggle: (key: string) => void;
+	onToggleAll: (open: boolean) => void;
+}) => {
+	const { language } = useLanguage();
+	const allOpen = entries.length > 0 && entries.every((entry) => openKeys.has(entry.key));
+	return (
+		<div className='flex flex-col gap-6 pt-12 md:pt-16'>
+			<div className='flex flex-wrap items-end justify-between gap-x-6 gap-y-3 border-b-2 border-white/20 pb-4'>
+				<div className='flex flex-col gap-2'>
+					<h2 className='font-mono text-[26px] font-bold leading-9 text-white'>{labels.sectionTitle}</h2>
+					<p className='max-w-2xl font-sans text-[14px] leading-relaxed text-white/60 sm:text-[15px]'>{labels.note}</p>
+				</div>
+				<button
+					type='button'
+					onClick={() => onToggleAll(!allOpen)}
+					className='shrink-0 border border-white/25 px-4 py-2 font-mono text-[13px] font-bold text-white/70 transition-colors hover:border-white/50 hover:text-white'
+				>
+					{allOpen ? (language === 'zh' ? '收合全部' : 'Collapse all') : language === 'zh' ? '展開全部' : 'Expand all'}
+				</button>
+			</div>
+			<div className='flex flex-col gap-3'>
+				{entries.map((entry) => (
+					<AgendaItem key={entry.key} entry={entry} labels={labels} open={openKeys.has(entry.key)} onToggle={() => onToggle(entry.key)} />
+				))}
+			</div>
+		</div>
+	);
+};
+
 const ProgramPage: React.FC = () => {
 	const content = useContent();
 	const { language } = useLanguage();
 	const section = content.programPageSection;
 	const day1 = section.day1 as unknown as Day1Joint;
 	// Day1 = 每場地一個大區塊的簡化版；Day2 = 每個活動各自成塊（同一套時間表格式）
+	const lists = section.programLists as unknown as ProgramLists;
+	// 依發表時段攤平成議程列：paper 每個 Session 一列、poster/demo 各一列（先宣告，供時程表掛 targetKey）
+	const day1Entries = [...buildEntries(lists.day1.demo, 'Demo', 'd1-demo'), ...buildEntries(lists.day1.poster, 'Poster', 'd1-poster')];
+	const day2Entries = [...buildEntries(lists.day2.paper, 'Paper', 'd2-paper'), ...buildEntries(lists.day2.poster, 'Poster', 'd2-poster')];
+
 	const day1Venues: TimetableVenue[] = (['f5', 'f12'] as const).map((venue) => {
 		const session = day1.sessions.find((s) => s.id === (venue === 'f5' ? 'day1-5f' : 'day1-12f'));
 		return {
 			header: day1.venueColumns[venue],
 			// 細部節目只貢獻時間區間列，內容以場地大區塊呈現（細節在正式網站）
 			scheduleTimes: (session?.schedule ?? []).map((row) => row.time),
-			events: [{ time: session?.time ?? '', title: day1.venueBlocks[venue].title, tags: day1.venueBlocks[venue].tags }],
+			// 12F 互動夜市大區塊可點擊 → 跳到下方 Demo/Poster 議程
+			events: [{ time: session?.time ?? '', title: day1.venueBlocks[venue].title, tags: day1.venueBlocks[venue].tags, targetKey: venue === 'f12' ? day1Entries[0]?.key : undefined }],
 		};
 	});
 
@@ -231,7 +374,14 @@ const ProgramPage: React.FC = () => {
 		{
 			header: day2Info.venueHeaders.main,
 			scheduleTimes: (day2Info.sessions[0]?.schedule ?? []).map((row) => row.time),
-			events: (day2Info.sessions[0]?.schedule ?? []).map((row) => ({ time: row.time, title: row.label, subtitle: row.sublabel, kind: row.kind })),
+			// 每個發表時段掛 targetKey（poster 依關鍵字、paper 依時間對議程列，跨語言穩定）→ 點擊跳轉
+			events: (day2Info.sessions[0]?.schedule ?? []).map((row) => ({
+				time: row.time,
+				title: row.label,
+				subtitle: row.sublabel,
+				kind: row.kind,
+				targetKey: /poster/i.test(row.label) ? 'd2-poster' : day2Entries.find((entry) => entry.kind === 'Paper' && entry.meta === row.time)?.key,
+			})),
 		},
 		{
 			header: day2Info.venueHeaders.second,
@@ -240,6 +390,25 @@ const ProgramPage: React.FC = () => {
 			events: day2Info.secondVenue.events,
 		},
 	];
+	// 議程展開狀態提升到頁層，讓上方時程表點擊能展開＋捲到對應議程列
+	const [openAgendaKeys, setOpenAgendaKeys] = useState<Set<string>>(() => new Set([day1Entries[0]?.key, day2Entries[0]?.key].filter(Boolean) as string[]));
+	const toggleAgenda = (key: string) =>
+		setOpenAgendaKeys((prev) => {
+			const next = new Set(prev);
+			if (next.has(key)) next.delete(key);
+			else next.add(key);
+			return next;
+		});
+	const toggleAgendaAll = (keys: string[], open: boolean) =>
+		setOpenAgendaKeys((prev) => {
+			const next = new Set(prev);
+			keys.forEach((key) => (open ? next.add(key) : next.delete(key)));
+			return next;
+		});
+	const jumpToAgenda = (key: string) => {
+		setOpenAgendaKeys((prev) => new Set(prev).add(key));
+		requestAnimationFrame(() => document.getElementById(`agenda-${key}`)?.scrollIntoView({ behavior: 'smooth', block: 'start' }));
+	};
 	// 分頁由網址 hash 驅動（#day1 / #day2）：navbar 子選單與 /venue 的「詳細行程」
 	// 按鈕都能直接指定日期；沒有 hash 時預設 day1
 	const location = useLocation();
@@ -326,7 +495,14 @@ const ProgramPage: React.FC = () => {
 									{section.labels.websiteButtonLabel}
 									<ExternalLink size={18} />
 								</a>
-								<DayTimetable venues={day1Venues} timeHeader={day1.venueColumns.time} title={section.labels.scheduleTitle} />
+								<DayTimetable venues={day1Venues} timeHeader={day1.venueColumns.time} title={section.labels.scheduleTitle} onEventActivate={jumpToAgenda} />
+								<ProgramAgenda
+									entries={day1Entries}
+									labels={lists.labels}
+									openKeys={openAgendaKeys}
+									onToggle={toggleAgenda}
+									onToggleAll={(open) => toggleAgendaAll(day1Entries.map((entry) => entry.key), open)}
+								/>
 							</div>
 						</ScrollReveal>
 					</div>
@@ -337,7 +513,14 @@ const ProgramPage: React.FC = () => {
 						))}
 						<div className='px-4 sm:px-8 md:px-16'>
 							<ScrollReveal>
-								<DayTimetable venues={day2Venues} timeHeader={day1.venueColumns.time} title={section.labels.scheduleTitle} />
+								<DayTimetable venues={day2Venues} timeHeader={day1.venueColumns.time} title={section.labels.scheduleTitle} onEventActivate={jumpToAgenda} />
+								<ProgramAgenda
+									entries={day2Entries}
+									labels={lists.labels}
+									openKeys={openAgendaKeys}
+									onToggle={toggleAgenda}
+									onToggleAll={(open) => toggleAgendaAll(day2Entries.map((entry) => entry.key), open)}
+								/>
 							</ScrollReveal>
 						</div>
 					</div>

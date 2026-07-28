@@ -481,6 +481,36 @@ export const CONTENT_EN = {
 				},
 			],
 		},
+		// Presentation lists: entries (proper nouns) are shared from CONTENT_ZH; only labels and slot strings are localized here.
+		programLists: {
+			labels: {
+				sectionTitle: 'Presentation List',
+				idCol: 'ID',
+				titleCol: 'Title',
+				authorCol: 'Authors',
+				note: 'Listed by presentation slot; actual placement follows on-site announcements.',
+			},
+			day1: {
+				demo: {
+					...CONTENT_ZH.programPageSection.programLists.day1.demo,
+					slot: 'Aug 05 · Big Bang! Night Market (12F, Syntrend Creative Park)',
+				},
+				poster: {
+					...CONTENT_ZH.programPageSection.programLists.day1.poster,
+					slot: 'Aug 05 · Big Bang! Night Market (12F, Syntrend Creative Park)',
+				},
+			},
+			day2: {
+				paper: {
+					...CONTENT_ZH.programPageSection.programLists.day2.paper,
+					slot: 'Aug 06 · TAICHI Society Meeting, International Conference Hall',
+				},
+				poster: {
+					...CONTENT_ZH.programPageSection.programLists.day2.poster,
+					slot: 'Aug 06 · Poster Session (Coffee Break 10:50–11:10 / 15:20–15:40)',
+				},
+			},
+		},
 	},
 	venueSection: {
 		...CONTENT_ZH.venueSection,
