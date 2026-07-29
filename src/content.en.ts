@@ -274,7 +274,7 @@ export const CONTENT_EN = {
 		chairsLabel: 'Chairs',
 	},
 	programPageSection: {
-		title: 'PROGRAM',
+		title: 'Program',
 		dateTabs: [
 			{ key: 'day1', date: '8.05', day: 'WED' },
 			{ key: 'day2', date: '8.06', day: 'THU' },

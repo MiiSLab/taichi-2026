@@ -191,7 +191,7 @@ export const CONTENT_ZH = {
 		],
 	},
 	newsSection: {
-		title: 'NEWS',
+		title: 'News',
 		subtitle: '最新消息',
 		loadMore: '載入更多',
 		showLess: '收合',
@@ -357,7 +357,7 @@ export const CONTENT_ZH = {
 		chairsLabel: '主席',
 	},
 	programPageSection: {
-		title: 'PROGRAM',
+		title: 'Program',
 		dateTabs: [
 			{ key: 'day1', date: '8.05', day: 'WED' },
 			{ key: 'day2', date: '8.06', day: 'THU' },
