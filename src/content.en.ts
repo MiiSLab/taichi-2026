@@ -16,6 +16,11 @@ export const CONTENT_EN = {
 		keynotes: 'KEYNOTES',
 		registration: 'REGISTRATION',
 		notion: 'DB ADMIN',
+		familyFriendlySubmenu: [
+			{ label: 'Design', hash: '#family-design' },
+			{ label: 'Nearby Map', hash: '#nearby-map' },
+			{ label: 'Facilities', hash: '#syntrend-facilities' },
+		],
 	},
 	heroBanner: {
 		topText: 'The 12th Annual Conference of TAICHI',
@@ -156,19 +161,41 @@ export const CONTENT_EN = {
 		...CONTENT_ZH.familyFriendlySection,
 		seoDescription:
 			'TAICHI 2026 welcomes family-accompanied participation and supports a more inclusive on-site experience.',
-		headline: 'TAICHI 2026 Welcomes Families: Introducing Our First Family-Friendly Initiative',
-		paragraphs: [
+		headline: 'TAICHI 2026 Welcomes Families',
+		intro: [
 			'TAICHI 2026 warmly welcomes all attendees, and we are delighted to welcome your families as well.',
 			'Our families are a source of support, inspiration, and strength. Whether they are partners, children, or parents, they accompany us through our journeys in research, work, and everyday life. For TAICHI, inviting families to be part of this academic gathering is both a natural and meaningful step.',
-			'This year, TAICHI 2026 is launching its first family-friendly initiative, designed to help attendees who are coming with family members participate in the conference with greater peace of mind. We will provide a family-friendly space with areas for rest, companionship, and simple play activities. We will also prepare light activities for children who may be curious about what their parents or family members do in their research and professional lives. In addition, family-friendly seating will be reserved in the conference rooms to offer greater flexibility for attendees with caregiving needs.',
-			'We will also provide a brief family-friendly guide to the area around the venue, helping you locate nearby parks, pharmacies, convenient facilities, and quiet places for short breaks.',
-			'This is TAICHI’s first step toward creating a more family-friendly conference experience. Through this new initiative, we hope to make our academic community more closely connected to the realities of everyday life, and to support more researchers in participating fully in the conference. If you plan to attend with family members, please let us know through the registration form so that we can better prepare in advance.',
+			'This year, TAICHI 2026 is launching its first family-friendly initiative, designed to help attendees who are coming with family members participate with greater peace of mind.',
+		],
+		demo: {
+			...CONTENT_ZH.familyFriendlySection.demo,
+			heading: 'Family-Friendly Demos',
+			description:
+				'We invited all demo teams to indicate whether their work is suitable for children. On-site, family-friendly works are marked with a “Family-Friendly Demo” sticker, so parents can explore interactive works together with their children based on age and interest.',
+			stickerAlt: '“Family-Friendly Demo” sticker',
+			photoAlt: 'Family-Friendly Demo sticker on-site',
+		},
+		hero: {
+			...CONTENT_ZH.familyFriendlySection.hero,
+			heading: 'Future HCIer',
+			description:
+				'Stop by the service desk to pick up a limited-edition kids’ name badge, and let your children become a TAICHI 2026 Future HCIer — a Little Hero ready to explore the future alongside the grown-ups.',
+			imageAlt: 'Future HCIer kids’ name badge design',
+			caption: 'Kids’ name badge · HERO',
+		},
+		closing: [
+			'This is TAICHI’s first step toward a more family-friendly conference.',
+			'Through this initiative, we hope to bring our academic community closer to everyday life and to support more researchers in taking part fully. If you plan to attend with family members, please let us know through the registration form so we can prepare in advance.',
 			'We look forward to welcoming you and your family to TAICHI 2026.',
 		],
-		surveyHeading: 'TAICHI 2026 Family Attendance Survey',
-		surveyDescription:
-			'If you plan to attend with family members, please fill out this short survey so we can prepare in advance.',
-		surveyButtonText: 'Open Survey Form',
+		nearbyMap: {
+			...CONTENT_ZH.familyFriendlySection.nearbyMap,
+			heading: 'Nearby Map',
+			description:
+				'We provide a curated family-friendly guide to the area around the venue — nearby parks, kid-friendly rest spots, pharmacies, convenience stores, and more — with a Google Maps list so you can find and plan on the go.',
+			categories: ['Parks', 'Kid-friendly rest spots', 'Pharmacies', 'Convenience stores'],
+			buttonText: 'Open the nearby list on Google Maps',
+		},
 		facilitiesHeading: 'Syntrend Family-Friendly Facilities',
 		facilities: [
 			{ icon: 'toilet', label: 'Family Restrooms', floors: 'B2, 3F, 5F, 7F, 8F, 9F, 12F' },
@@ -179,7 +206,6 @@ export const CONTENT_EN = {
 		],
 		facilitiesSourceLabel: 'Source: Syntrend Creative Park official website',
 		facilitiesSourceUrl: 'https://www.syntrend.com.tw/service',
-		outroLine: 'More family-friendly activities will be announced soon. Stay tuned!',
 	},
 	sponsorshipSection: {
 		...CONTENT_ZH.sponsorshipSection,

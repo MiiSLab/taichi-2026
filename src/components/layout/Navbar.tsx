@@ -58,7 +58,7 @@ type MobileNavItem = {
 	to?: string;
 	disabled?: boolean;
 	isActive?: boolean;
-	submenuKey?: 'cfp' | 'venue' | 'orgSponsors';
+	submenuKey?: 'cfp' | 'venue' | 'orgSponsors' | 'familyFriendly';
 };
 
 const BracketText: React.FC<{
@@ -131,7 +131,7 @@ const MobilePinnedSubmenuLink: React.FC<{
 const Navbar: React.FC = () => {
 	const [isMenuOpen, setIsMenuOpen] = useState(false);
 	const [isScrolled, setIsScrolled] = useState(false);
-	const [mobileExpandedMenu, setMobileExpandedMenu] = useState<'cfp' | 'venue' | 'orgSponsors' | null>(null);
+	const [mobileExpandedMenu, setMobileExpandedMenu] = useState<'cfp' | 'venue' | 'orgSponsors' | 'familyFriendly' | null>(null);
 	const location = useLocation();
 	const content = useContent();
 	const { language, setLanguage } = useLanguage();
@@ -139,21 +139,24 @@ const Navbar: React.FC = () => {
 	const isTransitPage = location.pathname.startsWith('/transit');
 	const isProgramPage = location.pathname === '/program';
 	const isOrgSponsorsPage = location.pathname === '/organization' || location.pathname === '/sponsorship';
+	const isFamilyFriendlyPage = location.pathname === '/family-friendly';
 	// Submenu items are either same-page anchors (cfp / venue, carry a `hash`),
 	// cross-page links (organization & sponsors, carry only `to`), or day tabs
 	// (program — hash drives the page's active tab, no scroll target).
 	const activeSubmenu: { label: string; to: string; hash?: string }[] = isCFPPage
 		? content.nav.cfpSubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/cfp${item.hash}` }))
-		: isTransitPage
-			? content.venueV2Section.days.map((day, index) => ({ label: day.tabLabel, hash: `#day${index + 1}`, to: `/transit#day${index + 1}` }))
-			: isProgramPage
-				? content.programPageSection.dateTabs.map((tab) => ({ label: `${tab.date} ${tab.day}`, hash: `#${tab.key}`, to: `/program#${tab.key}` }))
-				: isOrgSponsorsPage
-					? [
-							{ label: 'Organization', to: '/organization' },
-							{ label: 'Sponsors', to: '/sponsorship' },
-						]
-					: [];
+		: isFamilyFriendlyPage
+			? content.nav.familyFriendlySubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/family-friendly${item.hash}` }))
+			: isTransitPage
+				? content.venueV2Section.days.map((day, index) => ({ label: day.tabLabel, hash: `#day${index + 1}`, to: `/transit#day${index + 1}` }))
+				: isProgramPage
+					? content.programPageSection.dateTabs.map((tab) => ({ label: `${tab.date} ${tab.day}`, hash: `#${tab.key}`, to: `/program#${tab.key}` }))
+					: isOrgSponsorsPage
+						? [
+								{ label: 'Organization', to: '/organization' },
+								{ label: 'Sponsors', to: '/sponsorship' },
+							]
+						: [];
 
 	const submenuHashes = activeSubmenu.map((item) => item.hash).filter((h): h is string => Boolean(h));
 	const scrollSpyHash = useScrollSpy(isProgramPage || isTransitPage ? [] : submenuHashes);
@@ -192,12 +195,13 @@ const Navbar: React.FC = () => {
 		{ key: 'program', label: content.nav.program, to: '/program', isActive: location.pathname === '/program' },
 		{ key: 'venue', label: content.nav.venue, to: '/transit', isActive: location.pathname === '/transit', submenuKey: 'venue' },
 		{ key: 'cfp', label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp'), submenuKey: 'cfp' },
-		{ key: 'family-friendly', label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly' },
+		{ key: 'family-friendly', label: content.nav.familyFriendly, to: '/family-friendly', isActive: location.pathname === '/family-friendly', submenuKey: 'familyFriendly' },
 		{ key: 'orgSponsors', label: content.nav.orgSponsors, to: '/organization', isActive: isOrgSponsorsPage, submenuKey: 'orgSponsors' },
 	];
 
-	const submenuByKey: Record<'cfp' | 'venue' | 'orgSponsors', { label: string; to: string; hash?: string }[]> = {
+	const submenuByKey: Record<'cfp' | 'venue' | 'orgSponsors' | 'familyFriendly', { label: string; to: string; hash?: string }[]> = {
 		cfp: content.nav.cfpSubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/cfp${item.hash}` })),
+		familyFriendly: content.nav.familyFriendlySubmenu.map((item) => ({ label: item.label, hash: item.hash, to: `/family-friendly${item.hash}` })),
 		venue: content.venueV2Section.days.map((day, index) => ({ label: day.tabLabel, hash: `#day${index + 1}`, to: `/transit#day${index + 1}` })),
 		orgSponsors: [
 			{ label: 'Organization', to: '/organization' },

@@ -29,6 +29,11 @@ export const CONTENT_ZH = {
 			{ label: 'Poster', hash: '#posters' },
 			{ label: 'Demo', hash: '#demos' },
 		],
+		familyFriendlySubmenu: [
+			{ label: '親子友善設計', hash: '#family-design' },
+			{ label: '周邊地圖', hash: '#nearby-map' },
+			{ label: '三創親子友善設施', hash: '#syntrend-facilities' },
+		],
 	},
 	heroBanner: {
 		topText: ' ',
@@ -241,18 +246,41 @@ export const CONTENT_ZH = {
 		seoTitle: 'Family-Friendly',
 		seoDescription: 'TAICHI 2026 歡迎攜帶家屬同行，打造更友善的參與現場。',
 		headline: 'TAICHI 2026 歡迎家屬同行',
-		paragraphs: [
+		intro: [
 			'TAICHI 2026 歡迎與會者，也歡迎您的家人一同前來。',
 			'家人是我們的力量，也是我們靈感的來源。伴侶、孩子、父母，陪伴我們走在研究與生活的路上。邀請他們同行，對我們而言再自然不過。',
-			'今年，TAICHI 2026 首度推出家庭友善規劃，希望讓有家屬同行的與會者能更安心參與會議。我們將設置家庭友善空間，提供休息、陪伴與簡單遊戲的角落；也會為對「爸爸媽媽／家人平常在忙什麼」感到好奇的孩子，準備輕鬆的小活動。此外，會議廳內也將保留家庭友善座位，讓有照顧需求的與會者能更彈性地參與議程。',
-			'我們也將提供一份簡短的會場周邊家庭友善指南，協助您找到附近的公園、藥局、便利設施，以及適合短暫休息的安靜角落。',
-			'這是 TAICHI 首次嘗試推動家庭友善會議安排。我們期待透過這項創舉，讓學術社群更貼近真實的生活，也讓更多研究者能在被支持的狀態下參與交流。若您計畫攜帶家屬前來，請在報名表中告訴我們，以便我們提前準備。',
+			'今年，TAICHI 2026 首度推出家庭友善規劃，希望讓有家屬同行的與會者能更安心參與會議。',
+		],
+		demo: {
+			heading: '親子友善 Demo',
+			description:
+				'我們特別邀請所有 Demo 展示團隊協助標示是否適合孩童體驗。現場將以「親子友善作品（Family-Friendly Demo）」貼紙標示，方便家長依照孩子的年齡與興趣，一起探索互動作品。',
+			stickerSrc: '/images/family_friendly_sticker.png',
+			stickerAlt: '親子友善作品（Family-Friendly Demo）貼紙',
+			photoSrc: '/images/family_friendly_sticker_wall.avif',
+			photoAlt: '親子友善作品貼紙張貼於活動現場',
+		},
+		hero: {
+			heading: 'Future HCIer 小小勇者',
+			description:
+				'歡迎至服務台索取活動限定的小朋友名牌，讓孩子們成為 TAICHI 2026 的 Future HCIer｜小小勇者，和大朋友一起展開探索未來的冒險。',
+			imageSrc: '/images/family_friendly_badge_hero.avif',
+			imageAlt: 'Future HCIer 小小勇者 小朋友名牌設計',
+			caption: '小朋友名牌・HERO 小小勇者',
+		},
+		closing: [
+			'這是 TAICHI 首次嘗試推動家庭友善會議安排。',
+			'我們期待透過這項創舉，讓學術社群更貼近真實的生活，也讓更多研究者能在被支持的狀態下參與交流。若您計畫攜帶家屬前來，請在報名表中告訴我們，以便我們提前準備。',
 			'期待在 TAICHI 2026 與您和您的家人相見。',
 		],
-		surveyHeading: 'TAICHI 2026 家屬同行意願調查',
-		surveyDescription: '若您計畫攜帶家屬前來，請填寫此調查表，協助我們提前準備。',
-		surveyButtonText: '前往調查表',
-		surveyUrl: 'https://docs.google.com/forms/d/e/1FAIpQLSe00DvkS2zWTNY0Hfi0mKwePdPc-777Jypcxh1ulxQ7DRDcJg/viewform',
+		nearbyMap: {
+			heading: '周邊地圖',
+			description:
+				'我們提供一份精選的會場周邊家庭友善指南，包含附近公園、親子休憩空間、藥局、便利商店等實用資訊，並附上 Google 地圖清單，方便您隨時查找與規劃行程。',
+			categories: ['公園', '親子休憩空間', '藥局', '便利商店'],
+			buttonText: '在 Google 地圖開啟周邊清單',
+			url: 'https://maps.app.goo.gl/yE47cnqQPiERPyFP9',
+		},
 		facilitiesHeading: '三創親子友善設施',
 		facilities: [
 			{ icon: 'toilet', label: '親子廁所', floors: 'B2、3F、5F、7F、8F、9F、12F' },
@@ -263,7 +291,6 @@ export const CONTENT_ZH = {
 		],
 		facilitiesSourceLabel: '資料來源：三創生活園區官方網站',
 		facilitiesSourceUrl: 'https://www.syntrend.com.tw/service',
-		outroLine: '更多活動規劃將後續公告！敬請期待！',
 	},
 	sponsorshipSection: {
 		seoTitle: '贊助邀請',

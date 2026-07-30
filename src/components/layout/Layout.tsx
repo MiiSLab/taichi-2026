@@ -12,7 +12,7 @@ const Layout: React.FC = () => {
 		if (hash) {
 			const element = document.getElementById(hash.replace('#', ''));
 			if (element) {
-				const headerOffset = pathname.startsWith('/cfp') ? 156 : 100;
+				const headerOffset = pathname.startsWith('/cfp') || pathname.startsWith('/family-friendly') ? 156 : 100;
 				const elementPosition = element.getBoundingClientRect().top;
 				const offsetPosition = elementPosition + window.pageYOffset - headerOffset;
 
