@@ -97,10 +97,18 @@ const LogoRow = ({ items, centered = false, delayStep = 70 }: { items: readonly 
 	// columns so it centers itself on its own row.
 	const wrapOnMobile = items.length >= 3;
 	const lastIsOdd = wrapOnMobile && items.length % 2 === 1;
+	// 4+ logos overflow a single nowrap row on md screens (see the sponsors row).
+	// flex-wrap packs mismatched-width logos unevenly (2,1,1), so on desktop use the
+	// same even 2-column grid as mobile — each cell splits the width and centers its logo.
+	const wrapOnDesktop = items.length >= 4;
 
 	return (
 		<div
-			className={`w-full items-center gap-2 md:flex md:w-auto md:flex-nowrap md:gap-6 ${wrapOnMobile ? 'grid grid-cols-2' : 'flex flex-nowrap'} ${centered ? 'justify-center' : 'justify-start'}`}
+			className={
+				wrapOnDesktop
+					? 'grid w-full grid-cols-2 items-center justify-items-center gap-x-2 gap-y-6 md:gap-x-8 md:gap-y-8'
+					: `w-full items-center gap-2 md:flex md:w-auto md:flex-nowrap md:gap-6 ${wrapOnMobile ? 'grid grid-cols-2' : 'flex flex-nowrap'} ${centered ? 'justify-center' : 'justify-start'}`
+			}
 		>
 			{items.map((item, index) => {
 				const opticalClasses = getLogoOpticalClasses(item.name);
@@ -158,7 +166,7 @@ const Sponsors: React.FC = () => {
 
 						{sponsors && sponsors.length > 0 && (
 							<ScrollReveal delay={200}>
-								<div className='flex w-full max-w-[520px] flex-col items-center gap-3 md:gap-4'>
+								<div className='flex w-full max-w-[640px] flex-col items-center gap-3 md:gap-4'>
 									<p className='font-roboto text-[12px] uppercase tracking-[0.42em] text-black/55'>{sponsorsTitle}</p>
 									<LogoRow items={sponsors} centered delayStep={60} />
 								</div>

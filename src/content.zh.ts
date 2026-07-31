@@ -1135,6 +1135,7 @@ export const CONTENT_ZH = {
 			{ name: '美國在台協會', logo: '/logos/AIT.png', size: 'large', className: 'px-6 py-4 rounded-2xl shadow-xl' },
 			{ name: '美國創新中心', logo: '/logos/AIC.png', size: 'large', className: 'px-6 py-4 rounded-2xl shadow-xl' },
 			{ name: '國科會工程科技推展中心', logo: '/logos/ETPC.png', size: 'large', className: 'px-6 py-4 rounded-2xl shadow-xl' },
+			{ name: '璐光遊戲工作室', logo: '/logos/LuxAria.png', size: 'large', className: 'px-6 py-4 rounded-2xl shadow-xl' },
 		],
 	},
 	registrationSection: {
