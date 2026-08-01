@@ -599,6 +599,7 @@ export const CONTENT_ZH = {
 				titleCol: '名稱',
 				authorCol: '作者',
 				note: '以下依發表時段列出，實際發表位置以現場公告為準。',
+				chairLabel: '主持人',
 			},
 			day1: {
 				demo: {
@@ -652,6 +653,7 @@ export const CONTENT_ZH = {
 						{
 							title: 'Session 1 · AI-Supported Creativity and Reflection',
 							time: '09:00 - 09:50',
+							chair: '畢南怡 助理教授 國立臺灣大學資訊管理學系暨研究所',
 							items: [
 								{ id: '31', title: '從風格複製到風格探索：生成式 AI 輔助數位藝術家的風格探索框架', authors: '王文凡, 林采璇, 林期蘭 楊, 程安如, 陳炳宇' },
 								{ id: '42', title: '飄移的能動性：人機圖形協作歷程的微觀觀察', authors: '鄭秀芳, 鄭司維' },
@@ -662,6 +664,7 @@ export const CONTENT_ZH = {
 						{
 							title: 'Session 2 · Trust, Credibility, and Overreliance on AI',
 							time: '10:00 - 10:50',
+							chair: '程芙茵 助理教授 國立成功大學資訊工程學系',
 							items: [
 								{ id: '48', title: 'Evaluating the Effect of Overconfidence-Based Interventions in Intelligent Anti-Fraud Systems using Behavioral and Cognitive Metrics', authors: 'Bo-Cun Li, Ci-Chen Lin and Fu-Yin Cherng' },
 								{ id: '68', title: '從訊息可信到責任歸因：AI 整合型態與購買機制在社群商務的作用機制', authors: '李圯瀞, 劉劭禹, 程安如, 畢南怡, 陳炳宇' },
@@ -672,6 +675,7 @@ export const CONTENT_ZH = {
 						{
 							title: '碩博士論文獎 · Graduate Thesis Awards',
 							time: '11:10 - 12:00',
+							chair: '余能豪 副教授 國立臺灣科技大學設計系',
 							items: [
 								{ time: '11:10 - 11:30', title: '物識流：未來物件系統的數據流設計（Awareness of Things: Designing Systems of Data-Enabled Objects）', authors: '鄭宇婷', award: '傑出博士論文獎' },
 								{ time: '11:30 - 11:40', title: 'FlueBricks: 互動式笛類樂器系統的模組化工具包', authors: '陳柏昱', award: '碩士佳作論文獎' },
@@ -682,6 +686,7 @@ export const CONTENT_ZH = {
 						{
 							title: 'Session 3 · XR, Haptic, and Embodied Interaction',
 							time: '13:30 - 14:20',
+							chair: '鄧善元 助理教授 國立臺灣大學資訊工程系',
 							items: [
 								{ id: '30', title: '當震動不只是通知：對話式 AI 中手機觸覺回應的互動設計', authors: 'Yuehyin Kuo, Hsin Lin and Chuncheng Hsu' },
 								{ id: '57', title: '在延展實境透過穿戴式模組化鏈狀動態被動觸覺回饋裝置呈現手部形狀回饋', authors: '胡乃云, 林昱安, 羅聿安, 蔡欣叡' },
@@ -692,6 +697,7 @@ export const CONTENT_ZH = {
 						{
 							title: 'Session 4 · More-than-Human and Ambient Design for Care',
 							time: '14:30 - 15:20',
+							chair: '蔡文傑 國立臺灣大學 博士後研究員',
 							items: [
 								{ id: '95', title: 'When Our Sofa Speaks: Mediating Care Through Collective Data Making Between Family Members and a Domestic Object', authors: 'En-Kai Chang, Yi-Tong Chen and Yu-Ting Cheng' },
 								{ id: '36', title: '24.8小時：病房中的植物性互動設計', authors: 'Ruo-Yu Cai, Xuan Chen and I-Hao Liao' },

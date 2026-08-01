@@ -40,10 +40,10 @@ type ProgramDay2Session = { id: string; title: string; time: string; location: s
 
 // 發表名單（paper/poster/demo）：paper 依 Session 分組（groups），poster/demo 為平坦名單（items）
 type ProgramListItem = { id?: string; time?: string; title: string; authors: string; award?: string };
-type ProgramListGroup = { title?: string; time?: string; items: readonly ProgramListItem[] };
+type ProgramListGroup = { title?: string; time?: string; chair?: string; items: readonly ProgramListItem[] };
 type ProgramListCategory = { heading: string; slot: string; items?: readonly ProgramListItem[]; groups?: readonly ProgramListGroup[] };
 type ProgramLists = {
-	labels: { sectionTitle: string; idCol: string; titleCol: string; authorCol: string; note: string };
+	labels: { sectionTitle: string; idCol: string; titleCol: string; authorCol: string; note: string; chairLabel: string };
 	day1: { demo: ProgramListCategory; poster: ProgramListCategory };
 	day2: { paper: ProgramListCategory; poster: ProgramListCategory };
 };
@@ -234,7 +234,7 @@ const Day2StaticSession = ({
 
 // 名單改為「可展開議程」：每個發表時段一列，標題列自帶時間（免上下對照時程表），點擊展開名字
 type AgendaKind = 'Paper' | 'Poster' | 'Demo';
-type AgendaEntry = { key: string; kind: AgendaKind; title: string; theme?: string; meta?: string; items: readonly ProgramListItem[] };
+type AgendaEntry = { key: string; kind: AgendaKind; title: string; theme?: string; meta?: string; chair?: string; items: readonly ProgramListItem[] };
 
 // 依 kind 上色：Paper 主色、Poster 副色、Demo 中性白
 const KIND_TONE: Record<AgendaKind, { text: string; border: string; chip: string }> = {
@@ -248,7 +248,7 @@ const buildEntries = (category: ProgramListCategory, kind: AgendaKind, keyPrefix
 	if (category.groups) {
 		return category.groups.map((group, index) => {
 			const [title, ...rest] = (group.title ?? category.heading).split(' · ');
-			return { key: `${keyPrefix}-${index}`, kind, title, theme: rest.join(' · ') || undefined, meta: group.time ?? category.slot, items: group.items };
+			return { key: `${keyPrefix}-${index}`, kind, title, theme: rest.join(' · ') || undefined, meta: group.time ?? category.slot, chair: group.chair, items: group.items };
 		});
 	}
 	return [{ key: keyPrefix, kind, title: category.heading, meta: category.slot, items: category.items ?? [] }];
@@ -289,6 +289,13 @@ const AgendaItem = ({ entry, labels, open, onToggle }: { entry: AgendaEntry; lab
 				<div className='px-4 pb-4 sm:px-5'>
 					{entry.meta && <p className='mb-3 font-mono text-[12px] text-white/45 lg:hidden'>{entry.meta}</p>}
 					<div className={`border-t ${tone.border}`}>
+						{/* session 主持人：展開後、名單表格上方一列（label 用 session 色） */}
+						{entry.chair && (
+							<div className='flex flex-col gap-0.5 pt-3 sm:flex-row sm:items-baseline sm:gap-2'>
+								<span className={`shrink-0 font-mono text-[12px] font-bold uppercase tracking-[0.08em] ${tone.text}`}>{labels.chairLabel}</span>
+								<span className='font-sans text-[14px] leading-5 text-white/80'>{entry.chair}</span>
+							</div>
+						)}
 						{/* 桌機顯示欄名列；手機改堆疊、省略欄名 */}
 						<div className='hidden grid-cols-[minmax(0,3fr)_minmax(0,2fr)] gap-x-4 border-b border-white/15 pb-2 pt-3 sm:grid'>
 							<span className='font-mono text-[12px] font-bold uppercase tracking-[0.08em] text-white/40'>{labels.titleCol}</span>

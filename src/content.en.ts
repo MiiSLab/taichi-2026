@@ -515,6 +515,7 @@ export const CONTENT_EN = {
 				titleCol: 'Title',
 				authorCol: 'Authors',
 				note: 'Listed by presentation slot; actual placement follows on-site announcements.',
+				chairLabel: 'Session Chair',
 			},
 			day1: {
 				demo: {

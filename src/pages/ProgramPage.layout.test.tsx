@@ -106,6 +106,26 @@ test('program page day2 content drops the ISAT session and marks TAICHI as tenta
 	assert.match(enSource, /title: 'TAICHI Annual Society Meeting'/);
 });
 
+test('program page day2 paper sessions carry a session chair, localized label, and render it', () => {
+	const zhSource = readFileSync(new URL('../content.zh.ts', import.meta.url), 'utf8');
+	const enSource = readFileSync(new URL('../content.en.ts', import.meta.url), 'utf8');
+	const pageSource = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+
+	// each of the five day2 paper groups (Session 1–4 + thesis award) has a chair
+	for (const chair of ['畢南怡', '程芙茵', '余能豪', '鄧善元', '蔡文傑']) {
+		assert.match(zhSource, new RegExp(`chair: '${chair}`));
+	}
+	// chair names are proper nouns shared from ZH; only the label is localized
+	assert.match(zhSource, /chairLabel: '主持人'/);
+	assert.match(enSource, /chairLabel: 'Session Chair'/);
+	assert.doesNotMatch(enSource, /chair: '畢南怡/);
+
+	// the agenda row renders the chair (with its localized label) when present
+	assert.match(pageSource, /chair\?: string/);
+	assert.match(pageSource, /entry\.chair &&/);
+	assert.match(pageSource, /labels\.chairLabel/);
+});
+
 test('program page renders both days through the shared calendar-style timetable', () => {
 	// One generic DayTimetable: day1 = one hero block per venue (simplified),
 	// day2 = every event as its own proportional block, incl. the second venue.
