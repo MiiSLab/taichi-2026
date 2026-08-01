@@ -486,7 +486,7 @@ export const CONTENT_EN = {
 			sessions: [
 				{
 					id: 'day2-taichi',
-					title: 'TAICHI Annual Society Meeting (Tentative)',
+					title: 'TAICHI Annual Society Meeting',
 					time: '08:00 - 17:00',
 					location: 'National Taipei University of Technology, Hongyu Technology Building B1 International Conference Hall',
 					// kind: 'break' = non-session slots (registration/breaks/lunch), rendered as muted dashed blocks

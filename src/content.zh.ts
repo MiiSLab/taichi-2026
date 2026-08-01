@@ -569,7 +569,7 @@ export const CONTENT_ZH = {
 			sessions: [
 				{
 					id: 'day2-taichi',
-					title: 'TAICHI年度學會 「暫定」',
+					title: 'TAICHI年度學會',
 					time: '08:00 - 17:00',
 					location: '國立臺北科技大學宏裕科技大樓 B1國際會議廳',
 					// kind: 'break' = 非議程時段（報到/休息/午餐），時間表以灰色虛線框呈現

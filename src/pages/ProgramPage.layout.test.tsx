@@ -102,8 +102,8 @@ test('program page day2 content drops the ISAT session and marks TAICHI as tenta
 		assert.match(source, /label: 'Poster session', sublabel: '\(Coffee Break\)', kind: 'break'/);
 	}
 
-	assert.match(zhSource, /title: 'TAICHI年度學會 「暫定」'/);
-	assert.match(enSource, /title: 'TAICHI Annual Society Meeting \(Tentative\)'/);
+	assert.match(zhSource, /title: 'TAICHI年度學會'/);
+	assert.match(enSource, /title: 'TAICHI Annual Society Meeting'/);
 });
 
 test('program page renders both days through the shared calendar-style timetable', () => {
