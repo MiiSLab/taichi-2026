@@ -9,7 +9,7 @@ import { typography } from '../design-system/typography';
 import { useLanguage } from '../context/LanguageContext';
 import { useSEO } from '../hooks/useSEO';
 import {
-	MAX_VOTES,
+	type VoteRound,
 	castVote,
 	getPosters,
 	getVoteState,
@@ -20,7 +20,9 @@ import {
 } from '../services/votingService';
 
 /**
- * /vote — Poster 與 Demo 兩類投票，每類各 3 票。
+ * /vote — 依「投票回合」投票：Demo 8/5、Poster 8/5、Poster 8/6。
+ * 每個回合各有自己的時間窗與票數上限，全部由伺服器的 vote_state 決定，
+ * 前端沒有任何寫死的票數。
  *
  * 呈現分流（沿用舊版 pointer/hover 判斷）：
  * - 桌機（pointer: fine + hover）→ 卡片牆 grid：資訊全露出、卡上直接投票，
@@ -34,16 +36,15 @@ import {
  * - 沒有人在這頁看得到票數：votes 表已收回公開讀取，即時統計只在報到系統的
  *   後台（工作人員限定）。這裡防的是從眾灌票，不是純 UI 開關
  * - tt=測試旗標：強制 UI 視為投票進行中（cast_vote 伺服器端仍驗時間窗）
- * - 備案版本（全卡片牆、無 carousel）凍結在 VotePageCardWall.tsx（未接 route）
+ * - 桌機直接用頁內的 DesktopCardWall；更早的整頁卡片牆備案已移除（見 git 歷史）
  */
 
 const VOTE_STATE_POLL_MS = 10_000;
 
 type Category = 'poster' | 'demo';
-const CATEGORIES: { key: Category; label: string }[] = [
-	{ key: 'poster', label: 'POSTER' },
-	{ key: 'demo', label: 'DEMO' },
-];
+/** 回合顯示名：資料庫的 label 是中文，英文介面自己組 */
+const roundLabel = (round: VoteRound, zh: boolean): string =>
+	zh ? (round.label ?? round.id) : `${round.category === 'demo' ? 'DEMO' : 'POSTER'} · DAY ${round.day}`;
 
 /** 舊資料的 category 可能為 null → 視為 poster */
 const categoryOf = (raw: string | null): Category => (raw === 'demo' ? 'demo' : 'poster');
@@ -54,6 +55,8 @@ type EntryVM = {
 	author: string;
 	theme: string;
 	category: Category;
+	/** 所屬投票回合；沒掛回合的作品不會出現在任何分頁 */
+	roundId: string;
 };
 
 type WindowStatus = 'loading' | 'before' | 'open' | 'closed';
@@ -63,7 +66,7 @@ type VoteControls = {
 	windowStatus: WindowStatus;
 	casting: boolean;
 	votedIds: string[];
-	remainingIn: (category: Category) => number;
+	remainingIn: (entry: EntryVM) => number;
 	voteError: string | null;
 	errorEntryId: string | null;
 	onCast: (entryId: string) => void;
@@ -120,7 +123,7 @@ function VoteButton({
 	const [confirming, setConfirming] = useState(false);
 	const { hasToken, windowStatus, casting, votedIds, remainingIn, onCast } = voteControls;
 	const votedThis = votedIds.includes(entry.id);
-	const remaining = remainingIn(entry.category);
+	const remaining = remainingIn(entry);
 	const disabled = votedThis || !hasToken || windowStatus !== 'open' || remaining <= 0 || casting;
 
 	let label: string;
@@ -129,7 +132,7 @@ function VoteButton({
 	else if (windowStatus === 'loading') label = zh ? '確認投票狀態中…' : 'Checking vote status…';
 	else if (windowStatus === 'before') label = zh ? '投票尚未開放' : 'Voting not open yet';
 	else if (windowStatus === 'closed') label = zh ? '投票已截止' : 'Voting closed';
-	else if (remaining <= 0) label = zh ? `${entry.category === 'demo' ? 'Demo' : 'Poster'} 的 ${MAX_VOTES} 票已用完` : `All ${MAX_VOTES} ${entry.category} votes used`;
+	else if (remaining <= 0) label = zh ? '這個回合的票已用完' : 'No votes left in this round';
 	else if (casting) label = zh ? '投票中…' : 'Casting vote…';
 	else label = zh ? `投這件（剩 ${remaining} 票）` : `Vote for this (${remaining} left)`;
 
@@ -412,7 +415,7 @@ const VotePage: React.FC = () => {
 	const [casting, setCasting] = useState(false);
 	const [voteError, setVoteError] = useState<string | null>(null);
 	const [errorEntryId, setErrorEntryId] = useState<string | null>(null);
-	const [activeCategory, setActiveCategory] = useState<Category>('poster');
+	const [activeRoundId, setActiveRoundId] = useState<string | null>(null);
 	const [selectedEntryId, setSelectedEntryId] = useState<string | null>(null);
 	const [isDesktopGallery, setIsDesktopGallery] = useState(false);
 
@@ -421,8 +424,8 @@ const VotePage: React.FC = () => {
 	useSEO(
 		zh ? '投票' : 'Vote',
 		zh
-			? 'TAICHI 2026 Poster 與 Demo 投票：兩類各 3 票。'
-			: 'TAICHI 2026 poster & demo voting: 3 votes per category.',
+			? 'TAICHI 2026 Poster 與 Demo 投票：每個回合各有自己的票數。'
+			: 'TAICHI 2026 poster & demo voting: each round has its own vote limit.',
 	);
 
 	// 桌機（滑鼠 + hover）走卡片牆；手機/平板/觸控筆電走 carousel（與舊版判斷一致）
@@ -450,6 +453,7 @@ const VotePage: React.FC = () => {
 						author: p.author ?? '',
 						theme: p.theme ?? '',
 						category: categoryOf(p.category),
+						roundId: p.round_id ?? '',
 					})),
 				);
 			})
@@ -507,24 +511,52 @@ const VotePage: React.FC = () => {
 		setSelectedEntryId(null);
 		setVoteError(null);
 		setErrorEntryId(null);
-	}, [activeCategory]);
+	}, [activeRoundId]);
+
+	// 只顯示「有作品的回合」，並預設停在正在開放的那個
+	const rounds = useMemo(() => {
+		const withEntries = new Set(entries.map((e) => e.roundId).filter(Boolean));
+		return (voteState?.rounds ?? []).filter((r) => withEntries.has(r.id));
+	}, [voteState, entries]);
+
+	useEffect(() => {
+		if (rounds.length === 0) return;
+		setActiveRoundId((current) => {
+			if (current && rounds.some((r) => r.id === current)) return current;
+			return (rounds.find((r) => r.open) ?? rounds[0]).id;
+		});
+	}, [rounds]);
+
+	const activeRound = useMemo(
+		() => rounds.find((r) => r.id === activeRoundId) ?? null,
+		[rounds, activeRoundId],
+	);
 
 	const windowStatus: WindowStatus = useMemo(() => {
 		if (testOverride) return 'open';
 		if (!voteState) return 'loading';
-		if (voteState.open) return 'open';
-		if (voteState.closes_at && Date.now() > new Date(voteState.closes_at).getTime()) return 'closed';
+		if (!activeRound) return voteState.open ? 'open' : 'before';
+		if (activeRound.open) return 'open';
+		if (activeRound.closes_at && Date.now() > new Date(activeRound.closes_at).getTime()) return 'closed';
 		return 'before';
-	}, [voteState, testOverride]);
+	}, [voteState, activeRound, testOverride]);
 
-	// 每類各 3 票：以已投作品的類別分開計數
-	const categoryEntryMap = useMemo(() => new Map(entries.map((e) => [e.id, e.category])), [entries]);
+	// 票數上限由回合決定，跨回合互不影響
+	const roundOfEntry = useMemo(() => new Map(entries.map((e) => [e.id, e.roundId])), [entries]);
+	const usedInRound = useCallback(
+		(roundId: string) => votedIds.filter((id) => roundOfEntry.get(id) === roundId).length,
+		[votedIds, roundOfEntry],
+	);
+	const remainingInRound = useCallback(
+		(round: VoteRound | null) => (round ? Math.max(0, round.max_votes - usedInRound(round.id)) : 0),
+		[usedInRound],
+	);
 	const remainingIn = useCallback(
-		(category: Category) => {
-			const used = votedIds.filter((id) => categoryEntryMap.get(id) === category).length;
-			return Math.max(0, MAX_VOTES - used);
+		(entry: EntryVM) => {
+			const round = rounds.find((r) => r.id === entry.roundId) ?? null;
+			return remainingInRound(round);
 		},
-		[votedIds, categoryEntryMap],
+		[rounds, remainingInRound],
 	);
 
 	const handleCastVote = useCallback(
@@ -555,8 +587,8 @@ const VotePage: React.FC = () => {
 	);
 
 	const visibleEntries = useMemo(
-		() => entries.filter((e) => e.category === activeCategory),
-		[entries, activeCategory],
+		() => (activeRoundId ? entries.filter((e) => e.roundId === activeRoundId) : []),
+		[entries, activeRoundId],
 	);
 
 	const selectedEntry = useMemo(
@@ -575,7 +607,7 @@ const VotePage: React.FC = () => {
 		onCast: handleCastVote,
 	};
 
-	const activeCategoryLabel = activeCategory === 'demo' ? 'Demo' : 'Poster';
+	const activeRoundLabel = activeRound ? roundLabel(activeRound, zh) : '';
 
 	const statusChip =
 		windowStatus === 'open'
@@ -585,8 +617,8 @@ const VotePage: React.FC = () => {
 				: windowStatus === 'before'
 					? zh ? '投票尚未開放' : 'VOTING OPENS SOON'
 					: 'LOADING…';
-	const opensLabel = formatWindowTime(voteState?.opens_at ?? null);
-	const closesLabel = formatWindowTime(voteState?.closes_at ?? null);
+	const opensLabel = formatWindowTime(activeRound?.opens_at ?? voteState?.opens_at ?? null);
+	const closesLabel = formatWindowTime(activeRound?.closes_at ?? voteState?.closes_at ?? null);
 
 	return (
 		<div className='min-h-screen w-full bg-[#050505] text-white'>
@@ -598,11 +630,13 @@ const VotePage: React.FC = () => {
 						<div className='inline-flex items-center gap-3 border border-primary/30 bg-primary/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-primary'>
 							<span>{statusChip}</span>
 						</div>
-						{token && windowStatus === 'open' ? (
+						{token && windowStatus === 'open' && activeRound ? (
 							<div className='inline-flex items-center gap-3 border border-white/15 bg-black/40 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-white/75'>
-								<span>{zh ? `Poster 剩 ${remainingIn('poster')} 票` : `Poster: ${remainingIn('poster')} left`}</span>
-								<span className='text-white/30'>|</span>
-								<span>{zh ? `Demo 剩 ${remainingIn('demo')} 票` : `Demo: ${remainingIn('demo')} left`}</span>
+								<span>
+									{zh
+										? `${roundLabel(activeRound, true)} 剩 ${remainingInRound(activeRound)} 票`
+										: `${roundLabel(activeRound, false)}: ${remainingInRound(activeRound)} left`}
+								</span>
 							</div>
 						) : null}
 						{testOverride ? (
@@ -612,9 +646,13 @@ const VotePage: React.FC = () => {
 						) : null}
 					</div>
 					<p className={`max-w-3xl text-center ${typography.scale.bodyLg} text-white/72`}>
-						{zh
-							? `Poster 與 Demo 兩類各 ${MAX_VOTES} 票，每件作品限投一次。`
-							: `${MAX_VOTES} votes for posters and ${MAX_VOTES} for demos — one vote per entry.`}
+						{activeRound
+							? zh
+								? `${roundLabel(activeRound, true)}：一人 ${activeRound.max_votes} 票，每件作品限投一次。`
+								: `${roundLabel(activeRound, false)}: ${activeRound.max_votes} vote${activeRound.max_votes > 1 ? 's' : ''} per person, one vote per entry.`
+							: zh
+								? '每個回合各有自己的票數，每件作品限投一次。'
+								: 'Each round has its own vote limit; one vote per entry.'}
 					</p>
 					{!token ? (
 						<p className={`max-w-3xl text-center ${typography.scale.label} text-white/55`}>
@@ -653,25 +691,31 @@ const VotePage: React.FC = () => {
 					</div>
 				) : (
 					<>
-						{/* Poster / Demo 分頁（樣式對齊 /program 的日期分頁） */}
+						{/* 回合分頁：Demo 8/5、Poster 8/5、Poster 8/6（樣式對齊 /program 的日期分頁） */}
 						<div className='mx-auto w-full max-w-6xl px-4 sm:px-8'>
-							<div className='mx-auto flex w-full max-w-2xl'>
-								{CATEGORIES.map((category) => (
+							<div className='mx-auto flex w-full max-w-3xl flex-wrap'>
+								{rounds.map((round) => (
 									<button
-										key={category.key}
+										key={round.id}
 										type='button'
-										onClick={() => setActiveCategory(category.key)}
-										className={`flex-1 border-2 py-3 font-mono text-lg font-bold transition-colors sm:text-xl ${activeCategory === category.key
+										onClick={() => setActiveRoundId(round.id)}
+										className={`flex-1 border-2 py-3 font-mono text-base font-bold transition-colors sm:text-lg ${round.id === activeRoundId
 											? 'border-primary bg-primary text-black'
 											: 'border-primary/40 text-white/60 hover:text-white/80'
 											}`}
 									>
-										{category.label}
-										{token && windowStatus === 'open' ? (
-											<span className='ms-2 font-mono text-[12px] font-normal tracking-[0.08em]'>
-												{zh ? `剩 ${remainingIn(category.key)}` : `${remainingIn(category.key)} left`}
+										{roundLabel(round, zh)}
+										{round.open ? (
+											token ? (
+												<span className='ms-2 font-mono text-[12px] font-normal tracking-[0.08em]'>
+													{zh ? `剩 ${remainingInRound(round)}` : `${remainingInRound(round)} left`}
+												</span>
+											) : null
+										) : (
+											<span className='ms-2 font-mono text-[11px] font-normal tracking-[0.08em] opacity-70'>
+												{zh ? '未開放' : 'CLOSED'}
 											</span>
-										) : null}
+										)}
 									</button>
 								))}
 							</div>
@@ -695,7 +739,7 @@ const VotePage: React.FC = () => {
 							<div className='mt-10'>
 								<MobileEntryCarousel
 									entries={visibleEntries}
-									categoryLabel={activeCategoryLabel}
+									categoryLabel={activeRoundLabel}
 									votedIds={votedIds}
 									selectedEntry={selectedEntry}
 									onSelectEntry={(entry) => setSelectedEntryId((currentId) => (currentId === entry.id ? null : entry.id))}

@@ -31,6 +31,7 @@ export type Poster = {
 	theme: string | null;
 	conference: string | null;
 	category: string | null; // 'poster' | 'demo'（舊資料可能為 null → 視為 poster）
+	round_id: string | null; // 所屬投票回合；沒掛回合的作品不可投
 };
 
 /** One (category × day) voting unit: its own window and its own vote limit. */
@@ -97,7 +98,7 @@ export async function lookupPass(name: string, contact: string): Promise<LookupP
 /** All entries (posters + demos), loaded once (the list rarely changes during the event). */
 export async function getPosters(): Promise<Poster[]> {
 	if (!isSupabaseConfigured) return [];
-	return restGet<Poster[]>('posters?select=id,title,author,theme,conference,category&order=id');
+	return restGet<Poster[]>('posters?select=id,title,author,theme,conference,category,round_id&order=id');
 }
 
 /** Every round's window and vote limit — poll this, and refetch right after casting. */
