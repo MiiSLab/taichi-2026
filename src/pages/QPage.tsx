@@ -179,10 +179,10 @@ const QPage: React.FC = () => {
 
 	return (
 		<div className='relative isolate'>
-			{/* pt-32 clears the fixed site navbar */}
-			<div className='mx-auto w-full max-w-[640px] px-5 pb-16 pt-32 sm:px-8'>
-				<div className='flex w-full flex-col gap-6'>
-					<header className='space-y-3'>
+			{/* pt-24 clears the fixed site navbar；整頁收在一屏內，投票入口不落到摺線下 */}
+			<div className='mx-auto w-full max-w-[640px] px-5 pb-8 pt-24 sm:px-8 sm:pb-12 sm:pt-32'>
+				<div className='flex w-full flex-col gap-3 sm:gap-4'>
+					<header className='space-y-2'>
 						<p className='ds-page-note'>TAICHI 2026 DIGITAL PASS</p>
 						<div className='flex items-start justify-between gap-3'>
 							<h1 className={`ds-page-title ${typography.scale.sectionTitle}`}>數位通行證</h1>
@@ -205,14 +205,14 @@ const QPage: React.FC = () => {
 
 					{token ? (
 						<>
-							<section className='ds-surface-panel flex flex-col items-center gap-4 p-5 sm:p-6'>
+							<section className='ds-surface-panel flex flex-col items-center gap-3 p-4 sm:p-6'>
 								<p className='ds-section-kicker'>Check-in Pass</p>
 								{qrDataUrl ? (
-									<div className='w-full max-w-[248px] bg-white p-3'>
+									<div className='w-[min(248px,34dvh)] min-w-[168px] bg-white p-2.5'>
 										<img src={qrDataUrl} alt='通行證 QR Code' className='h-auto w-full [image-rendering:pixelated]' />
 									</div>
 								) : (
-									<div className='flex aspect-square w-full max-w-[248px] items-center justify-center border border-white/10 bg-black/40'>
+									<div className='flex aspect-square w-[min(248px,34dvh)] min-w-[168px] items-center justify-center border border-white/10 bg-black/40'>
 										<p className='animate-pulse font-mono text-[11px] uppercase tracking-[0.2em] text-secondary'>Generating QR…</p>
 									</div>
 								)}
@@ -223,7 +223,7 @@ const QPage: React.FC = () => {
 								</p>
 							</section>
 
-							<section className='ds-surface-soft p-5'>
+							<section className='ds-surface-soft p-4 sm:p-5'>
 								<p className='ds-section-kicker'>Poster / Demo Vote</p>
 								{verified ? (
 									windowOpen ? (
