@@ -5,17 +5,23 @@ import { isSupabaseConfigured, restGet, restRpc } from './supabaseRest';
  *
  * Backend lives in the check-in project's Supabase (Taichi_check_in/supabase/
  * schema.sql — single source of truth):
- *   - posters:      public select; two categories ('poster' | 'demo')
- *   - vote_state(): window status + tallies (polled; UI only shows tallies to
- *                   program staff via the ?ct flag — hidden from voters)
+ *   - posters:      public select; each entry belongs to one vote round
+ *   - vote_state(): every round's window, vote limit and open flag. Carries NO
+ *                   tallies — live counts are staff-only (check-in admin page)
+ *   - my_votes():   what this token voted for, so已投 state survives a device
+ *                   change; the votes table itself is not readable
  *   - cast_vote():  all real constraints live server-side (token validity,
- *                   can_vote, time window, ≤3 votes per category, no duplicate)
+ *                   can_vote, round window, check-in requirement, per-round
+ *                   vote limit, no duplicate entry)
  *
- * localStorage only mirrors "which posters this token voted for" so the UI can
+ * localStorage only mirrors "which entries this token voted for" so the UI can
  * restore已投 state after reload — it is NOT a security boundary.
  */
 
-/** Per category (poster / demo), not total. */
+/**
+ * Fallback vote limit, used only while vote_state has not loaded yet.
+ * The real limit is per round and comes from the server.
+ */
 export const MAX_VOTES = 3;
 
 export type Poster = {
@@ -27,14 +33,28 @@ export type Poster = {
 	category: string | null; // 'poster' | 'demo'（舊資料可能為 null → 視為 poster）
 };
 
-export type VoteTally = { poster_id: string; votes: number };
-
-export type VoteState = {
+/** One (category × day) voting unit: its own window and its own vote limit. */
+export type VoteRound = {
+	id: string;
+	category: string; // 'poster' | 'demo'
+	day: number;
+	label: string | null;
 	opens_at: string | null;
 	closes_at: string | null;
+	max_votes: number;
+	require_checkin: boolean;
 	open: boolean;
-	tallies: VoteTally[];
 };
+
+export type VoteState = {
+	rounds: VoteRound[];
+	/** Aggregates across rounds: any round open, earliest start, latest close. */
+	open: boolean;
+	opens_at: string | null;
+	closes_at: string | null;
+};
+
+export type MyVote = { poster_id: string; round_id: string | null };
 
 export type CastVoteResult =
 	| { ok: true; votesUsed: number }
@@ -80,21 +100,25 @@ export async function getPosters(): Promise<Poster[]> {
 	return restGet<Poster[]>('posters?select=id,title,author,theme,conference,category&order=id');
 }
 
-/** Window status + live tallies — poll this, and refetch right after casting. */
+/** Every round's window and vote limit — poll this, and refetch right after casting. */
 export async function getVoteState(): Promise<VoteState | null> {
 	if (!isSupabaseConfigured) return null;
 	return restRpc<VoteState | null>('vote_state');
 }
 
 /**
- * This token's votes as recorded server-side (votes is publicly readable).
- * Fetched on page load so已投 state follows the person across devices —
- * localStorage alone would let a second device render as if未投.
+ * This token's own votes, via my_votes(). The votes table is not readable —
+ * live counts are staff-only — but a voter still needs已投 state to follow them
+ * across devices, which localStorage alone cannot do.
  */
-export async function getVotedPosterIdsFromServer(token: string): Promise<string[]> {
+export async function getMyVotes(token: string): Promise<MyVote[]> {
 	if (!isSupabaseConfigured || !token) return [];
-	const rows = await restGet<{ poster_id: string }[]>(`votes?select=poster_id&token=eq.${encodeURIComponent(token)}`);
-	return rows.map((row) => row.poster_id);
+	return restRpc<MyVote[]>('my_votes', { p_token: token });
+}
+
+/** Convenience wrapper: just the entry ids this token has voted for. */
+export async function getVotedPosterIdsFromServer(token: string): Promise<string[]> {
+	return (await getMyVotes(token)).map((row) => row.poster_id);
 }
 
 export async function castVote(token: string, posterId: string): Promise<CastVoteResult> {

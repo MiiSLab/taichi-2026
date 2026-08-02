@@ -31,8 +31,8 @@ import {
  * 設計決策：
  * - 不收作品封面圖（蒐集上傳成本高）→ 卡片頂部以「裝飾標頭」補視覺重量：
  *   大 pixel 字序號 + 類別色漸層（poster 橘 / demo 綠）+ CSS 網格紋理
- * - 投票者看不到即時票數（避免從眾灌票）；議程人員帶 ?ct 旗標可看
- *   （純 UI 開關——votes 表本來就公開可讀，這裡防的是引導不是資安）
+ * - 沒有人在這頁看得到票數：votes 表已收回公開讀取，即時統計只在報到系統的
+ *   後台（工作人員限定）。這裡防的是從眾灌票，不是純 UI 開關
  * - tt=測試旗標：強制 UI 視為投票進行中（cast_vote 伺服器端仍驗時間窗）
  * - 備案版本（全卡片牆、無 carousel）凍結在 VotePageCardWall.tsx（未接 route）
  */
@@ -89,13 +89,9 @@ const GRID_TEXTURE =
 /** 裝飾標頭：無封面圖後補視覺重量，手機卡 / 桌機卡 / 投票視窗共用 */
 function EntryCardHeader({
 	entry,
-	tally,
-	showTallies,
 	compact,
 }: {
 	entry: EntryVM;
-	tally: number;
-	showTallies: boolean;
 	compact?: boolean;
 }) {
 	const tone = CATEGORY_TONES[entry.category];
@@ -108,9 +104,6 @@ function EntryCardHeader({
 			<span className='absolute bottom-2 right-3 font-mono text-[9px] uppercase tracking-[0.24em] text-white/35'>
 				{entry.category === 'demo' ? 'DEMO' : 'POSTER'}
 			</span>
-			{showTallies ? (
-				<span className='absolute right-3 top-3 border border-secondary/40 bg-black/70 px-2 py-0.5 font-mono text-[11px] text-secondary'>{tally}</span>
-			) : null}
 		</div>
 	);
 }
@@ -187,14 +180,10 @@ function VoteButton({
 /** 桌機卡片牆：資訊全露出、卡上直接投票（取代舊 3D 星系） */
 function DesktopCardWall({
 	entries,
-	tallyMap,
-	showTallies,
 	voteControls,
 	zh,
 }: {
 	entries: EntryVM[];
-	tallyMap: Map<string, number>;
-	showTallies: boolean;
 	voteControls: VoteControls;
 	zh: boolean;
 }) {
@@ -208,7 +197,7 @@ function DesktopCardWall({
 						className={`flex flex-col overflow-hidden border bg-[rgba(10,10,12,0.96)] shadow-[0_25px_60px_rgba(0,0,0,0.45)] transition-all duration-200 hover:-translate-y-1 hover:rotate-0 ${index % 2 === 0 ? 'rotate-[1.2deg]' : 'rotate-[-1.2deg]'
 							} ${votedThis ? 'border-primary/60' : 'border-white/12 hover:border-primary/50'}`}
 					>
-						<EntryCardHeader entry={entry} tally={tallyMap.get(entry.id) ?? 0} showTallies={showTallies} />
+						<EntryCardHeader entry={entry} />
 						<div className='flex flex-1 flex-col gap-3 p-5'>
 							<div className='flex items-center justify-between gap-3'>
 								<p className='font-mono text-[10px] uppercase tracking-[0.22em] text-primary'>{entry.id}</p>
@@ -238,8 +227,6 @@ function DesktopCardWall({
 function MobileEntryCarousel({
 	entries,
 	categoryLabel,
-	tallyMap,
-	showTallies,
 	votedIds,
 	selectedEntry,
 	onSelectEntry,
@@ -247,8 +234,6 @@ function MobileEntryCarousel({
 }: {
 	entries: EntryVM[];
 	categoryLabel: string;
-	tallyMap: Map<string, number>;
-	showTallies: boolean;
 	votedIds: string[];
 	selectedEntry: EntryVM | null;
 	onSelectEntry: (entry: EntryVM) => void;
@@ -322,7 +307,7 @@ function MobileEntryCarousel({
 										: 'w-[72vw] max-w-[18rem] rotate-[-2deg] border-white/12'
 										}`}
 								>
-									<EntryCardHeader entry={entry} tally={tallyMap.get(entry.id) ?? 0} showTallies={showTallies} />
+									<EntryCardHeader entry={entry} />
 									<div className='space-y-3 p-4'>
 										<div className='flex items-center justify-between gap-3'>
 											<p className='font-mono text-[10px] uppercase tracking-[0.22em] text-primary'>{entry.id}</p>
@@ -352,15 +337,11 @@ function MobileEntryCarousel({
 function EntryDetailModal({
 	entry,
 	onClose,
-	tally,
-	showTallies,
 	voteControls,
 	zh,
 }: {
 	entry: EntryVM;
 	onClose: () => void;
-	tally: number;
-	showTallies: boolean;
 	voteControls: VoteControls;
 	zh: boolean;
 }) {
@@ -386,7 +367,7 @@ function EntryDetailModal({
 					<X size={18} />
 				</button>
 
-				<EntryCardHeader entry={entry} tally={tally} showTallies={showTallies} compact />
+				<EntryCardHeader entry={entry} compact />
 
 				<div className='flex flex-col gap-3 overflow-y-auto p-5'>
 					<div className='flex flex-wrap items-center gap-2'>
@@ -422,8 +403,6 @@ const VotePage: React.FC = () => {
 	const token = searchParams.get('t') ?? '';
 	// tt=測試旗標：強制 UI 視為投票進行中（cast_vote 伺服器端仍驗時間窗，不構成繞過）
 	const testOverride = searchParams.has('tt');
-	// ct=議程人員旗標：顯示各作品即時票數（投票者預設看不到）
-	const showTallies = searchParams.has('ct');
 
 	const [entries, setEntries] = useState<EntryVM[]>([]);
 	const [entriesLoaded, setEntriesLoaded] = useState(false);
@@ -530,12 +509,6 @@ const VotePage: React.FC = () => {
 		setErrorEntryId(null);
 	}, [activeCategory]);
 
-	const tallyMap = useMemo(() => {
-		const map = new Map<string, number>();
-		voteState?.tallies?.forEach((t) => map.set(t.poster_id, t.votes));
-		return map;
-	}, [voteState]);
-
 	const windowStatus: WindowStatus = useMemo(() => {
 		if (testOverride) return 'open';
 		if (!voteState) return 'loading';
@@ -637,11 +610,6 @@ const VotePage: React.FC = () => {
 								<span>TEST MODE</span>
 							</div>
 						) : null}
-						{showTallies ? (
-							<div className='inline-flex items-center gap-3 border border-secondary/40 bg-secondary/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-secondary'>
-								<span>{zh ? '票數顯示中（議程人員）' : 'TALLIES VISIBLE (STAFF)'}</span>
-							</div>
-						) : null}
 					</div>
 					<p className={`max-w-3xl text-center ${typography.scale.bodyLg} text-white/72`}>
 						{zh
@@ -719,8 +687,6 @@ const VotePage: React.FC = () => {
 							<div className='mx-auto w-full max-w-6xl px-4 sm:px-8'>
 								<DesktopCardWall
 									entries={visibleEntries}
-									tallyMap={tallyMap}
-									showTallies={showTallies}
 									voteControls={voteControls}
 									zh={zh}
 								/>
@@ -730,8 +696,6 @@ const VotePage: React.FC = () => {
 								<MobileEntryCarousel
 									entries={visibleEntries}
 									categoryLabel={activeCategoryLabel}
-									tallyMap={tallyMap}
-									showTallies={showTallies}
 									votedIds={votedIds}
 									selectedEntry={selectedEntry}
 									onSelectEntry={(entry) => setSelectedEntryId((currentId) => (currentId === entry.id ? null : entry.id))}
@@ -749,8 +713,6 @@ const VotePage: React.FC = () => {
 					<EntryDetailModal
 						entry={selectedEntry}
 						onClose={() => setSelectedEntryId(null)}
-						tally={tallyMap.get(selectedEntry.id) ?? 0}
-						showTallies={showTallies}
 						voteControls={voteControls}
 						zh={zh}
 					/>

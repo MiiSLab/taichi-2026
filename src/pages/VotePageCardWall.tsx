@@ -139,7 +139,6 @@ const VotePageCardWall: React.FC = () => {
 	// tt=測試旗標：強制 UI 視為投票進行中（cast_vote 伺服器端仍驗時間窗，不構成繞過）
 	const testOverride = searchParams.has('tt');
 	// ct=議程人員旗標：顯示各作品即時票數（投票者預設看不到）
-	const showTallies = searchParams.has('ct');
 
 	const [entries, setEntries] = useState<EntryVM[]>([]);
 	const [entriesLoaded, setEntriesLoaded] = useState(false);
@@ -225,12 +224,6 @@ const VotePageCardWall: React.FC = () => {
 		void syncVotedFromServer();
 	}, [syncVotedFromServer]);
 
-	const tallyMap = useMemo(() => {
-		const map = new Map<string, number>();
-		voteState?.tallies?.forEach((t) => map.set(t.poster_id, t.votes));
-		return map;
-	}, [voteState]);
-
 	const windowStatus: WindowStatus = useMemo(() => {
 		if (testOverride) return 'open';
 		if (!voteState) return 'loading';
@@ -312,11 +305,6 @@ const VotePageCardWall: React.FC = () => {
 						{testOverride ? (
 							<div className='inline-flex items-center gap-3 border border-secondary/40 bg-secondary/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-secondary'>
 								<span>TEST MODE</span>
-							</div>
-						) : null}
-						{showTallies ? (
-							<div className='inline-flex items-center gap-3 border border-secondary/40 bg-secondary/10 px-4 py-2 font-mono text-[11px] uppercase tracking-[0.22em] text-secondary'>
-								<span>{zh ? '票數顯示中（議程人員）' : 'TALLIES VISIBLE (STAFF)'}</span>
 							</div>
 						) : null}
 					</div>
@@ -410,11 +398,6 @@ const VotePageCardWall: React.FC = () => {
 													</span>
 												) : null}
 												<span className='ms-auto inline-flex items-center gap-2'>
-													{showTallies ? (
-														<span className='border border-secondary/40 bg-secondary/10 px-2 py-0.5 font-mono text-[11px] text-secondary'>
-															{tallyMap.get(entry.id) ?? 0} {zh ? '票' : 'votes'}
-														</span>
-													) : null}
 													{votedThis ? <Check className='text-primary' size={16} /> : null}
 												</span>
 											</div>
