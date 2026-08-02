@@ -75,23 +75,89 @@ const VOTE_ERROR_MESSAGES: Record<string, string> = {
 
 export const voteErrorMessage = (code: string): string => VOTE_ERROR_MESSAGES[code] ?? `投票失敗（${code}）`;
 
-export type LookupPassResult =
-	| { ok: true; token: string; name: string | null; ticket_type: string | null }
-	| { ok: false; error: string };
+/** The four conferences running as one event; the /q lookup picks one of them. */
+export const CONFERENCES = ['晶創人文', 'APMAR', 'TAICHI', 'ISAT'] as const;
+
+export type PassInfo = {
+	ok: true;
+	token: string;
+	name: string | null;
+	ticket_type: string | null;
+	/** Early registrants may collect a cookie — shown as a badge on the pass. */
+	cookie_eligible: boolean;
+	/** Whether this attendee has an email on file, which decides what stage two asks for. */
+	has_email: boolean;
+	checked_in: boolean;
+};
+
+export type LookupPassResult = PassInfo | { ok: false; error: string };
 
 /**
- * Name + contact self-service pass lookup for /q (lookup_pass RPC).
- * Contact is email or mobile number — the server treats values containing '@'
- * as email, anything else as a phone number (normalized via norm_phone, so
- * 0921…/+886…/81-90-…/(+81)80-… input formats all match). Both fields must
- * match server-side; only token/name/ticket_type come back.
+ * Stage one of /q: conference + name → digital pass (lookup_pass RPC).
+ *
+ * The conference is matched against the attendee's conference list, so someone
+ * registered for two of them can pick either. Names are compared with case,
+ * spacing, hyphens and full-width forms normalised away. Several people can
+ * share a name: the server then returns 'ambiguous' and hands back nobody until
+ * an email narrows it down — it must never hand you someone else's pass.
  */
-export async function lookupPass(name: string, contact: string): Promise<LookupPassResult> {
+export async function lookupPass(conference: string, name: string, email?: string): Promise<LookupPassResult> {
 	if (!isSupabaseConfigured) return { ok: false, error: 'not_configured' };
 	try {
-		return await restRpc<LookupPassResult>('lookup_pass', { p_name: name, p_contact: contact });
+		return await restRpc<LookupPassResult>('lookup_pass', {
+			p_conference: conference,
+			p_name: name,
+			p_email: email ?? null,
+		});
 	} catch {
 		return { ok: false, error: 'network' };
+	}
+}
+
+/** The pass is the URL, so opening /q?t=… straight up still needs these fields. */
+export async function getPassInfo(token: string): Promise<LookupPassResult> {
+	if (!isSupabaseConfigured) return { ok: false, error: 'not_configured' };
+	try {
+		return await restRpc<LookupPassResult>('pass_info', { p_token: token });
+	} catch {
+		return { ok: false, error: 'network' };
+	}
+}
+
+export type VerifyResult = { ok: true; via: string } | { ok: false; error: string };
+
+/**
+ * Stage two of /q: prove you are the person on the pass before voting opens up.
+ * Accepts the attendee's email; for the attendees with no email on file it also
+ * accepts the shared passphrase, and staff can unlock someone from the admin.
+ */
+export async function verifyVoteAccess(token: string, secret: string): Promise<VerifyResult> {
+	if (!isSupabaseConfigured) return { ok: false, error: 'not_configured' };
+	try {
+		return await restRpc<VerifyResult>('verify_vote_access', { p_token: token, p_secret: secret });
+	} catch {
+		return { ok: false, error: 'network' };
+	}
+}
+
+// ─── 已驗證狀態：同一台裝置回到 /q 不必重打 email ─────────────────────────────
+const verifiedKey = (token: string) => `vote-verified:${token}`;
+
+export function isVoteVerified(token: string): boolean {
+	if (!token) return false;
+	try {
+		return window.localStorage.getItem(verifiedKey(token)) === '1';
+	} catch {
+		return false;
+	}
+}
+
+export function rememberVoteVerified(token: string): void {
+	if (!token) return;
+	try {
+		window.localStorage.setItem(verifiedKey(token), '1');
+	} catch {
+		// storage full / privacy mode — 使用者重打一次 email 就好，cast_vote 仍以伺服器為準
 	}
 }
 
