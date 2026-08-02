@@ -13,9 +13,9 @@ import {
 	castVote,
 	getPosters,
 	getVoteState,
-	getVotedPosterIds,
-	getVotedPosterIdsFromServer,
-	addVotedPosterId,
+	getVotedEntryIds,
+	getMyVotes,
+	addVotedEntryId,
 	type VoteState,
 } from '../services/votingService';
 
@@ -411,7 +411,7 @@ const VotePage: React.FC = () => {
 	const [entriesLoaded, setEntriesLoaded] = useState(false);
 	const [loadError, setLoadError] = useState(false);
 	const [voteState, setVoteState] = useState<VoteState | null>(null);
-	const [votedIds, setVotedIds] = useState<string[]>(() => getVotedPosterIds(token));
+	const [votedIds, setVotedIds] = useState<string[]>(() => getVotedEntryIds(token));
 	const [casting, setCasting] = useState(false);
 	const [voteError, setVoteError] = useState<string | null>(null);
 	const [errorEntryId, setErrorEntryId] = useState<string | null>(null);
@@ -494,9 +494,9 @@ const VotePage: React.FC = () => {
 	const syncVotedFromServer = useCallback(async () => {
 		if (!token) return;
 		try {
-			const ids = await getVotedPosterIdsFromServer(token);
-			ids.forEach((id) => addVotedPosterId(token, id)); // 回填本機鏡射
-			setVotedIds(getVotedPosterIds(token));
+			const votes = await getMyVotes(token);
+			votes.forEach((v) => addVotedEntryId(token, v.poster_id)); // 回填本機鏡射
+			setVotedIds(getVotedEntryIds(token));
 		} catch {
 			/* 查不到就先信 localStorage，cast_vote 伺服器端仍會擋 */
 		}
@@ -569,7 +569,7 @@ const VotePage: React.FC = () => {
 			// `=== true`（非 truthiness）：本專案未開 strictNullChecks，
 			// boolean discriminant 的 truthiness check 在 else 分支不會 narrow union
 			if (result.ok === true) {
-				setVotedIds(getVotedPosterIds(token));
+				setVotedIds(getVotedEntryIds(token));
 			} else {
 				setVoteError(result.message);
 				setErrorEntryId(entryId);

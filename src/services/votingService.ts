@@ -18,12 +18,6 @@ import { isSupabaseConfigured, restGet, restRpc } from './supabaseRest';
  * restore已投 state after reload — it is NOT a security boundary.
  */
 
-/**
- * Fallback vote limit, used only while vote_state has not loaded yet.
- * The real limit is per round and comes from the server.
- */
-export const MAX_VOTES = 3;
-
 export type Poster = {
 	id: string;
 	title: string;
@@ -64,11 +58,13 @@ export type CastVoteResult =
 const VOTE_ERROR_MESSAGES: Record<string, string> = {
 	invalid_token: '通行碼無效，請使用報到 QR Code 上的連結進入',
 	not_eligible: '此通行碼沒有投票資格',
-	not_open: '投票尚未開放',
-	closed: '投票已截止',
-	invalid_poster: '找不到這張海報，請重新整理頁面',
-	max_votes: `此類別的 ${MAX_VOTES} 票已用完`,
-	duplicate_poster: '已投過這張海報',
+	not_verified: '請先回到通行證頁完成身分驗證，才能投票',
+	not_checked_in: '這個回合要報到後才能投票，請先到報到處完成報到',
+	not_open: '這個回合尚未開放投票',
+	closed: '這個回合已截止投票',
+	invalid_poster: '找不到這件作品，請重新整理頁面',
+	max_votes: '這個回合的票已用完',
+	duplicate_poster: '已投過這件作品',
 	not_configured: '投票系統尚未設定完成，請稍後再試',
 	network: '連線失敗，請確認網路後再試',
 };
@@ -183,11 +179,6 @@ export async function getMyVotes(token: string): Promise<MyVote[]> {
 	return restRpc<MyVote[]>('my_votes', { p_token: token });
 }
 
-/** Convenience wrapper: just the entry ids this token has voted for. */
-export async function getVotedPosterIdsFromServer(token: string): Promise<string[]> {
-	return (await getMyVotes(token)).map((row) => row.poster_id);
-}
-
 export async function castVote(token: string, posterId: string): Promise<CastVoteResult> {
 	if (!isSupabaseConfigured) return { ok: false, error: 'not_configured', message: voteErrorMessage('not_configured') };
 	let result: { ok: boolean; error?: string; votes_used?: number };
@@ -200,16 +191,16 @@ export async function castVote(token: string, posterId: string): Promise<CastVot
 		const code = result?.error ?? 'unknown';
 		return { ok: false, error: code, message: voteErrorMessage(code) };
 	}
-	addVotedPosterId(token, posterId);
-	return { ok: true, votesUsed: result.votes_used ?? getVotedPosterIds(token).length };
+	addVotedEntryId(token, posterId);
+	return { ok: true, votesUsed: result.votes_used ?? getVotedEntryIds(token).length };
 }
 
 export { isSupabaseConfigured };
 
-// ─── localStorage mirror of已投 posters（per token）────────────────────────────
+// ─── localStorage mirror of已投 entries（per token）────────────────────────────
 const votedKey = (token: string) => `voted:${token}`;
 
-export function getVotedPosterIds(token: string): string[] {
+export function getVotedEntryIds(token: string): string[] {
 	if (!token) return [];
 	try {
 		const raw = window.localStorage.getItem(votedKey(token));
@@ -220,10 +211,10 @@ export function getVotedPosterIds(token: string): string[] {
 	}
 }
 
-export function addVotedPosterId(token: string, posterId: string): void {
+export function addVotedEntryId(token: string, posterId: string): void {
 	if (!token) return;
 	try {
-		const ids = getVotedPosterIds(token);
+		const ids = getVotedEntryIds(token);
 		if (!ids.includes(posterId)) {
 			window.localStorage.setItem(votedKey(token), JSON.stringify([...ids, posterId]));
 		}

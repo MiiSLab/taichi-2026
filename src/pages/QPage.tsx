@@ -187,7 +187,7 @@ const QPage: React.FC = () => {
 						<div className='flex items-start justify-between gap-3'>
 							<h1 className={`ds-page-title ${typography.scale.sectionTitle}`}>數位通行證</h1>
 							{pass?.cookie_eligible ? (
-								<span className='inline-flex shrink-0 items-center gap-1.5 border border-secondary/50 bg-secondary/15 px-3 py-1.5 font-mono text-[12px] text-secondary'>
+								<span className='inline-flex shrink-0 items-center gap-1.5 border border-secondary/50 bg-secondary/15 px-3 py-1.5 font-mono text-xs text-secondary'>
 									<Cookie size={16} />
 									可領餅乾
 								</span>
@@ -197,7 +197,7 @@ const QPage: React.FC = () => {
 							<p className={`${typography.scale.bodyLg} text-white/85`}>{pass.name}，你好！</p>
 						) : null}
 						{pass?.ticket_type ? (
-							<span className='inline-flex items-center gap-2 border border-primary/40 bg-primary/10 px-3 py-1 font-mono text-[12px] uppercase tracking-[0.2em] text-primary'>
+							<span className='inline-flex items-center gap-2 border border-primary/40 bg-primary/10 px-3 py-1 font-mono text-xs uppercase tracking-[0.2em] text-primary'>
 								{pass.ticket_type}
 							</span>
 						) : null}
@@ -213,10 +213,10 @@ const QPage: React.FC = () => {
 									</div>
 								) : (
 									<div className='flex aspect-square w-[min(248px,34dvh)] min-w-[168px] items-center justify-center border border-white/10 bg-black/40'>
-										<p className='animate-pulse font-mono text-[11px] uppercase tracking-[0.2em] text-secondary'>Generating QR…</p>
+										<p className='animate-pulse font-mono text-xs uppercase tracking-[0.2em] text-secondary'>Generating QR…</p>
 									</div>
 								)}
-								<p className='font-mono text-[12px] tracking-[0.22em] text-white/55'>{token}</p>
+								<p className='font-mono text-xs tracking-[0.22em] text-white/55'>{token}</p>
 								{passError ? <p className={`${typography.scale.label} text-primary`}>{passError}</p> : null}
 								<p className={`w-full border-t border-white/10 pt-3 text-center ${typography.scale.micro} text-white/60`}>
 									報到時出示此 QR Code・建議加入書籤或截圖保存
@@ -229,7 +229,7 @@ const QPage: React.FC = () => {
 									windowOpen ? (
 										<Link
 											to={voteHref}
-											className='mt-3 flex w-full items-center justify-center gap-3 border border-primary bg-primary/15 py-3.5 font-mono text-[13px] uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary/25'
+											className='mt-3 flex w-full items-center justify-center gap-3 border border-primary bg-primary/15 py-3.5 font-mono text-sm uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary/25'
 										>
 											<Vote size={18} />
 											進入 Poster / Demo 投票
@@ -238,7 +238,7 @@ const QPage: React.FC = () => {
 										<button
 											type='button'
 											disabled
-											className='mt-3 w-full border border-white/14 bg-white/6 py-3.5 font-mono text-[13px] uppercase tracking-[0.18em] text-white/42'
+											className='mt-3 w-full border border-white/14 bg-white/6 py-3.5 font-mono text-sm uppercase tracking-[0.18em] text-white/42'
 										>
 											{voteOpen === null && isSupabaseConfigured ? '確認投票狀態中…' : '投票將於活動當日開放'}
 										</button>
@@ -246,7 +246,7 @@ const QPage: React.FC = () => {
 								) : (
 									<form className='mt-3 flex flex-col gap-2' onSubmit={handleVerify}>
 										<label className='flex flex-col gap-1.5'>
-											<span className='font-mono text-[11px] uppercase tracking-[0.18em] text-white/55'>
+											<span className='font-mono text-xs uppercase tracking-[0.18em] text-white/55'>
 												{secretLabel}
 											</span>
 											<input
@@ -256,13 +256,13 @@ const QPage: React.FC = () => {
 												autoComplete='email'
 												required
 												placeholder={pass?.has_email === false ? '請洽工作人員取得通行語' : '報名時填寫的 Email'}
-												className='border border-white/15 bg-black/40 px-3 py-2.5 font-mono text-[14px] text-white placeholder:text-white/25 focus:border-secondary focus:outline-none'
+												className='border border-white/15 bg-black/40 px-3 py-2.5 font-mono text-sm text-white placeholder:text-white/25 focus:border-secondary focus:outline-none'
 											/>
 										</label>
 										<button
 											type='submit'
 											disabled={verifyBusy}
-											className='flex w-full items-center justify-center gap-3 border border-primary bg-primary/15 py-3 font-mono text-[13px] uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary/25 disabled:cursor-not-allowed disabled:border-white/14 disabled:bg-white/6 disabled:text-white/42'
+											className='flex w-full items-center justify-center gap-3 border border-primary bg-primary/15 py-3 font-mono text-sm uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary/25 disabled:cursor-not-allowed disabled:border-white/14 disabled:bg-white/6 disabled:text-white/42'
 										>
 											<Vote size={18} />
 											{verifyBusy ? '驗證中…' : '驗證身分以投票'}
@@ -295,11 +295,11 @@ const QPage: React.FC = () => {
 								</div>
 								<form className='flex flex-col gap-3' onSubmit={handleLookup}>
 									<label className='flex flex-col gap-1.5'>
-										<span className='font-mono text-[11px] uppercase tracking-[0.18em] text-white/55'>會議 Conference</span>
+										<span className='font-mono text-xs uppercase tracking-[0.18em] text-white/55'>會議 Conference</span>
 										<select
 											value={conference}
 											onChange={(e) => setConference(e.target.value)}
-											className='border border-white/15 bg-black/40 px-3 py-2.5 font-mono text-[14px] text-white focus:border-secondary focus:outline-none'
+											className='border border-white/15 bg-black/40 px-3 py-2.5 font-mono text-sm text-white focus:border-secondary focus:outline-none'
 										>
 											{CONFERENCES.map((c) => (
 												<option key={c} value={c} className='bg-black'>
@@ -309,7 +309,7 @@ const QPage: React.FC = () => {
 										</select>
 									</label>
 									<label className='flex flex-col gap-1.5'>
-										<span className='font-mono text-[11px] uppercase tracking-[0.18em] text-white/55'>姓名 Name</span>
+										<span className='font-mono text-xs uppercase tracking-[0.18em] text-white/55'>姓名 Name</span>
 										<input
 											type='text'
 											value={lookupName}
@@ -317,12 +317,12 @@ const QPage: React.FC = () => {
 											autoComplete='name'
 											required
 											placeholder='報名時填寫的姓名'
-											className='border border-white/15 bg-black/40 px-3 py-2.5 font-mono text-[14px] text-white placeholder:text-white/25 focus:border-secondary focus:outline-none'
+											className='border border-white/15 bg-black/40 px-3 py-2.5 font-mono text-sm text-white placeholder:text-white/25 focus:border-secondary focus:outline-none'
 										/>
 									</label>
 									{needEmailToDisambiguate ? (
 										<label className='flex flex-col gap-1.5'>
-											<span className='font-mono text-[11px] uppercase tracking-[0.18em] text-white/55'>Email</span>
+											<span className='font-mono text-xs uppercase tracking-[0.18em] text-white/55'>Email</span>
 											<input
 												type='email'
 												value={lookupEmail}
@@ -330,14 +330,14 @@ const QPage: React.FC = () => {
 												autoComplete='email'
 												required
 												placeholder='有多位同名者，請輸入 Email'
-												className='border border-white/15 bg-black/40 px-3 py-2.5 font-mono text-[14px] text-white placeholder:text-white/25 focus:border-secondary focus:outline-none'
+												className='border border-white/15 bg-black/40 px-3 py-2.5 font-mono text-sm text-white placeholder:text-white/25 focus:border-secondary focus:outline-none'
 											/>
 										</label>
 									) : null}
 									<button
 										type='submit'
 										disabled={lookupBusy}
-										className='flex w-full items-center justify-center gap-3 border border-primary bg-primary/15 py-3 font-mono text-[13px] uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary/25 disabled:cursor-not-allowed disabled:border-white/14 disabled:bg-white/6 disabled:text-white/42'
+										className='flex w-full items-center justify-center gap-3 border border-primary bg-primary/15 py-3 font-mono text-sm uppercase tracking-[0.18em] text-primary transition-colors hover:bg-primary/25 disabled:cursor-not-allowed disabled:border-white/14 disabled:bg-white/6 disabled:text-white/42'
 									>
 										<Search size={18} />
 										{lookupBusy ? '查詢中…' : '查詢通行證'}
