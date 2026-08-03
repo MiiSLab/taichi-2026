@@ -1,6 +1,6 @@
 import { AlertTriangle, Cookie, Search, Vote } from 'lucide-react';
 import QRCode from 'qrcode';
-import React, { useEffect, useMemo, useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
 
 import { useLanguage } from '../context/LanguageContext';
@@ -64,7 +64,11 @@ const LOOKUP_ERRORS: Record<string, Copy> = {
 
 const VERIFY_ERRORS: Record<string, Copy> = {
 	email_mismatch: { zh: 'Email 與報名資料不符，請再確認一次。', en: 'That email does not match your registration. Please check it again.' },
-	no_email: { zh: '你的報名資料沒有留 Email，請洽現場工作人員協助。', en: 'Your registration has no email on file — please ask a staff member for help.' },
+	no_email: { zh: '請輸入一個有效的 Email，或洽現場工作人員協助。', en: 'Please enter a valid email address, or ask a staff member for help.' },
+	email_taken: {
+		zh: '這個 Email 已經被另一位與會者使用，請換一個或洽現場工作人員。',
+		en: 'That email is already used by another attendee — please use a different one or ask a staff member.',
+	},
 	not_eligible: { zh: '此通行碼沒有投票資格。', en: 'This pass is not eligible to vote.' },
 	invalid_token: { zh: '通行碼無效，請重新查詢。', en: 'Invalid pass code. Please look it up again.' },
 	not_configured: { zh: '投票驗證尚未設定完成，請稍後再試。', en: 'Vote verification is not configured yet. Please try again later.' },
@@ -238,10 +242,10 @@ const QPage: React.FC = () => {
 	const opensLabel = formatWindowTime(opensAt, zh);
 	const closesLabel = formatWindowTime(closesAt, zh);
 	const windowOpen = voteOpen || forceVoteOpen;
-	const secretLabel = useMemo(
-		() => (pass?.has_email === false ? (zh ? '通行語 Passphrase' : 'Passphrase') : 'Email'),
-		[pass, zh],
-	);
+	// 名單上沒有 email 的人（73 位）改成請他自己留一個：留了就等於通過驗證，
+	// 同時收進名單供活動後聯絡（見 Taichi_check_in/docs/adr/0007）。
+	// 通行語仍然收，但不再主動要求，所以標籤一律寫 Email。
+	const secretLabel = 'Email';
 
 	const voteWindowNote = forceVoteOpen && !voteOpen
 		? zh
@@ -385,7 +389,7 @@ const QPage: React.FC = () => {
 													required
 													placeholder={
 														pass?.has_email === false
-															? zh ? '請洽工作人員取得通行語' : 'Ask a staff member for the passphrase'
+															? zh ? '留一個你的 Email' : 'Leave us an email address'
 															: zh ? '報名時填寫的 Email' : 'The email you registered with'
 													}
 													className='min-w-0 flex-1 border border-white/15 bg-black/40 px-3 py-2.5 font-mono text-sm text-white placeholder:text-white/25 focus:border-secondary focus:outline-none'
