@@ -42,7 +42,9 @@ test('digital pass keeps check-in desk, QR and vote entry on one screen', () => 
 
 	// 留白靠視窗高度斷點給，不是 sm/md — 決定擠不擠的是高度
 	assert.match(source, /px-5 pb-4 pt-20 sm:px-8 taller:pb-8 taller:pt-24/);
-	assert.match(source, /ds-page-note hidden tall:block/);
+	// 英文小標整行砍掉（標題已經寫著數位通行證），不是靠高度斷點藏起來
+	assert.doesNotMatch(source, /TAICHI 2026 DIGITAL PASS/);
+	assert.doesNotMatch(source, /ds-page-note/);
 	assert.match(source, /tall:md:text-\[40px\]/);
 	const config = readFileSync(new URL('../../tailwind.config.js', import.meta.url), 'utf8');
 	assert.match(config, /tall: \{ raw: '\(min-height: 720px\)' \}/);

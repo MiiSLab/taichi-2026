@@ -236,8 +236,8 @@ const QPage: React.FC = () => {
 					<header className='flex flex-col gap-1.5'>
 						<div className='flex items-start justify-between gap-3'>
 							<div className='min-w-0'>
-								{/* 矮視窗砍掉這行小標：標題已經寫著數位通行證，這 18px 讓給 QR */}
-								<p className='ds-page-note hidden tall:block'>TAICHI 2026 DIGITAL PASS</p>
+								{/* 沒有英文小標：標題本身就寫著數位通行證，這一行只是重複，
+								    砍掉的高度直接讓給 QR */}
 								{/* 尺寸抄 typography.scale.sectionTitle，但把 md 那級加上高度條件：
 								    矮的桌機視窗放大到 40px 就會擠出捲軸，寬度不是這裡的瓶頸 */}
 								<h1 className='ds-page-title font-dela text-[28px] tracking-[0.12em] tall:md:text-[40px]'>
