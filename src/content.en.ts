@@ -515,6 +515,8 @@ export const CONTENT_EN = {
 				titleCol: 'Title',
 				authorCol: 'Authors',
 				note: 'Listed by presentation slot; actual placement follows on-site announcements.',
+				paperTimingNote:
+					'Each paper session runs 8 minutes per talk plus 4 minutes of Q&A. The graduate thesis award session follows the individual times listed with each talk.',
 				chairLabel: 'Session Chair',
 			},
 			day1: {

@@ -43,7 +43,7 @@ type ProgramListItem = { id?: string; time?: string; title: string; authors: str
 type ProgramListGroup = { title?: string; time?: string; chair?: string; items: readonly ProgramListItem[] };
 type ProgramListCategory = { heading: string; slot: string; items?: readonly ProgramListItem[]; groups?: readonly ProgramListGroup[] };
 type ProgramLists = {
-	labels: { sectionTitle: string; idCol: string; titleCol: string; authorCol: string; note: string; chairLabel: string };
+	labels: { sectionTitle: string; idCol: string; titleCol: string; authorCol: string; note: string; paperTimingNote: string; chairLabel: string };
 	day1: { demo: ProgramListCategory; poster: ProgramListCategory };
 	day2: { paper: ProgramListCategory; poster: ProgramListCategory };
 };
@@ -314,12 +314,15 @@ const AgendaItem = ({ entry, labels, open, onToggle }: { entry: AgendaEntry; lab
 const ProgramAgenda = ({
 	entries,
 	labels,
+	extraNote,
 	openKeys,
 	onToggle,
 	onToggleAll,
 }: {
 	entries: AgendaEntry[];
 	labels: ProgramLists['labels'];
+	/** 只有 08/06 傳：每篇報告的時間分配，寫在抬頭讓人不必展開 session 才看得到 */
+	extraNote?: string;
 	openKeys: Set<string>;
 	onToggle: (key: string) => void;
 	onToggleAll: (open: boolean) => void;
@@ -332,6 +335,9 @@ const ProgramAgenda = ({
 				<div className='flex flex-col gap-2'>
 					<h2 className='font-mono text-[26px] font-bold leading-9 text-white'>{labels.sectionTitle}</h2>
 					<p className='max-w-2xl font-sans text-[14px] leading-relaxed text-white/60 sm:text-[15px]'>{labels.note}</p>
+					{extraNote && (
+						<p className='max-w-2xl font-sans text-[14px] leading-relaxed text-primary/85 sm:text-[15px]'>{extraNote}</p>
+					)}
 				</div>
 				<button
 					type='button'
@@ -524,6 +530,7 @@ const ProgramPage: React.FC = () => {
 								<ProgramAgenda
 									entries={day2Entries}
 									labels={lists.labels}
+									extraNote={lists.labels.paperTimingNote}
 									openKeys={openAgendaKeys}
 									onToggle={toggleAgenda}
 									onToggleAll={(open) => toggleAgendaAll(day2Entries.map((entry) => entry.key), open)}

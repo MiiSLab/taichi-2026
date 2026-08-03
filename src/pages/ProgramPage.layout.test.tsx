@@ -212,3 +212,23 @@ test('program content defines the timetable venues in both languages', () => {
 	assert.match(zhSource, /f12: '12F多元廳'/);
 	assert.match(zhSource, /main: '國際會議廳'/);
 });
+
+test('08/06 presentation list states the per-talk timing, 08/05 does not', () => {
+	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+	const zhSource = readFileSync(new URL('../content.zh.ts', import.meta.url), 'utf8');
+	const enSource = readFileSync(new URL('../content.en.ts', import.meta.url), 'utf8');
+
+	// 參加者在問每篇講多久 → 寫在發表名單抬頭，不必展開 session 才看得到
+	assert.match(zhSource, /paperTimingNote: '各 Paper Session 每篇報告 8 分鐘、問答 4 分鐘/);
+	assert.match(enSource, /paperTimingNote:\s*\n?\s*'Each paper session runs 8 minutes per talk plus 4 minutes of Q&A/);
+	// 碩博士論文獎每篇各有標示時間，8+4 不適用，兩種語言都要講清楚
+	assert.match(zhSource, /碩博士論文獎場次依該場次各篇標示的時間進行/);
+	assert.match(enSource, /graduate thesis award session follows the individual times/);
+
+	// 只掛 day2：day1 是 demo/poster，沒有口頭報告
+	const day2Call = source.slice(source.indexOf('entries={day2Entries}'));
+	const day1Call = source.slice(source.indexOf('entries={day1Entries}'), source.indexOf('entries={day2Entries}'));
+	assert.match(day2Call, /extraNote=\{lists\.labels\.paperTimingNote\}/);
+	assert.doesNotMatch(day1Call, /extraNote=/);
+	assert.match(source, /\{extraNote && \(/);
+});

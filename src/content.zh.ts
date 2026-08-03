@@ -599,6 +599,9 @@ export const CONTENT_ZH = {
 				titleCol: '名稱',
 				authorCol: '作者',
 				note: '以下依發表時段列出，實際發表位置以現場公告為準。',
+				// 只掛在 08/06：現場有參加者在問每篇講多久，寫在發表名單抬頭比讓人自己算時段可靠。
+				// 碩博士論文獎不適用（那組每篇各有標示時間），所以這句要點名是 Paper Session。
+				paperTimingNote: '各 Paper Session 每篇報告 8 分鐘、問答 4 分鐘；碩博士論文獎場次依該場次各篇標示的時間進行。',
 				chairLabel: '主持人',
 			},
 			day1: {
