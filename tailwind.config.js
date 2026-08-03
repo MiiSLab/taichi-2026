@@ -5,6 +5,12 @@ export default {
 	// was authored assuming preflight resets — disabling it would change visuals).
 	theme: {
 		extend: {
+			// 依「視窗高度」而非寬度的斷點：/q 數位通行證要把報到 QR 與投票入口收在一屏，
+			// 空間夠不夠取決於高度 — 矮的筆電視窗跟手機一樣擠，sm/md 幫不上忙。
+			screens: {
+				tall: { raw: '(min-height: 720px)' },
+				taller: { raw: '(min-height: 820px)' },
+			},
 			colors: {
 				// Brand tokens — driven by the CSS channel vars in styles.css
 				// (.site-theme). Override those vars (.palette-preview) to recolour.

@@ -28,8 +28,14 @@ const Layout: React.FC = () => {
 
 	const transitionDuration = prefersReducedMotion ? 0 : 0.22;
 
+	// 數位通行證要求報到 QR 與投票入口同屏；站尾比一屏還高，掛上去等於保證要捲動，
+	// 所以 /q 只留 Navbar（站內連結走漢堡選單）。
+	const showFooter = pathname !== '/q';
+
+	// 100dvh 而非 100vh：手機瀏覽器的 100vh 含收合中的網址列，短頁面會多出一段
+	// 捲不到東西的空白（/q 這種一屏頁最明顯）。
 	return (
-		<div className='site-theme ds-app-shell min-h-screen overflow-x-hidden selection:bg-[rgba(251,65,5,0.9)] selection:text-white'>
+		<div className='site-theme ds-app-shell min-h-[100dvh] overflow-x-hidden selection:bg-[rgba(251,65,5,0.9)] selection:text-white'>
 			<Navbar />
 			<main>
 				<AnimatePresence mode='wait' initial={false}>
@@ -44,7 +50,7 @@ const Layout: React.FC = () => {
 					</motion.div>
 				</AnimatePresence>
 			</main>
-			<Footer />
+			{showFooter ? <Footer /> : null}
 		</div>
 	);
 };
