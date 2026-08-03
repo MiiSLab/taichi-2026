@@ -79,6 +79,8 @@ export type PassInfo = {
 	token: string;
 	name: string | null;
 	ticket_type: string | null;
+	/** 報到處：現場照會別分流排隊，通行證要直接指出去哪一排 */
+	conference: string | null;
 	/** Early registrants may collect a cookie — shown as a badge on the pass. */
 	cookie_eligible: boolean;
 	/** Whether this attendee has an email on file, which decides what stage two asks for. */

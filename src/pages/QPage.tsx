@@ -206,7 +206,20 @@ const QPage: React.FC = () => {
 					{token ? (
 						<>
 							<section className='ds-surface-panel flex flex-col items-center gap-3 p-4 sm:p-6'>
-								<p className='ds-section-kicker'>Check-in Pass</p>
+								{/* 報到處：現場照會別分流排隊，這是掃 QR 之前先要看的一行。
+								    查詢時選的會別未必等於報到處（跨會別的人只在一個櫃檯領名牌），所以印伺服器回的值 */}
+								{pass?.conference ? (
+									<div className='w-full border border-primary/55 bg-primary/12 px-4 py-2 text-center'>
+										<p className='font-mono text-[0.6rem] uppercase tracking-[0.3em] text-primary/75'>
+											Check-in Desk 報到處
+										</p>
+										<p className='mt-0.5 font-mono text-2xl font-bold tracking-[0.14em] text-primary'>
+											{pass.conference}
+										</p>
+									</div>
+								) : (
+									<p className='ds-section-kicker'>Check-in Pass</p>
+								)}
 								{qrDataUrl ? (
 									<div className='w-[min(248px,34dvh)] min-w-[168px] bg-white p-2.5'>
 										<img src={qrDataUrl} alt='通行證 QR Code' className='h-auto w-full [image-rendering:pixelated]' />
@@ -219,7 +232,9 @@ const QPage: React.FC = () => {
 								<p className='font-mono text-xs tracking-[0.22em] text-white/55'>{token}</p>
 								{passError ? <p className={`${typography.scale.label} text-primary`}>{passError}</p> : null}
 								<p className={`w-full border-t border-white/10 pt-3 text-center ${typography.scale.micro} text-white/60`}>
-									報到時出示此 QR Code・建議加入書籤或截圖保存
+									{pass?.conference
+										? `請到「${pass.conference}」報到處出示此 QR Code・建議加入書籤或截圖保存`
+										: '報到時出示此 QR Code・建議加入書籤或截圖保存'}
 								</p>
 							</section>
 
