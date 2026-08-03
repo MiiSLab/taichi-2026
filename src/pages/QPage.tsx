@@ -27,6 +27,9 @@ import {
  *   2. 補上正確 email（沒有 email 的人用萬能通行語）→ 才解鎖投票入口。
  *      驗證是伺服器狀態，直接開 /vote 也繞不過去。
  *
+ * 從信件連結（`?t=…&v=…`）進來的人跳過第二階段：投票碼只存在於寄出去的連結，
+ * 查詢頁不會產生它（見 Taichi_check_in/docs/adr/0006）。
+ *
  * 通行證就是網址：查到後把 token 寫回網址參數，可收藏或截圖。
  *
  * 雙語：字串就地寫成 { zh, en }（與 /vote 同做法），不進 content.zh/en —
@@ -98,6 +101,8 @@ const QPage: React.FC = () => {
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const token = searchParams.get('t') ?? '';
+	// 信件連結自帶的投票碼；查詢頁查出來的網址不會有這個參數
+	const voteCode = searchParams.get('v') ?? '';
 	// tt=測試旗標：只解 UI 的時間鎖（voteHref 會把 tt 一起帶去 /vote）；
 	// 伺服器端 cast_vote 仍照回合時間窗驗證，不構成繞過
 	const forceVoteOpen = searchParams.has('tt');
@@ -123,9 +128,32 @@ const QPage: React.FC = () => {
 	const [verifyBusy, setVerifyBusy] = useState(false);
 	const [verifyErrorCode, setVerifyErrorCode] = useState<string | null>(null);
 
+	// 從信件連結進來的人不必再打一次 email。網址上的 v= 投票碼只出現在寄給本人的連結裡，
+	// 查詢頁永遠不會產生它，所以「拿得出它」本身就是身分證明（見報到端 docs/adr/0006）。
+	// 碼錯或過期就靜靜退回下面的 email 表單，不另外報錯——使用者只會覺得「要驗一下」。
 	useEffect(() => {
-		setVerified(isVoteVerified(token));
-	}, [token]);
+		if (!token) {
+			setVerified(false);
+			return;
+		}
+		if (isVoteVerified(token)) {
+			setVerified(true);
+			return;
+		}
+		if (!voteCode) {
+			setVerified(false);
+			return;
+		}
+		let cancelled = false;
+		void verifyVoteAccess(token, voteCode).then((result) => {
+			if (cancelled || result.ok !== true) return;
+			rememberVoteVerified(token);
+			setVerified(true);
+		});
+		return () => {
+			cancelled = true;
+		};
+	}, [token, voteCode]);
 
 	const handleLookup = async (event: React.FormEvent<HTMLFormElement>) => {
 		event.preventDefault();
