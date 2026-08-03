@@ -52,8 +52,20 @@ test('digital pass keeps check-in desk, QR and vote entry on one screen', () => 
 	assert.match(source, /className='min-w-0 flex-1 border border-white\/15 bg-black\/40/);
 	assert.match(source, /zh \? '驗證' : 'Verify'/);
 
-	// 站尾比一屏還高，/q 掛上去等於保證要捲動
-	assert.match(layoutSource, /const showFooter = pathname !== '\/q'/);
+	// 站尾比一屏還高，/q 掛上去等於保證要捲動。尾斜線要先去掉：正式站是 q/index.html，
+	// GitHub Pages 把 /q 301 到 /q/，直接比 '/q' 只有本機會過
+	assert.match(layoutSource, /pathname\.replace\(\/\\\/\+\$\/, ''\) !== '\/q'/);
 	assert.match(layoutSource, /\{showFooter \? <Footer \/> : null\}/);
 	assert.match(layoutSource, /min-h-\[100dvh\]/);
+});
+
+test('trailing-slash normalisation matches how github pages serves the route', () => {
+	// build 產出 q/index.html → Pages 301 /q → /q/，兩種寫法都必須認得，其他路由不受影響
+	const showFooter = (pathname: string) => pathname.replace(/\/+$/, '') !== '/q';
+	assert.equal(showFooter('/q'), false);
+	assert.equal(showFooter('/q/'), false);
+	assert.equal(showFooter('/'), true);
+	assert.equal(showFooter('/vote'), true);
+	assert.equal(showFooter('/vote/'), true);
+	assert.equal(showFooter('/program/'), true);
 });

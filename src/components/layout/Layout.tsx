@@ -30,7 +30,9 @@ const Layout: React.FC = () => {
 
 	// 數位通行證要求報到 QR 與投票入口同屏；站尾比一屏還高，掛上去等於保證要捲動，
 	// 所以 /q 只留 Navbar（站內連結走漢堡選單）。
-	const showFooter = pathname !== '/q';
+	// 比對前先去掉尾斜線：build 產出的是 q/index.html，GitHub Pages 會把 /q 301 到 /q/，
+	// 正式站拿到的 pathname 是 '/q/'，直接比 '/q' 只有本機會過。
+	const showFooter = pathname.replace(/\/+$/, '') !== '/q';
 
 	// 100dvh 而非 100vh：手機瀏覽器的 100vh 含收合中的網址列，短頁面會多出一段
 	// 捲不到東西的空白（/q 這種一屏頁最明顯）。
