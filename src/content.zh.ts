@@ -615,7 +615,7 @@ export const CONTENT_ZH = {
 						{ id: '104', title: 'Poster & Demo: Douleur Minime: Material Speculation of the AI Between Us', authors: 'Sheng-Wen Chen and Chia-Ni Chen' },
 						{ id: '116', title: 'Poster & Demo: Sleep Airline: Reframing Sleep Duration as Flight Narratives', authors: 'Tzu Yen Hsu and Yu-Ting Cheng' },
 						{ id: 'OpenHCI', title: 'Soulsee 熟悉', authors: 'Shang-Yuan, Chang, Chin-Ling, Chang, Pei-Jung,Yang, Yi-An, Lu, Research, Yi-Jie, Chen, Xin-Yu, Huang, and Chi-En, Chung' },
-						{ id: 'OpenHCI', title: 'Whose Inner Voice', authors: 'Yan-Ting Li, Shiau-Lin Lin, Han-Po Chen, Chun-Hao Tu, Chen-Shi Liu, Chen, and Yan-Zhen' },
+						{ id: 'OpenHCI', title: 'Whose Inner Voice', authors: 'Yan-Ting Li, Shiau-Lin Lin, Han-Po Chen, Chun-Hao Tu, Chen-Shi Liu and Yan-Zhen Chen' },
 					],
 				},
 				poster: {
