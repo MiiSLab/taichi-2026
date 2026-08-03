@@ -1,10 +1,10 @@
+import { AlertTriangle, Cookie, Search, Vote } from 'lucide-react';
+import QRCode from 'qrcode';
 import React, { useEffect, useMemo, useState } from 'react';
 import { Link, useSearchParams } from 'react-router-dom';
-import QRCode from 'qrcode';
-import { AlertTriangle, Cookie, Search, Vote } from 'lucide-react';
 
-import { typography } from '../design-system/typography';
 import { useLanguage } from '../context/LanguageContext';
+import { typography } from '../design-system/typography';
 import { useSEO } from '../hooks/useSEO';
 import {
 	CONFERENCES,
@@ -275,7 +275,7 @@ const QPage: React.FC = () => {
 							{pass?.cookie_eligible ? (
 								<span className='inline-flex shrink-0 items-center gap-1.5 border border-secondary/50 bg-secondary/15 px-3 py-1.5 font-mono text-xs text-secondary'>
 									<Cookie size={16} />
-									{zh ? '可領餅乾' : 'Cookie'}
+									{zh ? '筊杯餅乾' : 'Cookie'}
 								</span>
 							) : null}
 						</div>
@@ -298,11 +298,11 @@ const QPage: React.FC = () => {
 
 					{token ? (
 						<>
-							<section className='ds-surface-panel flex min-h-0 flex-1 flex-col items-center gap-2 p-4 sm:px-5 taller:gap-3 taller:py-5'>
+							<section className='flex flex-col items-center flex-1 min-h-0 gap-2 p-4 ds-surface-panel sm:px-5 taller:gap-3 taller:py-5'>
 								{/* 報到處：現場照會別分流排隊，這是掃 QR 之前先要看的一行。
 								    查詢時選的會別未必等於報到處（跨會別的人只在一個櫃檯領名牌），所以印伺服器回的值 */}
 								{pass?.conference ? (
-									<div className='w-full border border-primary/55 bg-primary/12 px-4 py-2 text-center'>
+									<div className='w-full px-4 py-2 text-center border border-primary/55 bg-primary/12'>
 										<p className='ds-desk-kicker text-primary/75'>{zh ? 'Check-in Desk 報到處' : 'Check-in Desk'}</p>
 										<p className='mt-0.5 font-mono text-2xl font-bold tracking-[0.14em] text-primary'>
 											{pass.conference}
@@ -314,7 +314,7 @@ const QPage: React.FC = () => {
 								{/* QR 吃掉本頁剩下的高度：上限 240px（夠大好掃），下限 128px（再小掃不動，
 								    此時改由頁面長高、允許捲動，而不是把投票入口擠出視窗）。
 								    外層 min-h-32 是那道下限：它撐住高度，頁面才會長高而不是壓扁 QR */}
-								<div className='flex min-h-32 w-full flex-1 flex-col items-center justify-center'>
+								<div className='flex flex-col items-center justify-center flex-1 w-full min-h-32'>
 									{qrDataUrl ? (
 										<div className='flex aspect-square min-h-0 max-h-60 max-w-full flex-1 bg-white p-2.5'>
 											<img
@@ -324,7 +324,7 @@ const QPage: React.FC = () => {
 											/>
 										</div>
 									) : (
-										<div className='flex aspect-square min-h-0 max-h-60 max-w-full flex-1 items-center justify-center border border-white/10 bg-black/40'>
+										<div className='flex items-center justify-center flex-1 max-w-full min-h-0 border aspect-square max-h-60 border-white/10 bg-black/40'>
 											<p className='animate-pulse font-mono text-xs uppercase tracking-[0.2em] text-secondary'>Generating QR…</p>
 										</div>
 									)}
@@ -347,7 +347,7 @@ const QPage: React.FC = () => {
 								</p>
 							</section>
 
-							<section className='ds-surface-soft p-4 sm:px-5 taller:py-5'>
+							<section className='p-4 ds-surface-soft sm:px-5 taller:py-5'>
 								<p className='ds-section-kicker'>Poster / Demo Vote</p>
 								{verified ? (
 									windowOpen ? (
@@ -370,7 +370,7 @@ const QPage: React.FC = () => {
 										</button>
 									)
 								) : (
-									<form className='mt-2 flex flex-col gap-2' onSubmit={handleVerify}>
+									<form className='flex flex-col gap-2 mt-2' onSubmit={handleVerify}>
 										<label className='flex flex-col gap-1.5'>
 											<span className='font-mono text-xs uppercase tracking-[0.18em] text-white/55'>
 												{secretLabel}
@@ -417,7 +417,7 @@ const QPage: React.FC = () => {
 						</>
 					) : (
 						<>
-							<section className='ds-surface-panel flex flex-col gap-4 p-5 sm:p-6'>
+							<section className='flex flex-col gap-4 p-5 ds-surface-panel sm:p-6'>
 								<div>
 									<p className='ds-section-kicker'>Find My Pass</p>
 									<p className={`mt-1.5 ${typography.scale.label} text-white/72`}>
@@ -487,7 +487,7 @@ const QPage: React.FC = () => {
 								</form>
 							</section>
 
-							<section className='ds-surface-soft flex items-start gap-3 p-4'>
+							<section className='flex items-start gap-3 p-4 ds-surface-soft'>
 								<AlertTriangle className='mt-0.5 shrink-0 text-white/55' size={20} />
 								<p className={`${typography.scale.micro} text-white/72`}>
 									{zh
