@@ -93,6 +93,14 @@
 	text-transform: uppercase;
 }
 
+/* 報到處那條帶子上的小標：比 ds-section-kicker 更小更疏，讓底下的會別名獨佔目光 */
+.ds-desk-kicker {
+	font-family: var(--font-ui);
+	font-size: 0.62rem;
+	letter-spacing: 0.3em;
+	text-transform: uppercase;
+}
+
 .ds-section-title {
 	color: var(--text-brand);
 	font-family: var(--font-display);

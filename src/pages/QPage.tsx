@@ -210,9 +210,7 @@ const QPage: React.FC = () => {
 								    查詢時選的會別未必等於報到處（跨會別的人只在一個櫃檯領名牌），所以印伺服器回的值 */}
 								{pass?.conference ? (
 									<div className='w-full border border-primary/55 bg-primary/12 px-4 py-2 text-center'>
-										<p className='font-mono text-[0.6rem] uppercase tracking-[0.3em] text-primary/75'>
-											Check-in Desk 報到處
-										</p>
+										<p className='ds-desk-kicker text-primary/75'>Check-in Desk 報到處</p>
 										<p className='mt-0.5 font-mono text-2xl font-bold tracking-[0.14em] text-primary'>
 											{pass.conference}
 										</p>
