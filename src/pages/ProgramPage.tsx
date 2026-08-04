@@ -1,8 +1,9 @@
-import { ChevronDown, ExternalLink } from 'lucide-react';
+import { ChevronDown, ExternalLink, FileText } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import ScrollReveal from '../components/ScrollReveal';
 import WarpBackground from '../components/WarpBackground';
+import { cameraReadyUrl } from '../content.cameraReady';
 import { useContent, useLanguage } from '../context/LanguageContext';
 import { typography } from '../design-system/typography';
 import { useSEO } from '../hooks/useSEO';
@@ -254,16 +255,32 @@ const buildEntries = (category: ProgramListCategory, kind: AgendaKind, keyPrefix
 	return [{ key: keyPrefix, kind, title: category.heading, meta: category.slot, items: category.items ?? [] }];
 };
 
-const ProgramListRow = ({ item, tone }: { item: ProgramListItem; tone: { text: string } }) => (
-	<div className='flex flex-col gap-1 border-b border-white/10 py-3 last:border-b-0 sm:grid sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] sm:items-baseline sm:gap-x-4 sm:py-3'>
-		<span className='font-sans text-[14px] leading-relaxed text-white/90 sm:text-[15px]'>
-			{item.time && <span className='mb-1 block font-mono text-[12px] leading-5 text-white/45'>{item.time}</span>}
-			{item.title}
-			{item.award && <span className={`ms-2 whitespace-nowrap font-mono text-[11px] sm:text-[12px] ${tone.text}`}>· {item.award}</span>}
-		</span>
-		<span className='font-sans text-[13px] leading-snug text-white/55 sm:text-[14px]'>{item.authors}</span>
-	</div>
-);
+const ProgramListRow = ({ item, tone }: { item: ProgramListItem; tone: { text: string } }) => {
+	// camera-ready PDF（poster chair 的公開 Drive 資料夾）：對得上編號才出 icon
+	const pdf = cameraReadyUrl(item.id);
+	return (
+		<div className='flex flex-col gap-1 border-b border-white/10 py-3 last:border-b-0 sm:grid sm:grid-cols-[minmax(0,3fr)_minmax(0,2fr)] sm:items-baseline sm:gap-x-4 sm:py-3'>
+			<span className='font-sans text-[14px] leading-relaxed text-white/90 sm:text-[15px]'>
+				{item.time && <span className='mb-1 block font-mono text-[12px] leading-5 text-white/45'>{item.time}</span>}
+				{item.title}
+				{pdf && (
+					<a
+						href={pdf}
+						target='_blank'
+						rel='noopener noreferrer'
+						aria-label='Camera-ready PDF'
+						title='Camera-ready PDF'
+						className='ms-2 inline-flex translate-y-0.5 text-white/40 transition-colors hover:text-primary'
+					>
+						<FileText size={14} />
+					</a>
+				)}
+				{item.award && <span className={`ms-2 whitespace-nowrap font-mono text-[11px] sm:text-[12px] ${tone.text}`}>· {item.award}</span>}
+			</span>
+			<span className='font-sans text-[13px] leading-snug text-white/55 sm:text-[14px]'>{item.authors}</span>
+		</div>
+	);
+};
 
 // 單一可展開議程列：標題列（chip + 標題 + 主題 + 時間 + 件數 + 箭頭），展開後為名單表格
 const AgendaItem = ({ entry, labels, open, onToggle }: { entry: AgendaEntry; labels: ProgramLists['labels']; open: boolean; onToggle: () => void }) => {

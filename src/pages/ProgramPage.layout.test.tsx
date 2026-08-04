@@ -232,3 +232,29 @@ test('08/06 presentation list states the per-talk timing, 08/05 does not', () =>
 	assert.doesNotMatch(day1Call, /extraNote=/);
 	assert.match(source, /\{extraNote && \(/);
 });
+
+test('presentation list rows link to their camera-ready pdf on google drive', async () => {
+	const source = readFileSync(new URL('./ProgramPage.tsx', import.meta.url), 'utf8');
+	const { CAMERA_READY_PDF, cameraReadyUrl } = await import('../content.cameraReady');
+
+	// 對照表：抽查跨區段的鍵（day2 paper / day2 poster / day1 poster）
+	assert.equal(typeof CAMERA_READY_PDF['31'], 'string');
+	assert.equal(typeof CAMERA_READY_PDF['106'], 'string');
+	assert.equal(typeof CAMERA_READY_PDF['7'], 'string');
+	// 未交 camera-ready 的編號不得在表裡（誤填會生出壞連結）
+	for (const missing of ['9', '19', '37', '53', '90', '96', '109']) {
+		assert.equal(CAMERA_READY_PDF[missing], undefined, `id ${missing} has no camera-ready file`);
+	}
+	// URL helper：組出 Drive 預覽網址；查不到（含 OpenHCI、論文獎的 undefined id）回 null
+	assert.equal(cameraReadyUrl('31'), `https://drive.google.com/file/d/${CAMERA_READY_PDF['31']}/view`);
+	assert.equal(cameraReadyUrl('9'), null);
+	assert.equal(cameraReadyUrl('OpenHCI'), null);
+	assert.equal(cameraReadyUrl(undefined), null);
+
+	// 名單列：icon 開新分頁、不觸發 accordion（列在展開面板內，不含在 header button）
+	assert.match(source, /import \{ cameraReadyUrl \} from '\.\.\/content\.cameraReady'/);
+	assert.match(source, /const pdf = cameraReadyUrl\(item\.id\)/);
+	assert.match(source, /aria-label='Camera-ready PDF'/);
+	assert.match(source, /target='_blank'[\s\S]{0,40}rel='noopener noreferrer'/);
+	assert.match(source, /<FileText size=\{14\} \/>/);
+});
