@@ -7,11 +7,11 @@
  *
  * 54、126 兩檔在名單上沒有對應項目，保留無妨；
  * 9 / 19 / 37 / 53 / 90 / 96 / 109 名單有但作者未交 camera-ready，查表落空、不出 icon。
+ * 13（Tactile Musical Track）依作者要求撤下（後續要投稿），重新產生時勿加回。
  */
 export const CAMERA_READY_PDF: Record<string, string> = {
 	'7': '1bFwXMERG3Xnf1lpQQzz08SN04mEDzvV8',
 	'10': '1Kq9AvC2KWSaWRXY9zo58G0BjqG2CIzUI',
-	'13': '1AjKR_rHVtdfIj4FOKlYOBW38rl8kGUDb',
 	'14': '1LxmXCdZgpPFYRyWwMFaVr9QgXkKjXSLb',
 	'15': '1MN8A00zFAiz_ax3c4X1e1RFUZ_jkfYpN',
 	'16': '1Z2bW3sZsvBisRg8uQsGmMS03i72Ae828',
