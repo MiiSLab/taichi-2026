@@ -426,6 +426,20 @@ export const OFFLINE_SESSIONS: SessionItem[] = [
 
 export const OFFLINE_NEWS: NewsItem[] = [
 	{
+		id: 'offline-news-awards',
+		title: 'TAICHI 2026 得獎名單公布',
+		subtitle: '得獎公告',
+		content:
+			'TAICHI 2026 已圓滿落幕，感謝所有作者、講者與參與者的熱情投入！\n\n本屆 Paper、Poster、Demo 各獎項已於 08/06 閉幕式頒發，包含 Best Paper、Best Poster、Best Demo、Honorable Mention 與 People’s Choice Award，完整名單請見得獎名單頁面。',
+		date: '2026/08/08',
+		createdTime: '2026/08/08',
+		place: 'Online',
+		image: '/images/home_bg.png',
+		// '/' 開頭為站內頁：AnnouncementsSection 走 react-router 導頁、不開新分頁
+		link: '/awards',
+		linkLabel: '查看得獎名單',
+	},
+	{
 		id: 'offline-news-sv-results',
 		title: '學生志工錄取名單出爐',
 		subtitle: 'Student Volunteer 錄取公告',

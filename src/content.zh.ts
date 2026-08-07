@@ -10,6 +10,7 @@ export const CONTENT_ZH = {
 		logo: 'TAICHI 2026',
 		home: 'HOME',
 		news: 'NEWS',
+		awards: 'AWARDS',
 		theme: 'THEME',
 		program: 'PROGRAM',
 		keynotes: 'KEYNOTES',
@@ -610,8 +611,8 @@ export const CONTENT_ZH = {
 					slot: '08/05 · 三創互動夜市（12F 多元廳）',
 					items: [
 						{ id: '23', title: 'Demo: Fragmented Sunshine of the Spotless Mind', authors: 'An-Che Liang and Rung-Huei Liang' },
-						{ id: '47', title: 'Poster & Demo: Prototype It, Prompt It, Play It: Crafting Functional Tactile Interactions in 10 Minutes', authors: 'Meichun Liu, Devin Francis Murphy and Yiyue Luo' },
-						{ id: '53', title: 'Poster & Demo: Wind Tide Box: An Atmospheric Instrument for Public Embodied Music Interaction', authors: 'Yi Chun Ko, Chueh-Fu Yu and Bo-Yu Tseng' },
+						{ id: '47', title: 'Poster & Demo: Prototype It, Prompt It, Play It: Crafting Functional Tactile Interactions in 10 Minutes', authors: 'Meichun Liu, Devin Francis Murphy and Yiyue Luo', award: 'Best Demo Award' },
+						{ id: '53', title: 'Poster & Demo: Wind Tide Box: An Atmospheric Instrument for Public Embodied Music Interaction', authors: 'Yi Chun Ko, Chueh-Fu Yu and Bo-Yu Tseng', award: "People's Choice Award" },
 						{ id: '78', title: 'Demo: Powering Up! Design of a Multisensory Feedback System for Virtual Reality Superpower Transitions', authors: 'I-Chin Chen, Lei Hong and Chun-Cheng Hsu' },
 						{ id: '86', title: 'Poster & Demo: NOVARA-X: A Self-Watering Vase and Context-Aware Companion System', authors: 'Chun-Wei Lee and Shu-Yun Yeh' },
 						{ id: '96', title: 'Demo: Divine Arrow Encountered-Type Real Bow with Magnetic Draw Sensing for Elemental VR Archery', authors: 'Chia-Min Chuang, Cheng-Ning Wang, Yu-Chieh Lu, Hsuan-Chung Chen, Yu-Jie Lin, Qiao-Xi Xu, Yin-Tung Yeh, Tse-Yu Pan and Neng-Hao Yu' },
@@ -625,12 +626,12 @@ export const CONTENT_ZH = {
 					heading: 'Poster',
 					slot: '08/05 · 三創互動夜市（12F 多元廳）',
 					items: [
-						{ id: '13', title: 'Tactile Musical Track: A Wearable for Blind Musicians to Feel Preemptive Cues During Performance', authors: 'Jung-Sheng Hung, Ting-Chen Lu, Yen-Chang Chen and Shan-Yuan Teng' },
+						{ id: '13', title: 'Tactile Musical Track: A Wearable for Blind Musicians to Feel Preemptive Cues During Performance', authors: 'Jung-Sheng Hung, Ting-Chen Lu, Yen-Chang Chen and Shan-Yuan Teng', award: 'Best Poster Award' },
 						{ id: '71', title: 'Wind Tide Box: An Atmospheric Instrument for Public Embodied Music Interaction', authors: 'Yi Chun Ko, Chueh-Fu Yu and Bo-Yu Tseng' },
 						{ id: '16', title: 'Hyndreste: An Aiming-Based Mixed Reality Interface for Externalizing Hidden Emotions', authors: 'Chu Yang Tsai, Jia Yi Chen, Yi Ling Chao, Pei Ling Chang and Yi Chun Ko' },
 						{ id: '33', title: 'Exploring the Stroop Effect of Object-Color Association', authors: 'Chu-Yun Chen and Shan-Yuan Teng' },
-						{ id: '29', title: 'Emoji Sonification for Inclusive Texting: The Effect of Vocal Bursts and Prosodic Voices on Ambiguous Messages', authors: 'Sophia Greiwe and Shan-Yuan Teng' },
-						{ id: '109', title: 'Training Animal Crime Scene Investigators through Physical Interaction and AI-Driven Situational Pressure', authors: 'Yuting Tseng and Neng-Hao Yu' },
+						{ id: '29', title: 'Emoji Sonification for Inclusive Texting: The Effect of Vocal Bursts and Prosodic Voices on Ambiguous Messages', authors: 'Sophia Greiwe and Shan-Yuan Teng', award: "People's Choice Award" },
+						{ id: '109', title: 'Training Animal Crime Scene Investigators through Physical Interaction and AI-Driven Situational Pressure', authors: 'Yuting Tseng and Neng-Hao Yu', award: 'Honorable Mention' },
 						{ id: '58', title: 'PRIMA - Enabling User Agency and Control in Mobile GUI Agent Autonomy', authors: 'Ching-Ting Lin, Zhi-Hong Yen, Ya-Jen Cheng and Yung-Ju Chang' },
 						{ id: '91', title: 'Clear Yet Insufficient: Why Users Still Return to Source Notifications After Task Extraction', authors: 'Uei-Dar Chen, Rui-Jie Huang, Yu-Shiun Wu, Yi-Chia Wang and Yung-Ju Chang' },
 						{ id: '90', title: '生成式 AI 聊天介面微互動設計對易用性之研究', authors: '蔡妤欣' },
@@ -644,7 +645,7 @@ export const CONTENT_ZH = {
 						{ id: '89', title: "Shared but Untraceable: The Emotional and Behavioral Impacts of Private Post Forwarding on Users' Self-Disclosure", authors: 'Ke-Chieh Teng, Yu-Hsuan Yen, Ting-Chen Su and Zhu-Yuan Lai' },
 						{ id: '74', title: 'A Theory-Informed UX Redesign for A Mobile Vocabulary Learning Application', authors: 'Yu-Ting Huang and Li-Min Huang' },
 						{ id: '67', title: 'Experience Design for Long-Term Commitment in Pet Care: Bridging Pre-Acquisition Evaluation and Companion Support', authors: 'Che-Han Hsieh and Neng-Hao Yu' },
-						{ id: '14', title: 'Sleep Airline: Reframing Sleep Duration as Flight Narratives', authors: 'Tzu-Yen Hsu and Yu-Ting Cheng' },
+						{ id: '14', title: 'Sleep Airline: Reframing Sleep Duration as Flight Narratives', authors: 'Tzu-Yen Hsu and Yu-Ting Cheng', award: 'Honorable Mention' },
 					],
 				},
 			},
@@ -658,10 +659,10 @@ export const CONTENT_ZH = {
 							time: '09:00 - 09:50',
 							chair: '畢南怡 助理教授 國立臺灣大學資訊管理學系暨研究所',
 							items: [
-								{ id: '31', title: '從風格複製到風格探索：生成式 AI 輔助數位藝術家的風格探索框架', authors: '王文凡, 林采璇, 林期蘭 楊, 程安如, 陳炳宇' },
+								{ id: '31', title: '從風格複製到風格探索：生成式 AI 輔助數位藝術家的風格探索框架', authors: '王文凡, 林采璇, 楊期蘭, 程安如, 陳炳宇', award: 'Best Paper' },
 								{ id: '42', title: '飄移的能動性：人機圖形協作歷程的微觀觀察', authors: '鄭秀芳, 鄭司維' },
 								{ id: '41', title: 'ReBridge: Designing for AI-Supported Attention Resumption after Distraction', authors: 'Ting-Yi Chen, Ting-Yu Tseng, Chien-Fang Lee and Yuan-Chi Tseng' },
-								{ id: '77', title: '大語言模型於日常面子威脅情境溝通練習之使用者經驗與設計啟示', authors: '劉劭禹, 藍偉仁, 林采璇, 畢南怡, 陳炳宇' },
+								{ id: '77', title: '大語言模型於日常面子威脅情境溝通練習之使用者經驗與設計啟示', authors: '劉劭禹, 藍偉仁, 林采璇, 畢南怡, 陳炳宇', award: 'Honorable Mention' },
 							],
 						},
 						{
@@ -702,7 +703,7 @@ export const CONTENT_ZH = {
 							time: '14:30 - 15:20',
 							chair: '蔡文傑 國立臺灣大學 博士後研究員',
 							items: [
-								{ id: '95', title: 'When Our Sofa Speaks: Mediating Care Through Collective Data Making Between Family Members and a Domestic Object', authors: 'En-Kai Chang, Yi-Tong Chen and Yu-Ting Cheng' },
+								{ id: '95', title: 'When Our Sofa Speaks: Mediating Care Through Collective Data Making Between Family Members and a Domestic Object', authors: 'En-Kai Chang, Yi-Tong Chen and Yu-Ting Cheng', award: 'Best Paper' },
 								{ id: '36', title: '24.8小時：病房中的植物性互動設計', authors: 'Ruo-Yu Cai, Xuan Chen and I-Hao Liao' },
 								{ id: '98', title: 'PlantShelter: A Design Fiction Concept for Preserving Endangered Plant Species for the Future', authors: 'Yaliang Chuang, Hsuen-Wei Chang and Peiying Lin' },
 								{ id: '115', title: 'Chronotree：日常環境色彩反思的實體化設計', authors: 'Yu-Wei Yang and Wenn-Chieh Tsai' },
@@ -741,11 +742,177 @@ export const CONTENT_ZH = {
 						{ id: '112', title: '多模態情緒感知線上議價助理系統之應用', authors: '陳萱恩, 陳永祥' },
 						{ id: '56', title: 'Contextual Gazer: Facilitating Stranger Interaction through Eye Tracking, Facial Reactions, and Shared Contexts', authors: 'Cheng-Wen Huang, Po-Hsun Chen and Yi-Chen Shen' },
 						{ id: '101', title: '結合手機握力互動與磁流體回饋之日常肌力訓練系統', authors: '謝侑恩, 汪絮喬, 謝心慈, 陳永祥' },
-						{ id: '26', title: 'Mixed Reality Teleoperation Pipeline for Resource-Constrained Mini-car via ROS2 Server', authors: 'Wei-Ting Chou, Chen-Chung Pan and Hung-Jui Guo' },
+						{ id: '26', title: 'Mixed Reality Teleoperation Pipeline for Resource-Constrained Mini-car via ROS2 Server', authors: 'Wei-Ting Chou, Chen-Chung Pan and Hung-Jui Guo', award: "People's Choice Award" },
 					],
 				},
 			},
 		},
+	},
+	// 得獎名單（/awards）：08/06 閉幕式頒發，資料源 test/TAICHI得獎名單.docx。
+	// 作品與作者為專有名詞，en 版直接引用、只覆寫標籤與 intro（見 content.en.ts）。
+	// id = programLists 的投稿編號，僅用於查 camera-ready PDF（13 已依作者要求撤下、109 未繳，查表落空即不出連結）。
+	awardsPageSection: {
+		title: 'Awards',
+		intro: 'TAICHI 2026 已圓滿落幕，以下獎項於 08/06 閉幕式頒發。恭喜所有得獎者，也感謝每一位作者、講者與參與者的投入！',
+		// People's Choice 分場次投票：syntrend = 08/05 三創互動夜市、ntut = 08/06 北科
+		venueLabels: { syntrend: '三創場', ntut: '北科場' },
+		categories: [
+			{
+				key: 'paper',
+				heading: 'Paper',
+				awards: [
+					{
+						name: 'Best Paper',
+						tier: 'best',
+						works: [
+							{
+								id: '31',
+								title: '從風格複製到風格探索：生成式 AI 輔助數位藝術家的風格探索框架',
+								authors: [
+									{ name: '王文凡', affiliation: '國立臺灣大學' },
+									{ name: '林采璇', affiliation: '國立臺灣大學' },
+									{ name: '楊期蘭', affiliation: '日本筑波大學' },
+									{ name: '程安如', affiliation: '國立臺灣大學' },
+									{ name: '陳炳宇', affiliation: '國立臺灣大學' },
+								],
+							},
+							{
+								id: '95',
+								title: 'When Our Sofa Speaks: Mediating Care Through Collective Data Making Between Family Members and a Domestic Object',
+								authors: [
+									{ name: 'En-Kai Chang', affiliation: 'National Yang Ming Chiao Tung University' },
+									{ name: 'Yi-Tong Chen', affiliation: 'National Taiwan University' },
+									{ name: 'Yu-Ting Cheng', affiliation: 'National Taiwan University of Science and Technology' },
+								],
+							},
+						],
+					},
+					{
+						name: 'Honorable Mention',
+						tier: 'mention',
+						works: [
+							{
+								id: '77',
+								title: '大語言模型於日常面子威脅情境溝通練習之使用者經驗與設計啟示',
+								authors: [
+									{ name: '劉劭禹', affiliation: '國立臺灣大學' },
+									{ name: '藍偉仁', affiliation: '國立臺灣大學' },
+									{ name: '林采璇', affiliation: '國立臺灣大學' },
+									{ name: '畢南怡', affiliation: '國立臺灣大學' },
+									{ name: '陳炳宇', affiliation: '國立臺灣大學' },
+								],
+							},
+						],
+					},
+				],
+			},
+			{
+				key: 'poster',
+				heading: 'Poster',
+				awards: [
+					{
+						name: 'Best Poster Award',
+						tier: 'best',
+						works: [
+							{
+								id: '13',
+								title: 'Tactile Musical Track: A Wearable for Blind Musicians to Feel Preemptive Cues During Performance',
+								authors: [
+									{ name: 'Jung-Sheng Hung', affiliation: 'National Taiwan University' },
+									{ name: 'Ting-Chen Lu', affiliation: 'National Taiwan University' },
+									{ name: 'Yen-Chang Chen', affiliation: 'National Taiwan University' },
+									{ name: 'Shan-Yuan Teng', affiliation: 'National Taiwan University' },
+								],
+							},
+						],
+					},
+					{
+						name: 'Honorable Mention',
+						tier: 'mention',
+						works: [
+							{
+								id: '109',
+								title: 'Training Animal Crime Scene Investigators through Physical Interaction and AI-Driven Situational Pressure',
+								authors: [
+									{ name: 'Yuting Tseng', affiliation: 'National Taiwan University of Science and Technology' },
+									{ name: 'Neng-Hao Yu', affiliation: 'National Taiwan University of Science and Technology' },
+								],
+							},
+							{
+								id: '14',
+								title: 'Sleep Airline: Reframing Sleep Duration as Flight Narratives',
+								authors: [
+									{ name: 'Tzu-Yen Hsu', affiliation: 'National Taiwan University of Science and Technology' },
+									{ name: 'Yu-Ting Cheng', affiliation: 'National Taiwan University of Science and Technology' },
+								],
+							},
+						],
+					},
+					{
+						name: "People's Choice Award",
+						tier: 'choice',
+						works: [
+							{
+								id: '29',
+								venueKey: 'syntrend',
+								title: 'Emoji Sonification for Inclusive Texting: The Effect of Vocal Bursts and Prosodic Voices on Ambiguous Messages',
+								authors: [
+									{ name: 'Sophia Greiwe', affiliation: 'RWTH Aachen University' },
+									{ name: 'Shan-Yuan Teng', affiliation: 'National Taiwan University' },
+								],
+							},
+							{
+								id: '26',
+								venueKey: 'ntut',
+								title: 'Mixed Reality Teleoperation Pipeline for Resource-Constrained Mini-car via ROS2 Server',
+								authors: [
+									{ name: 'Wei-Ting Chou', affiliation: 'National Cheng Kung University' },
+									{ name: 'Chen-Chung Pan', affiliation: 'National Cheng Kung University' },
+									{ name: 'Hung-Jui Guo', affiliation: 'National Cheng Kung University' },
+								],
+							},
+						],
+					},
+				],
+			},
+			{
+				key: 'demo',
+				heading: 'Demo',
+				awards: [
+					{
+						name: 'Best Demo Award',
+						tier: 'best',
+						works: [
+							{
+								id: '47',
+								title: 'Prototype It, Prompt It, Play It: Crafting Functional Tactile Interactions in 10 Minutes',
+								authors: [
+									{ name: 'Meichun Liu', affiliation: 'University of Washington' },
+									{ name: 'Devin Francis Murphy', affiliation: 'University of Washington' },
+									{ name: 'Yiyue Luo', affiliation: 'University of Washington' },
+								],
+							},
+						],
+					},
+					{
+						name: "People's Choice Award",
+						tier: 'choice',
+						works: [
+							{
+								// Poster & Demo 同一件作品（demo 編號 53 / poster 編號 71），camera-ready 掛在 71
+								id: '71',
+								title: 'Wind Tide Box: An Atmospheric Instrument for Public Embodied Music Interaction',
+								authors: [
+									{ name: 'Yi Chun Ko', affiliation: 'National Tsing Hua University' },
+									{ name: 'Chueh-Fu Yu', affiliation: 'National Tsing Hua University' },
+									{ name: 'Bo-Yu Tseng', affiliation: 'National Tsing Hua University' },
+								],
+							},
+						],
+					},
+				],
+			},
+		],
 	},
 	venueSection: {
 		title: 'Venue',

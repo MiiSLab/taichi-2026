@@ -1,10 +1,19 @@
 import { ArrowUpRight, X } from 'lucide-react';
 import React, { useEffect, useState } from 'react';
+import { Link } from 'react-router-dom';
 import { NEWS as STATIC_NEWS } from '../content';
 import { useContent } from '../context/LanguageContext';
 import { typography } from '../design-system/typography';
 import FramePanel from './FramePanel';
 import ScrollReveal from './ScrollReveal';
+
+// 公告卡 CTA 共用樣式（modal 按鈕 / 站內連結 / 外部連結三者同款）
+const CTA_CLASS =
+	'group/btn mt-auto inline-flex w-fit items-center gap-2 rounded border border-primary/60 bg-primary/10 px-5 py-2.5 font-pixel text-[14px] tracking-[0.08em] text-primary transition-colors hover:bg-primary hover:text-black';
+
+const CTA_ARROW = (
+	<ArrowUpRight className='size-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5' strokeWidth={2.5} />
+);
 
 interface AnnouncementsSectionProps {
 	limit?: number;
@@ -90,24 +99,23 @@ const AnnouncementsSection: React.FC<AnnouncementsSectionProps> = ({ limit = 3, 
 										{item.closedLabel}
 									</button>
 								) : item.modal ? (
-									<button
-										type='button'
-										onClick={() => setModalItem(item)}
-										className='group/btn mt-auto inline-flex w-fit items-center gap-2 rounded border border-primary/60 bg-primary/10 px-5 py-2.5 font-pixel text-[14px] tracking-[0.08em] text-primary transition-colors hover:bg-primary hover:text-black'
-									>
+									<button type='button' onClick={() => setModalItem(item)} className={CTA_CLASS}>
 										{item.linkLabel || content.newsSection.readMore}
-										<ArrowUpRight className='size-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5' strokeWidth={2.5} />
+										{CTA_ARROW}
 									</button>
 								) : item.link ? (
-									<a
-										href={item.link}
-										target='_blank'
-										rel='noreferrer'
-										className='group/btn mt-auto inline-flex w-fit items-center gap-2 rounded border border-primary/60 bg-primary/10 px-5 py-2.5 font-pixel text-[14px] tracking-[0.08em] text-primary transition-colors hover:bg-primary hover:text-black'
-									>
-										{item.linkLabel || content.newsSection.readMore}
-										<ArrowUpRight className='size-4 transition-transform group-hover/btn:translate-x-0.5 group-hover/btn:-translate-y-0.5' strokeWidth={2.5} />
-									</a>
+									// '/' 開頭為站內頁（如 /awards）：走 react-router 導頁、不開新分頁；外部連結維持新分頁
+									item.link.startsWith('/') ? (
+										<Link to={item.link} className={CTA_CLASS}>
+											{item.linkLabel || content.newsSection.readMore}
+											{CTA_ARROW}
+										</Link>
+									) : (
+										<a href={item.link} target='_blank' rel='noreferrer' className={CTA_CLASS}>
+											{item.linkLabel || content.newsSection.readMore}
+											{CTA_ARROW}
+										</a>
+									)
 								) : null}
 							</FramePanel>
 						</ScrollReveal>

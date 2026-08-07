@@ -6,6 +6,7 @@ import { LanguageProvider } from './context/LanguageContext';
 import HomePage from './pages/HomePage';
 
 const AgendaPage = lazy(() => import('./pages/AgendaPage'));
+const AwardsPage = lazy(() => import('./pages/AwardsPage'));
 const CFPPage = lazy(() => import('./pages/CFPPage'));
 // const CompetitionPage = lazy(() => import('./pages/CompetitionPage'));
 const FamilyFriendlyPage = lazy(() => import('./pages/FamilyFriendlyPage'));
@@ -76,6 +77,7 @@ const App: React.FC = () => {
 								<Route path='/' element={<Layout />}>
 									<Route index element={<HomePage />} />
 									<Route path='news' element={<NewsPage />} />
+									<Route path='awards' element={<AwardsPage />} />
 									<Route path='agenda' element={<AgendaPage />} />
 									<Route path='program' element={<ProgramPage />} />
 									<Route path='cfp' element={<CFPPage />} />

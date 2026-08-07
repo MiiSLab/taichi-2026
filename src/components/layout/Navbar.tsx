@@ -183,6 +183,7 @@ const Navbar: React.FC = () => {
 
 	const desktopItems: DesktopNavItem[] = [
 		{ label: content.nav.news, to: '/news', isActive: location.pathname === '/news' },
+		{ label: content.nav.awards, to: '/awards', isActive: location.pathname === '/awards' },
 		{ label: content.nav.program, to: '/program', isActive: location.pathname === '/program' },
 		{ label: content.nav.venue, to: '/transit', isActive: location.pathname === '/transit' },
 		{ label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp') },
@@ -192,6 +193,7 @@ const Navbar: React.FC = () => {
 
 	const mobileItems: MobileNavItem[] = [
 		{ key: 'news', label: content.nav.news, to: '/news', isActive: location.pathname === '/news' },
+		{ key: 'awards', label: content.nav.awards, to: '/awards', isActive: location.pathname === '/awards' },
 		{ key: 'program', label: content.nav.program, to: '/program', isActive: location.pathname === '/program' },
 		{ key: 'venue', label: content.nav.venue, to: '/transit', isActive: location.pathname === '/transit', submenuKey: 'venue' },
 		{ key: 'cfp', label: content.nav.cfp, to: '/cfp', isActive: location.pathname.startsWith('/cfp'), submenuKey: 'cfp' },

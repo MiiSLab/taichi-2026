@@ -12,7 +12,7 @@ import viteCompression from 'vite-plugin-compression';
 // HTTP 200 (instead of 404.html) when the URL is requested directly. Without
 // these copies, search engines and link previews see a 404 status even though
 // the SPA would render the correct page in a browser.
-const SPA_ROUTES = ['news', 'agenda', 'cfp', 'family-friendly', 'venue', 'organization', 'sponsorship', 'vote', 'poster-upload', 'q'];
+const SPA_ROUTES = ['news', 'awards', 'agenda', 'cfp', 'family-friendly', 'venue', 'organization', 'sponsorship', 'vote', 'poster-upload', 'q'];
 
 const spaRoutesPlugin = (): Plugin => ({
 	name: 'spa-routes-html',

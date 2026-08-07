@@ -541,6 +541,12 @@ export const CONTENT_EN = {
 			},
 		},
 	},
+	// Award winners: works/authors are proper nouns shared from CONTENT_ZH; only labels and intro are localized here.
+	awardsPageSection: {
+		...CONTENT_ZH.awardsPageSection,
+		intro: 'TAICHI 2026 has come to a close. The following awards were presented at the closing ceremony on Aug 06 — congratulations to all the winners, and thank you to every author, speaker, and attendee!',
+		venueLabels: { syntrend: 'Syntrend venue', ntut: 'NTUT venue' },
+	},
 	venueSection: {
 		...CONTENT_ZH.venueSection,
 		subtitle: 'VENUE PLAN',
