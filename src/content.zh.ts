@@ -670,7 +670,7 @@ export const CONTENT_ZH = {
 							time: '10:00 - 10:50',
 							chair: '程芙茵 助理教授 國立成功大學資訊工程學系',
 							items: [
-								{ id: '48', title: 'Evaluating the Effect of Overconfidence-Based Interventions in Intelligent Anti-Fraud Systems using Behavioral and Cognitive Metrics', authors: 'Bo-Cun Li, Ci-Chen Lin and Fu-Yin Cherng' },
+								{ id: '48', title: 'Evaluating the Effect of Overconfidence-Based Interventions in Intelligent Anti-Fraud Systems using Behavioral and Cognitive Metrics', authors: 'Bo-Cun Li, Ci-Chen Lin, Zi-Jie Zhou, Ming-Hung Wang and Fu-Yin Cherng' },
 								{ id: '68', title: '從訊息可信到責任歸因：AI 整合型態與購買機制在社群商務的作用機制', authors: '李圯瀞, 劉劭禹, 程安如, 畢南怡, 陳炳宇' },
 								{ id: '75', title: '情感捷思跟涉入程度對於 AI 代理人信任之影響', authors: 'Yi Ting Li and Yi Hsiu Chen' },
 								{ id: '73', title: 'From Human Love to Artificial Intimacy: How Humans Transfer and Adapt Conflict Resolution Styles to AI Romantic Partners', authors: 'Chia-Hui Shih and Yoyo Tsung-Yu Hou' },
