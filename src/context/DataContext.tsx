@@ -1,6 +1,14 @@
-import React, { createContext, useContext, useEffect, useState } from 'react';
+import React, { createContext, useContext, useEffect } from 'react';
 import { NEWS as STATIC_NEWS, PEOPLE as STATIC_PEOPLE, SESSIONS as STATIC_SESSIONS } from '../content';
-import { fetchNewsFromNotion, fetchPeopleFromNotion, fetchSessionsFromNotion } from '../services/notionService';
+
+/**
+ * 活動已結束（2026-08）：資料全面靜態化，不再於執行期連 Notion。
+ *
+ * PEOPLE/SESSIONS 來自 src/frozenData.ts（由 scripts/freeze-notion-data.mjs 凍結產出），
+ * NEWS 來自 src/announcementsData.ts（手動維護的公告）。
+ * 原本的 Notion 背景同步實作保留於 src/services/notionService.ts 與本檔的 git 歷史，
+ * 重新啟用方式見 HANDOVER.md。
+ */
 
 interface DataContextType {
 	people: PersonItem[];
@@ -11,108 +19,30 @@ interface DataContextType {
 	lastSynced: string;
 }
 
-const CACHE_KEY = 'taichi_2026_notion_cache';
+// 舊版同步機制留下的 localStorage cache key（內含已過期的外部圖片 URL），載入時清除
+const LEGACY_CACHE_KEY = 'taichi_2026_notion_cache';
 
-
-
-const DataContext = createContext<DataContextType>({
+const STATIC_DATA: DataContextType = {
 	people: STATIC_PEOPLE,
 	sessions: STATIC_SESSIONS,
 	news: STATIC_NEWS,
 	isSyncing: false,
 	dataSource: 'static',
 	lastSynced: '',
-});
+};
 
-
+const DataContext = createContext<DataContextType>(STATIC_DATA);
 
 export const useData = () => useContext(DataContext);
 
 export const DataProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-	const [people, setPeople] = useState<PersonItem[]>(STATIC_PEOPLE);
-	const [sessions, setSessions] = useState<SessionItem[]>(STATIC_SESSIONS);
-	const [news, setNews] = useState<NewsItem[]>(STATIC_NEWS);
-	const [isSyncing, setIsSyncing] = useState(false);
-	const [dataSource, setDataSource] = useState<'static' | 'notion'>('static');
-	const [lastSynced, setLastSynced] = useState<string>('');
-
-	// 1. Initial Load from Cache (Immediate)
 	useEffect(() => {
-		const cached = localStorage.getItem(CACHE_KEY);
-		if (cached) {
-			try {
-				const { data, timestamp, source } = JSON.parse(cached);
-				if (data.people) setPeople(data.people);
-				if (data.sessions) setSessions(data.sessions);
-				if (data.news) setNews(data.news);
-				setDataSource(source || 'notion');
-				const date = new Date(timestamp);
-				setLastSynced(`${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`);
-			} catch (e) {
-				console.warn('Failed to parse cache', e);
-			}
+		try {
+			localStorage.removeItem(LEGACY_CACHE_KEY);
+		} catch {
+			// localStorage 不可用（如隱私模式）時忽略
 		}
-		
-		// 2. Always trigger background sync on mount
-		handleSyncData();
 	}, []);
 
-	const handleSyncData = async () => {
-		setIsSyncing(true);
-
-		try {
-			// Fetch in parallel
-			const [fetchedPeople, fetchedSessions, fetchedNews] = await Promise.all([
-				fetchPeopleFromNotion(),
-				fetchSessionsFromNotion(),
-				fetchNewsFromNotion(),
-			]);
-
-			let hasUpdate = false;
-			const newData: any = {};
-
-			if (fetchedPeople && fetchedPeople.length > 0) {
-				setPeople(fetchedPeople);
-				newData.people = fetchedPeople;
-				hasUpdate = true;
-			}
-			if (fetchedSessions && fetchedSessions.length > 0) {
-				setSessions(fetchedSessions);
-				newData.sessions = fetchedSessions;
-				hasUpdate = true;
-			}
-			if (fetchedNews && fetchedNews.length > 0) {
-				setNews(fetchedNews);
-				newData.news = fetchedNews;
-				hasUpdate = true;
-			}
-
-			if (hasUpdate) {
-				setDataSource('notion');
-				const now = Date.now();
-				const date = new Date(now);
-				setLastSynced(`${date.getHours()}:${date.getMinutes().toString().padStart(2, '0')}`);
-
-				// Save to Cache
-				localStorage.setItem(
-					CACHE_KEY,
-					JSON.stringify({
-						data: newData,
-						timestamp: now,
-						source: 'notion',
-					}),
-				);
-			}
-		} catch (error) {
-			console.error('Failed to sync data from Notion:', error);
-		} finally {
-			setIsSyncing(false);
-		}
-	};
-
-	return (
-		<DataContext.Provider value={{ people, sessions, news, isSyncing, dataSource, lastSynced }}>{children}</DataContext.Provider>
-	);
+	return <DataContext.Provider value={STATIC_DATA}>{children}</DataContext.Provider>;
 };
-
-

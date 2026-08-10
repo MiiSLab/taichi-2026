@@ -1,4 +1,5 @@
-import { OFFLINE_NEWS, OFFLINE_PEOPLE, OFFLINE_SESSIONS } from './offlineFallbackData';
+import { ANNOUNCEMENTS } from './announcementsData';
+import { FROZEN_PEOPLE, FROZEN_SESSIONS } from './frozenData';
 
 export const CONFIG = {
 	notion: {
@@ -76,7 +77,7 @@ export const MEMBERS_NOTION_PAGE_ID = CONFIG.notion.peopleDatabaseId;
 export const SESSIONS_NOTION_PAGE_ID = CONFIG.notion.sessionsDatabaseId;
 export const TOPICS_NOTION_PAGE_ID = CONFIG.notion.topicsDatabaseId;
 
-export const PEOPLE: PersonItem[] = OFFLINE_PEOPLE;
-export const SESSIONS: SessionItem[] = OFFLINE_SESSIONS;
+export const PEOPLE: PersonItem[] = FROZEN_PEOPLE;
+export const SESSIONS: SessionItem[] = FROZEN_SESSIONS;
 export const PUBLICATIONS: PublicationItem[] = [];
-export const NEWS: NewsItem[] = OFFLINE_NEWS;
+export const NEWS: NewsItem[] = ANNOUNCEMENTS;

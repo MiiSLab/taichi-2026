@@ -24,11 +24,10 @@ jobs:
             - name: Install Dependencies
               run: npm ci
 
+            # 活動已結束：站台全靜態（資料凍結於 src/frozenData.ts），build 不再需要
+            # Notion/Supabase 環境變數。重新啟用 /q、/vote 或 Notion 同步時再把
+            # secrets 加回 env（見 HANDOVER.md）。
             - name: Build
-              env:
-                  VITE_NOTION_PROXY_URL: ${{ secrets.VITE_NOTION_PROXY_URL }}
-                  VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-                  VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
               run: npm run build
 
             - name: Deploy

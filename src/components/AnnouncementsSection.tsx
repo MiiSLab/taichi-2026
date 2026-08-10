@@ -25,7 +25,7 @@ interface AnnouncementsSectionProps {
  * Homepage announcements feed, styled to match the current neon-on-black design
  * (FramePanel + dela/pixel fonts + lime accent).
  *
- * NOTE: this is intentionally backed by the static NEWS list (offlineFallbackData),
+ * NOTE: this is intentionally backed by the static NEWS list (announcementsData),
  * NOT the Notion-synced useData().news — announcements are few and edited in code
  * for now. Revisit Notion wiring if the volume grows. See scripts/upload-news-to-notion.mjs.
  */

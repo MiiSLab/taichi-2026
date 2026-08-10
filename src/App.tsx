@@ -9,6 +9,10 @@ const AgendaPage = lazy(() => import('./pages/AgendaPage'));
 const AwardsPage = lazy(() => import('./pages/AwardsPage'));
 const CFPPage = lazy(() => import('./pages/CFPPage'));
 // const CompetitionPage = lazy(() => import('./pages/CompetitionPage'));
+// 活動已結束：/q（QPage）與 /vote（VotePage）改掛收站頁，原程式保留供交接（見 HANDOVER.md）
+// const QPage = lazy(() => import('./pages/QPage'));
+// const VotePage = lazy(() => import('./pages/VotePage'));
+const EventEndedPage = lazy(() => import('./pages/EventEndedPage'));
 const FamilyFriendlyPage = lazy(() => import('./pages/FamilyFriendlyPage'));
 const HeroLabPage = lazy(() => import('./pages/HeroLabPage'));
 const NewsPage = lazy(() => import('./pages/NewsPage'));
@@ -16,12 +20,10 @@ const NotFoundPage = lazy(() => import('./pages/NotFoundPage'));
 const OrganizationPage = lazy(() => import('./pages/OrganizationPage'));
 const PosterUploadPage = lazy(() => import('./pages/PosterUploadPage'));
 const ProgramPage = lazy(() => import('./pages/ProgramPage'));
-const QPage = lazy(() => import('./pages/QPage'));
 const RegistrationPage = lazy(() => import('./pages/RegistrationPage'));
 const SponsorshipPage = lazy(() => import('./pages/SponsorshipPage'));
 const VenuePage = lazy(() => import('./pages/VenuePage'));
 const VenueV2Page = lazy(() => import('./pages/VenueV2Page'));
-const VotePage = lazy(() => import('./pages/VotePage'));
 
 const RouteFallback: React.FC = () => (
 	<div
@@ -90,8 +92,8 @@ const App: React.FC = () => {
 									<Route path='sponsorship' element={<SponsorshipPage />} />
 									<Route path='registration' element={<RegistrationPage />} />
 									{/* <Route path='competition' element={<CompetitionPage />} /> */}
-									<Route path='vote' element={<VotePage />} />
-									<Route path='q' element={<QPage />} />
+									<Route path='vote' element={<EventEndedPage />} />
+									<Route path='q' element={<EventEndedPage />} />
 									<Route path='*' element={<NotFoundPage />} />
 								</Route>
 								<Route path='poster-upload' element={<PosterUploadPage />} />

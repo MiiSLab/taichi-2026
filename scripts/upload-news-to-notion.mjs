@@ -65,7 +65,7 @@ const notion = async (path, init = {}) => {
 	return json;
 };
 
-// --- The two announcements (keep in sync with src/offlineFallbackData.ts OFFLINE_NEWS) ---
+// --- The two announcements (keep in sync with src/announcementsData.ts ANNOUNCEMENTS) ---
 const TODAY = '2026-06-17';
 const ANNOUNCEMENTS = [
 	{
